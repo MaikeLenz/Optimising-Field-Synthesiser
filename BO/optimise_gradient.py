@@ -10,14 +10,14 @@ from field_synth_class3 import *
 
 Field1=Wavepacket(t0=0.0, wavel=400.0, fwhm=10.0, amp=1.0, CEP=0.0)
 Field2=Wavepacket(t0=0.0, wavel=700.0, fwhm=10.0, amp=1.0, CEP=0.0)
-Field3=Wavepacket(t0=0.0, wavel=1000.0, fwhm=30.0, amp=1.0, CEP=0.0)
-Field4=Wavepacket(t0=0.0, wavel=2000.0, fwhm=15.0, amp=1.0, CEP=0.0)
-Field5=Wavepacket(t0=0.0, wavel=1500.0, fwhm=12.0, amp=1.0, CEP=0.0)
+Field3=Wavepacket(t0=0.0, wavel=1000.0, fwhm=10.0, amp=1.0, CEP=0.0)
+Field4=Wavepacket(t0=0.0, wavel=2000.0, fwhm=10.0, amp=1.0, CEP=0.0)
+Field5=Wavepacket(t0=0.0, wavel=1500.0, fwhm=10.0, amp=1.0, CEP=0.0)
 
 
 pulses=[Field1,Field2, Field3, Field4, Field5]
-wavels=(10,20,30,40)
-Synth=Synthesiser(pulses,wavels)
+delays=(10,20,30,40)
+Synth=Synthesiser(pulses,delays)
 
 #f is target function
 def f(wavel0,wavel1, wavel2, wavel3, wavel4):
@@ -36,12 +36,12 @@ def f(wavel0,wavel1, wavel2, wavel3, wavel4):
         E.append(E_i)
     return slopeGradient(E)
 
-pbounds = {'wavel0':(10,10000),'wavel1': (100,1000), 'wavel2': (100,1000), 'wavel3': (100,1000), 'wavel4': (100,1000)}
+pbounds = {'wavel0':(400,2000),'wavel1': (400,2000), 'wavel2': (400,2000), 'wavel3': (400,2000), 'wavel4': (400,2000)}
 
 optimizer = BayesianOptimization(
     f=f,
     pbounds=pbounds,
-    verbose=2, # verbose = 1 prints only when a maximum is observed, verbose = 0 is silent
+    verbose=1, # verbose = 1 prints only when a maximum is observed, verbose = 0 is silent
     random_state=1,
 )
 
