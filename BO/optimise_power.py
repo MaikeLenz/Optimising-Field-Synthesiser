@@ -8,11 +8,11 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 from TargetFunction import *
 from field_synth_class3 import *
 
-Field1=Wavepacket(t0=0.0, freq=633.0, fwhm=10.0, amp=1.0, CEP=0.0)
-Field2=Wavepacket(t0=0.0, freq=637.0, fwhm=10.0, amp=1.0, CEP=0.0)
-Field3=Wavepacket(t0=0.0, freq=635.0, fwhm=30.0, amp=1.0, CEP=0.0)
-Field4=Wavepacket(t0=0.0, freq=640.0, fwhm=15.0, amp=1.0, CEP=np.pi)
-Field5=Wavepacket(t0=0.0, freq=635.0, fwhm=12.0, amp=1.0, CEP=np.pi*0.5)
+Field1=Wavepacket(t0=0.0, wavel=400.0, fwhm=10.0, amp=1.0, CEP=0.0)
+Field2=Wavepacket(t0=0.0, wavel=2000.0, fwhm=10.0, amp=1.0, CEP=0.0)
+Field3=Wavepacket(t0=0.0, wavel=600.0, fwhm=10.0, amp=1.0, CEP=0.0)
+Field4=Wavepacket(t0=0.0, wavel=1500.0, fwhm=10.0, amp=1.0, CEP=np.pi)
+Field5=Wavepacket(t0=0.0, wavel=900.0, fwhm=10.0, amp=1.0, CEP=np.pi*0.5)
 
 
 pulses=[Field1,Field2, Field3, Field4, Field5]

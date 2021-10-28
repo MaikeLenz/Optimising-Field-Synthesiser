@@ -17,24 +17,28 @@ class Wavepacket(Element):
     """
     Class of Elements which are fields
     """
-    def __init__(self, t0=0.0, freq=633.0, fwhm=10.0, amp=1.0, CEP=0.0):
-        self._t0 = t0
-        self._carrier_freq = freq
-        self._fwhm_duration = fwhm
-        self._amplitude = amp
-        self._CEP = CEP
+    def __init__(self, t0=0.0, wavel=1000, fwhm=10.0, amp=1.0, CEP=0.0, freq=None):
+        self._t0 = t0 #in fs
+        if freq != None:
+            self._wavelength = (299.792458)/(freq) #in nm
+        else:
+            self._wavelength = wavel #in nm
+        self._fwhm_duration = fwhm #in fs
+        self._amplitude = amp #relative
+        self._CEP = CEP 
 
         
     def __str__(self):
-        return "t0={}, freq={}, fwhm={}, amp={}, CEP={}".format(self._t0, self._carrier_freq, self._fwhm_duration, self._amplitude, self._CEP)
+        return "t0={}, freq={}, fwhm={}, amp={}, CEP={}".format(self._t0, self._wavelength, self._fwhm_duration, self._amplitude, self._CEP)
 
     def E_field_value(self, t):
         """
         calculates electric field of a cosinusoidal gaussian wavepacket at time t in fs; centered around zero
         """
+        carrier_freq=(299.792458)/(self._wavelength)
         sigma=self._fwhm_duration/(2.0*np.sqrt(2.0*np.log(2.0))) #fwhm to std of gaussian
         gauss = np.exp(-0.5*((t-self._t0)/sigma)**2.0)
-        cos = np.cos(self._carrier_freq*(t-self._t0)+self._CEP) #CEP is phase of cosine relative to gaussian
+        cos = np.cos(carrier_freq*(t-self._t0)+self._CEP) #CEP is phase of cosine relative to gaussian
         return self._amplitude*gauss*cos
 
 class Synthesiser(Element):
@@ -47,18 +51,18 @@ class Synthesiser(Element):
         """
         self._pulse_list=fields
         #list = [carrier_frequencies, fwhm_pulse_durations, field_amplitudes, CEPs, time_delays] list of tuples
-        freq=()
+        wavel=()
         fwhm=()
         amp=()
         CEP=()
         for i in self._pulse_list:
             #print(i._carrier_freq)
-            freq= freq+(i._carrier_freq,)
+            wavel= wavel+(i._wavelength,)
             fwhm=fwhm+(i._fwhm_duration,)
             amp=amp+(i._amplitude,)
             CEP=CEP+(i._CEP,)
         delay1=(0,)+delays #delay of 1st pulse is zero
-        list=[freq,fwhm,amp,CEP,delay1]
+        list=[wavel,fwhm,amp,CEP,delay1]
         self._param_list=list
 
     def E_field_value(self,t):
@@ -67,7 +71,8 @@ class Synthesiser(Element):
         """
         E_tot=0
         for i in range(len(self._pulse_list)):
-            carrier_freq = self._param_list[0][i]
+            wavel = self._param_list[0][i]
+            freq=(299.792458)/(wavel)
             fwhm_duration = self._param_list[1][i]
             amp = self._param_list[2][i]
             CEP = self._param_list[3][i]
@@ -75,15 +80,20 @@ class Synthesiser(Element):
 
             sigma=fwhm_duration/(2.0*np.sqrt(2.0*np.log(2.0))) #fwhm to std of gaussian
             gauss = np.exp(-0.5*((t-delay)/sigma)**2.0)
-            cos = np.cos(carrier_freq*(t-delay)+CEP) #CEP is phase of cosine relative to gaussian
+            cos = np.cos(freq*(t-delay)+CEP) #CEP is phase of cosine relative to gaussian
             E_tot+=amp*gauss*cos
         return E_tot
 
-    def Update(self, channel_index, carrier_freq=None, fwhm_duration=None, amp=None, CEP=None, delay=None):
-        if carrier_freq != None:
+    def Update(self, channel_index, wavel=None, fwhm_duration=None, amp=None, CEP=None, delay=None):
+        """
+        Updates the parameter list attribute. Call this in the optimisation.
+        have to convert tuples to lists and then back since tuples are immutable.
+        Note: leaves original field objects as they were, only changes synthesiser object.
+        """
+        if wavel != None:
             l0=list(self._param_list[0])
             #print("l0 is",l0)
-            l0[channel_index-1] = carrier_freq
+            l0[channel_index-1] = wavel
             self._param_list[0]=tuple(l0)
         if fwhm_duration != None:
             l1=list(self._param_list[1])
