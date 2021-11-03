@@ -8,7 +8,7 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 from TargetFunction import *
 from field_synth_class3 import *
 
-def BO(Synth, function, init_points, n_iter, args, bounds):
+def BO(Synth, function, init_points, n_iter, args):
     def target_func(function,args):
         """
         creates target function. use sub-function and arguments that should be varied
@@ -23,6 +23,7 @@ def BO(Synth, function, init_points, n_iter, args, bounds):
             E.append(E_i)
         return function(E)
 
+    
     pbounds={}
     for i in range(len(args)):
         for j in range(len(args[i])):
@@ -77,6 +78,6 @@ pulses=[Field1,Field2, Field3, Field4, Field5]
 delays=(10,20,30,40)
 Synth=Synthesiser(pulses,delays)
 
-args=[["wavel"], [], ["delay"]]
-pbounds=[[(400,2000)], [], [(0,50)]]
-BO(Synth, totalPower, 2,3, args, pbounds)
+args={'channel1':["wavelenght", "delay"], 'channel2':[], 'channel3':[], 'channel4': []}
+
+BO(Synth, totalPower, 2,3, args)
