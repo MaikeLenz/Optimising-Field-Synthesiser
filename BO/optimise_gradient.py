@@ -37,17 +37,17 @@ def f(wavel0,wavel1, wavel2, wavel3, wavel4):
     return slopeGradient(E)
 
 pbounds = {'wavel0':(400,2000),'wavel1': (400,2000), 'wavel2': (400,2000), 'wavel3': (400,2000), 'wavel4': (400,2000)}
-
+print(type(pbounds))
 optimizer = BayesianOptimization(
     f=f,
     pbounds=pbounds,
     verbose=1, # verbose = 1 prints only when a maximum is observed, verbose = 0 is silent
     random_state=1,
 )
-
+"""
 optimizer.maximize(
-    init_points=20,
-    n_iter=30,
+    init_points=100,
+    n_iter=100,
 )
 
 print(optimizer.max)
@@ -79,3 +79,4 @@ plt.plot(t,np.array(I))
 plt.xlabel("time, t")
 plt.ylabel("Electric field/Intensity , a.u.")
 plt.show()
+"""

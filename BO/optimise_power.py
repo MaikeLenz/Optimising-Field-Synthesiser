@@ -20,24 +20,24 @@ delays=(10,20,30,40)
 Synth=Synthesiser(pulses,delays)
 
 #f is target function
-def f(delay0,delay1, delay2, delay3, delay4):
+def f(delay0,delay1,delay2,delay3,delay4,wavel0,wavel1,wavel2,wavel3,wavel4):
     """
     returns total power over a 10fs window
     """
-    Synth.Update(1,delay=delay0)
-    Synth.Update(2,delay=delay1)
-    Synth.Update(3,delay=delay2)
-    Synth.Update(4,delay=delay3)
-    Synth.Update(5,delay=delay4)
-    t0=5.0
-    t=np.linspace(t0-10,t0+10,500)
+    Synth.Update(1,delay=delay0, wavel=wavel0)
+    Synth.Update(2,delay=delay1, wavel=wavel1)
+    Synth.Update(3,delay=delay2, wavel= wavel2)
+    Synth.Update(4,delay=delay3, wavel= wavel3)
+    Synth.Update(5,delay=delay4, wavel= wavel4)
+    t0=0.0
+    t=np.linspace(t0-0.1,t0+0.1,500)
     E=[]
     for i in t:
         E_i=Synth.E_field_value(i)
         E.append(E_i)
     return totalPower(t,E)
 
-pbounds = {'delay0':(0,50),'delay1': (0,50), 'delay2': (0,50), 'delay3': (0,50), 'delay4': (0,50)}
+pbounds = {'delay0':(0,50),'delay1': (0,50), 'delay2': (0,50), 'delay3': (0,50), 'delay4': (0,50), 'wavel0': (400,2000), 'wavel1': (400,2000), 'wavel2': (400,2000), 'wavel3': (400,2000), 'wavel4': (400,2000)}
 
 optimizer = BayesianOptimization(
     f=f,
@@ -47,8 +47,8 @@ optimizer = BayesianOptimization(
 )
 
 optimizer.maximize(
-    init_points=20,
-    n_iter=30,
+    init_points=200,
+    n_iter=200,
 )
 
 print(optimizer.max)
@@ -58,12 +58,18 @@ delay2_opt = optimizer.max.get("params").get("delay2")
 delay3_opt = optimizer.max.get("params").get("delay3")
 delay4_opt = optimizer.max.get("params").get("delay4")
 
+wavel0_opt = optimizer.max.get("params").get("wavel0")
+wavel1_opt = optimizer.max.get("params").get("wavel1")
+wavel2_opt = optimizer.max.get("params").get("wavel2")
+wavel3_opt = optimizer.max.get("params").get("wavel3")
+wavel4_opt = optimizer.max.get("params").get("wavel4")
+
 #t0_opt= optimizer.max.get("params").get("t0")
-Synth.Update(1,delay=delay0_opt)
-Synth.Update(2,delay=delay1_opt)
-Synth.Update(3,delay=delay2_opt)
-Synth.Update(4,delay=delay3_opt)
-Synth.Update(5,delay=delay4_opt)
+Synth.Update(1,delay=delay0_opt, wavel=wavel0_opt)
+Synth.Update(2,delay=delay1_opt, wavel=wavel1_opt)
+Synth.Update(3,delay=delay2_opt, wavel= wavel2_opt)
+Synth.Update(4,delay=delay3_opt, wavel= wavel3_opt)
+Synth.Update(5,delay=delay4_opt, wavel= wavel4_opt)
 plt.figure()
 t=np.linspace(-20.0, 20.0, 800)
 E_tot = []

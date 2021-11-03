@@ -54,3 +54,17 @@ def sharpestPeak(E, widths=5):
         
     return max(ratios)
     #return -1*min(peakwidths)
+
+
+def sharpestPeak_triang(E, widths=5):
+    """
+    calculates difference between peak and its two neighbours
+    """
+    I=[]
+    for i in E:
+        I.append(i**2)
+    indices = signal.find_peaks_cwt(I, (widths,widths))
+    differences=[]
+    for index in indices:
+        differences.append(2*I[index]-I[index-1]-I[index+1])
+    return max(differences)

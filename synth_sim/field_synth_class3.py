@@ -114,10 +114,10 @@ class Synthesiser(Element):
 
 """
 t0=-10.0 #start time of first pulse in sequence
-Field1=(Wavepacket(t0, freq=633.0, fwhm=10.0, amp=1.0, CEP=0.0))
-Field2=(Wavepacket(t0, freq=635.0, fwhm=10.0, amp=1.0, CEP=np.pi))
-Field3=(Wavepacket(t0, freq=637.0, fwhm=10.0, amp=1.0, CEP=np.pi))
-Field4=(Wavepacket(t0, freq=637.0, fwhm=10.0, amp=1.0, CEP=np.pi))
+Field1=(Wavepacket(t0, wavel=400.0, fwhm=10.0, amp=1.0, CEP=0.0))
+Field2=(Wavepacket(t0, wavel=800.0, fwhm=10.0, amp=1.0, CEP=np.pi))
+Field3=(Wavepacket(t0, wavel=1300.0, fwhm=10.0, amp=1.0, CEP=np.pi))
+Field4=(Wavepacket(t0, wavel=2000.0, fwhm=10.0, amp=1.0, CEP=np.pi))
 pulses=[Field1,Field2,Field3, Field4]
 delays=(10.0,20.0,50.0) #has to be tuple! each relative delay is measured from 1st pulse
 
