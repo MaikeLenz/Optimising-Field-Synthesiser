@@ -20,15 +20,15 @@ delays=(10,20,30,40)
 Synth=Synthesiser(pulses,delays)
 
 #f is target function
-def f(wavel0,wavel1, wavel2, wavel3, wavel4):
+def f(delay0,delay1,delay2,delay3,delay4,wavel0,wavel1,wavel2,wavel3,wavel4):
     """
-    returns slope gradient
+    returns total power over a 10fs window
     """
-    Synth.Update(1,wavel=wavel0)
-    Synth.Update(2,wavel=wavel1)
-    Synth.Update(3,wavel=wavel2)
-    Synth.Update(4,wavel=wavel3)
-    Synth.Update(5,wavel=wavel4)
+    Synth.Update(1,delay=delay0, wavel=wavel0)
+    Synth.Update(2,delay=delay1, wavel=wavel1)
+    Synth.Update(3,delay=delay2, wavel= wavel2)
+    Synth.Update(4,delay=delay3, wavel= wavel3)
+    Synth.Update(5,delay=delay4, wavel= wavel4)
     t=np.linspace(-20,50,20000)
     E=[]
     for i in t:
@@ -36,7 +36,7 @@ def f(wavel0,wavel1, wavel2, wavel3, wavel4):
         E.append(E_i)
     return slopeGradient(E)
 
-pbounds = {'wavel0':(400,2000),'wavel1': (400,2000), 'wavel2': (400,2000), 'wavel3': (400,2000), 'wavel4': (400,2000)}
+pbounds = {'delay0':(0,50),'delay1': (0,50), 'delay2': (0,50), 'delay3': (0,50), 'delay4': (0,50), 'wavel0': (400,2000), 'wavel1': (400,2000), 'wavel2': (400,2000), 'wavel3': (400,2000), 'wavel4': (400,2000)}
 print(type(pbounds))
 optimizer = BayesianOptimization(
     f=f,
@@ -44,13 +44,19 @@ optimizer = BayesianOptimization(
     verbose=1, # verbose = 1 prints only when a maximum is observed, verbose = 0 is silent
     random_state=1,
 )
-"""
+
 optimizer.maximize(
     init_points=100,
     n_iter=100,
 )
 
 print(optimizer.max)
+delay0_opt = optimizer.max.get("params").get("delay0")
+delay1_opt = optimizer.max.get("params").get("delay1")
+delay2_opt = optimizer.max.get("params").get("delay2")
+delay3_opt = optimizer.max.get("params").get("delay3")
+delay4_opt = optimizer.max.get("params").get("delay4")
+
 wavel0_opt = optimizer.max.get("params").get("wavel0")
 wavel1_opt = optimizer.max.get("params").get("wavel1")
 wavel2_opt = optimizer.max.get("params").get("wavel2")
@@ -58,13 +64,13 @@ wavel3_opt = optimizer.max.get("params").get("wavel3")
 wavel4_opt = optimizer.max.get("params").get("wavel4")
 
 #t0_opt= optimizer.max.get("params").get("t0")
-Synth.Update(1,wavel=wavel0_opt)
-Synth.Update(2,wavel=wavel1_opt)
-Synth.Update(3,wavel=wavel2_opt)
-Synth.Update(4,wavel=wavel3_opt)
-Synth.Update(5,wavel=wavel4_opt)
+Synth.Update(1,delay=delay0_opt, wavel=wavel0_opt)
+Synth.Update(2,delay=delay1_opt, wavel=wavel1_opt)
+Synth.Update(3,delay=delay2_opt, wavel= wavel2_opt)
+Synth.Update(4,delay=delay3_opt, wavel= wavel3_opt)
+Synth.Update(5,delay=delay4_opt, wavel= wavel4_opt)
 plt.figure()
-t=np.linspace(-30.0, 50, 20000)
+t=np.linspace(-30.0, 100, 20000)
 E_tot = []
 I=[]
 for i in range(len(t)):
@@ -79,4 +85,3 @@ plt.plot(t,np.array(I))
 plt.xlabel("time, t")
 plt.ylabel("Electric field/Intensity , a.u.")
 plt.show()
-"""

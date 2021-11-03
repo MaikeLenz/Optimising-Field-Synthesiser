@@ -71,7 +71,7 @@ Synth.Update(3,delay=delay2_opt, wavel= wavel2_opt)
 Synth.Update(4,delay=delay3_opt, wavel= wavel3_opt)
 Synth.Update(5,delay=delay4_opt, wavel= wavel4_opt)
 plt.figure()
-t=np.linspace(-20.0, 20.0, 800)
+t=np.linspace(-20.0, 100.0, 800)
 E_tot = []
 I=[]
 for i in range(len(t)):

@@ -84,7 +84,7 @@ class Synthesiser(Element):
             E_tot+=amp*gauss*cos
         return E_tot
 
-    def Update(self, channel_index, wavel=None, fwhm_duration=None, amp=None, CEP=None, delay=None):
+    def Update(self, channel_index, wavel=None, fwhm=None, amp=None, CEP=None, delay=None):
         """
         Updates the parameter list attribute. Call this in the optimisation.
         have to convert tuples to lists and then back since tuples are immutable.
@@ -95,9 +95,9 @@ class Synthesiser(Element):
             #print("l0 is",l0)
             l0[channel_index-1] = wavel
             self._param_list[0]=tuple(l0)
-        if fwhm_duration != None:
+        if fwhm != None:
             l1=list(self._param_list[1])
-            l1[channel_index-1] = fwhm_duration
+            l1[channel_index-1] = fwhm
             self._param_list[1]=tuple(l1)
         if amp != None:
             l2=list(self._param_list[2])
@@ -111,8 +111,8 @@ class Synthesiser(Element):
             l4= list(self._param_list[4])
             l4[channel_index-1] = delay
             self._param_list[4]=tuple(l4)
-
 """
+
 t0=-10.0 #start time of first pulse in sequence
 Field1=(Wavepacket(t0, wavel=400.0, fwhm=10.0, amp=1.0, CEP=0.0))
 Field2=(Wavepacket(t0, wavel=800.0, fwhm=10.0, amp=1.0, CEP=np.pi))
