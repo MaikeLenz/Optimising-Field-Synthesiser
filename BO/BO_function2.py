@@ -8,65 +8,27 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 from TargetFunction import *
 from field_synth_class3 import *
 
-def BO(Synth, function, init_points, n_iter, args_dict):
-    setargs={}
-    for i in range(len(args_dict)):
-        for j in args_dict['channel%s' %(i+1)]: #call channels, starting at channel1
-            if i == "wavelength":
-                setargs["wavel%s" %i]=True        
-            elif i == "fwhm":
-                setargs['fwhm%s' %i]=True
-            elif i== "amplitude":
-                setargs['amp%s' %i]=True
-            elif i== "delay":
-                setargs['delay%s' %i]=True
-            elif i== "CEP":
-                setargs['CEP%s' %i]=True
-            else:
-                print("unknown parameter")
-                setargs["wavel%s" %i]=False        
-                setargs['fwhm%s' %i]=False
-                setargs['amp%s' %i]=False
-                setargs['delay%s' %i]=False
-                setargs['CEP%s' %i]=False
-    
-
-
+def BO(Synth, function, init_points, n_iter, args):
     def target_func(*args):
-        """
-        creates target function. use sub-function and arguments that should be varied
-        """
-        t=np.linspace(-20,50,20000) #time to look at 
+        #creates target function. use sub-function and arguments that should be varied
+        t=np.linspace(-20,50,20000)
         E=[]
+        for i in args:
+            Synth.Update(1,delay=delay0, wavel=wavel0)
+        Synth.Update(2,delay=delay1, wavel=wavel1)
+        Synth.Update(3,delay=delay2, wavel= wavel2)
+        Synth.Update(4,delay=delay3, wavel= wavel3)
+        Synth.Update(5,delay=delay4, wavel= wavel4)
 
-        for i in range(len(args_dict)): #iterate through channels
-            vary_arg=[]#parameters for this channel to be varied
-            for arg in args:
-                if int(str(arg)[-1]) == i:#need ot change to be variable name last letter
-                    vary_arg.append(arg)
-            
-
-            """
-            create list of current parameters 
-            can access param list attribute of synthesiser, then check which parameter we have here to be varied and change its value in a list
-            pass list to update function and unpack
-            """
-            Synth.Update(i+1, *vary_arg)
-
-            
-            
-            
-            Synth.Update(channel_index,wavel)
-        
-        
-        
-        
+        Synth.Update(i+1,wavel)
         for i in t:
             E_i=Synth.E_field_value(i)
             E.append(E_i)
         return function(E)
-        
+        """
+    """
     pbounds = {'delay0':(0,50),'delay1': (0,50), 'delay2': (0,50), 'delay3': (0,50), 'delay4': (0,50), 'wavel0': (400,2000), 'wavel1': (400,2000), 'wavel2': (400,2000), 'wavel3': (400,2000), 'wavel4': (400,2000), 'fwhm0' : (5,70), 'fwhm1' : (5,70), 'fwhm2' : (5,70), 'fwhm3' : (5,70),'fwhm4' : (5,70), 'CEP0': (0,2*np.pi), 'CEP1': (0,2*np.pi), 'CEP2': (0,2*np.pi), 'CEP3': (0,2*np.pi), 'CEP4': (0,2*np.pi)}
+    
     for i in range(len(args_dict)):
         for j in range(len(args_dict[i])):
             pbounds[str(args[i][j])] = bounds[i][j]
@@ -108,7 +70,7 @@ def BO(Synth, function, init_points, n_iter, args_dict):
     plt.ylabel("Electric field/Intensity , a.u.")
     plt.show()
 
-"""
+
 Field1=Wavepacket(t0=0.0, wavel=400.0, fwhm=10.0, amp=1.0, CEP=0.0)
 Field2=Wavepacket(t0=0.0, wavel=700.0, fwhm=10.0, amp=1.0, CEP=0.0)
 Field3=Wavepacket(t0=0.0, wavel=1000.0, fwhm=10.0, amp=1.0, CEP=0.0)
@@ -120,7 +82,6 @@ pulses=[Field1,Field2, Field3, Field4, Field5]
 delays=(10,20,30,40)
 Synth=Synthesiser(pulses,delays)
 
-args={'channel1':[["wavelenght", "delay"], 'channel2':[][], 'channel3':[][], 'channel4': [][]}
-#args=[wavel0,delay0]
+args=["wavel0","delay0"]
+
 BO(Synth, totalPower, 2,3, args)
-"""
