@@ -111,6 +111,25 @@ class Synthesiser(Element):
             l4= list(self._param_list[4])
             l4[channel_index-1] = delay
             self._param_list[4]=tuple(l4)
+
+    def create_dict(self):
+        param_dict = {}
+        for i in range(len(self._param_list[0])):
+            param_dict['wavel' + str(i+1)] = self._param_list[0][i]
+        for i in range(len(self._param_list[1])):
+            param_dict['fwhm' + str(i+1)] = self._param_list[1][i]
+        for i in range(len(self._param_list[2])):
+            param_dict['amp' + str(i+1)] = self._param_list[2][i]
+        for i in range(len(self._param_list[3])):
+            param_dict['CEP' + str(i+1)] = self._param_list[3][i]
+        for i in range(len(self._param_list[4])):
+            param_dict['delay' + str(i+1)] = self._param_list[4][i]
+        return param_dict
+   
+    def no_of_channels(self):
+        return len(self._pulse_list)
+
+        
 """
 
 t0=-10.0 #start time of first pulse in sequence
