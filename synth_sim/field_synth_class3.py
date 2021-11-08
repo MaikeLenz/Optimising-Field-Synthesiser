@@ -27,7 +27,18 @@ class Wavepacket(Element):
         self._amplitude = amp #relative
         self._CEP = CEP 
 
-        
+    def Update(self, Synth, channel_index):
+        self._wavelength=list(Synth._param_list[0])[channel_index-1]
+        self._fwhm_duration=list(Synth._param_list[1])[channel_index-1]
+        self._amplitude=list(Synth._param_list[2])[channel_index-1]
+        self._CEP=list(Synth._param_list[3])[channel_index-1]
+        delays=list(Synth._param_list[4])
+        if delays[channel_index-1] == min(delays):
+            self._t0=list(Synth._param_list[4])[channel_index-1]
+        else:
+            self._t0=list(Synth._param_list[4])[channel_index-1] + min(delays)
+
+   
     def __str__(self):
         return "t0={}, freq={}, fwhm={}, amp={}, CEP={}".format(self._t0, self._wavelength, self._fwhm_duration, self._amplitude, self._CEP)
 
