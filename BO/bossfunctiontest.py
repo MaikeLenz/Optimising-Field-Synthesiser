@@ -10,22 +10,22 @@ from field_synth_class3 import *
 
 def BO(params, Synth, function, init_points, n_iter):      
         params_dict = Synth.create_dict()
-        args_BO = []
+        args_BO = {}
         for i in params:
             if i in params_dict:
-                args_BO.append(params_dict[i])
+                args_BO[i]=params_dict[i]
             else:
                 print('Error! Invalid parameter to vary')
 
         #print(args_BO)
 
-        def target_func(*args):
+        def target_func(**args):
             t=np.linspace(-20,50,20000)
             E=[]
 
             # Update dictionary with new parameters
             for i in range(len(params)):
-                params_dict[params[i]] = args[i]
+                params_dict[params[i]] = args[params[i]]
                
             # Now pass dictionary into array full of all the parameters
             organised_params = np.zeros((Synth.no_of_channels(),5))
@@ -47,7 +47,7 @@ def BO(params, Synth, function, init_points, n_iter):
             # Now update synthesiser- parameters should be in the right order now
             for i in range(len(organised_params)+1):
                 Synth.Update(i , *organised_params[i-1])
-            print('organised params:',*organised_params[1])
+            #print('organised params:',*organised_params[1])
 
             for i in t:
                 E_i=Synth.E_field_value(i)
@@ -95,5 +95,5 @@ pulses=[Field1,Field2, Field3, Field4, Field5]
 delays=(10,20,30,40)
 Synth=Synthesiser(pulses,delays)
 
-params=['wavel1']
+params=['wavel1','delay2','CEP4']
 BO(params, Synth, totalPower, 2,3)
