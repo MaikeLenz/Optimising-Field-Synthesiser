@@ -10,48 +10,51 @@ from field_synth_class3 import *
 
 def BO(params, Synth, function, init_points, n_iter):      
         params_dict = Synth.create_dict()
-        print(params_dict)
-        args = []
+        args_BO = []
         for i in params:
             if i in params_dict:
-                args.append(params_dict[i])
+                args_BO.append(params_dict[i])
             else:
                 print('Error! Invalid parameter to vary')
-       
+
+        #print(args_BO)
+
         def target_func(*args):
             t=np.linspace(-20,50,20000)
             E=[]
-       
+
             # Update dictionary with new parameters
             for i in range(len(params)):
                 params_dict[params[i]] = args[i]
                
             # Now pass dictionary into array full of all the parameters
-            organised_params = np.zeros((5, Synth.no_of_channels()))
+            organised_params = np.zeros((Synth.no_of_channels(),5))
+            #print(organised_params)
             for key, value in params_dict.items():
-                for i in range(1, Synth.no_of_channels()):
+                for i in range(Synth.no_of_channels()+1):
                     if str(i) in key:
                         if 'wavel' in key:
-                            organised_params[i][0] = value
+                            organised_params[i-1][0] = value
                         elif 'fwhm' in key:
-                            organised_params[i][1] = value
+                            organised_params[i-1][1] = value
                         elif 'amp' in key:
-                            organised_params[i][2] = value
+                            organised_params[i-1][2] = value
                         elif 'CEP' in key:
-                            organised_params[i][3] = value
+                            organised_params[i-1][3] = value
                         elif 'delay' in key:
-                            organised_params[i][4] = value
-           
+                            organised_params[i-1][4] = value
+            #print(organised_params)
             # Now update synthesiser- parameters should be in the right order now
-            for i in range(len(organised_params)):
-                Synth.Update(i , *organised_params[i])
-                           
+            for i in range(len(organised_params)+1):
+                Synth.Update(i , *organised_params[i-1])
+            print('organised params:',*organised_params[1])
+
             for i in t:
                 E_i=Synth.E_field_value(i)
                 E.append(E_i)
                
-            return function(E)
-       
+            return function(t,E)
+
         # Make pbounds dictionary
         pbounds = {}
         for i in params:
@@ -65,14 +68,15 @@ def BO(params, Synth, function, init_points, n_iter):
                 pbounds[i] = (0, 2*np.pi)
             if 'delay' in i:
                 pbounds[i] = (0,50)
-               
+        print(pbounds)
+
         optimizer = BayesianOptimization(
             f=target_func,
             pbounds=pbounds,
             verbose=1, # verbose = 1 prints only when a maximum is observed, verbose = 0 is silent
             random_state=1,
         )
-       
+
         optimizer.maximize(
             init_points=init_points,
             n_iter=n_iter,
@@ -91,5 +95,5 @@ pulses=[Field1,Field2, Field3, Field4, Field5]
 delays=(10,20,30,40)
 Synth=Synthesiser(pulses,delays)
 
-args=['wavel1','delay2']
-BO(args, Synth, totalPower, 2,3)
+params=['wavel1']
+BO(params, Synth, totalPower, 2,3)
