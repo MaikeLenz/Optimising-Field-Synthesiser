@@ -14,7 +14,7 @@ def totalPower(t, E):
     h = t[1] - t[0]
     return 0.5*h*((I[0]+I[-1]) + 2*np.sum(I[1:-1]))
 
-def slopeGradient(E):
+def slopeGradient(t,E):
     # Not sure this will work since cos field inside
     """
     Calculates the maximum gradient of the E field.
@@ -30,7 +30,7 @@ def slopeGradient(E):
         diff[i] = I[i] - I[i-1]
     return max(diff)
 
-def sharpestPeak(E, widths=5):
+def sharpestPeakt(t,E, widths=5):
     """
     Calculates the maximum gradient of the E field.
     t: List of times
@@ -56,7 +56,7 @@ def sharpestPeak(E, widths=5):
     #return -1*min(peakwidths)
 
 
-def sharpestPeak_triang(E, widths=5):
+def sharpestPeak_triang(t,E, widths=5):
     """
     calculates difference between peak and its two neighbours
     """
@@ -66,5 +66,5 @@ def sharpestPeak_triang(E, widths=5):
     indices = signal.find_peaks_cwt(I, (widths,widths))
     differences=[]
     for index in indices:
-        differences.append(2*I[index]-I[index-10]-I[index+10])
+        differences.append(2*I[index]-I[index-1]-I[index+1])
     return max(differences)

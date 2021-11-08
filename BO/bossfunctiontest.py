@@ -95,5 +95,5 @@ pulses=[Field1,Field2, Field3, Field4, Field5]
 delays=(10,20,30,40)
 Synth=Synthesiser(pulses,delays)
 
-params=['wavel1','delay2','CEP4']
-BO(params, Synth, totalPower, 2,3)
+params=['wavel1','delay2','CEP4','wavel3']
+BO(params, Synth, sharpestPeak_triang, 10,10)
