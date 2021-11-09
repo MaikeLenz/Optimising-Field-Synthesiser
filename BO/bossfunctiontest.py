@@ -113,8 +113,20 @@ def BO(params, Synth, function, init_points, n_iter):
         for j in range(len(Synth._pulse_list)):
             #append individual channel electric fields
             E_individual[j].append(Synth._pulse_list[j].E_field_value(t[i]))
-        
 
+    f = plt.figure(constrained_layout=True)
+    gs = f.add_gridspec(Synth.no_of_channels(), 2)
+    f_ax_sim = f.add_subplot(gs[:, 0])
+    f_ax_sim.plot(t, E_tot)
+
+    for i in range(Synth.no_of_channels()):
+        f_ax = f.add_subplot(gs[i, 1])
+        f_ax.plot(t, E_individual[i])
+        if i != (Synth.no_of_channels()-1):
+            f_ax.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
+
+    f.show()
+    """
     plt.plot(t, np.array(E_tot), label="Electric field")
     for i in range(len(Synth._pulse_list)):
         j=i+1
@@ -134,7 +146,7 @@ def BO(params, Synth, function, init_points, n_iter):
         plt.legend()
     
     plt.show()
-
+    """
 
 #create fields
 Field1=Wavepacket(t0=0.0, wavel=400.0, fwhm=10.0, amp=1.0, CEP=0.0)
