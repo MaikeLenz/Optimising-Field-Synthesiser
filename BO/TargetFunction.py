@@ -66,5 +66,6 @@ def sharpestPeak_triang(t,E, widths=5):
     indices = signal.find_peaks_cwt(I, (widths,widths))
     differences=[]
     for index in indices:
-        differences.append(2*I[index]-I[index-1]-I[index+1])
+        if index > 10 and index < (len(E)-10): #this excludes sharp peaks near the edge of our window
+            differences.append(2*I[index]-I[index-10]-I[index+10])
     return max(differences)

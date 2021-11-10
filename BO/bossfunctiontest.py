@@ -117,15 +117,23 @@ def BO(params, Synth, function, init_points, n_iter):
     f = plt.figure(constrained_layout=True)
     gs = f.add_gridspec(Synth.no_of_channels(), 2)
     f_ax_sim = f.add_subplot(gs[:, 0])
-    f_ax_sim.plot(t, E_tot)
+    f_ax_sim.plot(t, E_tot, label="Electric field")
+    f_ax_sim.plot(t, I, label="Intensity")
+    f_ax_sim.set_xlabel('Time, fs')
+    f_ax_sim.set_ylabel('Electric field / Intensity')
+    plt.legend()
 
     for i in range(Synth.no_of_channels()):
         f_ax = f.add_subplot(gs[i, 1])
-        f_ax.plot(t, E_individual[i])
+        j=i+1
+        f_ax.plot(t, E_individual[i], label="Electric field %s" %j)
+        if i == Synth.no_of_channels()-1:
+            f_ax.set_xlabel('Time, fs')
+        plt.legend()
         if i != (Synth.no_of_channels()-1):
             f_ax.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 
-    f.show()
+    plt.show()
     """
     plt.plot(t, np.array(E_tot), label="Electric field")
     for i in range(len(Synth._pulse_list)):
@@ -150,17 +158,17 @@ def BO(params, Synth, function, init_points, n_iter):
 
 #create fields
 Field1=Wavepacket(t0=0.0, wavel=400.0, fwhm=10.0, amp=1.0, CEP=0.0)
-Field2=Wavepacket(t0=0.0, wavel=700.0, fwhm=10.0, amp=1.0, CEP=0.0)
-Field3=Wavepacket(t0=0.0, wavel=1000.0, fwhm=10.0, amp=1.0, CEP=0.0)
+Field2=Wavepacket(t0=0.0, wavel=700.0, fwhm=20.0, amp=1.0, CEP=0.0)
+Field3=Wavepacket(t0=0.0, wavel=1000.0, fwhm=30.0, amp=1.0, CEP=0.0)
 Field4=Wavepacket(t0=0.0, wavel=2000.0, fwhm=10.0, amp=1.0, CEP=0.0)
-Field5=Wavepacket(t0=0.0, wavel=1500.0, fwhm=10.0, amp=1.0, CEP=0.0)
+Field5=Wavepacket(t0=0.0, wavel=1500.0, fwhm=15.0, amp=1.0, CEP=0.0)
 
 #initialise pulse list and tuple of relative delays (from 1st pulse)
 pulses=[Field1,Field2, Field3, Field4, Field5]
-delays=(10,10,10,10)
+delays=(10,20,30,10)
 #pass to synthesiser
 Synth=Synthesiser(pulses,delays)
 
 #parameters to be optimised
-params=['wavel1','wavel2', 'delay2','delay5']
+params=['CEP5','CEP2','CEP3','CEP4']
 BO(params, Synth, sharpestPeak_triang, 10,10)
