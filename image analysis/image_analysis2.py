@@ -60,11 +60,11 @@ im2 = np.array(im2)
 imB = np.array(imB)
 images = [im1, im2, im3, im4, im5, im6, im7, im8, im9, im10, imB]
 
-
+""""
 for i in range(len(images)-1):
     #images[i].setflags(write=1)
     images[i]-=imB
-
+"""
 """
 pixel_values3 = list(im3.getdata())
 pixel_values4 = list(im4.getdata())
@@ -136,7 +136,7 @@ for i in range(len(new_pixel_values)):
 """
 #%%
 # Convert new pixel arrays into images
-for i in range(len(images)-1):
+for i in range(len(images)):
     newimage = PIL.Image.fromarray(np.array(images[i]))
     plt.figure()
     plt.imshow(newimage, interpolation='nearest', cmap='gray')
