@@ -40,7 +40,7 @@ plt.show()
 """
 
 for image in images:
-    newimage2_array=np.asarray(image.convert('L'))-np.asarray(imB.convert('L'))
+    newimage2_array=np.asarray(image.convert('L'))-np.asarray(im10.convert('L'))
     #newimage2=PIL.Image.fromarray(newimage2)
     plt.figure()
     plt.imshow(newimage2_array, interpolation='nearest')
