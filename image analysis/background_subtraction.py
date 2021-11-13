@@ -22,12 +22,12 @@ images = [im1,im2,im3, im4, im5, im6, im7, im8, im9, im10]
 for image in images:
     newimage = PIL.ImageChops.subtract(image, imB)
 
-    mask1 = PIL.Image.eval(image, lambda a: 0 if a <= 24 else 255)
+    mask1 = PIL.Image.eval(newimage, lambda a: 0) #if a <= 24 else 255)
     mask2 = mask1.convert('1')
 
-    blank = PIL.Image.eval(image, lambda a: 0)
+    blank = PIL.Image.eval(newimage, lambda a: 0)
 
-    new = PIL.Image.composite(imB, blank, mask2) 
+    new = PIL.Image.composite(newimage, blank, mask2) 
     plt.figure()
     plt.imshow(np.asarray(new), interpolation='nearest', cmap="gray")
     plt.colorbar()
