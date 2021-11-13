@@ -18,9 +18,9 @@ im10 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_P
 imB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\split_window\\101121_Background1.PNG')
 images = [im1,im2,im3, im4, im5, im6, im7, im8, im9, im10]
 
-
+"""
 for image in images:
-    newimage = PIL.ImageChops.subtract(image, imB)
+    newimage = PIL.ImageChops.subtract(image, im5)
 
     mask1 = PIL.Image.eval(newimage, lambda a: 0) #if a <= 24 else 255)
     mask2 = mask1.convert('1')
@@ -28,7 +28,21 @@ for image in images:
     blank = PIL.Image.eval(newimage, lambda a: 0)
 
     new = PIL.Image.composite(newimage, blank, mask2) 
+
+    #diff= PIL.ImageChops.difference(image, imB)
+
     plt.figure()
     plt.imshow(np.asarray(new), interpolation='nearest', cmap="gray")
+    #plt.imshow(np.asarray(diff), interpolation='nearest', cmap="gray")
+
+    plt.colorbar()
+plt.show()
+"""
+
+for image in images:
+    newimage2_array=np.asarray(image)-np.asarray(imB)
+    #newimage2=PIL.Image.fromarray(newimage2)
+    plt.figure()
+    plt.imshow(newimage2_array, interpolation='none')
     plt.colorbar()
 plt.show()
