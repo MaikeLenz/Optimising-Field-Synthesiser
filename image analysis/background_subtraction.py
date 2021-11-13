@@ -40,9 +40,9 @@ plt.show()
 """
 
 for image in images:
-    newimage2_array=np.asarray(image)-np.asarray(imB)
+    newimage2_array=np.asarray(image.convert('L'))-np.asarray(imB.convert('L'))
     #newimage2=PIL.Image.fromarray(newimage2)
     plt.figure()
-    plt.imshow(newimage2_array, interpolation='none')
+    plt.imshow(newimage2_array, interpolation='nearest')
     plt.colorbar()
 plt.show()
