@@ -22,7 +22,7 @@ images = [im1,im2,im3, im4, im5, im6, im7, im8, im9, im10, imB]
 
 
 #box = (0, 0, 1200, 500)
-   
+
 #im3 = im3.crop(box)
 im3 = im3.convert('L')
 #im4 = im4.crop(box)
@@ -60,11 +60,8 @@ im2 = np.array(im2)
 imB = np.array(imB)
 images = [im1, im2, im3, im4, im5, im6, im7, im8, im9, im10, imB]
 
-""""
-for i in range(len(images)-1):
-    #images[i].setflags(write=1)
-    images[i]-=imB
-"""
+
+
 """
 pixel_values3 = list(im3.getdata())
 pixel_values4 = list(im4.getdata())
@@ -135,9 +132,18 @@ for i in range(len(new_pixel_values)):
 #plt.plot(number, intensity)
 """
 #%%
-# Convert new pixel arrays into images
-for i in range(len(images)):
-    newimage = PIL.Image.fromarray(np.array(images[i]))
+imB_array=np.asarray(imB)
+#imB_array = PIL.Image.fromarray(np.array(imB))
+for image in images:
+    newimage=np.asarray(image)
+    newimag=np.zeros((len(newimage),len(newimage[0])))
+    #newimage = PIL.Image.fromarray(np.array(images[i]))
+    for i in range(len(newimage)):
+        for j in range(len(newimage[i])):
+    #images[i].setflags(write=1)
+            newimag[i][j]=newimage[i][j]-imB_array[i][j]
     plt.figure()
-    plt.imshow(newimage, interpolation='nearest', cmap='gray')
+    #plt.imshow(newimage, interpolation='nearest', cmap='gray')
+    plt.imshow(np.array(newimag), interpolation='none')
+    plt.colorbar()
 plt.show()
