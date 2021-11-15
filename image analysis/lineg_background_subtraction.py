@@ -20,7 +20,7 @@ im10 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_P
 im11= PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\line_window\\LineG_10.PNG')
 im12= PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\line_window\\LineG_11.PNG')
 im13 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\line_window\\LineG_12.PNG')
-im14 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\line_window\\Line_13.PNG')
+im14 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\line_window\\LineG_13.PNG')
 
 imB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\line_window\\LineG_Background.PNG')
 images = [im1,im2,im3, im4, im5, im6, im7, im8, im9, im10,im11,im12,im13,im14]
