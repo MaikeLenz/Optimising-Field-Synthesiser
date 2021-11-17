@@ -46,17 +46,23 @@ for image in images:
 plt.show()
 """
 
-for image in images:
-    newimage2_array=np.asarray(image.convert('L'))-np.asarray(imB.convert('L'))
-    #newimage2=PIL.Image.fromarray(newimage2_array)
-    #plt.figure()
-    #plt.imshow(newimage2_array, cmap='gray')
-    #plt.colorbar()
-    if image == im1:
-        print(newimage2_array[np.nonzero(newimage2_array)])
+f = plt.figure(constrained_layout=True)
+gs = f.add_gridspec(3,4)
 
-plt.figure()
-plt.imshow(np.asarray(imB.convert('L')), cmap='gray')
-plt.colorbar()
+for i in range(len(images)):
+    newimage2_array=np.asarray(images[i].convert('L'))-np.asarray(imB.convert('L'))
+
+    newimage2_array=newimage2_array[250:350,200:400]
+    
+    if i >=0 and i<4:
+        f_ax = f.add_subplot(gs[0,i])
+        f_ax.imshow(newimage2_array, cmap='gray')
+    elif i>= 4 and i<8:
+        f_ax = f.add_subplot(gs[1, i-4])
+        f_ax.imshow(newimage2_array, cmap='gray')
+    elif i>=8 and i<12:
+        f_ax = f.add_subplot(gs[2, i-8])
+        f_ax.imshow(newimage2_array, cmap='gray')
+
 
 plt.show()
