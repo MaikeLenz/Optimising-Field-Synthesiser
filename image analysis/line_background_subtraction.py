@@ -63,3 +63,21 @@ for i in range(len(images)):
         f_ax = f.add_subplot(gs[2, i-8])
         f_ax.imshow(newimage2_array, cmap='gray')
 plt.show()
+
+#%%
+y_shift = 1/(0.006*13.4615)
+for i in range(len(images)):
+    newimage2_array=np.asarray(images[i].convert('L'))-np.asarray(imB.convert('L'))
+
+    newimage2_array=newimage2_array[200:300,300:450]
+    
+    # Shift by 1mm*i
+    amount_taken_off = len(newimage2_array) - int(y_shift*i)
+    if amount_taken_off < 0:
+        pass
+    else:
+        length = len(newimage2_array[0])
+        newimage2_array = newimage2_array[int(y_shift*i):]
+        newimage2_array = np.append(newimage2_array, np.zeros((amount_taken_off, length)), axis=0)
+        print(newimage2_array)
+        plt.imshow(newimage2_array, cmap='gray', alpha=0.2)
