@@ -109,12 +109,14 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
     E_tot = np.array([]) #total electric field
     I=np.array([]) #total intensity
     gradient=np.array([])
-    E_individual = np.zeros((Synth.no_of_channels(),1)).tolist() #list of lists containing the E field values of each channel
-    I_individual = np.zeros((Synth.no_of_channels(),1)).tolist() #list of lists containing the intensity values of each channel
-    for i in E_individual:
+    E_individual = np.zeros((Synth.no_of_channels(),len(t))) #list of lists containing the E field values of each channel
+    I_individual = np.zeros((Synth.no_of_channels(),len(t))) #list of lists containing the intensity values of each channel
+
+    """
+    for i in range(len(E_individual)):
         E_individual[i].pop() #get rid of the first zero entry for each channel
         I_individual[i].pop() #get rid of the first zero entry for each channel
-
+    """
         
     for i in range(len(t)):
         #create list of total electric field value at every t
@@ -124,19 +126,37 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         if i==0:
             gradient=np.append(gradient,[0])
         else:
-            gradient=np.append(gradient,[E_i**2-Synth.E_field_value(t[i-1])**2])
+            h=t[1]-t[0]
+            gradient=np.append(gradient,[(E_i**2-Synth.E_field_value(t[i-1])**2)/h])
         for j in range(len(Synth._pulse_list)):
             #append individual channel electric fields
-            E_individual=np.append(E_individual,[Synth._pulse_list[j].E_field_value(t[i])],axis=j)
-            I_individual[j].append(I_individual,[(Synth._pulse_list[j].E_field_value(t[i]))**2],axis=j)
+            E_individual[j][i]=Synth._pulse_list[j].E_field_value(t[i])
+            I_individual[j][i]=(Synth._pulse_list[j].E_field_value(t[i]))**2
 
+    
+    if function==errorCorrectionAdvanced or function==errorCorrection or function==errorCorrectionAdvanced_int or function==errorCorrection_int:
+        #shift the left electric field to match in time
+        offset=np.argmax(I)-np.argmax(goal_field)
+
+        if offset > 0: #E2 on the left of E1
+            goal_field = goal_field[:len(I)-abs(offset)]
+            goal_field=np.append(np.zeros(abs(offset)),goal_field)
+        elif offset < 0: #E2 on the right of E1
+            goal_field = goal_field[abs(offset):]
+            goal_field=np.append(goal_field,np.zeros(abs(offset)))
+    
+    
+    
+    
+    #plot results
     f = plt.figure(constrained_layout=True)
     gs = f.add_gridspec(Synth.no_of_channels(), 2)
     f_ax_sim = f.add_subplot(gs[:, 0])
     f_ax_sim.plot(t, E_tot, label="Electric field")
     f_ax_sim.plot(t, I, label="Intensity")
     f_ax_sim.plot(t, gradient, label="Intensity Gradient")
-    f_ax_sim.plot(t, goal_field, label="Goal Intensity")
+    if function==errorCorrectionAdvanced or function==errorCorrection or function==errorCorrectionAdvanced_int or function==errorCorrection_int:
+        f_ax_sim.plot(t, goal_field, label="Goal Intensity")
     f_ax_sim.set_xlabel('Time, fs')
     f_ax_sim.set_ylabel('Electric field / Intensity')
     plt.legend()

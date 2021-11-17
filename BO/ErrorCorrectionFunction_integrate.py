@@ -14,7 +14,7 @@ def errorCorrection_int(t, E1, E2):
         print('Error- E1 is a different length to E2')
     for i in range(len(E1)):
         diff=np.append(diff,[(E1[i] - E2[i])**2])
-    return integrate.simps(diff, t)
+    return -integrate.simps(diff, t)
 
 
 def errorCorrectionAdvanced_int(t, E1, E2):
@@ -33,15 +33,9 @@ def errorCorrectionAdvanced_int(t, E1, E2):
      
     # First scale both functions to amplitude of 1
     if np.linalg.norm(np.array(E1)) != 0:
-        for i in range(len(E1)):
-            #E1[i] = E1[i]/max(E1)
-            #E2[i] = E2[i]/max(E2)
-            #norm = np.linalg.norm(an_array)
-            #normal_array = an_array/norm
-            E1=list(np.array(E1)/(np.linalg.norm(np.array(E1)))) #normalise arrays
+        E1=np.array(E1)/(np.linalg.norm(np.array(E1))) #normalise arrays
     if np.linalg.norm(np.array(E2)) != 0:
-        for i in range(len(E1)):
-            E2=list(np.array(E2)/(np.linalg.norm(np.array(E2))))
+        E2=np.array(E2)/(np.linalg.norm(np.array(E2)))
     """
     plt.figure()
     plt.plot(t, E1, label='curve 1, scaled')
@@ -50,25 +44,15 @@ def errorCorrectionAdvanced_int(t, E1, E2):
     plt.legend()
     """   
     # Next shift the maximums to the same time values- consider only the first maximum for simplicity
-    E1_max_index = [] #lists that will contain the index of the max value
-    E2_max_index = []
-    for i in range(len(E1)):
-        if E1[i] == max(E1):
-            E1_max_index.append(i)
-        if E2[i] == max(E2):
-            E2_max_index.append(i)
 
-    #shift the left electric field to match in time
-    offset=E1_max_index[0]-E2_max_index[0]
+    offset=np.argmax(E1)-np.argmax(E2)
 
     if offset > 0: #E2 on the left of E1
-        E1 = E1[offset:]
-        E2 = E2[:len(E2)-offset]
-        t=t[:len(t)-offset]
+        E2 = E2[:len(E1)-abs(offset)]
+        E2=np.append(np.zeros(abs(offset)),E2)
     elif offset < 0: #E2 on the right of E1
         E2 = E2[abs(offset):]
-        E1 = E1[:len(E1)-abs(offset)]
-        t=t[:len(t)-abs(offset)]
+        E2=np.append(E2,np.zeros(abs(offset)))
 
     """
     E2_shifted = np.zeros(len(E2))
