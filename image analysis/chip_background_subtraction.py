@@ -1,6 +1,9 @@
 import PIL as PIL
 import matplotlib.pyplot as plt
+import sys
 import numpy as np
+np.set_printoptions(threshold=sys.maxsize)
+
 #%%
 # Analysis of quantitative measurements
 # Open images and check sizes
@@ -46,9 +49,11 @@ plt.show()
 for image in images:
     newimage2_array=np.asarray(image.convert('L'))-np.asarray(imB.convert('L'))
     #newimage2=PIL.Image.fromarray(newimage2_array)
-    plt.figure()
-    plt.imshow(newimage2_array, cmap='gray')
-    plt.colorbar()
+    #plt.figure()
+    #plt.imshow(newimage2_array, cmap='gray')
+    #plt.colorbar()
+    if image == im1:
+        print(newimage2_array[np.nonzero(newimage2_array)])
 
 plt.figure()
 plt.imshow(np.asarray(imB.convert('L')), cmap='gray')

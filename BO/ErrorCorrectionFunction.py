@@ -30,13 +30,16 @@ def errorCorrectionAdvanced(t, E1, E2):
     plt.legend()
         
     # First scale both functions to amplitude of 1
-    for i in range(len(E1)):
-        #E1[i] = E1[i]/max(E1)
-        #E2[i] = E2[i]/max(E2)
-        #norm = np.linalg.norm(an_array)
-        #normal_array = an_array/norm
-        E1=list(np.array(E1)/(np.linalg.norm(np.array(E1)))) #normalise arrays
-        E2=list(np.array(E2)/(np.linalg.norm(np.array(E2))))
+    if np.linalg.norm(np.array(E1)) != 0:
+        for i in range(len(E1)):
+            #E1[i] = E1[i]/max(E1)
+            #E2[i] = E2[i]/max(E2)
+            #norm = np.linalg.norm(an_array)
+            #normal_array = an_array/norm
+            E1=list(np.array(E1)/(np.linalg.norm(np.array(E1)))) #normalise arrays
+    if np.linalg.norm(np.array(E2)) != 0:
+        for i in range(len(E1)):
+            E2=list(np.array(E2)/(np.linalg.norm(np.array(E2))))
 
     plt.figure()
     plt.plot(t, E1, label='curve 1, scaled')
@@ -56,14 +59,18 @@ def errorCorrectionAdvanced(t, E1, E2):
 
     #shift the left electric field to match in time
     offset=E1_max_index[0]-E2_max_index[0]
+
     if offset > 0: #E2 on the left of E1
         E1 = E1[offset:]
         E2 = E2[:len(E2)-offset]
         t=t[:len(t)-offset]
     elif offset < 0: #E2 on the right of E1
-        E2 = E2[offset:]
-        E1 = E1[:len(E2)-offset]
-        t=t[:len(t)-offset]
+        E2 = E2[abs(offset):]
+        E1 = E1[:len(E1)-abs(offset)]
+        t=t[:len(t)-abs(offset)]
+    
+    print(offset)
+
     """
     E2_shifted = np.zeros(len(E2))
     for i in range(len(E2)):
@@ -75,11 +82,11 @@ def errorCorrectionAdvanced(t, E1, E2):
     plt.plot(t, E2, label ='curve 2, shifted in time')
     plt.title('E2 shifted in time')
     plt.legend()
-        
+    plt.show()
+
     for i in range(len(E1)):
         diff.append((E1[i] - E2[i])**2)
     plt.show()
-    print(errorCorrection(t,E1,E2))
     return errorCorrection(t,E1,E2)
 
 
@@ -129,9 +136,10 @@ plt.legend()
 print(errorCorrection(t, E1, E3))
 """
 #%%
+"""
 # Test advanced error correction function
 t = np.arange(0, 50, 0.1)
 E1 = Gauss(t, 1, 25, 5)
 E2 = Gauss(t+5, 5, 25, 5)
 errorCorrectionAdvanced(t, E1, E2)
-
+"""

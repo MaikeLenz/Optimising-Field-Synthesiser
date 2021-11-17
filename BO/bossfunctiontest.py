@@ -7,8 +7,9 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\synth_sim\\')
 from TargetFunction import *
 from field_synth_class3 import *
+from ErrorCorrectionFunction import *
 
-def BO(params, Synth, function, init_points, n_iter):     
+def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np.linspace(-20,100,20000)):     
     """
     performs BO with params as specified as strings in params input (params is list of strings) on the synthesiser Synth.
     init_points: number of initial BO points
@@ -23,7 +24,7 @@ def BO(params, Synth, function, init_points, n_iter):
         else:
             print('Error! Invalid parameter to vary') #this means that the string entered in params is not one of the recognised options
         
-    t=np.linspace(-20,100,20000) #time frame to look at, in fs
+     #time frame to look at, in fs
 
     def target_func(**args):
         """
@@ -59,8 +60,11 @@ def BO(params, Synth, function, init_points, n_iter):
         for i in t: 
             #create the list of total E field vaues over range t
             E_i=Synth.E_field_value(i)
-            E.append(E_i)       
-        return function(t,E) #pass t and E to sub target function
+            E.append(E_i)
+        if function==errorCorrectionAdvanced or function==errorCorrection:
+            return function(t,E,goal_field)    
+        else: 
+            return function(t,E) #pass t and E to sub target function
 
     # Make pbounds dictionary
     pbounds = {}
@@ -156,6 +160,7 @@ def BO(params, Synth, function, init_points, n_iter):
     plt.show()
     """
 
+"""
 #create fields
 Field1=Wavepacket(t0=0.0, wavel=400.0, fwhm=10.0, amp=1.0, CEP=0.0)
 Field2=Wavepacket(t0=0.0, wavel=700.0, fwhm=20.0, amp=1.0, CEP=0.0)
@@ -172,3 +177,4 @@ Synth=Synthesiser(pulses,delays)
 #parameters to be optimised
 params=['CEP5','CEP2','CEP3','CEP4']
 BO(params, Synth, sharpestPeak_triang, 10,10)
+"""
