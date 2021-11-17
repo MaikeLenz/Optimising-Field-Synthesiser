@@ -56,13 +56,15 @@ for i in range(len(images)):
     
     if i >=0 and i<4:
         f_ax = f.add_subplot(gs[0,i])
-        f_ax.imshow(newimage2_array, cmap='gray')
+        f_ax.imshow(newimage2_array, cmap='gray', extent=[0, 51.6922 , 0, 38.7691])
     elif i>= 4 and i<8:
         f_ax = f.add_subplot(gs[1, i-4])
-        f_ax.imshow(newimage2_array, cmap='gray')
+        f_ax.imshow(newimage2_array, cmap='gray', extent=[0, 51.6922 , 0, 38.7691])
     elif i>=8 and i<12:
         f_ax = f.add_subplot(gs[2, i-8])
-        f_ax.imshow(newimage2_array, cmap='gray')
+        f_ax.imshow(newimage2_array, cmap='gray', extent=[0, 51.6922 , 0, 38.7691])
+    f_ax.xaxis.set_ticks(np.arange(0, 51, 10))
+    f_ax.yaxis.set_ticks(np.arange(0, 41, 10))
 
 
 plt.show()
