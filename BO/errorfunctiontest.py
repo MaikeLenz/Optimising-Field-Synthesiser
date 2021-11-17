@@ -9,6 +9,8 @@ from TargetFunction import *
 from field_synth_class3 import *
 from bossfunctiontest import *
 from ErrorCorrectionFunction import *
+from ErrorCorrectionFunction_integrate import *
+
 
 #create fields
 Field1=Wavepacket(t0=0.0, wavel=400.0, fwhm=10.0, amp=1.0, CEP=0.0)
@@ -25,36 +27,17 @@ Synth=Synthesiser(pulses,delays)
 
 #parameters to be optimised
 params=['CEP5','CEP2','CEP3','CEP4']
-t=np.linspace(-20,100,20000)
+t=np.linspace(-20,100,2000)
 #E_goal=Gauss(t, 1, 25, 5)
-E_goal=[]
+E_goal=np.array([])
 for i in t:
     if i<0:
-        E_goal.append(0)
-    elif i>=0 and i<50:
-        E_i=i
-        E_goal.append(E_i)
+        E_goal=np.append(E_goal,[0])
+    elif i>=0 and i<20:
+        E_i=i/20
+        E_goal=np.append(E_goal,[E_i])
     else:
-        E_goal.append(0)
+        E_goal=np.append(E_goal,[0])
 
-"""
-plt.figure()
-E_tot = [] #total electric field
-I=[] #total intensity
-E_individual = np.zeros((Synth.no_of_channels(),1)).tolist() #list of lists containing the E field values of each channel
-for i in E_individual:
-    i.pop() #get rid of the first zero entry for each channel
-
-        
-for i in range(len(t)):
-    #create list of total electric field value at every t
-    E_i= Synth.E_field_value(t[i])
-    E_tot.append(E_i)
-    I.append(E_i**2)
-    for j in range(len(Synth._pulse_list)):
-        #append individual channel electric fields
-        E_individual[j].append(Synth._pulse_list[j].E_field_value(t[i]))
-"""
-
-BO(params, Synth, errorCorrectionAdvanced,goal_field=E_goal,n_iter=1,init_points=1, t=t)
-#errorCorrectionAdvanced(t, E_tot, E_goal)
+BO(params, Synth, errorCorrectionAdvanced_int,goal_field=E_goal,n_iter=0,init_points=1, t=t)
+#print(errorCorrection_int(t,E_goal,E_goal))

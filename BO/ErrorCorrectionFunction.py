@@ -1,17 +1,19 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.integrate import quad
+
 
 def errorCorrection(t, E1, E2):
     """
     returns the negative of the rms error between E1 and E2
     without any adjustment in amplitudes or position in time
     """
-    diff = []
+    diff = np.array([])
     if len(E1) != len(E2):
         print('Error- E1 is a different length to E2')
     for i in range(len(E1)):
-        diff.append((E1[i] - E2[i])**2)
+        diff=np.append(diff,[(E1[i] - E2[i])**2])
     h = t[1] - t[0]
     return -1*((0.5*h*((diff[0]+diff[-1]) + 2*np.sum(diff[1:-1])))**0.5)
 
@@ -55,7 +57,6 @@ def errorCorrectionAdvanced(t, E1, E2):
             E1_max_index.append(i)
         if E2[i] == max(E2):
             E2_max_index.append(i)
-    h = t[1] - t[0] #time interval 
 
     #shift the left electric field to match in time
     offset=E1_max_index[0]-E2_max_index[0]

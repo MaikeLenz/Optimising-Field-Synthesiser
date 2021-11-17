@@ -8,6 +8,8 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 from TargetFunction import *
 from field_synth_class3 import *
 from ErrorCorrectionFunction import *
+from ErrorCorrectionFunction_integrate import *
+
 
 def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np.linspace(-20,100,20000)):     
     """
@@ -30,8 +32,8 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         """
         this is the target function of the optimiser. It is created as a nested function to take only the desired variables as inputs.
         """
-        E=[]
-        I=[]
+        E=np.array([])
+        I=np.array([])
         # Update the synthesiser's dictionary with new parameters
         for i in range(len(params)):
             params_dict[params[i]] = args[params[i]]
@@ -61,9 +63,9 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         for i in t: 
             #create the list of total E field vaues over range t
             E_i=Synth.E_field_value(i)
-            E.append(E_i)
-            I.append(E_i**2)
-        if function==errorCorrectionAdvanced or function==errorCorrection:
+            E=np.append(E,[E_i])
+            I=np.append(I,[E_i**2])
+        if function==errorCorrectionAdvanced or function==errorCorrection or function==errorCorrectionAdvanced_int or function==errorCorrection_int:
             return function(t,I,goal_field)    
         else: 
             return function(t,E) #pass t and E to sub target function
@@ -104,27 +106,36 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         Synth._pulse_list[i].Update(Synth,i+1)
         
     plt.figure()
-    E_tot = [] #total electric field
-    I=[] #total intensity
+    E_tot = np.array([]) #total electric field
+    I=np.array([]) #total intensity
+    gradient=np.array([])
     E_individual = np.zeros((Synth.no_of_channels(),1)).tolist() #list of lists containing the E field values of each channel
+    I_individual = np.zeros((Synth.no_of_channels(),1)).tolist() #list of lists containing the intensity values of each channel
     for i in E_individual:
-        i.pop() #get rid of the first zero entry for each channel
+        E_individual[i].pop() #get rid of the first zero entry for each channel
+        I_individual[i].pop() #get rid of the first zero entry for each channel
 
         
     for i in range(len(t)):
         #create list of total electric field value at every t
         E_i= Synth.E_field_value(t[i])
-        E_tot.append(E_i)
-        I.append(E_i**2)
+        E_tot=np.append(E_tot,[E_i])
+        I=np.append(I,[E_i**2])
+        if i==0:
+            gradient=np.append(gradient,[0])
+        else:
+            gradient=np.append(gradient,[E_i**2-Synth.E_field_value(t[i-1])**2])
         for j in range(len(Synth._pulse_list)):
             #append individual channel electric fields
-            E_individual[j].append(Synth._pulse_list[j].E_field_value(t[i]))
+            E_individual=np.append(E_individual,[Synth._pulse_list[j].E_field_value(t[i])],axis=j)
+            I_individual[j].append(I_individual,[(Synth._pulse_list[j].E_field_value(t[i]))**2],axis=j)
 
     f = plt.figure(constrained_layout=True)
     gs = f.add_gridspec(Synth.no_of_channels(), 2)
     f_ax_sim = f.add_subplot(gs[:, 0])
     f_ax_sim.plot(t, E_tot, label="Electric field")
     f_ax_sim.plot(t, I, label="Intensity")
+    f_ax_sim.plot(t, gradient, label="Intensity Gradient")
     f_ax_sim.plot(t, goal_field, label="Goal Intensity")
     f_ax_sim.set_xlabel('Time, fs')
     f_ax_sim.set_ylabel('Electric field / Intensity')
@@ -134,6 +145,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         f_ax = f.add_subplot(gs[i, 1])
         j=i+1
         f_ax.plot(t, E_individual[i], label="Electric field %s" %j)
+        f_ax.plot(t, I_individual[i], label="Intensity %s" %j)
         if i == Synth.no_of_channels()-1:
             f_ax.set_xlabel('Time, fs')
         plt.legend()

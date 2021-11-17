@@ -11,8 +11,8 @@ with Connection.open_serial_port("COM3") as connection:
     device = device_list[0]
 
     axis = device.get_axis(1)
-    axis.home()
+    #axis.home()
     # Move to the 10mm position
-    axis.move_absolute(10, Units.LENGTH_MILLIMETRES)
+    #axis.move_absolute(10, Units.LENGTH_MILLIMETRES)
     # Move by an additional 5mm
-    axis.move_relative(5, Units.LENGTH_MILLIMETRES)
+    axis.move_relative(1, Units.LENGTH_MILLIMETRES)
