@@ -49,7 +49,7 @@ f = plt.figure(constrained_layout=True)
 gs = f.add_gridspec(3,4)
 
 for i in range(len(images)):
-    newimage2_array=np.asarray(images[i].convert('L'))#-np.asarray(imB.convert('L'))
+    newimage2_array=np.asarray(images[i].convert('L'))-np.asarray(imB.convert('L'))
 
     newimage2_array=newimage2_array[180:300,250:450]
     
