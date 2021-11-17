@@ -31,6 +31,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         this is the target function of the optimiser. It is created as a nested function to take only the desired variables as inputs.
         """
         E=[]
+        I=[]
         # Update the synthesiser's dictionary with new parameters
         for i in range(len(params)):
             params_dict[params[i]] = args[params[i]]
@@ -61,8 +62,9 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             #create the list of total E field vaues over range t
             E_i=Synth.E_field_value(i)
             E.append(E_i)
+            I.append(E_i**2)
         if function==errorCorrectionAdvanced or function==errorCorrection:
-            return function(t,E,goal_field)    
+            return function(t,I,goal_field)    
         else: 
             return function(t,E) #pass t and E to sub target function
 
@@ -123,6 +125,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
     f_ax_sim = f.add_subplot(gs[:, 0])
     f_ax_sim.plot(t, E_tot, label="Electric field")
     f_ax_sim.plot(t, I, label="Intensity")
+    f_ax_sim.plot(t, goal_field, label="Goal Intensity")
     f_ax_sim.set_xlabel('Time, fs')
     f_ax_sim.set_ylabel('Electric field / Intensity')
     plt.legend()

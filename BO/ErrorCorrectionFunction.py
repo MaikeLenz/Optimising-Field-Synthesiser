@@ -19,16 +19,16 @@ def errorCorrectionAdvanced(t, E1, E2):
     """
     finds rms error between two functions, first scales them and matches up maxima in time.
     """
-    diff = []
     if len(E1) != len(E2):
         print('Error- E1 is a different length to E2')
-        
+    """  
     plt.figure()
     plt.plot(t, E1, label='curve 1')
     plt.plot(t, E2, label='curve 2')
     plt.title('Raw data')
     plt.legend()
-        
+    """
+     
     # First scale both functions to amplitude of 1
     if np.linalg.norm(np.array(E1)) != 0:
         for i in range(len(E1)):
@@ -40,13 +40,13 @@ def errorCorrectionAdvanced(t, E1, E2):
     if np.linalg.norm(np.array(E2)) != 0:
         for i in range(len(E1)):
             E2=list(np.array(E2)/(np.linalg.norm(np.array(E2))))
-
+    """
     plt.figure()
     plt.plot(t, E1, label='curve 1, scaled')
     plt.plot(t, E2, label='curve 2, scaled')
     plt.title('Amplitude Scaled')
     plt.legend()
-        
+    """   
     # Next shift the maximums to the same time values- consider only the first maximum for simplicity
     E1_max_index = [] #lists that will contain the index of the max value
     E2_max_index = []
@@ -68,8 +68,6 @@ def errorCorrectionAdvanced(t, E1, E2):
         E2 = E2[abs(offset):]
         E1 = E1[:len(E1)-abs(offset)]
         t=t[:len(t)-abs(offset)]
-    
-    print(offset)
 
     """
     E2_shifted = np.zeros(len(E2))
@@ -77,16 +75,14 @@ def errorCorrectionAdvanced(t, E1, E2):
         if (i+E1_max_index[0]-E2_max_index[0]) < len(E2):
             E2_shifted[i] = E2[i+E1_max_index[0]-E2_max_index[0]]
     """
+    """
     plt.figure()
     plt.plot(t, E1, label='curve 1')
     plt.plot(t, E2, label ='curve 2, shifted in time')
     plt.title('E2 shifted in time')
     plt.legend()
     plt.show()
-
-    for i in range(len(E1)):
-        diff.append((E1[i] - E2[i])**2)
-    plt.show()
+    """
     return errorCorrection(t,E1,E2)
 
 
