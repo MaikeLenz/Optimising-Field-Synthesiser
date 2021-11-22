@@ -67,8 +67,8 @@ for i in range(len(images)):
 plt.show()
 """
 #plt.figure()
-#y_shift = 1/(0.006*13.4615)
-y_shift = 0
+y_shift = 1/(0.006*13.4615)
+#y_shift = 0
 pixel_size = 0.006
 beam_size_large = 10.5
 beam_size_small = 0.78
@@ -88,8 +88,9 @@ for i in range(len(images)):
         pass
     else:
         length = len(newimage2_array[0])
-        #newimage2_array = newimage2_array[int(y_shift*i):]
-        #newimage2_array = np.append(newimage2_array, np.zeros((amount_taken_off, length)), axis=0)
+        newimage2_array = newimage2_array[int(y_shift*i):]
+        newimage2_array = np.append(np.zeros((amount_taken_off, length)),newimage2_array,axis=0)
         #print(newimage2_array)
         plt.imshow(newimage2_array, cmap='inferno', alpha=0.15, extent=[crop_size[2]*scaling,crop_size[3]*scaling,crop_size[0]*scaling,crop_size[1]*scaling])
 
+plt.show()
