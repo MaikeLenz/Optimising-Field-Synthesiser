@@ -75,7 +75,7 @@ beam_size_small = 0.78
 magnification = beam_size_large/beam_size_small
 scaling = pixel_size*magnification
 
-crop_size = [200, 300, 300, 450]
+crop_size = [250,350,200,400]
 
 for i in range(len(images)):
     newimage2_array=np.asarray(images[i].convert('L'))-np.asarray(imB.convert('L'))
