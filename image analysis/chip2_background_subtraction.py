@@ -45,13 +45,14 @@ for image in images:
 plt.show()
 """
 
+"""
 f = plt.figure(constrained_layout=True)
 gs = f.add_gridspec(3,4)
 
 for i in range(len(images)):
     newimage2_array=np.asarray(images[i].convert('L'))-np.asarray(imB.convert('L'))
 
-    newimage2_array=newimage2_array[180:300,250:450]
+    newimage2_array=newimage2_array[200:300,300:450]
     
     if i >=0 and i<4:
         f_ax = f.add_subplot(gs[0,i])
@@ -63,3 +64,30 @@ for i in range(len(images)):
         f_ax = f.add_subplot(gs[2, i-8])
         f_ax.imshow(newimage2_array, cmap='gray')
 plt.show()
+"""
+#plt.figure()
+#y_shift = 1/(0.006*13.4615)
+y_shift = 0
+pixel_size = 0.006
+beam_size_large = 10.5
+beam_size_small = 0.78
+magnification = beam_size_large/beam_size_small
+scaling = pixel_size*magnification
+
+crop_size = [180,300,250,450]
+
+for i in range(len(images)):
+    newimage2_array=np.asarray(images[i].convert('L'))-np.asarray(imB.convert('L'))
+
+    newimage2_array=newimage2_array[crop_size[0]:crop_size[1],crop_size[2]:crop_size[3]]
+    
+    # Shift by 1mm*i
+    amount_taken_off = len(newimage2_array) - int(y_shift*i)
+    if amount_taken_off < 0:
+        pass
+    else:
+        length = len(newimage2_array[0])
+        #newimage2_array = newimage2_array[int(y_shift*i):]
+        #newimage2_array = np.append(newimage2_array, np.zeros((amount_taken_off, length)), axis=0)
+        #print(newimage2_array)
+        plt.imshow(newimage2_array, cmap='inferno', alpha=0.15, extent=[crop_size[2]*scaling,crop_size[3]*scaling,crop_size[0]*scaling,crop_size[1]*scaling])
