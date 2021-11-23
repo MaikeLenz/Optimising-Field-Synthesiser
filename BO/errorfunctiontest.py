@@ -33,11 +33,11 @@ E_goal=np.array([])
 for i in t:
     if i<0:
         E_goal=np.append(E_goal,[0])
-    elif i>=0 and i<20:
-        E_i=-i/10 +2
+    elif i>=0 and i<40:
+        E_i=-i/20 +2
         E_goal=np.append(E_goal,[E_i])
     else:
         E_goal=np.append(E_goal,[0])
 
-BO(params, Synth, errorCorrectionAdvanced_int, goal_field=E_goal, n_iter=10,init_points=10, t=t)
+BO(params, Synth, errorCorrectionAdvanced_int, goal_field=E_goal, n_iter=30,init_points=30, t=t)
 #print(errorCorrection_int(t,E_goal,E_goal))
