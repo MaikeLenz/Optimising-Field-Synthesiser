@@ -8,7 +8,7 @@ def n(x):
     """
     return (1+0.6961663/(1-(0.0684043/x)**2)+0.4079426/(1-(0.1162414/x)**2)+0.8974794/(1-(9.896161/x)**2))**.5
 x=sym.Symbol('x')
-dn_x = sym.diff(n(x))
+dn_x = sym.diff(n(x)) #differentiates n wrt x
 #print(dn_x)
 c=299792458 #m/s
 
