@@ -75,8 +75,8 @@ for i in range(len(images)):
     newimage2_array=im_array-imB_array
 
     newimage2_array=newimage2_array[600:1000,900:1300]
-    max=10
-    min=-2
+    max=20
+    min=-5
     if i >=0 and i<6:
         f_ax = f.add_subplot(gs[0,i])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
@@ -95,6 +95,7 @@ for i in range(len(images)):
         #f.colorbar(im)
 f.subplots_adjust(right=0.8)
 cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
+plt.suptitle("Chipped window, chipped side, 0.5mm increments inwards")
 f.colorbar(im, cax=cbar_ax)
 plt.show()
 """

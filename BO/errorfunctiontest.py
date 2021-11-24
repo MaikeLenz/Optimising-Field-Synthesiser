@@ -26,10 +26,13 @@ delays=(10,20,30,10)
 Synth=Synthesiser(pulses,delays)
 
 #parameters to be optimised
-params=['CEP5','CEP2','CEP3','CEP4','CEP1','delay1','delay2','delay3','delay4','wavel1','wavel2','wavel3','wavel4','wavel5']
+params=['CEP5','CEP2','CEP3','CEP4','CEP1','delay1','delay2','delay3','delay4','wavel1','wavel2','wavel3','wavel4','wavel5',"fwhm1","fwhm2","fwhm3","fwhm4","fwhm5"]
 t=np.linspace(-20,60,2000)
 #E_goal=Gauss(t, 1, 25, 5)
 E_goal=np.array([])
+
+
+#ramp
 for i in t:
     if i<0:
         E_goal=np.append(E_goal,[0])
@@ -39,5 +42,18 @@ for i in t:
     else:
         E_goal=np.append(E_goal,[0])
 
-BO(params, Synth, errorCorrectionAdvanced_int, goal_field=E_goal, n_iter=30,init_points=30, t=t)
+"""
+#top hat
+for i in t:
+    if i<0:
+        E_goal=np.append(E_goal,[0])
+    elif i>=0 and i<40:
+        E_i=1
+        E_goal=np.append(E_goal,[E_i])
+    else:
+        E_goal=np.append(E_goal,[0])
+
+"""
+
+BO(params, Synth, errorCorrection_int, goal_field=E_goal, n_iter=200,init_points=200, t=t)
 #print(errorCorrection_int(t,E_goal,E_goal))

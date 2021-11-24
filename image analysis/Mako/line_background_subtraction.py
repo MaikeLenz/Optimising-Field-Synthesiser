@@ -32,7 +32,7 @@ im22 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_P
 im23 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\11.PNG')
 
 imB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\Background.PNG')
-images = [im1,im2,im3, im4, im5, im6, im7, im8, im9, im10,im11,im12,im13,im14,im15,im16,im17,im18,im19,im20, im21,im22,im23, imB]
+images = [im1,im2,im3, im4, im5, im6, im7, im8, im9, im10,im11,im12,im13,im14,im15,im16,im17,im18,im19,im20, im21,im22,im23]
 
 
 """
@@ -76,7 +76,7 @@ for i in range(len(images)):
 
     newimage2_array=newimage2_array[600:850,750:1200]
     max=20
-    min=-10
+    min=-5
     if i >=0 and i<6:
         f_ax = f.add_subplot(gs[0,i])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
@@ -95,6 +95,7 @@ for i in range(len(images)):
         #f.colorbar(im)
 f.subplots_adjust(right=0.8)
 cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
+plt.suptitle("Lined window, damaged side, 0.5mm increments inwards")
 f.colorbar(im, cax=cbar_ax)
 plt.show()
 """
