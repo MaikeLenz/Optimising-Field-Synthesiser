@@ -7,7 +7,7 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\synth_sim\\')
 from TargetFunction import *
 from field_synth_class3 import *
-from ErrorCorrectionFunction import *
+#from ErrorCorrectionFunction import *
 from ErrorCorrectionFunction_integrate import *
 
 
@@ -65,7 +65,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             E_i=Synth.E_field_value(i)
             E=np.append(E,[E_i])
             I=np.append(I,[E_i**2])
-        if function==errorCorrectionAdvanced or function==errorCorrection or function==errorCorrectionAdvanced_int or function==errorCorrection_int:
+        if function==errorCorrectionAdvanced_int or function==errorCorrection_int:
             return function(t,I,goal_field)    
         else: 
             return function(t,E) #pass t and E to sub target function
@@ -155,7 +155,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
     f_ax_sim.plot(t, E_tot, label="Electric field")
     f_ax_sim.plot(t, I, label="Intensity")
     f_ax_sim.plot(t, gradient, label="Intensity Gradient")
-    if function==errorCorrectionAdvanced or function==errorCorrection or function==errorCorrectionAdvanced_int or function==errorCorrection_int:
+    if function==errorCorrectionAdvanced_int or function==errorCorrection_int:
         f_ax_sim.plot(t, goal_field, label="Goal Intensity")
     f_ax_sim.set_xlabel('Time, fs')
     f_ax_sim.set_ylabel('Electric field / Intensity')

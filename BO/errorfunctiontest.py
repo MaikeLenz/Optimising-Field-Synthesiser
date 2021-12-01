@@ -7,8 +7,8 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\synth_sim\\')
 from TargetFunction import *
 from field_synth_class3 import *
-from bossfunctiontest import *
-from ErrorCorrectionFunction import *
+from bossfunction import *
+#from ErrorCorrectionFunction import *
 from ErrorCorrectionFunction_integrate import *
 
 
@@ -34,10 +34,10 @@ E_goal=np.array([])
 
 #ramp
 for i in t:
-    if i<0:
+    if i<30:
         E_goal=np.append(E_goal,[0])
-    elif i>=0 and i<40:
-        E_i=-i/20 +2
+    elif i<70:
+        E_i=-i/20 + (70/20)
         E_goal=np.append(E_goal,[E_i])
     else:
         E_goal=np.append(E_goal,[0])
@@ -55,5 +55,5 @@ for i in t:
 
 """
 
-BO(params, Synth, errorCorrection_int, goal_field=E_goal, n_iter=200,init_points=200, t=t)
+BO(params, Synth, errorCorrection_int, goal_field=E_goal, n_iter=20,init_points=20, t=t)
 #print(errorCorrection_int(t,E_goal,E_goal))
