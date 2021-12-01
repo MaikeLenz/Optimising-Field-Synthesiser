@@ -64,8 +64,8 @@ plt.show()
 imB_array =np.asarray(imB.convert('L'))
 imB_array =imB_array.astype(np.int16)
 
-im1_array =np.asarray(im20.convert('L'))
-im1_array =im1_array.astype(np.int16)
+imsub_array =np.asarray(im20.convert('L'))
+imsub_array =imsub_array.astype(np.int16)
 
 f = plt.figure(constrained_layout=True)
 gs = f.add_gridspec(5,6)
@@ -73,7 +73,7 @@ gs = f.add_gridspec(5,6)
 for i in range(len(images)):
     im_array= np.asarray(images[i].convert('L'))
     im_array=im_array.astype(np.int16)
-    newimage2_array=im_array-im1_array
+    newimage2_array=im_array-imsub_array
 
     #newimage2_array=newimage2_array[600:1000,900:1300]
     max=20
