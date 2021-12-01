@@ -76,7 +76,7 @@ im4_array =im4_array.astype(np.int16)
 
 f = plt.figure(constrained_layout=True)
 gs = f.add_gridspec(5,6)
-
+ 
 for i in range(len(images)):
     im_array= np.asarray(images[i].convert('L'))
     im_array=im_array.astype(np.int16)
