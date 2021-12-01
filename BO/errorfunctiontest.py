@@ -34,7 +34,7 @@ E_goal=np.array([])
 
 #ramp
 for i in t:
-    if i<30:
+    if i<50:
         E_goal=np.append(E_goal,[0])
     elif i<70:
         E_i=-i/20 + (70/20)

@@ -39,15 +39,17 @@ def errorCorrectionAdvanced_int(t, synth_field, goal_field):
     offset = median_synth - median_goal
 
     #determine point that falls below 10% of max which is the limit for being cut off
+    """
     args_below_ten = np.argwhere(synth_field <= 0.1*np.amax(synth_field))#
     args_below_ten_reverse = args_below_ten[::-1] #reverses array
     edge_left = np.argwhere(args_below_ten_reverse < median_synth)
     edge_right = np.argwhere(args_below_ten > median_synth)
+    """
 
-    if offset > 0 and (len(synth_field)-abs(offset))>edge_right: #goal_field on the left of synth_field
+    if offset > 0: #goal_field on the left of synth_field
         goal_field = goal_field[:len(synth_field)-abs(offset)]
         goal_field=np.append(np.zeros(abs(offset)),goal_field)
-    elif offset < 0 and (abs(offset)<edge_left): #goal_field on the right of synth_field
+    elif offset < 0: #goal_field on the right of synth_field
         goal_field = goal_field[abs(offset):]
         goal_field=np.append(goal_field,np.zeros(abs(offset)))
 

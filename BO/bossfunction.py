@@ -133,8 +133,8 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             E_individual[j][i]=Synth._pulse_list[j].E_field_value(t[i])
             I_individual[j][i]=(Synth._pulse_list[j].E_field_value(t[i]))**2
 
-    """
-    if function==errorCorrectionAdvanced or function==errorCorrection or function==errorCorrectionAdvanced_int or function==errorCorrection_int:
+    
+    if function==errorCorrectionAdvanced_int or function==errorCorrection_int:
         #shift the left electric field to match in time
         offset=np.argmax(I)-np.argmax(goal_field)
 
@@ -144,7 +144,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         elif offset < 0: #E2 on the right of E1
             goal_field = goal_field[abs(offset):]
             goal_field=np.append(goal_field,np.zeros(abs(offset)))
-    """
+    
     
     
     
