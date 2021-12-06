@@ -49,13 +49,16 @@ imgB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_P
 images = [im1,im2,im3, im4, im5, im6, im7, im8, im9, im10,im11,im12,im13,im14,im15,im16,im17,im18,im19,im20, im21,im22,im23]
 glue_images = [img1,img2,img3,img4,img5,img6, img7, img8,img9,img10,img11,imgB]
 
-window_width_mm=35
+window_width_mm=50
 px_size_mm=0.0022
 mag=13.5
 shift=1/(mag*px_size_mm)
 
 imB_array =np.asarray(imB.convert('L'))
 imB_array =imB_array.astype(np.int16)
+
+imgB_array =np.asarray(imgB.convert('L'))
+imgB_array =imgB_array.astype(np.int16)
 
 """
 for i in range(len(test)):
@@ -150,24 +153,71 @@ for i in range(len(images)):
 
 plt.show()
 """
+
 plt.figure()
 #print(int((window_width_mm/mag)/px_size_mm))
-empty_image=np.zeros((1944,int((window_width_mm/mag)/px_size_mm)))
-plt.imshow(empty_image)
+empty_image=np.zeros((250,int((window_width_mm/mag)/px_size_mm)))
+final_image=np.zeros((250,int((window_width_mm/mag)/px_size_mm)))
 
+#print(len(empty_image),len(empty_image[0]))
+plt.imshow(empty_image)
+slicing=[600,850,750,1200]
+im_width=slicing[3]-slicing[2]
+
+#add up elements in array
 for i in range(len(images)):
     im_array= np.asarray(images[i].convert('L'))
     im_array=im_array.astype(np.int16)
     newimage2_array=im_array-imB_array
+    newimage2_array=newimage2_array[slicing[0]:slicing[1],slicing[2]:slicing[3]]
+    px_start=int(i*shift)#
+    whole_image = np.append(empty_image[:,:px_start],newimage2_array, axis=1)
+    whole_image2=np.append(whole_image,empty_image[:,px_start+im_width:], axis=1)
+    out_array=np.add(final_image,whole_image2)
+    final_image=out_array
 
-    newimage2_array=newimage2_array[:,750:1200]#[600:850,750:1200]    
-    px_start=int(i*shift)
+for i in range(len(glue_images)):
+    img_array= np.asarray(glue_images[i].convert('L'))
+    img_array=img_array.astype(np.int16)
+    newimage2_array=img_array-imgB_array
+    #glue reconstruction:newimage2_array=newimage2_array[600:1000,900:1300]
+    newimage2_array=newimage2_array[600:850,900:1350]   
+    px_start=len(empty_image[0])-int(i*shift)-im_width
+    whole_image = np.append(empty_image[:,:px_start],newimage2_array, axis=1)
+    whole_image2=np.append(whole_image,empty_image[:,px_start+im_width:], axis=1)
+    out_array=np.add(final_image,whole_image2)
+    final_image=out_array
 
+plt.imshow(final_image, cmap='gray')
+
+"""
+#overlay images
+for i in range(len(images)):
+    im_array= np.asarray(images[i].convert('L'))
+    im_array=im_array.astype(np.int16)
+    newimage2_array=im_array-imB_array
+    newimage2_array=newimage2_array[slicing[0]:slicing[1],slicing[2]:slicing[3]]
+    px_start=int(i*shift)#
     whole_image = np.append(empty_image[:,:px_start-1],newimage2_array, axis=1)
-    whole_image2=np.append(whole_image,empty_image[:,px_start-1+len(newimage2_array[0]):], axis=1)
+    whole_image2=np.append(whole_image,empty_image[:,px_start-1+im_width:], axis=1)
+    #print(len(whole_image2), len(whole_image2[0]))
     #print(newimage2_array.shape[0])
     #whole_image2 = np.append(whole_image,empty_image[:,px_start-1+len(newimage2_array[0]):],axis=1)
-    plt.imshow(whole_image, cmap='gray', alpha=0.15) #,extent=[crop_size[2]*scaling,crop_size[3]*scaling,crop_size[0]*scaling,crop_size[1]*scaling])
+    plt.imshow(whole_image, cmap='gray', alpha=0.15)
+
+for i in range(len(glue_images)):
+    img_array= np.asarray(glue_images[i].convert('L'))
+    img_array=img_array.astype(np.int16)
+    newimage2_array=img_array-imgB_array
+    #glue reconstruction:newimage2_array=newimage2_array[600:1000,900:1300]
+    newimage2_array=newimage2_array[600:850,900:1350]   
+    px_start=len(empty_image[0])-int(i*shift)-im_width
+    #whole_image = np.append(empty_image[:,:px_start-1],newimage2_array, axis=1)
+    #print(len(whole_image[0]))
+    #print(newimage2_array.shape[0])
+    #whole_image2 = np.append(whole_image,empty_image[:,px_start-1+len(newimage2_array[0]):],axis=1)
+    plt.imshow(newimage2_array, cmap='gray', alpha=0.15, extent=(px_start,px_start+im_width,0,250))
+"""
 
 plt.show()
 
