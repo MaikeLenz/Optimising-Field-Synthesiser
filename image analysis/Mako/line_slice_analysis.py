@@ -42,7 +42,7 @@ gs = f.add_gridspec(4,6)
 slicing=[600,850,750,1200]
 im_height=slicing[1]-slicing[0]
 
-slice_height=4
+slice_height=10
 #analyses brightness through a thin slice
 for i in range(len(images2)):
     im_array= np.asarray(images[i].convert('L'))
@@ -56,8 +56,8 @@ for i in range(len(images2)):
 
     avg_slice=(np.sum(slice,axis=0)/slice_height) #average over columns
     x=range(len(avg_slice))
-    plt.plot(x,avg_slice,label="image %s"%(i+1))#plot the intensities throughout the slice
-    """
+    #plt.plot(x,avg_slice,label="image %s"%(i+1))#plot the intensities throughout the slice
+    
     if i >=0 and i<6:
         f_ax = f.add_subplot(gs[0,i])
         im=f_ax.plot(x,avg_slice)
@@ -74,7 +74,7 @@ for i in range(len(images2)):
         f_ax = f.add_subplot(gs[3, i-18])
         im=f_ax.plot(x,avg_slice)
         #f.colorbar(im)
-        """
+        
 #f.subplots_adjust(right=0.8)
 #cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
 plt.suptitle("Lined window, damaged side, 0.5mm increments inwards")
