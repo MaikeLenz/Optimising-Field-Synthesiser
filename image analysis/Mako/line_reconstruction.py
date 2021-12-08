@@ -49,10 +49,14 @@ imgB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_P
 images = [im1,im2,im3, im4, im5, im6, im7, im8, im9, im10,im11,im12,im13,im14,im15,im16,im17,im18,im19,im20, im21,im22,im23]
 glue_images = [img1,img2,img3,img4,img5,img6, img7, img8,img9,img10,img11,imgB]
 
-window_width_mm=50
+window_width_mm= 42.77
 px_size_mm=0.0022
 mag=13.5
-shift=1/(mag*px_size_mm)
+
+def mm_to_px(mm):
+    return int(mm/(mag*px_size_mm))
+
+shift=mm_to_px(1)
 
 imB_array =np.asarray(imB.convert('L'))
 imB_array =imB_array.astype(np.int16)
@@ -60,104 +64,11 @@ imB_array =imB_array.astype(np.int16)
 imgB_array =np.asarray(imgB.convert('L'))
 imgB_array =imgB_array.astype(np.int16)
 
-"""
-for i in range(len(test)):
-    for j in test[i]:
-        if test[i][j] >200:
-            test[i][j]=0
-print(test)
-
-"""
-"""
-for image in images:
-    newimage = PIL.ImageChops.subtract(image, im5)
-
-    mask1 = PIL.Image.eval(newimage, lambda a: 0) #if a <= 24 else 255)
-    mask2 = mask1.convert('1')
-
-    blank = PIL.Image.eval(newimage, lambda a: 0)
-
-    new = PIL.Image.composite(newimage, blank, mask2) 
-
-    #diff= PIL.ImageChops.difference(image, imB)
-
-    plt.figure()
-    plt.imshow(np.asarray(new), interpolation='nearest', cmap="gray")
-    #plt.imshow(np.asarray(diff), interpolation='nearest', cmap="gray")
-
-    plt.colorbar()
-plt.show()
-"""
-"""
-
-f = plt.figure(constrained_layout=True)
-gs = f.add_gridspec(4,6)
-
-for i in range(len(images)):
-    im_array= np.asarray(images[i].convert('L'))
-    im_array=im_array.astype(np.int16)
-    newimage2_array=im_array-imB_array
-
-    newimage2_array=newimage2_array[600:850,750:1200]
-    max=20
-    min=-5
-    if i >=0 and i<6:
-        f_ax = f.add_subplot(gs[0,i])
-        im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
-        #f.colorbar(im)
-    elif i>= 6 and i<12:
-        f_ax = f.add_subplot(gs[1, i-6])
-        im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
-        #f.colorbar(im)
-    elif i>=12 and i<18:
-        f_ax = f.add_subplot(gs[2, i-12])
-        im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
-        #f.colorbar(im)
-    elif i>=18 and i<24:
-        f_ax = f.add_subplot(gs[3, i-18])
-        im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
-        #f.colorbar(im)
-f.subplots_adjust(right=0.8)
-cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
-plt.suptitle("Lined window, damaged side, 0.5mm increments inwards")
-f.colorbar(im, cax=cbar_ax)
-plt.show()
-"""
-"""
-#plt.figure()
-y_shift = 1/(0.006*13.4615)
-#y_shift = 0
-pixel_size = 0.006
-beam_size_large = 10.5
-beam_size_small = 0.78
-magnification = beam_size_large/beam_size_small
-scaling = pixel_size*magnification
-
-crop_size = [180,300,250,450]
-
-for i in range(len(images)):
-    newimage2_array=np.asarray(images[i].convert('L'))-np.asarray(imB.convert('L'))
-
-    newimage2_array=newimage2_array[crop_size[0]:crop_size[1],crop_size[2]:crop_size[3]]
-    
-    # Shift by 1mm*i
-    amount_taken_off = len(newimage2_array) - int(y_shift*i)
-    if amount_taken_off < 0:
-        pass
-    else:
-        length = len(newimage2_array[0])
-        newimage2_array = newimage2_array[int(y_shift*i):]
-        newimage2_array = np.append(np.zeros((amount_taken_off, length)),newimage2_array, axis=0)
-        #print(newimage2_array)
-        plt.imshow(newimage2_array, cmap='inferno', alpha=0.15, extent=[crop_size[2]*scaling,crop_size[3]*scaling,crop_size[0]*scaling,crop_size[1]*scaling])
-
-plt.show()
-"""
 
 plt.figure()
 #print(int((window_width_mm/mag)/px_size_mm))
-empty_image=np.zeros((250,int((window_width_mm/mag)/px_size_mm)))
-final_image=np.zeros((250,int((window_width_mm/mag)/px_size_mm)))
+empty_image=np.zeros((250,mm_to_px(window_width_mm)))
+final_image=np.zeros((250,mm_to_px(window_width_mm)))
 
 #print(len(empty_image),len(empty_image[0]))
 plt.imshow(empty_image)
@@ -165,6 +76,20 @@ slicing=[600,850,750,1200]
 im_width=slicing[3]-slicing[2]
 im_height= slicing[1]-slicing[0]
 slice_height=4
+start_posn_mm=0.6 #how many mm into the window the centre of the first image is
+
+left_offset= int(0.5*im_width - mm_to_px(start_posn_mm))    
+
+def cut_image(image_array,px_start):
+    if px_start<0:
+        image_array=image_array[:,abs(px_start):]
+        return image_array, 0 
+    elif px_start>(len(empty_image[0])-im_width):
+        image_array=image_array[:,:(px_start-(len(empty_image[0])-im_width))]
+        return image_array, px_start
+    else:
+        return image_array, px_start
+
 
 #add up elements in array
 for i in range(len(images)):
@@ -172,23 +97,27 @@ for i in range(len(images)):
     im_array=im_array.astype(np.int16)
     newimage2_array=im_array-imB_array
     newimage2_array=newimage2_array[slicing[0]:slicing[1],slicing[2]:slicing[3]]
-    px_start=int(i*shift)#
+    px_start=int(i*shift)-left_offset
+    newimage2_array,px_start = cut_image(newimage2_array,px_start)
+
     whole_image = np.append(empty_image[:,:px_start],newimage2_array, axis=1)
-    whole_image2=np.append(whole_image,empty_image[:,px_start+im_width:], axis=1)
-    out_array=np.add(final_image,whole_image2)
-    final_image=out_array
+    whole_image2=np.append(whole_image,empty_image[:,px_start+len(newimage2_array[0]):], axis=1)
+    final_image=np.add(final_image,whole_image2)
 
 for i in range(len(glue_images)):
     img_array= np.asarray(glue_images[i].convert('L'))
     img_array=img_array.astype(np.int16)
     newimage2_array=img_array-imgB_array
     #glue reconstruction:newimage2_array=newimage2_array[600:1000,900:1300]
-    newimage2_array=newimage2_array[600:850,900:1350]   
-    px_start=len(empty_image[0])-int(i*shift)-im_width
+    newimage2_array=newimage2_array[600:850,900:1350] 
+    px_start=len(empty_image[0])+left_offset-int(i*shift)-im_width
+    print(px_start)
+    newimage2_array,px_start = cut_image(newimage2_array,px_start)
+
     whole_image = np.append(empty_image[:,:px_start],newimage2_array, axis=1)
-    whole_image2=np.append(whole_image,empty_image[:,px_start+im_width:], axis=1)
-    out_array=np.add(final_image,whole_image2)
-    final_image=out_array
+    whole_image2=np.append(whole_image,empty_image[:,(px_start+len(newimage2_array[0])):], axis=1)
+    final_image=np.add(final_image,whole_image2)
+
 
 plt.imshow(final_image, cmap='gray')
 plt.show()
