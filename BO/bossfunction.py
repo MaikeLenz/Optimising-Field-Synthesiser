@@ -145,10 +145,8 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             goal_field = goal_field[abs(offset):]
             goal_field=np.append(goal_field,np.zeros(abs(offset)))
     
-    
-    
-    
     #plot results
+    energies=Synth.Energy_distr(t)
     f = plt.figure(constrained_layout=True)
     gs = f.add_gridspec(Synth.no_of_channels(), 2)
     f_ax_sim = f.add_subplot(gs[:, 0])
@@ -166,6 +164,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         j=i+1
         f_ax.plot(t, E_individual[i], label="Electric field %s" %j)
         f_ax.plot(t, I_individual[i], label="Intensity %s" %j)
+        f_ax.set_title("%s of energy"%(round(energies[i],3)))
         if i == Synth.no_of_channels()-1:
             f_ax.set_xlabel('Time, fs')
         plt.legend()

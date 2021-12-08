@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from bayes_opt import BayesianOptimization
-
+from scipy import integrate
 #list = [carrier_frequencies, fwhm_pulse_durations, field_amplitudes, CEPs, time_delays]
 
 
@@ -37,6 +37,15 @@ class Wavepacket(Element):
             self._t0=list(Synth._param_list[4])[channel_index-1]
         else:
             self._t0=list(Synth._param_list[4])[channel_index-1] + min(delays)
+
+    def Energy(self,t):
+        """
+        returns the amount of energy in this channel, arbitrary units
+        """
+        I=np.array([])
+        for time in t:
+            I=np.append(I,(self.E_field_value(time))**2)
+        return integrate.simps(I,t)
 
    
     def __str__(self):
@@ -139,6 +148,12 @@ class Synthesiser(Element):
    
     def no_of_channels(self):
         return len(self._pulse_list)
+
+    def Energy_distr(self,t):
+        energies=np.array([])
+        for i in self._pulse_list:
+            energies=np.append(energies,i.Energy(t))
+        return energies / np.sum(energies)
 
         
 """

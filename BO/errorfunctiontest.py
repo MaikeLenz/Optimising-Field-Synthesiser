@@ -55,5 +55,5 @@ for i in t:
 
 """
 
-BO(params, Synth, errorCorrection_int, goal_field=E_goal, n_iter=20,init_points=20, t=t)
+BO(params, Synth, errorCorrection_int, goal_field=E_goal, n_iter=2,init_points=2, t=t)
 #print(errorCorrection_int(t,E_goal,E_goal))
