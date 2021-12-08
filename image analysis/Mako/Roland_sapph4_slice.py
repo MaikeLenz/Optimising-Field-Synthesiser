@@ -30,35 +30,6 @@ im18 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_P
 imB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\Background.PNG')
 images = [im1,im2,im3, im4, im5, im6, im7, im8, im9, im10,im11,im12,im13,im14,im15,im16,im17,im18]
 
-
-"""
-for i in range(len(test)):
-    for j in test[i]:
-        if test[i][j] >200:
-            test[i][j]=0
-print(test)
-
-"""
-"""
-for image in images:
-    newimage = PIL.ImageChops.subtract(image, im5)
-
-    mask1 = PIL.Image.eval(newimage, lambda a: 0) #if a <= 24 else 255)
-    mask2 = mask1.convert('1')
-
-    blank = PIL.Image.eval(newimage, lambda a: 0)
-
-    new = PIL.Image.composite(newimage, blank, mask2) 
-
-    #diff= PIL.ImageChops.difference(image, imB)
-
-    plt.figure()
-    plt.imshow(np.asarray(new), interpolation='nearest', cmap="gray")
-    #plt.imshow(np.asarray(diff), interpolation='nearest', cmap="gray")
-
-    plt.colorbar()
-plt.show()
-"""
 imB_array =np.asarray(imB.convert('L'))
 imB_array =imB_array.astype(np.int16)
 
