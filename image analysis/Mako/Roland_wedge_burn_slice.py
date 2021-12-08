@@ -62,41 +62,51 @@ imB_array =imB_array.astype(np.int16)
 
 imsub_array =np.asarray(imB.convert('L'))
 imsub_array =imsub_array.astype(np.int16)
+
 slicing=[850,1150,1050,1550]
+im_height=slicing[1]-slicing[0]
+
 f = plt.figure(constrained_layout=True)
 gs = f.add_gridspec(5,6)
+
+slice_height=10
 
 for i in range(len(images)):
     im_array= np.asarray(images[i].convert('L'))
     im_array=im_array.astype(np.int16)
-    newimage2_array=im_array-imsub_array
+    newimage2_array=im_array-imB_array
     newimage2_array=newimage2_array[slicing[0]:slicing[1],slicing[2]:slicing[3]]
-    max=2
-    min=-2
+    
+    slice_start=int(0.5*im_height-0.5*slice_height) #take out a narrow slice
+    slice_end=slice_start+slice_height
+    slice=newimage2_array[slice_start:slice_end]
+
+    avg_slice=(np.sum(slice,axis=0)/slice_height) #average over columns
+    x=range(len(avg_slice))
     if i >=0 and i<6:
         f_ax = f.add_subplot(gs[0,i])
-        im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
+        im=f_ax.plot(x,avg_slice)
         #f.colorbar(im)
     elif i>= 6 and i<12:
         f_ax = f.add_subplot(gs[1, i-6])
-        im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
+        im=f_ax.plot(x,avg_slice)
         #f.colorbar(im)
     elif i>=12 and i<18:
         f_ax = f.add_subplot(gs[2, i-12])
-        im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
+        im=f_ax.plot(x,avg_slice)
         #f.colorbar(im)
     elif i>=18 and i<24:
         f_ax = f.add_subplot(gs[3, i-18])
-        im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
+        im=f_ax.plot(x,avg_slice)
         #f.colorbar(im)
     elif i<30:
         f_ax = f.add_subplot(gs[4, i-24])
-        im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
+        im=f_ax.plot(x,avg_slice)
         #f.colorbar(im)
 f.subplots_adjust(right=0.8)
-cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
+#cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
 plt.suptitle("Roland_wedge_burn_no ND_exp1000us window, 0.5mm increments inwards")
-f.colorbar(im, cax=cbar_ax)
+#f.colorbar(im, cax=cbar_ax)
 plt.show()
 """
 #plt.figure()
