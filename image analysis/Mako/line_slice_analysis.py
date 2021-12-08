@@ -1,6 +1,7 @@
 import PIL as PIL
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.optimize import curve_fit
 #%%
 # Analysis of quantitative measurements
 # Open images and check sizes
@@ -43,6 +44,11 @@ slicing=[600,850,750,1200]
 im_height=slicing[1]-slicing[0]
 
 slice_height=10
+def Gauss(x, A, u, o):
+    return A*np.exp(-((x-u)**2)/(2*(o**2)))
+def two_Gauss(x, A1,A2, u1,u2, o1,o2):
+    return A1*np.exp(-((x-u1)**2)/(2*(o1**2)))+A2*np.exp(-((x-u2)**2)/(2*(o2**2)))
+
 #analyses brightness through a thin slice
 for i in range(len(images2)):
     im_array= np.asarray(images[i].convert('L'))
@@ -57,24 +63,46 @@ for i in range(len(images2)):
     avg_slice=(np.sum(slice,axis=0)/slice_height) #average over columns
     x=range(len(avg_slice))
     #plt.plot(x,avg_slice,label="image %s"%(i+1))#plot the intensities throughout the slice
-    
+    # curve fit
+    if i<6:
+        popt, _ = curve_fit(two_Gauss, x, avg_slice,p0=[5,5,300,300,50,50])
+    elif i>6:
+        popt, _ = curve_fit(two_Gauss, x, avg_slice,p0=[12,5,200,300,50,50])
+    else:
+        popt, _ = curve_fit(two_Gauss, x, avg_slice,p0=[12,5,210,290,30,50])
+
+    print(popt)
+    # summarize the parameter values
+    A1,A2, u1,u2, o1,o2 = popt
     if i >=0 and i<6:
         f_ax = f.add_subplot(gs[0,i])
         im=f_ax.plot(x,avg_slice)
+        im=f_ax.plot(x,two_Gauss(x,*popt))
+        im=f_ax.plot(x,Gauss(x,popt[0],popt[2],popt[4]))
+        im=f_ax.plot(x,Gauss(x,popt[1],popt[3],popt[5]))        
         #f.colorbar(im)
     elif i>= 6 and i<12:
         f_ax = f.add_subplot(gs[1, i-6])
         im=f_ax.plot(x,avg_slice)
+        im=f_ax.plot(x,two_Gauss(x,*popt))
+        im=f_ax.plot(x,Gauss(x,popt[0],popt[2],popt[4]))
+        im=f_ax.plot(x,Gauss(x,popt[1],popt[3],popt[5]))
         #f.colorbar(im)
     elif i>=12 and i<18:
         f_ax = f.add_subplot(gs[2, i-12])
         im=f_ax.plot(x,avg_slice)
+        im=f_ax.plot(x,two_Gauss(x,*popt))
+        im=f_ax.plot(x,Gauss(x,popt[0],popt[2],popt[4]))
+        im=f_ax.plot(x,Gauss(x,popt[1],popt[3],popt[5]))
         #f.colorbar(im)
     elif i>=18 and i<24:
         f_ax = f.add_subplot(gs[3, i-18])
         im=f_ax.plot(x,avg_slice)
+        im=f_ax.plot(x,two_Gauss(x,*popt))
+        im=f_ax.plot(x,Gauss(x,popt[0],popt[2],popt[4]))
+        im=f_ax.plot(x,Gauss(x,popt[1],popt[3],popt[5]))
         #f.colorbar(im)
-        
+
 #f.subplots_adjust(right=0.8)
 #cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
 plt.suptitle("Lined window, damaged side, 0.5mm increments inwards")
