@@ -20,89 +20,28 @@ imB4 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_P
 
 images = [im1,im2,im3,im4]
 
-
-"""
-for i in range(len(test)):
-    for j in test[i]:
-        if test[i][j] >200:
-            test[i][j]=0
-print(test)
-
-"""
-"""
-for image in images:
-    newimage = PIL.ImageChops.subtract(image, im5)
-
-    mask1 = PIL.Image.eval(newimage, lambda a: 0) #if a <= 24 else 255)
-    mask2 = mask1.convert('1')
-
-    blank = PIL.Image.eval(newimage, lambda a: 0)
-
-    new = PIL.Image.composite(newimage, blank, mask2) 
-
-    #diff= PIL.ImageChops.difference(image, imB)
-
-    plt.figure()
-    plt.imshow(np.asarray(new), interpolation='nearest', cmap="gray")
-    #plt.imshow(np.asarray(diff), interpolation='nearest', cmap="gray")
-
-    plt.colorbar()
-plt.show()
-"""
-imB1_array =np.asarray(imB1.convert('L'))
-imB1_array =imB1_array.astype(np.int16)
-
-imB2_array =np.asarray(imB2.convert('L'))
-imB2_array =imB2_array.astype(np.int16)
-
 imB3_array =np.asarray(imB3.convert('L'))
 imB3_array =imB3_array.astype(np.int16)
 
-imB4_array =np.asarray(imB4.convert('L'))
-imB4_array =imB4_array.astype(np.int16)
-
 f = plt.figure(constrained_layout=True)
 gs = f.add_gridspec(1,4)
+slicing =[700,850,450,700]
+im_height=slicing[1]-slicing[0]
 
-im1_array= np.asarray(images[0].convert('L'))
-im1_array=im1_array.astype(np.int16)
-newimage1_array=im1_array-imB1_array
-
-#newimage1_array=newimage1_array[800:1250,1000:1600]
-max=50
-min=-2
-f_ax = f.add_subplot(gs[0,0])
-im=f_ax.imshow(newimage1_array, vmin=min, vmax=max,cmap='gray')
-        #f.colorbar(im)
-
-im2_array= np.asarray(images[1].convert('L'))
-im2_array=im2_array.astype(np.int16)
-newimage2_array=im2_array-imB2_array
-
-#newimage1_array=newimage1_array[800:1250,1000:1600]
-f_ax = f.add_subplot(gs[0,1])
-im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
-
+slice_height=10
 im3_array= np.asarray(images[2].convert('L'))
 im3_array=im3_array.astype(np.int16)
 newimage3_array=im3_array-imB3_array
 
-#newimage1_array=newimage1_array[800:1250,1000:1600]
-f_ax = f.add_subplot(gs[0,2])
-im=f_ax.imshow(newimage3_array, vmin=min, vmax=max,cmap='gray')
+newimage3_array=newimage3_array[slicing[0]:slicing[1],slicing[2]:slicing[3]]
+slice_start=int(0.5*im_height-0.5*slice_height) #take out a narrow slice
+slice_end=slice_start+slice_height
+slice=newimage3_array[slice_start:slice_end]
 
-im4_array= np.asarray(images[3].convert('L'))
-im4_array=im4_array.astype(np.int16)
-newimage4_array=im4_array-imB4_array
-
-newimage4_array=newimage4_array[600:900,400:700]
-f_ax = f.add_subplot(gs[0,3])
-im=f_ax.imshow(newimage4_array, vmin=min, vmax=max,cmap='gray')
-
-f.subplots_adjust(right=0.8)
-cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
+avg_slice=(np.sum(slice,axis=0)/slice_height) #average over columns
+x=range(len(avg_slice))
+plt.plot(x,avg_slice)
 plt.suptitle("Roland_beamsplitter_exp1000us window, 0.5mm increments inwards")
-f.colorbar(im, cax=cbar_ax)
 plt.show()
 
 """
