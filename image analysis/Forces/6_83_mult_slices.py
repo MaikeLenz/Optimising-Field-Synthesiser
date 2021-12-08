@@ -46,18 +46,20 @@ imsub_array =imsub_array.astype(np.int16)
 slicing=[600,1000,950,1400]
 
 im_height=slicing[1]-slicing[0]
-slice_height=10
 
 f = plt.figure(constrained_layout=True)
 gs = f.add_gridspec(5,6)
 
-for i in range(len(images)):
-    im_array= np.asarray(images[i].convert('L'))
+heights=np.linspace(10,im_height-10,24)
+slice_height=10
+
+for i in range(len(heights)):
+    im_array= np.asarray(images[13].convert('L'))
     im_array=im_array.astype(np.int16)
     newimage2_array=im_array-imsub_array
     newimage2_array=newimage2_array[slicing[0]:slicing[1],slicing[2]:slicing[3]]
     
-    slice_start=int(0.5*im_height-0.5*slice_height) #take out a narrow slice
+    slice_start=int(heights[i]-0.5*slice_height) #take out a narrow slice
     slice_end=slice_start+slice_height
     slice=newimage2_array[slice_start:slice_end]
 
