@@ -47,7 +47,7 @@ slice_height=10
 for i in range(len(images)):
     im_array= np.asarray(images[i].convert('L'))
     im_array=im_array.astype(np.int16)
-    newimage2_array=im_array-imsub_array
+    newimage2_array=im_array-imB_array
     newimage2_array=newimage2_array[slicing[0]:slicing[1],slicing[2]:slicing[3]]
     
     slice_start=int(0.5*im_height-0.5*slice_height) #take out a narrow slice
