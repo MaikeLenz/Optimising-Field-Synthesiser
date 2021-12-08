@@ -163,6 +163,8 @@ final_image=np.zeros((250,int((window_width_mm/mag)/px_size_mm)))
 plt.imshow(empty_image)
 slicing=[600,850,750,1200]
 im_width=slicing[3]-slicing[2]
+im_height= slicing[1]-slicing[0]
+slice_height=4
 
 #add up elements in array
 for i in range(len(images)):
@@ -189,7 +191,15 @@ for i in range(len(glue_images)):
     final_image=out_array
 
 plt.imshow(final_image, cmap='gray')
+plt.show()
 
+slice_start=int(0.5*im_height-0.5*slice_height) #take out a narrow slice
+slice_end=slice_start+slice_height
+slice=final_image[slice_start:slice_end]
+
+avg_slice=(np.sum(slice,axis=0)/slice_height) #average over columns
+x=range(len(avg_slice))
+plt.plot(x,avg_slice)#plot the intensities throughout the slice
 """
 #overlay images
 for i in range(len(images)):
