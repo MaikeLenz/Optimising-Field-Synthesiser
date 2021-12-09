@@ -7,72 +7,52 @@ import numpy as np
 
 #damaged side of line window
 
-im1 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\0.PNG')
-im2 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\0H.PNG')
-im3 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\1.PNG')
-im4 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\1H.PNG')
-im5 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\2.PNG')
-im6 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\2H.PNG')
-im7 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\3.PNG')
-im8 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\3H.PNG')
-im9 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\4.PNG')
-im10 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\4H.PNG')
-im11 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\5.PNG')
-im12 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\5H.PNG')
-im13 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\6.PNG')
-im14 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\6H.PNG')
-im15 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\7.PNG')
-im16 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\7H.PNG')
-im17 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\8.PNG')
-im18 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\8H.PNG')
-im19 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\9.PNG')
-im20 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\9H.PNG')
-im21 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\10.PNG')
-im22 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\10H.PNG')
-im23 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\11.PNG')
+im1 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\0.PNG')
+im2 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\0H.PNG')
+im3 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\1.PNG')
+im4 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\1H.PNG')
+im5 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\2.PNG')
+im6 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\2H.PNG')
+im7 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\3.PNG')
+im8 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\3H.PNG')
+im9 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\4.PNG')
+im10 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\4H.PNG')
+im11 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\5.PNG')
+im12 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\5H.PNG')
+im13 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\6.PNG')
+im14 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\6H.PNG')
+im15 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\7.PNG')
+im16 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\7H.PNG')
+im17 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\8.PNG')
+im18 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\8H.PNG')
 
-img1 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\glue\\0.PNG')
-img2 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\glue\\1.PNG')
-img3 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\glue\\2.PNG')
-img4 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\glue\\3.PNG')
-img5 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\glue\\4.PNG')
-img6 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\glue\\5.PNG')
-img7 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\glue\\6.PNG')
-img8 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\glue\\7.PNG')
-img9 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\glue\\8.PNG')
-img10 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\glue\\9.PNG')
-img11 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\glue\\10.PNG')
 
-imB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\Background.PNG')
-imgB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\glue\\Background.PNG')
-
-images = [im1,im2,im3, im4, im5, im6, im7, im8, im9, im10,im11,im12,im13,im14,im15,im16,im17,im18,im19,im20, im21,im22,im23]
-glue_images = [img1,img2,img3,img4,img5,img6, img7, img8,img9,img10,img11,imgB]
+imB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_sapph4_1000usexp_3nd\\Background.PNG')
+images = [im1,im2,im3, im4, im5, im6, im7, im8, im9, im10,im11,im12,im13,im14,im15,im16,im17,im18]
 
 window_width_mm= 42.77
 px_size_mm=0.0022
-mag=9.8/0.74
+mag=9.8/1.254
 
 def mm_to_px(mm):
     return int(mm/(mag*px_size_mm))
 
-shift=mm_to_px(1)
+shift=mm_to_px(0.5)
 
 imB_array =np.asarray(imB.convert('L'))
 imB_array =imB_array.astype(np.int16)
 
-imgB_array =np.asarray(imgB.convert('L'))
-imgB_array =imgB_array.astype(np.int16)
-
 
 plt.figure()
 #print(int((window_width_mm/mag)/px_size_mm))
-empty_image=np.zeros((250,mm_to_px(window_width_mm)))
-final_image=np.zeros((250,mm_to_px(window_width_mm)))
 
-slicing=[600,850,750,1200]
+
+slicing=[900,1250,1100,1600]
 im_width=slicing[3]-slicing[2]
 im_height= slicing[1]-slicing[0]
+
+empty_image=np.zeros((im_height,mm_to_px(window_width_mm)))
+final_image=np.zeros((im_height,mm_to_px(window_width_mm)))
 slice_height=10
 start_posn_mm=0.6 #how many mm into the window the centre of the first image is
 
@@ -101,20 +81,6 @@ for i in range(len(images)):
     whole_image = np.append(empty_image[:,:px_start],newimage2_array, axis=1)
     whole_image2=np.append(whole_image,empty_image[:,px_start+len(newimage2_array[0]):], axis=1)
     final_image=np.add(final_image,whole_image2)
-
-for i in range(len(glue_images)):
-    img_array= np.asarray(glue_images[i].convert('L'))
-    img_array=img_array.astype(np.int16)
-    newimage2_array=img_array-imgB_array
-    #glue reconstruction:newimage2_array=newimage2_array[600:1000,900:1300]
-    newimage2_array=newimage2_array[600:850,900:1350] 
-    px_start=len(empty_image[0])+left_offset-int(i*shift)-im_width
-    newimage2_array,px_start = cut_image(newimage2_array,px_start)
-
-    whole_image = np.append(empty_image[:,:px_start],newimage2_array, axis=1)
-    whole_image2=np.append(whole_image,empty_image[:,(px_start+len(newimage2_array[0])):], axis=1)
-    final_image=np.add(final_image,whole_image2)
-
 
 plt.imshow(final_image, cmap='gray')
 plt.show()

@@ -95,13 +95,13 @@ im4_array= np.asarray(images[3].convert('L'))
 im4_array=im4_array.astype(np.int16)
 newimage4_array=im4_array-imB4_array
 
-newimage4_array=newimage4_array[600:900,400:700]
+#newimage4_array=newimage4_array[600:900,400:700]
 f_ax = f.add_subplot(gs[0,3])
 im=f_ax.imshow(newimage4_array, vmin=min, vmax=max,cmap='gray')
 
 f.subplots_adjust(right=0.8)
 cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
-plt.suptitle("Roland_beamsplitter_exp1000us window, 0.5mm increments inwards")
+plt.suptitle("Roland_beamsplitter_exp1000us window")
 f.colorbar(im, cax=cbar_ax)
 plt.show()
 

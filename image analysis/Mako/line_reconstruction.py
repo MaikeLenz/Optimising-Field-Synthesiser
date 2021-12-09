@@ -117,6 +117,8 @@ for i in range(len(glue_images)):
 
 
 plt.imshow(final_image, cmap='gray')
+plt.suptitle("Damaged window, reconstructed")
+
 plt.show()
 
 slice_start=int(0.5*im_height-0.5*slice_height) #take out a narrow slice
@@ -154,7 +156,7 @@ for i in range(len(glue_images)):
     #whole_image2 = np.append(whole_image,empty_image[:,px_start-1+len(newimage2_array[0]):],axis=1)
     plt.imshow(newimage2_array, cmap='gray', alpha=0.15, extent=(px_start,px_start+im_width,0,250))
 """
-
+plt.suptitle("Damaged window, reconstruction, profile")
 plt.show()
 
 #plt.imshow(empty_image[:,:100])

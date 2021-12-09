@@ -88,6 +88,6 @@ for i in range(len(images)):
         im=f_ax.plot(x,avg_slice)
 #f.subplots_adjust(right=0.8)
 #cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
-plt.suptitle("Undamaged window, 5 Ohm")
+plt.suptitle("Undamaged window, 5 Ohm, 1mm increments")
 #f.colorbar(im, cax=cbar_ax)
 plt.show()

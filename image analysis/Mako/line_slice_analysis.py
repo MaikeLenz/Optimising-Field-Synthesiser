@@ -56,7 +56,7 @@ for i in range(len(images2)):
     newimage2_array=im_array-imB_array #background subtraction
     newimage2_array=newimage2_array[slicing[0]:slicing[1],slicing[2]:slicing[3]] #slice image to only contain the interesting part
 
-    slice_start=int(0.5*im_height-0.5*slice_height) #take out a narrow slice
+    slice_start=int(0.6*im_height-0.5*slice_height) #take out a narrow slice
     slice_end=slice_start+slice_height
     slice=newimage2_array[slice_start:slice_end]
 
@@ -64,6 +64,7 @@ for i in range(len(images2)):
     x=range(len(avg_slice))
     #plt.plot(x,avg_slice,label="image %s"%(i+1))#plot the intensities throughout the slice
     # curve fit
+    """"
     if i<6:
         popt, _ = curve_fit(two_Gauss, x, avg_slice,p0=[5,5,300,300,50,50])
     elif i>6:
@@ -74,33 +75,34 @@ for i in range(len(images2)):
     print(popt)
     # summarize the parameter values
     A1,A2, u1,u2, o1,o2 = popt
+    """
     if i >=0 and i<6:
         f_ax = f.add_subplot(gs[0,i])
         im=f_ax.plot(x,avg_slice)
-        im=f_ax.plot(x,two_Gauss(x,*popt))
-        im=f_ax.plot(x,Gauss(x,popt[0],popt[2],popt[4]))
-        im=f_ax.plot(x,Gauss(x,popt[1],popt[3],popt[5]))        
+        #im=f_ax.plot(x,two_Gauss(x,*popt))
+        #im=f_ax.plot(x,Gauss(x,popt[0],popt[2],popt[4]))
+        #im=f_ax.plot(x,Gauss(x,popt[1],popt[3],popt[5]))        
         #f.colorbar(im)
     elif i>= 6 and i<12:
         f_ax = f.add_subplot(gs[1, i-6])
         im=f_ax.plot(x,avg_slice)
-        im=f_ax.plot(x,two_Gauss(x,*popt))
-        im=f_ax.plot(x,Gauss(x,popt[0],popt[2],popt[4]))
-        im=f_ax.plot(x,Gauss(x,popt[1],popt[3],popt[5]))
+        #im=f_ax.plot(x,two_Gauss(x,*popt))
+        #im=f_ax.plot(x,Gauss(x,popt[0],popt[2],popt[4]))
+        #im=f_ax.plot(x,Gauss(x,popt[1],popt[3],popt[5]))
         #f.colorbar(im)
     elif i>=12 and i<18:
         f_ax = f.add_subplot(gs[2, i-12])
         im=f_ax.plot(x,avg_slice)
-        im=f_ax.plot(x,two_Gauss(x,*popt))
-        im=f_ax.plot(x,Gauss(x,popt[0],popt[2],popt[4]))
-        im=f_ax.plot(x,Gauss(x,popt[1],popt[3],popt[5]))
+        #im=f_ax.plot(x,two_Gauss(x,*popt))
+        #im=f_ax.plot(x,Gauss(x,popt[0],popt[2],popt[4]))
+        #im=f_ax.plot(x,Gauss(x,popt[1],popt[3],popt[5]))
         #f.colorbar(im)
     elif i>=18 and i<24:
         f_ax = f.add_subplot(gs[3, i-18])
         im=f_ax.plot(x,avg_slice)
-        im=f_ax.plot(x,two_Gauss(x,*popt))
-        im=f_ax.plot(x,Gauss(x,popt[0],popt[2],popt[4]))
-        im=f_ax.plot(x,Gauss(x,popt[1],popt[3],popt[5]))
+        #im=f_ax.plot(x,two_Gauss(x,*popt))
+        #im=f_ax.plot(x,Gauss(x,popt[0],popt[2],popt[4]))
+        #im=f_ax.plot(x,Gauss(x,popt[1],popt[3],popt[5]))
         #f.colorbar(im)
 
 #f.subplots_adjust(right=0.8)

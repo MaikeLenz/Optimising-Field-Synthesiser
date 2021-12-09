@@ -95,7 +95,7 @@ for i in range(len(images)):
         #f.colorbar(im)
 f.subplots_adjust(right=0.8)
 cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
-plt.suptitle("Roland_wedge_burn_no ND_exp1000us window, 0.5mm increments inwards")
+plt.suptitle("Roland_wedge_burn_no ND_exp1000us window, 1mm increments inwards")
 f.colorbar(im, cax=cbar_ax)
 plt.show()
 """

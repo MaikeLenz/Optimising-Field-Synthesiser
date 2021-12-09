@@ -41,7 +41,7 @@ slice=newimage3_array[slice_start:slice_end]
 avg_slice=(np.sum(slice,axis=0)/slice_height) #average over columns
 x=range(len(avg_slice))
 plt.plot(x,avg_slice)
-plt.suptitle("Roland_beamsplitter_exp1000us window, 0.5mm increments inwards")
+plt.suptitle("Roland_beamsplitter_exp1000us window")
 plt.show()
 
 """
