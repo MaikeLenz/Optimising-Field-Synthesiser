@@ -51,12 +51,12 @@ glue_images = [img1,img2,img3,img4,img5,img6, img7, img8,img9,img10,img11,imgB]
 
 window_width_mm= 42.77
 px_size_mm=0.0022
-mag=9.8/1.254
+mag=9.8/0.74
 
 def mm_to_px(mm):
     return int(mm/(mag*px_size_mm))
 
-shift=mm_to_px(0.5)
+shift=mm_to_px(1)
 
 imB_array =np.asarray(imB.convert('L'))
 imB_array =imB_array.astype(np.int16)
@@ -108,7 +108,7 @@ for i in range(len(glue_images)):
     newimage2_array=img_array-imgB_array
     #glue reconstruction:newimage2_array=newimage2_array[600:1000,900:1300]
     newimage2_array=newimage2_array[600:850,900:1350] 
-    px_start=len(empty_image[0])+left_offset-int(2*i*shift)-im_width
+    px_start=len(empty_image[0])+left_offset-int(i*shift)-im_width
     newimage2_array,px_start = cut_image(newimage2_array,px_start)
 
     whole_image = np.append(empty_image[:,:px_start],newimage2_array, axis=1)
