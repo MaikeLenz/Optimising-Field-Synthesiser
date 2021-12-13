@@ -30,7 +30,7 @@ def slopeGradient(t,E):
         diff[i] = I[i] - I[i-1]
     return max(diff)
 
-def sharpestPeakt(t,E, widths=5):
+def sharpestPeak(t,E, widths=5):
     """
     Calculates the maximum gradient of the E field.
     t: List of times
