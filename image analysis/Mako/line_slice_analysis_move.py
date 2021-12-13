@@ -49,12 +49,8 @@ def Gauss(x, A, u, o):
 def two_Gauss(x, A1,A2, u1,u2, o1,o2):
     return A1*np.exp(-((x-u1)**2)/(2*(o1**2)))+A2*np.exp(-((x-u2)**2)/(2*(o2**2)))
 
-stat_positions=[]
-stat_std=[]
-stat_amp=[]
-all_popt=[]
-slices=np.zeros((len(images),450))
-print(slices)
+big_pos=[]
+small_pos=[]
 #analyses brightness through a thin slice
 for i in range(len(images2)):
     im_array= np.asarray(images[i].convert('L'))
@@ -67,7 +63,6 @@ for i in range(len(images2)):
     slice=newimage2_array[slice_start:slice_end]
 
     avg_slice=(np.sum(slice,axis=0)/slice_height) #average over columns
-    slices[i]=avg_slice
     x=range(len(avg_slice))
     #plt.plot(x,avg_slice,label="image %s"%(i+1))#plot the intensities throughout the slice
     # curve fit
@@ -80,47 +75,45 @@ for i in range(len(images2)):
         popt, _ = curve_fit(two_Gauss, x, avg_slice,p0=[12,5,200,300,50,50])
     else:
         popt, _ = curve_fit(two_Gauss, x, avg_slice,p0=[12,5,210,290,30,50])
-
-    all_popt.append(popt)
     print(popt)
     # summarize the parameter values
-    A1,A2, u1,u2, o1,o2 = popt
-    if i>1:
-        stat_positions.append(u2)
-        stat_std.append(o2**2)
-        stat_amp.append(A2)
+    A1,A2, u1,u2, o1,o2 = popt 
+    big_pos.append(u1)
+    small_pos.append(u2) 
 
-
-avg_pos=np.mean(stat_positions)
-avg_std=np.sqrt(sum(stat_std))
-avg_amp=np.mean(stat_amp)
-
-print(slices.shape)
-
-for i in range(len(images2)):
-    avg_slice=slices[i]
-    popt=all_popt[i]
     if i >=0 and i<6:
         f_ax = f.add_subplot(gs[0,i])
-        im=f_ax.plot(x,avg_slice-Gauss(x,popt[1],avg_pos,avg_std)) 
-        plt.plot(x,Gauss(x,popt[1],avg_pos,avg_std))       
+        im=f_ax.plot(x,avg_slice) 
+        plt.plot(x,Gauss(x,popt[0],popt[2],popt[4]))  
+        plt.plot(x,Gauss(x,popt[1],popt[3],popt[5]))       
     elif i>= 6 and i<12:
         f_ax = f.add_subplot(gs[1, i-6])
-        im=f_ax.plot(x,avg_slice-Gauss(x,popt[1],avg_pos,avg_std))  
-        plt.plot(x,Gauss(x,popt[1],avg_pos,avg_std))       
+        im=f_ax.plot(x,avg_slice)
+        plt.plot(x,Gauss(x,popt[0],popt[2],popt[4]))  
+        plt.plot(x,Gauss(x,popt[1],popt[3],popt[5]))       
     elif i>=12 and i<18:
         f_ax = f.add_subplot(gs[2, i-12])
-        im=f_ax.plot(x,avg_slice-Gauss(x,popt[1],avg_pos,avg_std)) 
-        plt.plot(x,Gauss(x,popt[1],avg_pos,avg_std))        
+        im=f_ax.plot(x,avg_slice)
+        plt.plot(x,Gauss(x,popt[0],popt[2],popt[4]))  
+        plt.plot(x,Gauss(x,popt[1],popt[3],popt[5]))         
     elif i>=18 and i<24:
         f_ax = f.add_subplot(gs[3, i-18])
-        im=f_ax.plot(x,avg_slice-Gauss(x,popt[1],avg_pos,avg_std))
-        plt.plot(x,Gauss(x,popt[1],avg_pos,avg_std))       
+        im=f_ax.plot(x,avg_slice)
+        plt.plot(x,Gauss(x,popt[0],popt[2],popt[4]))  
+        plt.plot(x,Gauss(x,popt[1],popt[3],popt[5]))  
  
+big_steps=[]
+small_steps=[]
 
+for i in range(len(big_pos)-1):
+    big_steps.append(big_pos[i+1]-big_pos[i])
+    small_steps.append(small_pos[i+1]-small_pos[i])
+
+print(big_steps)
+print(small_steps)
 #f.subplots_adjust(right=0.8)
 #cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
 plt.suptitle("Lined window, damaged side, 0.5mm increments inwards")
 #f.colorbar(im, cax=cbar_ax)
-plt.legend()
+#plt.legend()
 plt.show()
