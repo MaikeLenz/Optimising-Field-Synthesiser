@@ -58,7 +58,8 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
                         organised_params[i-1][4] = value
 
         # Now update synthesiser- parameters should be in the right order now
-        for i in range(len(organised_params)+1):
+        for i in range(len(organised_params)):
+            print("Error",organised_params[i-1],i)
             Synth.Update(i , *organised_params[i-1])
         for i in t: 
             #create the list of total E field vaues over range t
@@ -133,7 +134,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             E_individual[j][i]=Synth._pulse_list[j].E_field_value(t[i])
             I_individual[j][i]=(Synth._pulse_list[j].E_field_value(t[i]))**2
 
-    
+    """
     if function==errorCorrectionAdvanced_int or function==errorCorrection_int:
         #shift the left electric field to match in time
         offset=np.argmax(I)-np.argmax(goal_field)
@@ -144,7 +145,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         elif offset < 0: #E2 on the right of E1
             goal_field = goal_field[abs(offset):]
             goal_field=np.append(goal_field,np.zeros(abs(offset)))
-    
+    """
     #plot results
     energies=Synth.Energy_distr(t)
     f = plt.figure(constrained_layout=True)
