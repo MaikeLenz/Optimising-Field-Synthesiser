@@ -81,7 +81,7 @@ class Synthesiser(Element):
             fwhm=fwhm+(i._fwhm_duration,)
             amp=amp+(i._amplitude,)
             CEP=CEP+(i._CEP,)
-        if len(delays)!=len(self._pulse_list):
+        if len(delays) != len(self._pulse_list)-1:
             raise "Error: Synthesiser not created successfully, dimension of delays doesn't match number of fields."
         delay1=(0,)+delays #delay of 1st pulse is zero
         list=[wavel,fwhm,amp,CEP,delay1]
@@ -127,12 +127,10 @@ class Synthesiser(Element):
             self._param_list[2]=tuple(l2)
         if CEP != None:
             l3=list(self._param_list[3])
-            print("l3",l3)
             l3[channel_index-1] = CEP
             self._param_list[3]=tuple(l3)
         if delay != None:
             l4= list(self._param_list[4])
-            print("l4",l4)
             l4[channel_index-1] = delay
             self._param_list[4]=tuple(l4)
 
