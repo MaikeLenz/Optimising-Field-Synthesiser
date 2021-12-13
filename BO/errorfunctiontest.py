@@ -26,7 +26,7 @@ Field10=Wavepacket(t0=0.0, wavel=1500.0, fwhm=15.0, amp=1.0, CEP=0.0)
 
 #initialise pulse list and tuple of relative delays (from 1st pulse)
 pulses=[Field1,Field2, Field3, Field4, Field5,Field6,Field7,Field8,Field9,Field10]
-delays=(10,20,30,10)
+delays=(10,20,30,10)#,10,10,10,10,10)
 #pass to synthesiser
 Synth=Synthesiser(pulses,delays)
 
