@@ -93,6 +93,7 @@ class Synthesiser(Element):
         """
         E_tot=0
         for i in range(len(self._pulse_list)):
+            #print("wavels",self._pulse_list[0])
             wavel = self._param_list[0][i]
             freq=(299.792458)/(wavel)
             fwhm_duration = self._param_list[1][i]
@@ -103,7 +104,7 @@ class Synthesiser(Element):
             sigma=fwhm_duration/(2.0*np.sqrt(2.0*np.log(2.0))) #fwhm to std of gaussian
             gauss = np.exp(-0.5*((t-delay)/sigma)**2.0)
             cos = np.cos(freq*(t-delay)+CEP) #CEP is phase of cosine relative to gaussian
-            E_tot+=amp*gauss*cos
+            E_tot += amp*gauss*cos
         return E_tot
 
     def Update(self, channel_index, wavel=None, fwhm=None, amp=None, CEP=None, delay=None):

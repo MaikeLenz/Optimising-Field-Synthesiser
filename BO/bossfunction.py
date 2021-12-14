@@ -41,8 +41,6 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         # Now pass dictionary into array full of all the parameters
         #need the parameters in the right order to update the synthesiser
         organised_params = np.zeros((Synth.no_of_channels(),5))
-        #print(range(Synth.no_of_channels()))
-        #print(organised_params)
         for key, value in params_dict.items():
             for i in range(Synth.no_of_channels()):
                 if str(i) in key:
@@ -81,7 +79,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         if 'fwhm' in i:
             pbounds[i] = (5,70)
         if 'amp' in i:
-            pbounds[i] = (0,10)
+            pbounds[i] = (0.1,3)
         if 'CEP' in i:
             pbounds[i] = (0, 2*np.pi)
         if 'delay' in i:

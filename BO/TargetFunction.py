@@ -14,6 +14,12 @@ def totalPower(t, E):
     h = t[1] - t[0]
     return 0.5*h*((I[0]+I[-1]) + 2*np.sum(I[1:-1]))
 
+def maxIntens(t,E):
+    I=[]
+    for i in E:
+        I.append(i**2)
+    return max(I)
+
 def slopeGradient(t,E):
     # Not sure this will work since cos field inside
     """
