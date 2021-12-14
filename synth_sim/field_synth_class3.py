@@ -115,7 +115,7 @@ class Synthesiser(Element):
         """
         if wavel != None:
             l0=list(self._param_list[0])
-            #print("l0 is",l0)
+            print("l0 is",l0)
             l0[channel_index-1] = wavel
             self._param_list[0]=tuple(l0)
         if fwhm != None:
