@@ -43,7 +43,8 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         organised_params = np.zeros((Synth.no_of_channels(),5))
         for key, value in params_dict.items():
             for i in range(Synth.no_of_channels()):
-                if str(i) in key:
+                #print("i is",i)
+                if str(i+1) in key:
                     #iterate through parameters and insert into organised params array
                     if 'wavel' in key:
                         organised_params[i][0] = value
@@ -55,7 +56,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
                         organised_params[i][3] = value
                     elif 'delay' in key:
                         organised_params[i][4] = value
-
+        #print(organised_params)
         # Now update synthesiser- parameters should be in the right order now
         for i in range(len(organised_params)):
             #print("Error",organised_params[i-1],i)
