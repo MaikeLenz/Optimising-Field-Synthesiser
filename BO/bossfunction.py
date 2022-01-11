@@ -6,7 +6,7 @@ import sys
 sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\')
 sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\synth_sim\\')
 from subtargetfunctions import *
-from field_synth_class3 import *
+from field_synth_class import *
 #from ErrorCorrectionFunction import *
 from ErrorCorrectionFunction_integrate import *
 

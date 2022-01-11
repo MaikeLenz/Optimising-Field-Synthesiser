@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import sys
 sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\')
 sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\synth_sim\\')
-from stargetfunctions import *
-from field_synth_class3 import *
+from subtargetfunctions import *
+from field_synth_class import *
 from bossfunction import *
 #from ErrorCorrectionFunction import *
 from ErrorCorrectionFunction_integrate import *
