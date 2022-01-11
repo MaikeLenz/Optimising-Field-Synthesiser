@@ -40,7 +40,7 @@ slicing=[900,1250,1100,1600]
 im_height=slicing[1]-slicing[0]
 
 f = plt.figure(constrained_layout=True)
-gs = f.add_gridspec(5,6)
+gs = f.add_gridspec(3,6)
 
 slice_height=10
 
@@ -76,9 +76,9 @@ for i in range(len(images)):
         f_ax = f.add_subplot(gs[4, i-24])
         im=f_ax.plot(x,avg_slice)
         #f.colorbar(im)
-f.subplots_adjust(right=0.8)
+#f.subplots_adjust(right=0.8)
 #cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
-plt.suptitle("Roland_sapph4_1000usexp_3nd window, 0.5mm increments inwards")
+plt.suptitle("Sapphire window slice")
 #f.colorbar(im, cax=cbar_ax)
 plt.show()
 """

@@ -67,7 +67,7 @@ slicing=[850,1150,1050,1550]
 im_height=slicing[1]-slicing[0]
 
 f = plt.figure(constrained_layout=True)
-gs = f.add_gridspec(5,6)
+gs = f.add_gridspec(4,4)
 
 slice_height=10
 
@@ -83,29 +83,26 @@ for i in range(len(images)):
 
     avg_slice=(np.sum(slice,axis=0)/slice_height) #average over columns
     x=range(len(avg_slice))
-    if i >=0 and i<6:
+    if i >=0 and i<4:
         f_ax = f.add_subplot(gs[0,i])
         im=f_ax.plot(x,avg_slice)
         #f.colorbar(im)
-    elif i>= 6 and i<12:
-        f_ax = f.add_subplot(gs[1, i-6])
+    elif i<8:
+        f_ax = f.add_subplot(gs[1, i-4])
         im=f_ax.plot(x,avg_slice)
         #f.colorbar(im)
-    elif i>=12 and i<18:
-        f_ax = f.add_subplot(gs[2, i-12])
+    elif i<12:
+        f_ax = f.add_subplot(gs[2, i-8])
         im=f_ax.plot(x,avg_slice)
         #f.colorbar(im)
-    elif i>=18 and i<24:
-        f_ax = f.add_subplot(gs[3, i-18])
+    elif i<16:
+        f_ax = f.add_subplot(gs[3, i-12])
         im=f_ax.plot(x,avg_slice)
         #f.colorbar(im)
-    elif i<30:
-        f_ax = f.add_subplot(gs[4, i-24])
-        im=f_ax.plot(x,avg_slice)
         #f.colorbar(im)
-f.subplots_adjust(right=0.8)
+#f.subplots_adjust(right=0.8)
 #cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
-plt.suptitle("Roland_wedge_burn_no ND_exp1000us window, 1mm increments inwards")
+plt.suptitle("Wedge with burns")
 #f.colorbar(im, cax=cbar_ax)
 plt.show()
 """
