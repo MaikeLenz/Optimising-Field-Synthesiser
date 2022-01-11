@@ -2,6 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from bayes_opt import BayesianOptimization
 from scipy import integrate
+
+#defines the Element base class, Wavepacket class for individual channels, and the synthesiser class.
+
+
 #list = [carrier_frequencies, fwhm_pulse_durations, field_amplitudes, CEPs, time_delays]
 
 
@@ -18,6 +22,7 @@ class Wavepacket(Element):
     Class of Elements which are fields
     """
     def __init__(self, t0=0.0, wavel=1000, fwhm=10.0, amp=1.0, CEP=0.0, freq=None):
+        #define initial parameters
         self._t0 = t0 #in fs
         if freq != None:
             self._wavelength = (299.792458)/(freq) #in nm
@@ -28,6 +33,7 @@ class Wavepacket(Element):
         self._CEP = CEP 
 
     def Update(self, Synth, channel_index):
+        #this is used to update the channel parameters, e.g. after the optimisation.
         self._wavelength=list(Synth._param_list[0])[channel_index-1]
         self._fwhm_duration=list(Synth._param_list[1])[channel_index-1]
         self._amplitude=list(Synth._param_list[2])[channel_index-1]
@@ -69,14 +75,14 @@ class Synthesiser(Element):
         """
         generates list of tuples with parameter values, takes list of Wavepacket objects as input
         """
-        self._pulse_list=fields
-        #list = [carrier_frequencies, fwhm_pulse_durations, field_amplitudes, CEPs, time_delays] list of tuples
-        wavel=()
+        self._pulse_list=fields #a list of the wavepacket objects that make up the synthesiser
+        #list of tuples that holds the channel parameters = [carrier_frequencies, fwhm_pulse_durations, field_amplitudes, CEPs, time_delays]
+        #create tuples that contain one parameter for each channel
+        wavel=() 
         fwhm=()
         amp=()
         CEP=()
-        for i in self._pulse_list:
-            #print(i._carrier_freq)
+        for i in self._pulse_list: #append to the tuples
             wavel= wavel+(i._wavelength,)
             fwhm=fwhm+(i._fwhm_duration,)
             amp=amp+(i._amplitude,)
@@ -84,7 +90,7 @@ class Synthesiser(Element):
         if len(delays) != len(self._pulse_list)-1:
             raise "Error: Synthesiser not created successfully, dimension of delays doesn't match number of fields."
         delay1=(0,)+delays #delay of 1st pulse is zero
-        list=[wavel,fwhm,amp,CEP,delay1]
+        list=[wavel,fwhm,amp,CEP,delay1] #list of tuples that hold the channel parameters
         self._param_list=list
 
     def E_field_value(self,t):
@@ -93,7 +99,7 @@ class Synthesiser(Element):
         """
         E_tot=0
         for i in range(len(self._pulse_list)):
-            #print("wavels",self._pulse_list[0])
+            #iterate through channels and add the E field from each one
             wavel = self._param_list[0][i]
             freq=(299.792458)/(wavel)
             fwhm_duration = self._param_list[1][i]
@@ -111,11 +117,11 @@ class Synthesiser(Element):
         """
         Updates the parameter list attribute. Call this in the optimisation.
         have to convert tuples to lists and then back since tuples are immutable.
-        Note: leaves original field objects as they were, only changes synthesiser object.
+        Note: leaves original field objects as they were, only changes synthesiser object. To update channels, need to call their individual Update method
         """
+        #goes through arguments and changes each one in th elist of tuples with channel paraneters
         if wavel != None:
             l0=list(self._param_list[0])
-            #print("l0 is",l0)
             l0[channel_index-1] = wavel
             self._param_list[0]=tuple(l0)
         if fwhm != None:
@@ -136,6 +142,9 @@ class Synthesiser(Element):
             self._param_list[4]=tuple(l4)
 
     def create_dict(self):
+        """
+        returns a dictionary of the parameters in the synthesiser and their values
+        """
         param_dict = {}
         for i in range(len(self._param_list[0])):
             param_dict['wavel' + str(i+1)] = self._param_list[0][i]
@@ -150,15 +159,22 @@ class Synthesiser(Element):
         return param_dict
    
     def no_of_channels(self):
+        """
+        returns the number of channels in the synthesiser
+        """
         return len(self._pulse_list)
 
     def Energy_distr(self,t):
+        """
+        returns array with fraction of energy in each channel
+        """
         energies=np.array([])
         for i in self._pulse_list:
             energies=np.append(energies,i.Energy(t))
         return energies / np.sum(energies)
 
-        
+
+#testing        
 """
 
 t0=-10.0 #start time of first pulse in sequence
