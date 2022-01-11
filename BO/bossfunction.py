@@ -88,7 +88,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
     print(pbounds)
 
     optimizer = BayesianOptimization(
-        #now carry out BO with the defined target function
+        #now create BO with the defined target function
         f=target_func,
         pbounds=pbounds,
         verbose=1, # verbose = 1 prints only when a maximum is observed, verbose = 0 is silent
@@ -96,11 +96,12 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         )
 
     optimizer.maximize(
+        #maximises the target function output. In the case of the rms error functions, this is a minimisation because the errors are multiuplied by -1
         init_points=init_points,
         n_iter=n_iter,
         )
 
-    print(optimizer.max)
+    print(optimizer.max) #final parameters
         
 
     for i in range(len(Synth._pulse_list)):
@@ -114,12 +115,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
     E_individual = np.zeros((Synth.no_of_channels(),len(t))) #list of lists containing the E field values of each channel
     I_individual = np.zeros((Synth.no_of_channels(),len(t))) #list of lists containing the intensity values of each channel
 
-    """
-    for i in range(len(E_individual)):
-        E_individual[i].pop() #get rid of the first zero entry for each channel
-        I_individual[i].pop() #get rid of the first zero entry for each channel
-    """
-        
+    #creates final arrays for plotting   
     for i in range(len(t)):
         #create list of total electric field value at every t
         E_i= Synth.E_field_value(t[i])
@@ -148,7 +144,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             goal_field=np.append(goal_field,np.zeros(abs(offset)))
     """
     #plot results
-    energies=Synth.Energy_distr(t)
+    energies=Synth.Energy_distr(t) #energies in each channel
     f = plt.figure(constrained_layout=True)
     gs = f.add_gridspec(Synth.no_of_channels(), 2)
     f_ax_sim = f.add_subplot(gs[:, 0])
@@ -162,6 +158,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
     plt.legend()
 
     for i in range(Synth.no_of_channels()):
+        #create the subplots for each channel
         f_ax = f.add_subplot(gs[i, 1])
         j=i+1
         f_ax.plot(t, E_individual[i], label="Electric field %s" %j)
@@ -174,27 +171,8 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             f_ax.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 
     plt.show()
-    """
-    plt.plot(t, np.array(E_tot), label="Electric field")
-    for i in range(len(Synth._pulse_list)):
-        j=i+1
-        plt.plot(t, np.array(E_individual[i]), label="Electric field %s" %j)
 
-    plt.plot(t,np.array(I), label="Intensity")
-    plt.legend()
-    plt.xlabel("time, t")
-    plt.ylabel("Electric field/Intensity , a.u.")
-
-
-    for i in range(len(Synth._pulse_list)):
-        #printing channels in individual plots
-        plt.figure()
-        j=i+1
-        plt.plot(t, np.array(E_individual[i]), label="Electric field %s" %j)
-        plt.legend()
-    
-    plt.show()
-    """
+#testing
 
 """
 #create fields
