@@ -59,4 +59,4 @@ for i in t:
 #BO(params, Synth, errorCorrection_int, goal_field=E_goal, n_iter=100,init_points=200, t=t)
 #print(errorCorrection_int(t,E_goal,E_goal))
 
-BO(params, Synth, sharpestPeak_triang, n_iter=50,init_points=50, t=t)
+BO(params, Synth, errorCorrection_Advanced, n_iter=50,init_points=50, t=t)
