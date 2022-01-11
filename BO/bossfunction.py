@@ -10,6 +10,7 @@ from field_synth_class3 import *
 #from ErrorCorrectionFunction import *
 from ErrorCorrectionFunction_integrate import *
 
+#this function carries out BO for N fields. First, it defines the relevant target function before varying the input parameters.
 
 def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np.linspace(-20,100,20000)):     
     """
@@ -25,12 +26,12 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             args_BO[i]=params_dict[i] #append parameters to be varied to dictionary
         else:
             print('Error! Invalid parameter to vary') #this means that the string entered in params is not one of the recognised options
-   
      #time frame to look at, in fs
 
     def target_func(**args):
         """
         this is the target function of the optimiser. It is created as a nested function to take only the desired variables as inputs.
+        It will consist of one of the sub-target functions in the subtarget function file or one of the rms error functions in ErrorCorrection_integrate.
         """
         E=np.array([])
         I=np.array([])
@@ -39,7 +40,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             params_dict[params[i]] = args[params[i]]
                
         # Now pass dictionary into array full of all the parameters
-        #need the parameters in the right order to update the synthesiser
+        # need the parameters in the right order to update the synthesiser
         organised_params = np.zeros((Synth.no_of_channels(),5))
         for key, value in params_dict.items():
             for i in range(Synth.no_of_channels()):
@@ -56,20 +57,19 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
                         organised_params[i][3] = value
                     elif 'delay' in key:
                         organised_params[i][4] = value
-        #print(organised_params)
         # Now update synthesiser- parameters should be in the right order now
         for i in range(len(organised_params)):
-            #print("Error",organised_params[i-1],i)
-            Synth.Update(i+1 , *organised_params[i])
+            Synth.Update(i+1 , *organised_params[i]) #passes the parameters to the synthesiser to updatethe channels
         for i in t: 
             #create the list of total E field vaues over range t
             E_i=Synth.E_field_value(i)
             E=np.append(E,[E_i])
             I=np.append(I,[E_i**2])
         if function==errorCorrectionAdvanced_int or function==errorCorrection_int:
+            #to minimise rms errors, the sub-target function contains another argument, the goal intensity field
             return function(t,I,goal_field)    
         else: 
-            return function(t,E) #pass t and E to sub target function
+            return function(t,E) #pass t and E to sub-target function
 
     # Make pbounds dictionary
     pbounds = {}
@@ -88,6 +88,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
     print(pbounds)
 
     optimizer = BayesianOptimization(
+        #now carry out BO with the defined target function
         f=target_func,
         pbounds=pbounds,
         verbose=1, # verbose = 1 prints only when a maximum is observed, verbose = 0 is silent

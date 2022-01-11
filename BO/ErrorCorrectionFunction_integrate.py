@@ -1,6 +1,8 @@
 
 import numpy as np
 from scipy import integrate
+#this is an updated version which uses integration functions from scipy rather than manual integration which dramatically speeds up the code.
+
 #defines the rms error minimisation functions. 
 #errorCorrection_int just works with two given arrays.
 #errorCorrectionAdvanced_int normalises them and shifts them in time to align before calculating the errors.
