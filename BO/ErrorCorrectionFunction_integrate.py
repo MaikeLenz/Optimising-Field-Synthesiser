@@ -13,7 +13,7 @@ def errorCorrection_int(t, synth_field, goal_field):
     if len(synth_field) != len(goal_field):
         print('Error- synth_field is a different length to goal_field')
     for i in range(len(synth_field)):
-        diff=np.append(diff,[(synth_field[i] - goal_field[i])**2])
+        diff=np.append(diff,[(synth_field[i]**2 - goal_field[i])**2])
     return - integrate.simps(diff, t)
 
 def errorCorrectionAdvanced_int(t, synth_field, goal_field):

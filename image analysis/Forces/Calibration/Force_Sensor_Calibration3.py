@@ -51,10 +51,10 @@ R3 = ((8.28+9.02)/2)*1000
 R4 = ((18.31+18.87)/2)*1000
 
 print('Calibrated Forces (N):')
-print(exp(R1, popt[0]))
-print(exp(R2, popt[0]))
-print(exp(R3, popt[0]))
-print(exp(R4, popt[0]))
+print(R1,exp(R1, popt[0]))
+print(R2,exp(R2, popt[0]))
+print(R3,exp(R3, popt[0]))
+print(R4,exp(R4, popt[0]))
 
 
 plt.show()
