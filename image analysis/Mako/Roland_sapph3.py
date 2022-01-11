@@ -59,43 +59,40 @@ plt.show()
 imB_array =np.asarray(imB.convert('L'))
 imB_array =imB_array.astype(np.int16)
 
-imsub_array =np.asarray(im1.convert('L'))
-imsub_array =imsub_array.astype(np.int16)
-
 f = plt.figure(constrained_layout=True)
-gs = f.add_gridspec(5,6)
+gs = f.add_gridspec(3,5)
 
 for i in range(len(images)):
     im_array= np.asarray(images[i].convert('L'))
     im_array=im_array.astype(np.int16)
-    newimage2_array=im_array-imsub_array
+    newimage2_array=im_array-imB_array
 
     newimage2_array=newimage2_array[600:900,400:800]
-    max=10
+    max=50
     min=-5
-    if i >=0 and i<6:
+    if i >=0 and i<5:
         f_ax = f.add_subplot(gs[0,i])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
         #f.colorbar(im)
-    elif i>= 6 and i<12:
-        f_ax = f.add_subplot(gs[1, i-6])
+    elif i>= 5 and i<10:
+        f_ax = f.add_subplot(gs[1, i-5])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
         #f.colorbar(im)
-    elif i>=12 and i<18:
-        f_ax = f.add_subplot(gs[2, i-12])
+    elif i>=10 and i<15:
+        f_ax = f.add_subplot(gs[2, i-10])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
         #f.colorbar(im)
-    elif i>=18 and i<24:
-        f_ax = f.add_subplot(gs[3, i-18])
+    elif i>=15 and i<20:
+        f_ax = f.add_subplot(gs[3, i-15])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
         #f.colorbar(im)
     elif i<30:
-        f_ax = f.add_subplot(gs[4, i-24])
+        f_ax = f.add_subplot(gs[4, i-20])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
         #f.colorbar(im)
 f.subplots_adjust(right=0.8)
 cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
-plt.suptitle("Roland_sapph3_1000usexp_4nd window, 0.5mm increments inwards")
+plt.suptitle("sapphire_1000usexp, 0.5mm increments inwards")
 f.colorbar(im, cax=cbar_ax)
 plt.show()
 """

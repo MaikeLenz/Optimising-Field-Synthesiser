@@ -18,7 +18,7 @@ imB2 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_P
 imB3 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_beamsplitter_exp1000us\\Background_4ND.PNG')
 imB4 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_beamsplitter_exp1000us\\Background_5ND.PNG')
 
-images = [im1,im2,im3,im4]
+images = [im1,im2,im3]#,im4]
 
 
 """
@@ -62,7 +62,7 @@ imB4_array =np.asarray(imB4.convert('L'))
 imB4_array =imB4_array.astype(np.int16)
 
 f = plt.figure(constrained_layout=True)
-gs = f.add_gridspec(1,4)
+gs = f.add_gridspec(1,3)
 
 im1_array= np.asarray(images[0].convert('L'))
 im1_array=im1_array.astype(np.int16)
@@ -91,6 +91,7 @@ newimage3_array=im3_array-imB3_array
 f_ax = f.add_subplot(gs[0,2])
 im=f_ax.imshow(newimage3_array, vmin=min, vmax=max,cmap='gray')
 
+"""
 im4_array= np.asarray(images[3].convert('L'))
 im4_array=im4_array.astype(np.int16)
 newimage4_array=im4_array-imB4_array
@@ -98,10 +99,10 @@ newimage4_array=im4_array-imB4_array
 #newimage4_array=newimage4_array[600:900,400:700]
 f_ax = f.add_subplot(gs[0,3])
 im=f_ax.imshow(newimage4_array, vmin=min, vmax=max,cmap='gray')
-
+"""
 f.subplots_adjust(right=0.8)
 cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
-plt.suptitle("Roland_beamsplitter_exp1000us window")
+plt.suptitle("Beamsplitter_exp1000us")
 f.colorbar(im, cax=cbar_ax)
 plt.show()
 

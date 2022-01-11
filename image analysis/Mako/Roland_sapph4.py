@@ -68,7 +68,7 @@ imsub_array =imsub_array.astype(np.int16)
 slicing=[900,1250,1100,1600]
 
 f = plt.figure(constrained_layout=True)
-gs = f.add_gridspec(5,6)
+gs = f.add_gridspec(3,6)
 
 for i in range(len(images)):
     im_array= np.asarray(images[i].convert('L'))
@@ -100,7 +100,7 @@ for i in range(len(images)):
         #f.colorbar(im)
 f.subplots_adjust(right=0.8)
 cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
-plt.suptitle("Roland_sapph4_1000usexp_3nd window, 0.5mm increments inwards")
+plt.suptitle("sapphire_1000usexp_3nd, 0.5mm increments inwards")
 f.colorbar(im, cax=cbar_ax)
 plt.show()
 """

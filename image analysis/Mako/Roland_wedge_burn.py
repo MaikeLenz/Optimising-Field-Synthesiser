@@ -64,7 +64,7 @@ imsub_array =np.asarray(imB.convert('L'))
 imsub_array =imsub_array.astype(np.int16)
 slicing=[850,1150,1050,1550]
 f = plt.figure(constrained_layout=True)
-gs = f.add_gridspec(5,6)
+gs = f.add_gridspec(4,4)
 
 for i in range(len(images)):
     im_array= np.asarray(images[i].convert('L'))
@@ -73,29 +73,29 @@ for i in range(len(images)):
     newimage2_array=newimage2_array[slicing[0]:slicing[1],slicing[2]:slicing[3]]
     max=2
     min=-2
-    if i >=0 and i<6:
+    if i >=0 and i<4:
         f_ax = f.add_subplot(gs[0,i])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
         #f.colorbar(im)
-    elif i>= 6 and i<12:
-        f_ax = f.add_subplot(gs[1, i-6])
+    elif  i<8:
+        f_ax = f.add_subplot(gs[1, i-4])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
         #f.colorbar(im)
-    elif i>=12 and i<18:
-        f_ax = f.add_subplot(gs[2, i-12])
+    elif i<12:
+        f_ax = f.add_subplot(gs[2, i-8])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
         #f.colorbar(im)
-    elif i>=18 and i<24:
-        f_ax = f.add_subplot(gs[3, i-18])
+    elif i<16:
+        f_ax = f.add_subplot(gs[3, i-12])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
         #f.colorbar(im)
-    elif i<30:
-        f_ax = f.add_subplot(gs[4, i-24])
+    elif i<20:
+        f_ax = f.add_subplot(gs[4, i-16])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
         #f.colorbar(im)
 f.subplots_adjust(right=0.8)
 cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
-plt.suptitle("Roland_wedge_burn_no ND_exp1000us window, 1mm increments inwards")
+plt.suptitle("wedge_burn_no ND_exp1000us window, 1mm increments inwards")
 f.colorbar(im, cax=cbar_ax)
 plt.show()
 """

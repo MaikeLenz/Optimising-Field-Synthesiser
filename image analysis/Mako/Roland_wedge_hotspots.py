@@ -31,7 +31,7 @@ im21 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_P
 
 
 imB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\Roland_wedge_hotspots_noND_exp1000us_lightschangedat5\\Background.PNG')
-images = [im1,im2,im3, im4, im5, im6, im7, im8, im9, im10,im11,im12,im13,im14,im15,im16,im17,im18,im19,im20,im21]
+images = [im1,im2,im3, im4, im5, im6, im7, im8, im9, im10,im11,im12,im13,im14,im15,im16,im17,im18,im19,im20]#,im21]
 
 
 """
@@ -69,7 +69,7 @@ imsub_array =np.asarray(imB.convert('L'))
 imsub_array =imsub_array.astype(np.int16)
 
 f = plt.figure(constrained_layout=True)
-gs = f.add_gridspec(5,6)
+gs = f.add_gridspec(4,5)
 
 for i in range(len(images)):
     im_array= np.asarray(images[i].convert('L'))
@@ -79,29 +79,30 @@ for i in range(len(images)):
     newimage2_array=newimage2_array[800:1250,1000:1600]
     max=10
     min=-5
-    if i >=0 and i<6:
+    if i >=0 and i<5:
         f_ax = f.add_subplot(gs[0,i])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
         #f.colorbar(im)
-    elif i>= 6 and i<12:
-        f_ax = f.add_subplot(gs[1, i-6])
+    elif i<10:
+        f_ax = f.add_subplot(gs[1, i-5])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
         #f.colorbar(im)
-    elif i>=12 and i<18:
-        f_ax = f.add_subplot(gs[2, i-12])
+    elif i<15:
+        f_ax = f.add_subplot(gs[2, i-10])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
         #f.colorbar(im)
-    elif i>=18 and i<24:
-        f_ax = f.add_subplot(gs[3, i-18])
+    elif i<20:
+        f_ax = f.add_subplot(gs[3, i-15])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
         #f.colorbar(im)
     elif i<30:
-        f_ax = f.add_subplot(gs[4, i-24])
+        f_ax = f.add_subplot(gs[4, i-20])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
         #f.colorbar(im)
 f.subplots_adjust(right=0.8)
 cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
-plt.suptitle("Roland_wedge_hotspots_noND_exp1000us_lightschangedat5 window, 0.5mm increments inwards")
+#plt.suptitle("wedge_hotspots_noND_exp1000us_lightschangedat5, 0.5mm increments inwards")
+plt.suptitle("wedge_hotspots_noND_exp1000us, 0.5mm increments inwards")
 f.colorbar(im, cax=cbar_ax)
 plt.show()
 """
