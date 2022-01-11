@@ -102,7 +102,7 @@ for i in range(len(images)):
 f.subplots_adjust(right=0.8)
 cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
 #plt.suptitle("wedge_hotspots_noND_exp1000us_lightschangedat5, 0.5mm increments inwards")
-plt.suptitle("wedge_hotspots_noND_exp1000us, 0.5mm increments inwards")
+plt.suptitle("wedge_hotspots_noND_exp1000us, 1mm increments inwards")
 f.colorbar(im, cax=cbar_ax)
 plt.show()
 """
