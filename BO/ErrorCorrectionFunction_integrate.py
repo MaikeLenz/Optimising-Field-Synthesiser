@@ -23,9 +23,6 @@ def errorCorrectionAdvanced_int(t, synth_field, goal_field):
     """
     finds rms error between two functions, first scales them and matches up maxima in time.
     """
-    if len(synth_field) != len(goal_field):
-        print('Error- synth_field is a different length to goal_field')
-     
     # First scale both functions to amplitude of 1
     #need to check that the norm isn't zero to avoid errors
     if np.linalg.norm(np.array(synth_field)) != 0:
@@ -34,21 +31,26 @@ def errorCorrectionAdvanced_int(t, synth_field, goal_field):
         goal_field=np.array(goal_field)/(np.linalg.norm(np.array(goal_field)))
 
     # Next shift the maxima to the same time values- consider only the first maximum for simplicity
-
     max_indices_synth = np.argwhere(synth_field == np.amax(synth_field)).flatten().tolist()
     max_indices_goal = np.argwhere(goal_field == np.amax(goal_field)).flatten().tolist()
     median_synth = median(max_indices_synth)
     median_goal = median(max_indices_goal) 
+
+    #if len(synth_field) > len(goal_field):
+        #if goal field is shorter, then we only care about that section of the intensity distribution.
+        #line up the fields
+        #chop off the uninteresting part of the synthesised field here
+
     offset = median_synth - median_goal
 
-    #determine point that falls below 10% of max which is the limit for being cut off
+    #determine point that falls below 10% of max which is the limit for being cut off?
     """
     args_below_ten = np.argwhere(synth_field <= 0.1*np.amax(synth_field))#
     args_below_ten_reverse = args_below_ten[::-1] #reverses array
     edge_left = np.argwhere(args_below_ten_reverse < median_synth)
     edge_right = np.argwhere(args_below_ten > median_synth)
     """
-
+    #should we be slicing the synthesised field ?
     if offset > 0: #goal_field on the left of synth_field
         goal_field = goal_field[:len(synth_field)-abs(offset)]
         goal_field=np.append(np.zeros(abs(offset)),goal_field)
