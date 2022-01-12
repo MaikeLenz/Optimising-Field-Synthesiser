@@ -36,10 +36,17 @@ def errorCorrectionAdvanced_int(t, synth_field, goal_field):
     median_synth = median(max_indices_synth)
     median_goal = median(max_indices_goal) 
 
-    #if len(synth_field) > len(goal_field):
+    """
+    if len(synth_field) > len(goal_field):
         #if goal field is shorter, then we only care about that section of the intensity distribution.
         #line up the fields
         #chop off the uninteresting part of the synthesised field here
+        #need the point at median_synth to become the index median_goal to line fields up
+        offset = median_synth-median_goal
+        if offset >1:
+            #crop synth field to the length of the goal field but starting after offset such that maxima align
+            synth_field=synth_field[offset:offset+len(goal_field)]
+    """
 
     offset = median_synth - median_goal
 
