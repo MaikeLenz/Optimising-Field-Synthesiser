@@ -68,6 +68,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
                 #if a window of interest is defined, only care about that section
                 max_index = median(np.argwhere(np.absolute(E_i) == np.amax(np.absolute(E_i))).flatten().tolist()) #finds index of middle maximum
                 E_i=E_i[max_index-0.5*window:max_index+0.5*window] #window of defined width with the maximum field in the centre
+                #also slice time array accordingly here!
 
             E=np.append(E,[E_i])
             I=np.append(I,[E_i**2])
