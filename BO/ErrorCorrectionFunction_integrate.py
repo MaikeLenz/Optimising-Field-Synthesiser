@@ -7,7 +7,7 @@ from scipy import integrate
 #errorCorrection_int just works with two given arrays.
 #errorCorrectionAdvanced_int normalises them and shifts them in time to align before calculating the errors.
 
-def errorCorrection_int(t, synth_field, goal_field):
+def errorCorrection_int(t, synth_field, goal_field): #both synth_field and goal_field are intensities!
     """
     returns the negative of the rms error between synth_field and goal_field
     without any adjustment in amplitudes or position in time
@@ -16,7 +16,7 @@ def errorCorrection_int(t, synth_field, goal_field):
     if len(synth_field) != len(goal_field):
         print('Error- synth_field is a different length to goal_field')
     for i in range(len(synth_field)):
-        diff=np.append(diff,[(synth_field[i]**2 - goal_field[i])**2])
+        diff=np.append(diff,[(synth_field[i] - goal_field[i])**2])
     return - integrate.simps(diff, t) #integrates the differences
 
 def errorCorrectionAdvanced_int(t, synth_field, goal_field):

@@ -12,7 +12,7 @@ from ErrorCorrectionFunction_integrate import *
 
 #this function carries out BO for N fields. First, it defines the relevant target function before varying the input parameters.
 
-def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np.linspace(-20,100,20000)):     
+def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np.linspace(-20,100,20000), window=None):     
     """
     performs BO with params as specified as strings in params input (params is list of strings) on the synthesiser Synth.
     init_points: number of initial BO points
@@ -61,14 +61,21 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         for i in range(len(organised_params)):
             Synth.Update(i+1 , *organised_params[i]) #passes the parameters to the synthesiser to updatethe channels
         for i in t: 
-            #create the list of total E field vaues over range t
+            #create array of total E field values over range t
             E_i=Synth.E_field_value(i)
+
+            if window!=None:
+                #if a window of interest is defined, only care about that section
+                max_index = median(np.argwhere(np.absolute(E_i) == np.amax(np.absolute(E_i))).flatten().tolist()) #finds index of middle maximum
+                E_i=E_i[max_index-0.5*window:max_index+0.5*window] #window of defined width with the maximum field in the centre
+
             E=np.append(E,[E_i])
             I=np.append(I,[E_i**2])
         if function==errorCorrectionAdvanced_int or function==errorCorrection_int:
             #to minimise rms errors, the sub-target function contains another argument, the goal intensity field
             return function(t,I,goal_field)    
         else: 
+            #perhaps already pass the array of intensities in here?
             return function(t,E) #pass t and E to sub-target function
 
     # Make pbounds dictionary
