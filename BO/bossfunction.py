@@ -139,6 +139,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             I_individual[j][i]=(Synth._pulse_list[j].E_field_value(t[i]))**2
 
     """
+    #shift goal field to align with max intensity
     if function==errorCorrectionAdvanced_int or function==errorCorrection_int:
         #shift the left electric field to match in time
         offset=np.argmax(I)-np.argmax(goal_field)
@@ -159,6 +160,8 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
     f_ax_sim.plot(t, I, label="Intensity")
     f_ax_sim.plot(t, gradient, label="Intensity Gradient")
     if function==errorCorrectionAdvanced_int or function==errorCorrection_int:
+        #need another curve which is the goal field
+        #shift this to align with the max intensity?
         f_ax_sim.plot(t, goal_field, label="Goal Intensity")
     f_ax_sim.set_xlabel('Time, fs')
     f_ax_sim.set_ylabel('Electric field / Intensity')
