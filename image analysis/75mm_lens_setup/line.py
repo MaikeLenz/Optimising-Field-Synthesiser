@@ -23,7 +23,8 @@ im13 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_P
 im14 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\Line Window\\13.PNG')
 
 imB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\Line Window\\Background.PNG')
-images = [im2,im3, im4, im5, im6, im7, im8, im9, im10, im11, im12, im13, im14]
+#images = [im2,im3, im4, im5, im6, im7, im8, im9, im10, im11, im12, im13, im14]
+images = [im7]
 
 
 imB_array =np.asarray(imB.convert('L'))
@@ -38,7 +39,7 @@ for i in range(len(images)):
     newimage2_array=im_array-imB_array
 
     #newimage2_array=newimage2_array[600:850,750:1200]
-    max=60
+    max=10
     min=-5
     if i >=0 and i<6:
         f_ax = f.add_subplot(gs[0,i])
