@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Jan 13 11:21:35 2022
-
-@author: iammo
-"""
-
 import PIL as PIL
 import matplotlib.pyplot as plt
 import numpy as np
@@ -149,4 +142,65 @@ plt.imshow(newimageFT_im_shift, cmap='gray', vmin=minimum, vmax=maximum)
 ## Note: if we now look at the images, the centers of the spots are around (220, 130) which is where the center of the beam is
 ## Could this correspond to damage?
 ## These areas are very small, only a few pixels wide
+#%%
+# Create plot of all Fourier transformed images, cropped around 220 and 130
 
+f = plt.figure(constrained_layout=True)
+gs = f.add_gridspec(4,6)
+
+
+for i in range(len(images[0:10])):
+    im_array= np.asarray(images[i].convert('L'))
+    im_array=im_array.astype(np.int16)
+    newimage2_array=im_array-imB_array
+    newimage2_array=newimage2_array[600:850,750:1200]
+    
+    newimageFT = ifft2(newimage2_array)
+    newimageFT_shift = fftshift(newimageFT)
+    
+    newimageFT_real_shift = []
+    for i in range(len(newimageFT_shift)):
+        row = []
+        for j in range(len(newimageFT_shift[i])):
+            row.append(newimageFT_shift[i][j].real)
+        newimageFT_real_shift.append(row)
+    newimageFT_im_shift = []
+    for i in range(len(newimageFT_shift)):
+        row = []
+        for j in range(len(newimageFT_shift[i])):
+            row.append(newimageFT_shift[i][j].imag)
+        newimageFT_im_shift.append(row)
+        
+    newimageFT_real_shift = np.array(newimageFT_real_shift)[114:135,210:240]
+
+    max=1
+    min=-1
+    
+    ## Subplots figure currently not working
+    """
+    if i >=0 and i<6:
+        f_ax = f.add_subplot(gs[0,i])
+        im=f.imshow(newimageFT_real_shift, vmin=min, vmax=max,cmap='gray')
+        #f.colorbar(im)
+    elif i>= 6 and i<12:
+        f_ax = f.add_subplot(gs[1, i-6])
+        im=f_ax.imshow(newimageFT_real_shift, vmin=min, vmax=max,cmap='gray')
+        #f.colorbar(im)
+    elif i>=12 and i<18:
+        f_ax = f.add_subplot(gs[2, i-12])
+        im=f_ax.imshow(newimageFT_real_shift, vmin=min, vmax=max,cmap='gray')
+        #f.colorbar(im)
+    elif i>=18 and i<24:
+        f_ax = f.add_subplot(gs[3, i-18])
+        im=f_ax.imshow(newimageFT_real_shift, vmin=min, vmax=max,cmap='gray')
+        #f.colorbar(im)
+    """
+    plt.figure()
+    plt.imshow(newimageFT_real_shift, vmin=min, vmax=max,cmap='gray')
+    plt.title(i)
+    
+#f_re.subplots_adjust(right=0.8)
+#cbar_ax = f_re.add_axes([0.85, 0.15, 0.015, 0.7])
+#plt.suptitle("Lined window, damaged side, 0.5mm increments inwards")
+#f_re.colorbar(im, cax=cbar_ax)
+plt.show()
