@@ -115,3 +115,34 @@ plt.imshow(newimageFT_im, cmap='gray', vmin=minimum, vmax=maximum)
 #%%
 # Try shifting to center - center at roughly 220 pixels horizontally and 140 pixels vertically
 
+
+newimageFT_shift = fftshift(newimageFT)
+print(newimageFT_shift)
+
+newimageFT_real_shift = []
+for i in range(len(newimageFT_shift)):
+    row = []
+    for j in range(len(newimageFT_shift[i])):
+        row.append(newimageFT_shift[i][j].real)
+    newimageFT_real_shift.append(row)
+#print(newimageFT)
+
+maximum=1
+minimum=0
+plt.figure()
+plt.imshow(newimageFT_real_shift, cmap='gray', vmin=minimum, vmax=maximum)
+plt.colorbar()
+
+#print(newimageFT_real)
+
+newimageFT_im_shift = []
+for i in range(len(newimageFT_shift)):
+    row = []
+    for j in range(len(newimageFT_shift[i])):
+        row.append(newimageFT_shift[i][j].imag)
+    newimageFT_im_shift.append(row)
+    
+#print(newimageFT_im)
+plt.figure()
+plt.imshow(newimageFT_im_shift, cmap='gray', vmin=minimum, vmax=maximum)
+
