@@ -128,7 +128,7 @@ for i in range(len(newimageFT_shift)):
 #print(newimageFT)
 
 maximum=1
-minimum=0
+minimum=-1
 plt.figure()
 plt.imshow(newimageFT_real_shift, cmap='gray', vmin=minimum, vmax=maximum)
 plt.colorbar()
@@ -145,4 +145,8 @@ for i in range(len(newimageFT_shift)):
 #print(newimageFT_im)
 plt.figure()
 plt.imshow(newimageFT_im_shift, cmap='gray', vmin=minimum, vmax=maximum)
+
+## Note: if we now look at the images, the centers of the spots are around (220, 130) which is where the center of the beam is
+## Could this correspond to damage?
+## These areas are very small, only a few pixels wide
 
