@@ -116,7 +116,7 @@ plt.imshow(newimageFT_im, cmap='gray', vmin=minimum, vmax=maximum)
 # Try shifting to center - center at roughly 220 pixels horizontally and 140 pixels vertically
 
 
-newimageFT_shift = fftshift(newimageFT)
+newimageFT_shift = fftshift(newimageFT) #This shifts the zero frequency components to center of the image
 print(newimageFT_shift)
 
 newimageFT_real_shift = []
