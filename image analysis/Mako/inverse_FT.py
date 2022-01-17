@@ -3,15 +3,14 @@ import matplotlib.pyplot as plt
 import PIL as PIL
 
 #take image 9 of the line transmission and inverse FT
-
+"""
 img = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\5.PNG')
 imB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Mako\\line\\Background.PNG')
-
 """
+
 #high force clamping
 img= PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Forces\\5_08ohms\\14.PNG')
 imB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\Forces\\5_08ohms\\Background.PNG')
-"""
 
 imB_array =np.asarray(imB.convert('L'))
 imB_array =imB_array.astype(np.int16)
@@ -45,6 +44,6 @@ im=f_ax.imshow(inv, cmap="gray")#, vmin=-5, vmax=5,cmap='gray')
 f.subplots_adjust(right=0.8)
 
 cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
-plt.suptitle("Lined window Transmission and inverse FT")
+plt.suptitle("Stressed window Transmission and inverse FT")
 plt.colorbar(im, cax=cbar_ax)
 plt.show()
