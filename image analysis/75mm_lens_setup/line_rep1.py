@@ -36,7 +36,7 @@ for i in range(len(images)):
 
     #newimage2_array=newimage2_array[600:1000,900:1300]
     max=3
-    min=-5
+    min=-2
     if i >=0 and i<3:
         f_ax = f.add_subplot(gs[0,i])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')

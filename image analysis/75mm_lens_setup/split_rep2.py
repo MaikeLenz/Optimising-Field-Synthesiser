@@ -7,11 +7,10 @@ import numpy as np
 
 #damaged side of Split window
 
-im1 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\repeat 1\\Split\\0.PNG')
-im2 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\repeat 1\\Split\\4.PNG')
-imB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\repeat 1\\Split\\Background.PNG')
+im1 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\repeat 2\\Split\\horizontal.PNG')
+imB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\repeat 2\\Split\\Background.PNG')
 
-images = [im1,im2]
+images = [im1, imB]
 
 
 imB_array =np.asarray(imB.convert('L'))
@@ -23,11 +22,11 @@ gs = f.add_gridspec(1,2)
 for i in range(len(images)):
     im_array= np.asarray(images[i].convert('L'))
     im_array=im_array.astype(np.int16)
-    newimage2_array=im_array-imB_array
+    newimage2_array=im_array#-imB_array
 
     #newimage2_array=newimage2_array[600:1000,900:1300]
-    max=5
-    min=-10
+    max=100
+    min=-5
     if i >=0 and i<3:
         f_ax = f.add_subplot(gs[0,i])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
