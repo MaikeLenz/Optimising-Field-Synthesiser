@@ -7,8 +7,8 @@ import numpy as np
 
 #damaged side of Split window
 
-im1 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\Split\\0.PNG')
-imB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\Split\\Background.PNG')
+im1 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\Split2\\0.PNG')
+imB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\Split2\\Background.PNG')
 images = [im1]
 
 
@@ -16,12 +16,12 @@ imB_array =np.asarray(imB.convert('L'))
 imB_array =imB_array.astype(np.int16)
 
 f = plt.figure(constrained_layout=True)
-gs = f.add_gridspec(3,3)
+gs = f.add_gridspec(1,1)
 
 for i in range(len(images)):
     im_array= np.asarray(images[i].convert('L'))
     im_array=im_array.astype(np.int16)
-    newimage2_array=im_array#-imB_array
+    newimage2_array=im_array-imB_array
 
     #newimage2_array=newimage2_array[600:1000,900:1300]
     max=30
