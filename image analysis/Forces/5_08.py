@@ -63,7 +63,7 @@ for i in range(len(images)):
 
     avg_slice=(np.sum(slice,axis=0)/slice_height) #average over columns
     x=range(len(avg_slice))
-
+    print(np.sum(newimage2_array))
     max=25
     min=-2
     if i >=0 and i<6:

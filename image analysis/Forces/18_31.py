@@ -57,6 +57,8 @@ for i in range(len(images)):
     newimage2_array=im_array-imsub_array
     newimage2_array=newimage2_array[slicing[0]:slicing[1],slicing[2]:slicing[3]]
     
+    print(np.sum(newimage2_array))
+
     slice_start=int(0.5*im_height-0.5*slice_height) #take out a narrow slice
     slice_end=slice_start+slice_height
     slice=newimage2_array[slice_start:slice_end]

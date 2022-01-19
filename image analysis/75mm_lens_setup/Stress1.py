@@ -7,27 +7,28 @@ import numpy as np
 
 #damaged side of Split window
 
-im1 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\Stress\\650K.PNG')
-im2 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\repeat 1\\Split\\4.PNG')
-imB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\repeat 1\\Split\\Background.PNG')
+im1 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\Stress\\650KO.PNG')
+im2 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\Stress\\60KO.PNG')
+imB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\Stress\\Background.PNG')
 
-images = [im1,im2]
+images = [im1,im2,imB]
 
 
 imB_array =np.asarray(imB.convert('L'))
 imB_array =imB_array.astype(np.int16)
 
 f = plt.figure(constrained_layout=True)
-gs = f.add_gridspec(1,2)
+gs = f.add_gridspec(1,3)
 
 for i in range(len(images)):
     im_array= np.asarray(images[i].convert('L'))
     im_array=im_array.astype(np.int16)
-    newimage2_array=im_array-imB_array
 
+    newimage2_array=im_array#-imB
+    print(np.sum(newimage2_array))
     #newimage2_array=newimage2_array[600:1000,900:1300]
-    max=5
-    min=-4
+    max=50
+    min=10
     if i >=0 and i<3:
         f_ax = f.add_subplot(gs[0,i])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
@@ -42,6 +43,6 @@ for i in range(len(images)):
         #f.colorbar(im)
 f.subplots_adjust(right=0.8)
 cbar_ax = f.add_axes([0.85, 0.15, 0.015, 0.7])
-plt.suptitle("Split window, 4mm increments")
+plt.suptitle("Stress on window, normal & tight clamping")
 f.colorbar(im, cax=cbar_ax)
 plt.show()
