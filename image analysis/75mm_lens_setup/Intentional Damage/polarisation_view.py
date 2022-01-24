@@ -4,7 +4,7 @@ import numpy as np
 #%%
 # display background subtractions of all damages
 
-im1 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\Intentional Damage\\Polarisation\\50.PNG')
+im1 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\Intentional Damage\\Polarisation\\50 Repeat\\50.PNG')
 #im2 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\Intentional Damage\\Polarisation\\100down.PNG')
 #im3 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\Intentional Damage\\Polarisation\\100up.PNG')
 im2= PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\Intentional Damage\\Polarisation\\100 Repeat\\100.PNG')
@@ -20,6 +20,9 @@ im12 = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_P
 
 imB = PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\Intentional Damage\\Polarisation\\Background.PNG')
 imB_rep= PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\Intentional Damage\\Polarisation\\100 Repeat\\Background.PNG')
+imB_rep2= PIL.Image.open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\images\\75mm_lens_setup\\Intentional Damage\\Polarisation\\50 Repeat\\Background.PNG')
+
+
 images = [im1,im2, im4, im5, im6, im7, im8, im9,im10,im11,im12]
 
 
@@ -28,6 +31,9 @@ imB_array =imB_array.astype(np.int16)
 
 imB_rep_array =np.asarray(imB_rep.convert('L'))
 imB_rep_array =imB_rep_array.astype(np.int16)
+
+imB_rep2_array =np.asarray(imB_rep2.convert('L'))
+imB_rep2_array =imB_rep2_array.astype(np.int16)
 
 f = plt.figure(constrained_layout=True)
 layout=[3,4]
@@ -38,20 +44,22 @@ for i in range(len(images)):
     im_array=im_array.astype(np.int16)
     if images[i]==im2:
         newimage2_array=im_array-imB_rep_array
+    elif images[i]==im1:
+        newimage2_array=im_array-imB_rep2_array
     else:
         newimage2_array=im_array-imB_array
 
     #newimage2_array=newimage2_array[600:1000,900:1300]
     max=10
-    min=-5
+    min=-1
     if i >=0 and i<layout[1]:
         f_ax = f.add_subplot(gs[0,i])
-        #im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
-        im=f_ax.imshow(newimage2_array, cmap='gray')
+        im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
+        #im=f_ax.imshow(newimage2_array, cmap='gray')
     elif i<2*layout[1]:
         f_ax = f.add_subplot(gs[1, i-layout[1]])
-        #im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
-        im=f_ax.imshow(newimage2_array, cmap='gray')
+        im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
+        #im=f_ax.imshow(newimage2_array, cmap='gray')
     elif i<3*layout[1]:
         f_ax = f.add_subplot(gs[2, i-2*layout[1]])
         im=f_ax.imshow(newimage2_array, vmin=min, vmax=max,cmap='gray')
