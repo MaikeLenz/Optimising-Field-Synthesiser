@@ -4,7 +4,7 @@ This project started work towards optimising parameters of the Luna prop_capilla
 Current Progress: 
 <br />
 - Interactive comparison plots for a single mode of the signal. The peak gives some indication of how effective 
-the paremeters are at minimising peak wavelength.
+the parameters are at minimising peak wavelength.
 Default values are assigned for all but 1 parameter, which is varied about its default value.
 
 - We have also been able to run the simulation via a python script, allowing for plotting and optimisation in python.

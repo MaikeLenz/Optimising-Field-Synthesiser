@@ -113,7 +113,7 @@ for (param, values) in parameters
 
         for val in values
 
-            println("\nInteration ", count, " of ", total_iterations, "\n")
+            println("\nIteration ", count, " of ", total_iterations, "\n")
 
             duv = run_sim(param, val)
                             
