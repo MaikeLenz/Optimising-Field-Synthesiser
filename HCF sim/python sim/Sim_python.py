@@ -1,6 +1,7 @@
 
 import julia
 #from julia.api import Julia
+import matplotlib.pyplot as plt
 
 
 julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
@@ -34,12 +35,12 @@ Main.energy = energy
 # Calculations
 # setting pressure to (0,pressure) means a gradient from zero up until given value
 #Main.duv = Main.eval('prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, modes=4, trange=400e-15, λlims=(150e-9, 4e-6))')
-Main.duv = Main.eval('output=prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
-
+Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
+"""
 Main.eval('dumps = duv["dumps"]')
 dumps = Main.dumps
-
-Main.eval("t, Et, zactual = Processing.getEt(dumps)")
+"""
+Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
 #Main.eval('t, Et, zactual = Processing.getEt(output["Eω"])')
 
 ## These next lines show how t, Et and zactual could be accessed in the Python namespace for analysis
@@ -50,12 +51,12 @@ Main.eval("t, Et, zactual = Processing.getEt(dumps)")
 
 #Main.eval("t[0:10]")
 
-t = Main.t
-Et = Main.Et
-zactual = Main.zactual
+λ = Main.λ
+Iλ = Main.Iλ
 
 
 print(Main)
-print(t[0:10])
-print(Et[0:10])
-print(zactual[0:10])
+print(λ[0:10])
+print(Iλ[0:10])
+plt.plot(λ,Iλ)
+plt.show()

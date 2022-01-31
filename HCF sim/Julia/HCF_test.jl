@@ -32,12 +32,14 @@ Plotting.spectrogram(duv, flength; trange=(-20e-15, 30e-15), λrange=(150e-9, 10
 
 # retrieve the spectral energy density at the output
 λ, Iλ = Processing.getIω(duv, :λ, flength)
-
+#λ2, Eλ = Processing.getEt(duv, :λ, flength)
 # plot the result
 plt.figure()
-plt.plot(λ*1e9, Iλ*1e-3)
+plt.plot(λ*1e9, Iλ*1e-3, label="intensity")
+#plt.plot(λ2*1e9, Eλ*1e-3, label="Et")
 plt.xlim(200, 950)
 plt.xlabel("Wavelength (nm)")
 plt.ylabel("Spectral energy density (μJ/nm)")
+plt.legend()
 plt.ylim(ymin=0)
 plt.show()
