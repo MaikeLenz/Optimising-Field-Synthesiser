@@ -9,6 +9,8 @@ pressure = 2.340607 # gas pressure in bar, corresponds to 66% of 3.5 atm
 
 λ0 = 800e-9 # central wavelength of the pump pulse
 τfwhm = 30e-15 # FWHM duration of the pump pulse
+
+
 energy = 0.5e-3 # energy in the pump pulse
 
 duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy,
