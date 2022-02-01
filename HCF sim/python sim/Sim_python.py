@@ -1,8 +1,6 @@
 
 import julia
-#from julia.api import Julia
 import matplotlib.pyplot as plt
-import numpy as np
 
 julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
 
@@ -35,12 +33,14 @@ Main.energy = energy
 # setting pressure to (0,pressure) means a gradient from zero up until given value
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
 
+#now extract datasets
 Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
 Main.eval('t, Et = Processing.getEt(duv)')
 
 ## These next lines show how t, Et and zactual could be accessed in the Python namespace for analysis
 # Once defined, the same method as in time_1d can be used to get the y data needed for analysis of the curve (max heigh, FWHM, etc.), which
 # subsequently would be the inputs the the BO 
+#assign python variables
 λ = Main.λ
 Iλ = Main.Iλ
 t = Main.t
@@ -48,11 +48,17 @@ t = Main.t
 Et_allz=Main.Et #array of Et at all z 
 Et=Et_allz[:,-1] #last item in each element is pulse shape at the end
 Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
+#note Et is complex
 
+#plotting
 plt.figure()
 plt.plot(λ,Iλ)
+plt.xlabel("Wavelength (nm)")
+plt.ylabel("Spectral energy density (μJ/nm)")
 plt.figure()
 plt.plot(t,Et,label="z=1m")
 plt.plot(t,Et0,label="z=0")
+plt.xlabel("time,s")
+plt.ylabel("Electric field, a.u.")
 plt.legend()
 plt.show()
