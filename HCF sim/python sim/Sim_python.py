@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 
 
 julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
-#julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin")
 
 from julia import Main
 
@@ -34,7 +33,6 @@ Main.energy = energy
 
 # Calculations
 # setting pressure to (0,pressure) means a gradient from zero up until given value
-#Main.duv = Main.eval('prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, modes=4, trange=400e-15, λlims=(150e-9, 4e-6))')
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
 
 Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
