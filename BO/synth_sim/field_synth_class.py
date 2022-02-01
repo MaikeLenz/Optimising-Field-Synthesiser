@@ -5,7 +5,6 @@ from scipy import integrate
 
 #defines the Element base class, Wavepacket class for individual channels, and the synthesiser class.
 
-
 #list = [carrier_frequencies, fwhm_pulse_durations, field_amplitudes, CEPs, time_delays]
 
 
