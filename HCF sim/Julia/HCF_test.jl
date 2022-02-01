@@ -1,6 +1,8 @@
 using Luna
 import PyPlot: plt
 
+#simulates HCF fibre in Luna
+
 radius = 125e-6 # HCF core radius
 flength = 1 # HCF length
 
