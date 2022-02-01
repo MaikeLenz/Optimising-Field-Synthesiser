@@ -2,7 +2,7 @@
 import julia
 #from julia.api import Julia
 import matplotlib.pyplot as plt
-
+import numpy as np
 
 julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
 
@@ -43,23 +43,16 @@ Main.eval('t, Et = Processing.getEt(duv)')
 # subsequently would be the inputs the the BO 
 λ = Main.λ
 Iλ = Main.Iλ
-t=Main.t
+t = Main.t
 
 Et_allz=Main.Et #array of Et at all z 
-Et=Et_allz[-1]
-Et0=Et_allz[0]
-
-"""
-print(λ[0:10])
-print(Iλ[0:10])
-print(t[0:10])
-print(Et[0:10])
-"""
+Et=Et_allz[:,-1] #last item in each element is pulse shape at the end
+Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
 
 plt.figure()
 plt.plot(λ,Iλ)
 plt.figure()
-plt.plot(t,Et,label=("z=1m"))
+plt.plot(t,Et,label="z=1m")
 plt.plot(t,Et0,label="z=0")
 plt.legend()
 plt.show()
