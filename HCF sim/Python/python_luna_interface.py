@@ -1,12 +1,16 @@
 
 import julia
 import matplotlib.pyplot as plt
+import sys
+sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\')
+from rms_width import *
 
 julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
 
 from julia import Main
 
 Main.using("Luna")
+
 
 # Arguments
 radius = 125e-6 # HCF core radius
@@ -35,6 +39,7 @@ Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, 
 
 #now extract datasets
 Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
+Main.eval("ω, Iω = Processing.getIω(duv, :ω, flength)")
 Main.eval('t, Et = Processing.getEt(duv)')
 
 ## These next lines show how t, Et and zactual could be accessed in the Python namespace for analysis
@@ -44,17 +49,27 @@ Main.eval('t, Et = Processing.getEt(duv)')
 λ = Main.λ
 Iλ = Main.Iλ
 t = Main.t
+omega=Main.ω
+Iomega=Main.Iω
 
 Et_allz=Main.Et #array of Et at all z 
 Et=Et_allz[:,-1] #last item in each element is pulse shape at the end
 Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
 #note Et is complex
 
+width=rms_width(omega,Iomega)
+width_plot=np.array([2.0e15,2.0e15+width])
+bar_height=np.array([0.4e-18,0.4e-18])
 #plotting
 plt.figure()
 plt.plot(λ,Iλ)
-plt.xlabel("Wavelength (nm)")
-plt.ylabel("Spectral energy density (μJ/nm)")
+plt.xlabel("Wavelength (m)")
+plt.ylabel("Spectral energy density (J/m)")
+plt.figure()
+plt.plot(omega,Iomega)
+plt.plot(width_plot,bar_height)
+plt.xlabel("Angular frequency,/s")
+plt.ylabel("Intensity, a.u.")
 plt.figure()
 plt.plot(t,Et,label="z=1m")
 plt.plot(t,Et0,label="z=0")
