@@ -1,6 +1,7 @@
 
 import numpy as np
 from scipy import integrate
+import statistics
 #this is an updated version which uses integration functions from scipy rather than manual integration which dramatically speeds up the code.
 
 #defines the rms error minimisation functions. 
@@ -17,7 +18,7 @@ def errorCorrection_int(t, synth_field, goal_field): #both synth_field and goal_
         print('Error- synth_field is a different length to goal_field')
     for i in range(len(synth_field)):
         diff=np.append(diff,[(synth_field[i] - goal_field[i])**2])
-    return - integrate.simps(diff, t) #integrates the differences
+    return - np.sqrt(integrate.simps(diff, t)) #integrates the differences
 
 def errorCorrectionAdvanced_int(t, synth_field, goal_field):
     """
@@ -33,8 +34,8 @@ def errorCorrectionAdvanced_int(t, synth_field, goal_field):
     # Next shift the maxima to the same time values- consider only the first maximum for simplicity
     max_indices_synth = np.argwhere(synth_field == np.amax(synth_field)).flatten().tolist()
     max_indices_goal = np.argwhere(goal_field == np.amax(goal_field)).flatten().tolist()
-    median_synth = median(max_indices_synth)
-    median_goal = median(max_indices_goal) 
+    median_synth = statistics.median(max_indices_synth)
+    median_goal = statistics.median(max_indices_goal) 
 
     """
     if len(synth_field) > len(goal_field):
@@ -48,7 +49,7 @@ def errorCorrectionAdvanced_int(t, synth_field, goal_field):
             synth_field=synth_field[offset:offset+len(goal_field)]
     """
 
-    offset = median_synth - median_goal
+    offset = int(median_synth - median_goal) #might not be a perfect shift, limited to integer values
 
     #determine point that falls below 10% of max which is the limit for being cut off?
     """
@@ -65,7 +66,7 @@ def errorCorrectionAdvanced_int(t, synth_field, goal_field):
         goal_field = goal_field[abs(offset):]
         goal_field=np.append(goal_field,np.zeros(abs(offset)))
 
-    return errorCorrection_int(t,synth_field,goal_field) #no carry out rms minimisation with aligned and normalised arrays
+    return errorCorrection_int(t,synth_field,goal_field) #now carry out rms minimisation with aligned and normalised arrays
 
 
 def Gauss(x, A, u, o):
