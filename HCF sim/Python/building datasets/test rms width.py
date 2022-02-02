@@ -9,11 +9,11 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 from rms_width import *
 
 #construct gaussian spectral intensity distribution
-def intens(w,A,u,o):
+def gauss(w,A,u,o):
     return A*np.exp(-((w-u)**2)/o**2)
 
 omega=np.linspace(100,200,1000)
-I=intens(omega,1,150,1)
+I=gauss(omega,1,150,1)
 
 print(rms_width(omega,I))
 #for a gaussian, the rms width should be the fwhm divided by sqrt(2)
@@ -22,7 +22,7 @@ print(rms_width(omega,I))
 fwhms=np.linspace(0.1,10,100)
 rms_widths=np.array([])
 for i in fwhms:
-    I = intens(omega,1,150,i)
+    I = gauss(omega,1,150,i)
     width=rms_width(omega,I)
     rms_widths=np.append(rms_widths,width)
 
