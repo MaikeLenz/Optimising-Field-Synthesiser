@@ -15,7 +15,7 @@ gas = "Ne"
 pressure = 2.340607 # gas pressure in bar, corresponds to 66% of 3.5 atm
 λ0 = 800e-9 # central wavelength of the pump pulse
 τfwhm = 30e-15 # FWHM duration of the pump pulse
-energies = np.linspace(0.1e-3,1e-3,10) # array of energies in the pump pulse
+energies = np.linspace(0.1e-3,100e-3,100) # array of energies in the pump pulse
 
 # Assign arguments to Main namespace
 Main.radius = radius
