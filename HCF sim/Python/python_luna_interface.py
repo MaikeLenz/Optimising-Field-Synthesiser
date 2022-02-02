@@ -57,19 +57,23 @@ Et=Et_allz[:,-1] #last item in each element is pulse shape at the end
 Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
 #note Et is complex
 
+#creating indicative bar to show rms width
 width=rms_width(omega,Iomega)
 width_plot=np.array([2.0e15,2.0e15+width])
 bar_height=np.array([0.4e-18,0.4e-18])
+
 #plotting
 plt.figure()
 plt.plot(λ,Iλ)
 plt.xlabel("Wavelength (m)")
 plt.ylabel("Spectral energy density (J/m)")
+
 plt.figure()
 plt.plot(omega,Iomega)
 plt.plot(width_plot,bar_height)
 plt.xlabel("Angular frequency,/s")
 plt.ylabel("Intensity, a.u.")
+
 plt.figure()
 plt.plot(t,Et,label="z=1m")
 plt.plot(t,Et0,label="z=0")
