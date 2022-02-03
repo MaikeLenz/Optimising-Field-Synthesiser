@@ -1,85 +1,86 @@
 import numpy as np
 from bayes_opt import BayesianOptimization
 import matplotlib.pyplot as plt
+import julia
+julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
+from julia import Main
 
 import sys
-sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\')
-sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\synth_sim\\')
+sys.path.append('D:\\MSci\\GitHub Code\\Optimising-Field-Synthesiser-main\\BO\\')
+sys.path.append('D:\\MSci\\GitHub Code\\Optimising-Field-Synthesiser-main\\synth_sim\\')
 from subtargetfunctions import *
 from field_synth_class import *
-#from ErrorCorrectionFunction import *
 from ErrorCorrectionFunction_integrate import *
 
 #this function carries out BO for hollow core fibre
-#params to be varied: input energy, fwhm in
+#params to be varied: 
+    # Pulse: input energy, τfwhm, central wavelength
+    # Fibre: pressure, fibre core radius, fibre length
 
-def BO(params, function, init_points=50, n_iter=50, wavel=np.linspace(200,1000,20000), window=None):     
+def BO(params, initial_values, function, init_points=50, n_iter=50, goal_field=None, t=np.linspace(-20,100,20000), window=None):     
     """
     performs BO with params as specified as strings in params input (params is list of strings) on the HCF.
     init_points: number of initial BO points
     n_iter: number of iterations
     plots input&output spectrum
+    initial_values = [radius, flength, gas, pressure, λ0, τfwhm, energy] # array of initial values
     """ 
-    params_dict = Synth.create_dict() #returns synthesiser parameters as dictionary
+    # Start by assigning values to Luna simulation
+    Main.using("Luna")
+    
+    Main.radius = initial_values[0]
+    Main.flength = initial_values[1]
+    Main.gas_str = initial_values[2]
+    Main.eval("gas = Symbol(gas_str)")
+    Main.pressure = initial_values[3]
+    Main.λ0 = initial_values[4]
+    Main.τfwhm = initial_values[5]
+    Main.energy = initial_values[6]
+
     args_BO = {} #this dictionary will contain only the parameters we want to vary here
     for i in params:
-        if i in params_dict:
-            args_BO[i]=params_dict[i] #append parameters to be varied to dictionary
-        else:
-            print('Error! Invalid parameter to vary') #this means that the string entered in params is not one of the recognised options
-     #time frame to look at, in fs
+        args_BO[i] = params[i] #append parameters to be varied to dictionary
 
     def target_func(**args):
         """
         this is the target function of the optimiser. It is created as a nested function to take only the desired variables as inputs.
         It will consist of one of the sub-target functions in the subtarget function file or one of the rms error functions in ErrorCorrection_integrate.
         """
-        E=np.array([])
-        I=np.array([])
-        # Update the synthesiser's dictionary with new parameters
         for i in range(len(params)):
-            params_dict[params[i]] = args[params[i]]
-               
-        # Now pass dictionary into array full of all the parameters
-        # need the parameters in the right order to update the synthesiser
-        organised_params = np.zeros((Synth.no_of_channels(),5))
-        for key, value in params_dict.items():
-            for i in range(Synth.no_of_channels()):
-                #print("i is",i)
-                if str(i+1) in key:
-                    #iterate through parameters and insert into organised params array
-                    if 'wavel' in key:
-                        organised_params[i][0] = value
-                    elif 'fwhm' in key:
-                        organised_params[i][1] = value
-                    elif 'amp' in key:
-                        organised_params[i][2] = value
-                    elif 'CEP' in key:
-                        organised_params[i][3] = value
-                    elif 'delay' in key:
-                        organised_params[i][4] = value
-        # Now update synthesiser- parameters should be in the right order now
-        for i in range(len(organised_params)):
-            Synth.Update(i+1 , *organised_params[i]) #passes the parameters to the synthesiser to updatethe channels
-        for i in t: 
-            #create array of total E field values over range t
-            E_i=Synth.E_field_value(i)
-
-            if window!=None:
-                #if a window of interest is defined, only care about that section
-                max_index = median(np.argwhere(np.absolute(E_i) == np.amax(np.absolute(E_i))).flatten().tolist()) #finds index of middle maximum
-                E_i=E_i[max_index-0.5*window:max_index+0.5*window] #window of defined width with the maximum field in the centre
-                #also slice time array accordingly here!
-
-            E=np.append(E,[E_i])
-            I=np.append(I,[E_i**2])
-        if function==errorCorrectionAdvanced_int or function==errorCorrection_int:
+            args_BO[params[i]] = args[params[i]]
+            
+        # Update the simulation's variables with new parameters
+        for key, value in args_BO.items():
+            if 'energy' in key:
+                Main.energy = value
+            elif 'τfwhm' in key:
+                Main.τfwhm = value
+            elif 'λ0' in key:
+                Main.λ0 = value
+            elif 'pressure' in key:
+                Main.pressure = value
+            elif 'radius' in key:
+                Main.radius = value
+            elif 'flength' in key:
+                Main.flength = value
+                
+        # Run the simulation
+        Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
+        Main.eval('t, Et = Processing.getEt(duv)')
+        
+        # Get values
+        t = Main.t
+        Et_allz = Main.Et # array of Et at all z 
+        Et = Et_allz[:,-1] # last item in each element is pulse shape at the end
+        
+        # Run minimisation
+        if function == errorCorrectionAdvanced_int or function == errorCorrection_int:
             #to minimise rms errors, the sub-target function contains another argument, the goal intensity field
-            return function(t,I,goal_field)    
+            return function(t, Et**2, goal_field)    
         else: 
             #perhaps already pass the array of intensities in here?
-            return function(t,E) #pass t and E to sub-target function
-
+            return function(t, Et) #pass t and E to sub-target function
+#%%
     # Make pbounds dictionary
     pbounds = {}
     for i in params:
