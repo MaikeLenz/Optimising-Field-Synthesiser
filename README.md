@@ -3,7 +3,7 @@ MSci Project Code, Molly Smith &amp; Maike Lenz
 
 
 ## BO
-The simulation of a multi-channel laser field synthesiser and a Bayesian optimisation function used to optimise the synthesiser for given figures of merit.
+The simulation of an N-channel laser field synthesiser and a Bayesian optimisation function used to optimise the synthesiser for given figures of merit.
 
 ## HCF sim
 Applying the BO function to Luna julia code to simulate and optimise a hollow core fibre setup.
