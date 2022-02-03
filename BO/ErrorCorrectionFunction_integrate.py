@@ -37,19 +37,24 @@ def errorCorrectionAdvanced_int(t, synth_field, goal_field):
     median_synth = statistics.median(max_indices_synth)
     median_goal = statistics.median(max_indices_goal) 
 
-    """
+    offset = int(median_synth - median_goal) #might not be a perfect shift, limited to integer values
+    
     if len(synth_field) > len(goal_field):
         #if goal field is shorter, then we only care about that section of the intensity distribution.
         #line up the fields
         #chop off the uninteresting part of the synthesised field here
         #need the point at median_synth to become the index median_goal to line fields up
-        offset = median_synth-median_goal
-        if offset >1:
+        if offset >0:
             #crop synth field to the length of the goal field but starting after offset such that maxima align
             synth_field=synth_field[offset:offset+len(goal_field)]
-    """
+            t=t[:len(goal_field)]
+        elif offset<0:
+            #have to pad start of synth field to line up with the goal
+            synth_field= np.append(np.zeros(abs(offset)),synth_field)
+            synth_field=synth_field[:len(goal_field)]
+            t=t[:len(goal_field)]
 
-    offset = int(median_synth - median_goal) #might not be a perfect shift, limited to integer values
+
 
     #determine point that falls below 10% of max which is the limit for being cut off?
     """
@@ -59,12 +64,14 @@ def errorCorrectionAdvanced_int(t, synth_field, goal_field):
     edge_right = np.argwhere(args_below_ten > median_synth)
     """
     #should we be slicing the synthesised field ?
+    """
     if offset > 0: #goal_field on the left of synth_field
         goal_field = goal_field[:len(synth_field)-abs(offset)]
         goal_field=np.append(np.zeros(abs(offset)),goal_field)
     elif offset < 0: #goal_field on the right of synth_field
         goal_field = goal_field[abs(offset):]
         goal_field=np.append(goal_field,np.zeros(abs(offset)))
+    """
 
     return errorCorrection_int(t,synth_field,goal_field) #now carry out rms minimisation with aligned and normalised arrays
 

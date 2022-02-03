@@ -144,19 +144,27 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             E_individual[j][i]=Synth._pulse_list[j].E_field_value(t[i])
             I_individual[j][i]=(Synth._pulse_list[j].E_field_value(t[i]))**2
 
-    """
+    
     #shift goal field to align with max intensity
     if function==errorCorrectionAdvanced_int or function==errorCorrection_int:
         #shift the left electric field to match in time
-        offset=np.argmax(I)-np.argmax(goal_field)
+        max_indices_synth = np.argwhere(I == np.amax(I)).flatten().tolist()
+        max_indices_goal = np.argwhere(goal_field == np.amax(goal_field)).flatten().tolist()
+        median_synth = statistics.median(max_indices_synth)
+        median_goal = statistics.median(max_indices_goal) 
 
-        if offset > 0: #E2 on the left of E1
-            goal_field = goal_field[:len(I)-abs(offset)]
-            goal_field=np.append(np.zeros(abs(offset)),goal_field)
-        elif offset < 0: #E2 on the right of E1
-            goal_field = goal_field[abs(offset):]
-            goal_field=np.append(goal_field,np.zeros(abs(offset)))
-    """
+        offset = int(median_synth - median_goal)
+
+        if offset > 0: #I on the right of goal
+            goal_field = np.append(np.zeros(offset),goal_field)
+            goal_field=np.append(goal_field,np.zeros(len(I)-len(goal_field)))
+        elif offset < 0: #I on the left of goal
+            goal_field = np.append(goal_field,np.zeros(len(I)-len(goal_field)))
+            I= np.append(np.zeros(abs(offset)),I)
+            I=I[:len(I)-abs(offset)]
+            E_tot= np.append(np.zeros(abs(offset)),E_tot)
+            E_tot=E_tot[:len(E_tot)-abs(offset)]
+    print(len(t),len(I),len(goal_field),offset)
     #plot results
     energies=Synth.Energy_distr(t) #energies in each channel
     f = plt.figure(constrained_layout=True)

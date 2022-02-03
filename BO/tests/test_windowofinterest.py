@@ -36,3 +36,4 @@ params=['wavel1','wavel2','wavel3','wavel4','wavel5']
 #FIRST: pass it into the BO bossfunction as an extra argument
 interesting_time=20 #fs
 BO(params, Synth, sharpestPeak_triang, 10,10, window=interesting_time)
+#no errors
