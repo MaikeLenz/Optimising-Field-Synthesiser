@@ -1,6 +1,7 @@
 
 import julia
 import matplotlib.pyplot as plt
+import csv
 import sys
 sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\')
 from rms_width import *
@@ -62,6 +63,17 @@ width=rms_width(omega,Iomega)
 width_plot=np.array([2.0e15,2.0e15+width])
 bar_height=np.array([0.4e-18,0.4e-18])
 
+"""
+#save I vs omega to csv
+file = open("HCF_I_omega.csv", "w",newline="")
+writer = csv.writer(file)
+header=[ "angular frequency","Intensity"]
+writer.writerow(header)
+for w in range(len(Iomega)):
+  writer.writerow([omega[w], Iomega[w][0]])
+
+file.close()
+"""
 #plotting
 plt.figure()
 plt.plot(λ,Iλ)
