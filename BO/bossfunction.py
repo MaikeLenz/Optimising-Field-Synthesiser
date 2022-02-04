@@ -164,7 +164,9 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             I=I[:len(I)-abs(offset)]
             E_tot= np.append(np.zeros(abs(offset)),E_tot)
             E_tot=E_tot[:len(E_tot)-abs(offset)]
+    
     print(len(t),len(I),len(goal_field),offset)
+    
     #plot results
     energies=Synth.Energy_distr(t) #energies in each channel
     f = plt.figure(constrained_layout=True)
