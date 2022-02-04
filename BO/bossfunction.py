@@ -121,7 +121,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         #update all the original field objects to the optimised parameters
         Synth._pulse_list[i].Update(Synth,i+1)
         
-    plt.figure()
+    #plt.figure()
     E_tot = np.array([]) #total electric field
     I=np.array([]) #total intensity
     gradient=np.array([])
@@ -160,10 +160,12 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             goal_field=np.append(goal_field,np.zeros(len(I)-len(goal_field)))
         elif offset < 0: #I on the left of goal
             goal_field = np.append(goal_field,np.zeros(len(I)-len(goal_field)))
+            """
             I= np.append(np.zeros(abs(offset)),I)
             I=I[:len(I)-abs(offset)]
             E_tot= np.append(np.zeros(abs(offset)),E_tot)
             E_tot=E_tot[:len(E_tot)-abs(offset)]
+            """
     
     print(len(t),len(I),len(goal_field),offset)
     

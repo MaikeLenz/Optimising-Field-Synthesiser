@@ -44,7 +44,8 @@ def ramp(x,a):
 #note: the time array must have the same spacing for the synthesiser and for the goal field!
 t=np.linspace(0,100,10000)
 #we want 30fs, so this is fraction of the whole t array
-t_goal=t[:int((100/30)*10000)]
+t_goal=t[:int((30/100)*10000)]
+print(len(t_goal))
 I_goal=ramp(t_goal,150/30)
 
 #parameters to be optimised
