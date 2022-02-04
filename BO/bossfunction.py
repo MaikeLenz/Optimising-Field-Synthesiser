@@ -147,6 +147,10 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
     
     #shift goal field to align with max intensity
     if function==errorCorrectionAdvanced_int or function==errorCorrection_int:
+        #rescale goal_field to match the intensity
+        if np.linalg.norm(np.array(I)) != 0 and np.linalg.norm(np.array(goal_field)) != 0:
+            goal_field=(np.array(goal_field)/(np.linalg.norm(np.array(goal_field))))*np.linalg.norm(np.array(I))
+
         #shift the left electric field to match in time
         max_indices_synth = np.argwhere(I == np.amax(I)).flatten().tolist()
         max_indices_goal = np.argwhere(goal_field == np.amax(goal_field)).flatten().tolist()
@@ -167,7 +171,6 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             E_tot=E_tot[:len(E_tot)-abs(offset)]
             """
     
-    print(len(t),len(I),len(goal_field),offset)
     
     #plot results
     energies=Synth.Energy_distr(t) #energies in each channel
