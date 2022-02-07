@@ -1,5 +1,12 @@
 import julia
+import matplotlib
 import matplotlib.pyplot as plt
+matplotlib.rc('text', usetex = True)
+matplotlib.rc('font', **{'family':"sans-serif"})
+params = {'text.latex.preamble': [r'\usepackage{siunitx}', 
+    r'\usepackage{sfmath}', r'\sisetup{detect-family = true}',
+    r'\usepackage{amsmath}']}   
+plt.rcParams.update(params)
 
 julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
 
@@ -9,17 +16,17 @@ Main.using("Luna")
 
 from rms_width import *
 # Arguments
-radius = 125e-6 # HCF core radius
+radius = np.linspace(50e-6,500e-6,2) # HCF core radius
 flength = 1 # HCF length
 gas = "Ne"
-pressures = np.linspace(1.,4.,100) # array of gas pressures in bar, corresponds to 66% of final pressure in atm
+pressure = 2.340607 # gas pressure in bar, corresponds to 66% of final pressure in atm
 λ0 = 800e-9 # central wavelength of the pump pulse
 τfwhm = 30e-15 # FWHM duration of the pump pulse
 energy=0.5e-3
 
 # Assign arguments to Main namespace
-Main.radius = radius
 Main.flength = flength
+Main.pressure = pressure
 
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
@@ -28,9 +35,9 @@ Main.λ0 = λ0
 Main.energy = energy
 widths=np.array([])
 
-for i in pressures:
+for i in radius:
     print(i)
-    Main.pressure = i
+    Main.radius = i
     # Calculations
     # setting pressure to (0,pressure) means a gradient from zero up until given value
     Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
@@ -48,8 +55,8 @@ for i in pressures:
     width=rms_width(ω,Iω)
     widths=np.append(widths,width)
 
-plt.scatter(pressures,widths, marker="+")
+plt.scatter(radius*10**6,widths, marker="+")
 plt.grid()
 plt.ylabel("angular frequency width, /s")
-plt.xlabel("Pressure, bar")
+plt.xlabel("Core radius, $\si{\um}$")
 plt.show()
