@@ -1,20 +1,22 @@
 import numpy as np
 from scipy import integrate
 
-def moment(omega,I,n): 
+def moment(x,y,n): 
     """
     returns an integral of the nth moment of intensity over frequency
     """
     integrand = np.array([]) #array of overlaps of the intensity with itself with a freq shift omega_shift
-    for i in range(len(omega)):
-        integrand=np.append(integrand,I[i]*omega[i]**n)
-    return integrate.simps(integrand,omega) 
+    for i in range(len(x)):
+        integrand=np.append(integrand,y[i]*x[i]**n)
+    return integrate.simps(integrand,x) 
+   
+
 
 def rms_width(omega,I):
     """
     returns the rms width of an intensity distribution over angular frequencies omega
     """
-    return ((moment(omega,I,2)/moment(omega,I,0))-(moment(omega,I,1)/moment(omega,I,0))**2)**0.5
+    return 2* np.sqrt((moment(omega,I,2)/moment(omega,I,0))-(moment(omega,I,1)/moment(omega,I,0))**2)
 
 def pump_probe_width(omega, I):
     g = []

@@ -14,8 +14,8 @@ flength = 1 # HCF length
 gas = "Ne"
 pressure = 2.340607 # gas pressure in bar, corresponds to 66% of 3.5 atm
 λ0 = 800e-9 # central wavelength of the pump pulse
-τfwhm = 30e-15 # FWHM duration of the pump pulse
-energies = np.linspace(0.1e-3,4.1e-3,100) # array of energies in the pump pulse
+τfwhms = np.linspace(5e-15,60e-15,100) # array of FWHM durations of the pump pulse
+energy=0.5e-3
 
 # Assign arguments to Main namespace
 Main.radius = radius
@@ -26,12 +26,12 @@ Main.eval("gas = Symbol(gas_str)")
 
 Main.pressure = pressure
 Main.λ0 = λ0
-Main.τfwhm = τfwhm
+Main.energy = energy
 widths=np.array([])
 
-for i in energies:
+for i in τfwhms:
     print(i)
-    Main.energy = i
+    Main.τfwhm = i
 
     # Calculations
     # setting pressure to (0,pressure) means a gradient from zero up until given value
@@ -50,8 +50,8 @@ for i in energies:
     width=rms_width(ω,Iω)
     widths=np.append(widths,width)
 
-plt.scatter(energies*10**(3),widths,marker="+")
+plt.scatter(τfwhms/10**(-15),widths, marker="+")
 plt.grid()
 plt.ylabel("angular frequency width, /s")
-plt.xlabel("Pulse energy, mJ")
+plt.xlabel("Pulse duration, fs")
 plt.show()

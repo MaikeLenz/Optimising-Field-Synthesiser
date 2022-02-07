@@ -12,10 +12,10 @@ from rms_width import *
 radius = 125e-6 # HCF core radius
 flength = 1 # HCF length
 gas = "Ne"
-pressure = 2.340607 # gas pressure in bar, corresponds to 66% of 3.5 atm
+pressures = np.linspace(1.,15.,100) # array of gas pressures in bar, corresponds to 66% of final pressure in atm
 λ0 = 800e-9 # central wavelength of the pump pulse
 τfwhm = 30e-15 # FWHM duration of the pump pulse
-energies = np.linspace(0.1e-3,4.1e-3,100) # array of energies in the pump pulse
+energy=0.5e-3
 
 # Assign arguments to Main namespace
 Main.radius = radius
@@ -23,16 +23,14 @@ Main.flength = flength
 
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
-
-Main.pressure = pressure
-Main.λ0 = λ0
 Main.τfwhm = τfwhm
+Main.λ0 = λ0
+Main.energy = energy
 widths=np.array([])
 
-for i in energies:
+for i in pressures:
     print(i)
-    Main.energy = i
-
+    Main.pressure = i
     # Calculations
     # setting pressure to (0,pressure) means a gradient from zero up until given value
     Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
@@ -50,8 +48,8 @@ for i in energies:
     width=rms_width(ω,Iω)
     widths=np.append(widths,width)
 
-plt.scatter(energies*10**(3),widths,marker="+")
+plt.scatter(pressures,widths, marker="+")
 plt.grid()
 plt.ylabel("angular frequency width, /s")
-plt.xlabel("Pulse energy, mJ")
+plt.xlabel("Pressure, bar")
 plt.show()
