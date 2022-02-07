@@ -52,7 +52,8 @@ Iλ = Main.Iλ
 t = Main.t
 omega=Main.ω
 Iomega=Main.Iω
-Iomega=Iomega.reshape((-1,))
+Iomega=Iomega.reshape((-1,))[0:500]
+omega=omega[0:500]
 
 Et_allz=Main.Et #array of Et at all z 
 Et=Et_allz[:,-1] #last item in each element is pulse shape at the end
@@ -61,6 +62,7 @@ Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
 
 #creating indicative bar to show rms width
 width=rms_width(omega,Iomega)
+print(width)
 centre=moment(omega,Iomega,1)/moment(omega,Iomega,0)
 height=moment(Iomega,omega,1)/moment(Iomega,omega,0)
 width_plot=np.array([centre-0.5*width,centre+0.5*width])
