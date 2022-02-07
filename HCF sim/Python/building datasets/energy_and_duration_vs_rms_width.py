@@ -52,7 +52,7 @@ for i in range(len(energies)):
         width=rms_width(ω,Iω)
         widths[i][j]=width
 
-plt.imshow(widths, extent=(np.amin(τfwhms)*10**15, np.amax(τfwhms)*10**15,np.amin(energies)*10**3, np.amax(energies)*10**3), aspect = 'equal', origin="lower")
+plt.imshow(widths, extent=(np.amin(τfwhms)*10**15, np.amax(τfwhms)*10**15,np.amin(energies)*10**3, np.amax(energies)*10**3), aspect = 'auto', origin="lower")
 plt.xlabel("Pulse duration, fs")
 plt.ylabel("Pulse energy, mJ")
 #legend
