@@ -1,12 +1,6 @@
 import julia
-import matplotlib
 import matplotlib.pyplot as plt
-matplotlib.rc('text', usetex = True)
-matplotlib.rc('font', **{'family':"sans-serif"})
-params = {'text.latex.preamble': [r'\usepackage{siunitx}', 
-    r'\usepackage{sfmath}', r'\sisetup{detect-family = true}',
-    r'\usepackage{amsmath}']}   
-plt.rcParams.update(params)
+#plt.rcParams['text.usetex'] = True
 
 julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
 
@@ -16,7 +10,7 @@ Main.using("Luna")
 
 from rms_width import *
 # Arguments
-radius = np.linspace(50e-6,500e-6,2) # HCF core radius
+radius = np.linspace(50e-6,500e-6,100) # HCF core radius
 flength = 1 # HCF length
 gas = "Ne"
 pressure = 2.340607 # gas pressure in bar, corresponds to 66% of final pressure in atm
@@ -58,5 +52,5 @@ for i in radius:
 plt.scatter(radius*10**6,widths, marker="+")
 plt.grid()
 plt.ylabel("angular frequency width, /s")
-plt.xlabel("Core radius, $\si{\um}$")
+plt.xlabel('Core radius, um')
 plt.show()
