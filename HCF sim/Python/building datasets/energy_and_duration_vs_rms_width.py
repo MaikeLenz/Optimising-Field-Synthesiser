@@ -14,8 +14,8 @@ flength = 1 # HCF length
 gas = "Ne"
 pressure = 2.340607 # gas pressure in bar, corresponds to 66% of 3.5 atm
 λ0 = 800e-9 # central wavelength of the pump pulse
-energies = np.linspace(0.1e-3,4.1e-3,2) # array of energies in the pump pulse
-τfwhms = np.linspace(5e-15,60e-15,2) # array of FWHM durations of the pump pulse
+energies = np.linspace(0.1e-3,2.0e-3,20) # array of energies in the pump pulse
+τfwhms = np.linspace(15e-15,60e-15,20) # array of FWHM durations of the pump pulse
 
 # Assign arguments to Main namespace
 Main.radius = radius
@@ -26,12 +26,13 @@ Main.eval("gas = Symbol(gas_str)")
 
 Main.pressure = pressure
 Main.λ0 = λ0
-widths=np.zeros((len(τfwhms),len(energies)))
+widths=np.zeros((len(energies),len(τfwhms)))
 
 for i in range(len(energies)):
-    print(i)
     Main.energy = energies[i]
+    print(energies[i])
     for j in range(len(τfwhms)):
+        print(τfwhms[j])
         Main.τfwhm = τfwhms[j]
 
         # Calculations
@@ -51,8 +52,10 @@ for i in range(len(energies)):
         width=rms_width(ω,Iω)
         widths[i][j]=width
 
-plt.imshow(widths, extent=(np.amin(energies), np.amax(energies), np.amin(τfwhms), np.amax(τfwhms)), aspect = 'auto')
-plt.ylabel("Pulse duration, s")
-plt.xlabel("Pulse energy, J")
-plt.colorbar()
+plt.imshow(widths, extent=(np.amin(τfwhms)*10**15, np.amax(τfwhms)*10**15,np.amin(energies)*10**3, np.amax(energies)*10**3), aspect = 'auto')
+plt.xlabel("Pulse duration, fs")
+plt.ylabel("Pulse energy, mJ")
+#legend
+cbar = plt.colorbar()
+cbar.ax.set_ylabel('angular frequency bandwidth', rotation=270)
 plt.show()
