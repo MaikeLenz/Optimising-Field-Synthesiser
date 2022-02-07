@@ -113,6 +113,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         #maximises the target function output. In the case of the rms error functions, this is a minimisation because the errors are multiuplied by -1
         init_points=init_points,
         n_iter=n_iter,
+        kappa=10
         )
 
     print(optimizer.max) #final parameters
