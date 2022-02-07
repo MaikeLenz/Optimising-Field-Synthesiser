@@ -28,11 +28,11 @@ Main.pressure = pressure
 Main.λ0 = λ0
 widths=np.zeros((len(τfwhms),len(energies)))
 
-for i in energies:
+for i in range(len(energies)):
     print(i)
-    Main.energy = i
-    for j in τfwhms:
-        Main.τfwhm = j
+    Main.energy = energies[i]
+    for j in range(len(τfwhms)):
+        Main.τfwhm = τfwhms[j]
 
         # Calculations
         # setting pressure to (0,pressure) means a gradient from zero up until given value
@@ -51,9 +51,7 @@ for i in energies:
         width=rms_width(ω,Iω)
         widths[i][j]=width
 
-N = int(len(widths)**.5)
-z = widths.reshape(N, N)
-plt.imshow(z, extent=(np.amin(energies), np.amax(energies), np.amin(τfwhms), np.amax(τfwhms)), aspect = 'auto')
+plt.imshow(widths, extent=(np.amin(energies), np.amax(energies), np.amin(τfwhms), np.amax(τfwhms)), aspect = 'auto')
 plt.ylabel("Pulse duration, s")
 plt.xlabel("Pulse energy, J")
 plt.colorbar()
