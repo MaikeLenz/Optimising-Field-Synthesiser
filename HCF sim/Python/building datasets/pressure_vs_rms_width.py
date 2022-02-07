@@ -12,7 +12,7 @@ from rms_width import *
 radius = 125e-6 # HCF core radius
 flength = 1 # HCF length
 gas = "Ne"
-pressures = np.linspace(1.,4.,100) # array of gas pressures in bar, corresponds to 66% of final pressure in atm
+pressures = np.linspace(1.,15.,100) # array of gas pressures in bar, corresponds to 66% of final pressure in atm
 λ0 = 800e-9 # central wavelength of the pump pulse
 τfwhm = 30e-15 # FWHM duration of the pump pulse
 energy=0.5e-3
