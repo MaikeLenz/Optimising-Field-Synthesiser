@@ -40,7 +40,7 @@ plt.plot(t, eft, label="GDD=0")
 
 
 
-gdd = 50
+gdd = 20
 eft = efield_time_domain(t, amp, om0, dom, t0, gdd, cep)
 plt.plot(t, eft, label="GDD="+str(gdd))
 plt.legend()

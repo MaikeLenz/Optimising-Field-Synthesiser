@@ -4,9 +4,11 @@ from bayes_opt import BayesianOptimization
 import matplotlib.pyplot as plt
 
 #now import the code form the other files
+
 import sys
 sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\')
 sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
+
 from subtargetfunctions import *
 from bossfunction import *
 from field_synth_class import *

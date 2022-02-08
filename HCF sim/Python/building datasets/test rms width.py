@@ -3,9 +3,6 @@ from scipy import integrate
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
-import sys
-sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\')
-
 from rms_width import *
 
 #construct gaussian spectral intensity distribution
