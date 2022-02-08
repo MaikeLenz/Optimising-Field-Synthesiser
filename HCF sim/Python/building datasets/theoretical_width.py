@@ -10,11 +10,11 @@ def theoretical_width(flength, pressure, λ0, τfwhm, energy):
     Assumes Ne gas for now
     """
 
-    c = 299792458
-    L = flength
-    ω0 = 2*np.pi*c/λ0
-    τ = τfwhm/2*np.sqrt(np.log(2))
-    I0 = energy/(np.sqrt(np.pi)*τ)
+    c = 299792458 # m/s
+    L = flength # m
+    ω0 = 2*np.pi*c/λ0 # λ0 in m, ω0 in /s
+    τ = τfwhm/2*np.sqrt(np.log(2)) # τfwhm in s, τ in s
+    I0 = energy/(np.sqrt(np.pi)*τ) # energy in J, I0 in J/s
 
     # Get data for n2 from Luna
     Main.ω = ω0
