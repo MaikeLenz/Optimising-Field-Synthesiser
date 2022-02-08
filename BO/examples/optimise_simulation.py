@@ -9,8 +9,10 @@ import matplotlib.pyplot as plt
 
 #now import the code form the other files
 import sys
-sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\')
-sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\synth_sim\\')
+#sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\')
+#sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
+sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\')
+sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
 from subtargetfunctions import *
 from field_synth_class import *
 from bossfunction import *
@@ -84,4 +86,4 @@ for i in t:
 #BO(params, Synth, errorCorrection_int, goal_field=E_goal, n_iter=100,init_points=200, t=t)
 #print(errorCorrection_int(t,E_goal,E_goal))
 
-BO(params, Synth, errorCorrection_Advanced, n_iter=50,init_points=50, t=t)
+BO(params, Synth, errorCorrectionAdvanced_int, n_iter=10,init_points=10, t=t)

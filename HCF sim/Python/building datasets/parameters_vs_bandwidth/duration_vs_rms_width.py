@@ -69,7 +69,7 @@ ax1.set_xlabel('Pulse duration, fs')
 
 theor_widths = []
 for i in range(len(τfwhms)):
-    theor_widths.append(theoretical_width(flength, pressure, λ0, τfwhms[i], energy))
+    theor_widths.append(theoretical_width(radius, flength, pressure, λ0, τfwhms[i], energy))
 ax2.scatter(τfwhms/10**(-15),theor_widths, marker="+")
 ax2.set_ylabel("angular frequency width, /s")
 ax2.set_xlabel('Pulse duration, fs')
