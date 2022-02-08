@@ -66,7 +66,7 @@ ax1.set_xlabel('Pressure, bar')
 
 theor_widths = []
 for i in range(len(pressures)):
-    theor_widths.append(theoretical_width(flength, pressures[i], λ0, τfwhm, energy))
+    theor_widths.append(theoretical_width(radius, flength, pressures[i], λ0, τfwhm, energy))
 ax2.scatter(pressures,theor_widths, marker="+")
 ax2.set_ylabel("angular frequency width, /s")
 ax2.set_xlabel('Pressure, bar')

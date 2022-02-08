@@ -60,7 +60,7 @@ ax1.set_xlabel('Wavelength, nm')
 
 theor_widths = []
 for i in range(len(λ0s)):
-    theor_widths.append(theoretical_width(flength, pressure, λ0s[i], τfwhm, energy))
+    theor_widths.append(theoretical_width(radius, flength, pressure, λ0s[i], τfwhm, energy))
 ax2.scatter(λ0s*10**9,theor_widths, marker="+")
 ax2.set_ylabel("angular frequency width, /s")
 ax2.set_xlabel('Wavelength, nm')
