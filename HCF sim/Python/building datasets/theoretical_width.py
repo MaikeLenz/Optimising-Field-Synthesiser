@@ -4,7 +4,7 @@ julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bi
 from julia import Main
 Main.using("Luna")
 
-def theoretical_width(flength, pressure, λ0, τfwhm, energy):
+def theoretical_width(radius, flength, pressure, λ0, τfwhm, energy):
     """
     Returns theoretical calculation for SPM frequency width that comes from Luna simulation.
     Assumes Ne gas for now
@@ -14,7 +14,9 @@ def theoretical_width(flength, pressure, λ0, τfwhm, energy):
     L = flength # m
     ω0 = 2*np.pi*c/λ0 # λ0 in m, ω0 in /s
     τ = τfwhm/2*np.sqrt(np.log(2)) # τfwhm in s, τ in s
-    I0 = energy/(np.sqrt(np.pi)*τ) # energy in J, I0 in J/s
+    power = energy/(np.sqrt(np.pi)*τ) # energy in J, power in J/s
+    W0 = 0.64*radius # W0 in m, radius in m
+    I0 = power/(np.pi*(W0**2)) # I0 in J/s/m^2 
 
     # Get data for n2 from Luna
     Main.ω = ω0
