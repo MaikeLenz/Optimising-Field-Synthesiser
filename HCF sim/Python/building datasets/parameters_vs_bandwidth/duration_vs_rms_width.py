@@ -65,12 +65,12 @@ f, (ax1, ax2) = plt.subplots(1, 2)
 ax1.scatter(τfwhms/10**(-15),widths, marker="+")
 #plt.grid()
 ax1.set_ylabel("angular frequency width, /s")
-ax1.set_xlabel('Wavelength, nm')
+ax1.set_xlabel('Pulse duration, fs')
 
 theor_widths = []
 for i in range(len(τfwhms)):
     theor_widths.append(theoretical_width(flength, pressure, λ0, τfwhms[i], energy))
 ax2.scatter(τfwhms/10**(-15),theor_widths, marker="+")
 ax2.set_ylabel("angular frequency width, /s")
-ax2.set_xlabel('Wavelength, nm')
+ax2.set_xlabel('Pulse duration, fs')
 plt.show()
