@@ -10,11 +10,11 @@ def theoretical_width(flength, pressure, λ0, τfwhm, energy):
     Assumes Ne gas for now
     """
 
-    c = 3*(10**8)
+    c = 299792458
     L = flength
     I0 = energy**2
     ω0 = 2*np.pi*c/λ0
-    τ = τfwhm/np.log(2)
+    τ = τfwhm/2*np.sqrt(np.log(2))
 
     Main.ω = ω0
     gas = "Ne"
