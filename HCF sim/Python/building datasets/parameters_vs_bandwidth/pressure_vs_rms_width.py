@@ -1,7 +1,10 @@
 import julia
 import matplotlib.pyplot as plt
+import sys
+sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
+from theoretical_width import theoretical_width
 
-julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
+julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
 
 from julia import Main
 
@@ -48,8 +51,23 @@ for i in pressures:
     width=rms_width(ω,Iω)
     widths=np.append(widths,width)
 
+"""
 plt.scatter(pressures,widths, marker="+")
 plt.grid()
 plt.ylabel("angular frequency width, /s")
 plt.xlabel("Pressure, bar")
+plt.show()
+"""
+f, (ax1, ax2) = plt.subplots(1, 2)
+ax1.scatter(pressures,widths, marker="+")
+#plt.grid()
+ax1.set_ylabel("angular frequency width, /s")
+ax1.set_xlabel('Pressure, bar')
+
+theor_widths = []
+for i in range(len(pressures)):
+    theor_widths.append(theoretical_width(flength, pressures[i], λ0, τfwhm, energy))
+ax2.scatter(pressures,theor_widths, marker="+")
+ax2.set_ylabel("angular frequency width, /s")
+ax2.set_xlabel('Pressure, bar')
 plt.show()
