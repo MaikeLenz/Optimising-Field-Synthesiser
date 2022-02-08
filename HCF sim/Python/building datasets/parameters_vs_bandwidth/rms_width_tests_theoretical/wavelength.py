@@ -17,7 +17,12 @@ widths = []
 for i in range(len(λ0s)):
     widths.append(theoretical_width(flength, pressure, λ0s[i], τfwhm, energy))
 
-plt.scatter(λ0s*10**9,widths, marker="+")
+width_squared = []
+for i in widths:
+    width_squared.append(i**2)
+
+#plt.scatter(λ0s*10**9, width_squared, marker="+")
+plt.scatter(λ0s*10**9, widths, marker="+")
 plt.grid()
 plt.ylabel("angular frequency width, /s")
 plt.xlabel('Wavelength, nm')
