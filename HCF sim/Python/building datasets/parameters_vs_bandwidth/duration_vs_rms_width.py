@@ -1,6 +1,8 @@
 import julia
 import matplotlib.pyplot as plt
 import sys
+sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
+from theoretical_width import theoretical_width
 
 #julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
 julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
@@ -52,9 +54,23 @@ for i in τfwhms:
     Iω = Main.Iω
     width=rms_width(ω,Iω)
     widths=np.append(widths,width)
-
+"""
 plt.scatter(τfwhms/10**(-15),widths, marker="+")
 plt.grid()
 plt.ylabel("angular frequency width, /s")
 plt.xlabel("Pulse duration, fs")
+plt.show()
+"""
+f, (ax1, ax2) = plt.subplots(1, 2)
+ax1.scatter(τfwhms/10**(-15),widths, marker="+")
+#plt.grid()
+ax1.set_ylabel("angular frequency width, /s")
+ax1.set_xlabel('Pulse duration, fs')
+
+theor_widths = []
+for i in range(len(τfwhms)):
+    theor_widths.append(theoretical_width(flength, pressure, λ0, τfwhms[i], energy))
+ax2.scatter(τfwhms/10**(-15),theor_widths, marker="+")
+ax2.set_ylabel("angular frequency width, /s")
+ax2.set_xlabel('Pulse duration, fs')
 plt.show()
