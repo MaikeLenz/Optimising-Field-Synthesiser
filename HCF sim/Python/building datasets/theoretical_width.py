@@ -12,19 +12,17 @@ def theoretical_width(flength, pressure, λ0, τfwhm, energy):
 
     c = 299792458
     L = flength
-    I0 = energy**2
     ω0 = 2*np.pi*c/λ0
     τ = τfwhm/2*np.sqrt(np.log(2))
+    I0 = energy/(np.sqrt(np.pi)*τ)
 
+    # Get data for n2 from Luna
     Main.ω = ω0
     gas = "Ne"
     Main.gas_str = gas
     Main.eval("gas = Symbol(gas_str)")
     Main.pressure = pressure
-
-    # Get data for n2 from Luna
     Main.eval('N0, n0, n2 = Tools.getN0n0n2(ω, gas; P=pressure, T=PhysData.roomtemp)')
-
     n2 = Main.n2
 
     """
