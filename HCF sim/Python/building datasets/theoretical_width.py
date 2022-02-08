@@ -8,6 +8,7 @@ def theoretical_width(radius, flength, pressure, λ0, τfwhm, energy):
     """
     Returns theoretical calculation for SPM frequency width that comes from Luna simulation.
     Assumes Ne gas for now
+    Still a factor of 10 out!!
     """
 
     c = 299792458 # m/s
