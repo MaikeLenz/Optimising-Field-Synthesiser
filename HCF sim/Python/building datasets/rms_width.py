@@ -18,6 +18,7 @@ def rms_width(omega,I):
     """
     return 2* np.sqrt((moment(omega,I,2)/moment(omega,I,0))-(moment(omega,I,1)/moment(omega,I,0))**2)
 
+"""
 def pump_probe_width(omega, I):
     g = []
 
@@ -42,3 +43,4 @@ def pump_probe_width(omega, I):
     
 def gauss(x, A, u, o):
     return A*np.exp(((x-u)**2)/(o**2))
+"""
