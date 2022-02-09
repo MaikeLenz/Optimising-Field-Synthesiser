@@ -1,17 +1,18 @@
 import julia
 import matplotlib.pyplot as plt
 import sys
-sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
-from theoretical_width import theoretical_width
+sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
+#sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
 
-#julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
-julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
+julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
+#julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
+
+from theoretical_width import theoretical_width
 
 from julia import Main
 
 Main.using("Luna")
-
-sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
+#sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
 from rms_width import *
 # Arguments
 radius = 125e-6 # HCF core radius
@@ -43,16 +44,16 @@ for i in τfwhms:
     Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
 
     #now extract datasets
-    Main.eval("ω, Iω = Processing.getIω(duv, :ω, flength)")
-    Main.eval('t, Et = Processing.getEt(duv)')
+    Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
+    #Main.eval('t, Et = Processing.getEt(duv)')
 
     ## These next lines show how t, Et and zactual could be accessed in the Python namespace for analysis
     # Once defined, the same method as in time_1d can be used to get the y data needed for analysis of the curve (max heigh, FWHM, etc.), which
     # subsequently would be the inputs the the BO 
     #assign python variables
-    ω = Main.ω
-    Iω = Main.Iω
-    width=rms_width(ω,Iω)
+    wavel = Main.λ
+    I = Main.Iλ
+    width=rms_width(wavel,I)
     widths=np.append(widths,width)
 """
 plt.scatter(τfwhms/10**(-15),widths, marker="+")
