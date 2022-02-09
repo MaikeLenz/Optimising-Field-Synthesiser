@@ -60,4 +60,4 @@ def E_field_freq(omega, GD=0.0, wavel=1000, domega=2, amp=1, CEP=0, GDD=0, TOD=0
     omega0 = 2 * np. pi * c/wavel # rad/fs
     E_transform_limited = E0 * np.exp(-2 * np.log(2) * (omega-omega0)**2/domega**2)
     phi = get_phi(omega, omega0, CEP, GD, GDD, TOD)
-    return E_transform_limited * np.exp(phi * 1J) 
+    return E_transform_limited * np.exp(phi * 1J)
