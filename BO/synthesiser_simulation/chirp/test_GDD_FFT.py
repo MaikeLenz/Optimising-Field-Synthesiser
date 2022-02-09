@@ -38,7 +38,7 @@ plt.show()
 t=np.linspace(0,100,10000)
 f=10
 Et=np.sin(f*t)
-
+spacing=t[1]-t[0]
 E_omega=np.fft.fft(Et)
 omega=np.fft.fftfreq(len(t),d=(t[1]-t[0]))
 
