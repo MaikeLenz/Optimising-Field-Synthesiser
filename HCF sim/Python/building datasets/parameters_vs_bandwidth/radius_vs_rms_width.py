@@ -1,8 +1,12 @@
 import julia
 import matplotlib.pyplot as plt
 #plt.rcParams['text.usetex'] = True
+import sys
+sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
+from theoretical_width import theoretical_width
 
-julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
+#julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
+julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
 
 from julia import Main
 
@@ -49,8 +53,21 @@ for i in radius:
     width=rms_width(ω,Iω)
     widths=np.append(widths,width)
 
+"""
 plt.scatter(radius*10**6,widths, marker="+")
 plt.grid()
 plt.ylabel("angular frequency width, /s")
 plt.xlabel('Core radius, um')
+plt.show()
+"""
+
+plt.scatter(radius*10**6,widths, marker="+", label='Luna')
+
+theor_widths = []
+for i in range(len(radius)):
+    theor_widths.append(theoretical_width(radius[i], flength, pressure, λ0, τfwhm, energy))
+plt.scatter(radius*10**6,theor_widths, marker="+", label='Theoretical')
+plt.ylabel("angular frequency width, /s")
+plt.xlabel('Core radius, um')
+plt.legend()
 plt.show()

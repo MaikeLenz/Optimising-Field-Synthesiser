@@ -6,8 +6,8 @@ julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.0\\bi
 from julia import Main
 
 import sys
-sys.path.append('D:\\MSci\\GitHub Code\\Optimising-Field-Synthesiser-main\\BO\\')
-sys.path.append('D:\\MSci\\GitHub Code\\Optimising-Field-Synthesiser-main\\synth_sim\\')
+sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\')
+sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
 from subtargetfunctions import *
 from field_synth_class import *
 from ErrorCorrectionFunction_integrate import *
@@ -17,25 +17,25 @@ from ErrorCorrectionFunction_integrate import *
     # Pulse: input energy, τfwhm, central wavelength
     # Fibre: pressure, fibre core radius, fibre length
 
-def BO(params, initial_values, function, init_points=50, n_iter=50, goal_field=None, t=np.linspace(-20,100,20000), window=None):     
+def BO(params, initial_values_HCF, function, init_points=50, n_iter=50, goal_field=None, t=np.linspace(-20,100,20000), window=None):     
     """
     performs BO with params as specified as strings in params input (params is list of strings) on the HCF.
     init_points: number of initial BO points
     n_iter: number of iterations
     plots input&output spectrum
-    initial_values = [radius, flength, gas, pressure, λ0, τfwhm, energy] # array of initial values
+    initial_values_HCF = [radius, flength, gas, pressure, λ0, τfwhm, energy] # array of initial values for Luna simulation, could change this to input actual Luna simulation
     """ 
     # Start by assigning values to Luna simulation
     Main.using("Luna")
     
-    Main.radius = initial_values[0]
-    Main.flength = initial_values[1]
-    Main.gas_str = initial_values[2]
+    Main.radius = initial_values_HCF[0]
+    Main.flength = initial_values_HCF[1]
+    Main.gas_str = initial_values_HCF[2]
     Main.eval("gas = Symbol(gas_str)")
-    Main.pressure = initial_values[3]
-    Main.λ0 = initial_values[4]
-    Main.τfwhm = initial_values[5]
-    Main.energy = initial_values[6]
+    Main.pressure = initial_values_HCF[3]
+    Main.λ0 = initial_values_HCF[4]
+    Main.τfwhm = initial_values_HCF[5]
+    Main.energy = initial_values_HCF[6]
 
     args_BO = {} #this dictionary will contain only the parameters we want to vary here
     for i in params:

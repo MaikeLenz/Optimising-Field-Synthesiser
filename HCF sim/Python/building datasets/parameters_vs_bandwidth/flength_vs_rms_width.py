@@ -13,16 +13,16 @@ Main.using("Luna")
 from rms_width import *
 # Arguments
 radius = 125e-6 # HCF core radius
-flength = 1 # HCF length
+flengths = np.linspace(0.05,20,100) # HCF length
 gas = "Ne"
-pressures = np.linspace(1.,15.,100) # array of gas pressures in bar, corresponds to 66% of final pressure in atm
+pressure =  2.340607 # gas pressure in bar, corresponds to 66% of final pressure in atm
 λ0 = 800e-9 # central wavelength of the pump pulse
 τfwhm = 30e-15 # FWHM duration of the pump pulse
 energy=0.5e-3
 
 # Assign arguments to Main namespace
 Main.radius = radius
-Main.flength = flength
+Main.pressure = pressure
 
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
@@ -31,9 +31,9 @@ Main.λ0 = λ0
 Main.energy = energy
 widths=np.array([])
 
-for i in pressures:
+for i in flengths:
     print(i)
-    Main.pressure = i
+    Main.flength = i
     # Calculations
     # setting pressure to (0,pressure) means a gradient from zero up until given value
     Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
@@ -59,13 +59,13 @@ plt.xlabel("Pressure, bar")
 plt.show()
 """
 
-plt.scatter(pressures,widths, marker="+", label='Luna')
+plt.scatter(flengths,widths, marker="+", label='Luna')
 
 theor_widths = []
-for i in range(len(pressures)):
-    theor_widths.append(theoretical_width(radius, flength, pressures[i], λ0, τfwhm, energy))
-plt.scatter(pressures,theor_widths, marker="+", label='Theoretical')
+for i in range(len(flengths)):
+    theor_widths.append(theoretical_width(radius, flengths[i], pressure, λ0, τfwhm, energy))
+plt.scatter(flengths,theor_widths, marker="+", label='Theoretical')
 plt.ylabel("angular frequency width, /s")
-plt.xlabel('Pressure, bar')
+plt.xlabel('Fibre Length, m')
 plt.legend()
 plt.show()

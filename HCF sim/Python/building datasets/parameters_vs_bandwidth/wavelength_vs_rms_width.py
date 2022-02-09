@@ -51,17 +51,14 @@ for i in λ0s:
     width=rms_width(ω,Iω)
     widths=np.append(widths,width)
 
-f, (ax1, ax2) = plt.subplots(1, 2)
 
-ax1.scatter(λ0s*10**9,widths, marker="+")
-#plt.grid()
-ax1.set_ylabel("angular frequency width, /s")
-ax1.set_xlabel('Wavelength, nm')
+plt.scatter(λ0s*10**9,widths, marker="+", label='Luna')
 
 theor_widths = []
 for i in range(len(λ0s)):
-    theor_widths.append(theoretical_width(flength, pressure, λ0s[i], τfwhm, energy))
-ax2.scatter(λ0s*10**9,theor_widths, marker="+")
-ax2.set_ylabel("angular frequency width, /s")
-ax2.set_xlabel('Wavelength, nm')
+    theor_widths.append(theoretical_width(radius, flength, pressure, λ0s[i], τfwhm, energy))
+plt.scatter(λ0s*10**9,theor_widths, marker="+", label='Theoretical')
+plt.ylabel("angular frequency width, /s")
+plt.xlabel('Wavelength, nm')
+plt.legend()
 plt.show()
