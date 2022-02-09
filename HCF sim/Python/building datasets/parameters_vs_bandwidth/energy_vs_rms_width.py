@@ -61,17 +61,13 @@ plt.xlabel("Pulse energy, mJ")
 plt.show()
 """
 
-f, (ax1, ax2) = plt.subplots(1, 2)
-
-ax1.scatter(energies*10**(3),widths,marker="+")
-#plt.grid()
-ax1.set_ylabel("angular frequency width, /s")
-ax1.set_xlabel('Pulse energy, mJ')
+plt.scatter(energies*10**(3),widths,marker="+", label='Luna')
 
 theor_widths = []
 for i in range(len(energies)):
     theor_widths.append(theoretical_width(radius, flength, pressure, λ0, τfwhm, energies[i]))
-ax2.scatter(energies*10**(3),theor_widths, marker="+")
-ax2.set_ylabel("angular frequency width, /s")
-ax2.set_xlabel('Pulse energy, mJ')
+plt.scatter(energies*10**(3),theor_widths, marker="+", label='Theoretical')
+plt.ylabel("angular frequency width, /s")
+plt.xlabel('Pulse energy, mJ')
+plt.legend()
 plt.show()
