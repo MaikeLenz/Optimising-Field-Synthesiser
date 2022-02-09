@@ -40,21 +40,24 @@ def efield_freq_domain(t, amp, om0, dom, t0, gdd, cep):
     omega=np.fft.fftfreq(len(t),d=(t[1]-t[0]))
     return omega,np.real(E_omega)
 
-def E_field_freq(omega, t0=0.0, wavel=1000, fwhm=10.0, amp=1.0, CEP=0.0, GDD=0):
-    E0 = amp
-    E_transform_limited = E0 * np.exp(-2 * np.log(2) * (omega-omega0)**2/domega**2)
-    return E_transform_limited * np.exp(phi * 1J) 
-
-c = 3*(10**(8))
-omega0 = 2 * np. pi * c/wavel # rad/fs
-domega = 2 # for example, rad/fs
-omega = np.linspace(omega0-domega/2, omega0+domega/2, 1000)
-
-CEP  = np.pi/2 # for example, rad
-GD = 0 # GD relates to absolute arrival times, so not physically important
-GDD = 100 # for example, fs**2
-TOD = 0 # maybe later, fs**3
-
-def get_phi(omega, omega0, CEP, GDD, TOD):
+def get_phi(omega, omega0, CEP, GD, GDD, TOD):
     return CEP + GD * (omega-omega0) + (1/2) * GDD * (omega-omega0)**2 + (1/6) * TOD * (omega-omega0)**3 
-phi = get_phi(omega, omega0, CEP, GDD, TOD)
+
+def E_field_freq(omega, GD=0.0, wavel=1000, domega=2, amp=1, CEP=0, GDD=0, TOD=0):
+    """
+    Defines an E-field pulse in the frequency domain
+    omega: array of angular frequencies
+    GD: group delay (relates to absolute arrival time t0)
+    wavel: wavelength
+    domega: bandwidth
+    amp: amplitude
+    CEP: carrier envelope phase
+    GDD: group delay dispersion
+    TOD: third order dispersion
+    """
+    c = 299792458 # m/s
+    E0 = amp
+    omega0 = 2 * np. pi * c/wavel # rad/fs
+    E_transform_limited = E0 * np.exp(-2 * np.log(2) * (omega-omega0)**2/domega**2)
+    phi = get_phi(omega, omega0, CEP, GD, GDD, TOD)
+    return E_transform_limited * np.exp(phi * 1J) 
