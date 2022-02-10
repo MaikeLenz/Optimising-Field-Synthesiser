@@ -24,7 +24,7 @@ def efield_time_domain(t, amp, om0, dom, t0, gdd, cep):
 
 
 def efield_freq_domain(t, amp, om0, dom, t0, gdd, cep):
-    """ returns time domain e_efield (real)
+    """ returns freq domain e_field (real) by fourier transforming time domain
     t is time axis
     amp is pulse amplitude
     om0 is centre frequency
@@ -38,7 +38,7 @@ def efield_freq_domain(t, amp, om0, dom, t0, gdd, cep):
     E=amp * np.log(4)**0.5 * np.exp(-0.25*(t-t0)**2/q**2) * np.exp(1j*om0*(t-t0) + 1j*cep)/(dom*q)
     E_omega=np.fft.ifft(E)
     omega=np.fft.fftfreq(len(t),d=(t[1]-t[0]))
-    return omega,np.real(E_omega)
+    return np.real(E_omega), omega
 
 def get_phi(omega, omega0, CEP, GD, GDD, TOD):
     return CEP + GD * (omega-omega0) + (1/2) * GDD * (omega-omega0)**2 + (1/6) * TOD * (omega-omega0)**3 
