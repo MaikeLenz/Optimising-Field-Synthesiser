@@ -14,13 +14,17 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
 
 sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\')
-
+sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\chirp\\')
+#sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\chirp\\')
+from pulse_with_GDD import *
 from Luna_subtarget import *
 
 #this function carries out BO for hollow core fibre
 #params to be varied: 
     # Pulse: input energy, τfwhm, central wavelength
     # Fibre: pressure, fibre core radius, fibre length
+c = 299792458 # m/s
+
 
 def Luna_BO(params, initial_values_HCF, function, init_points=50, n_iter=50, t=np.linspace(-20,100,20000)):     
     """
@@ -39,13 +43,23 @@ def Luna_BO(params, initial_values_HCF, function, init_points=50, n_iter=50, t=n
     Main.eval("gas = Symbol(gas_str)")
     Main.pressure = initial_values_HCF[3]
     Main.λ0 = initial_values_HCF[4]
-    Main.τfwhm = initial_values_HCF[5]
+    GDD=initial_values_HCF[5]
     Main.energy = initial_values_HCF[6]
 
     args_BO = {} #this dictionary will contain only the parameters we want to vary here
-    for i in range(len(params)):
-        args_BO[i] = params[i] #append parameters to be varied to dictionary
+    param_dict={}
+    param_dict['radius'] = initial_values_HCF[0]
+    param_dict['flength'] = initial_values_HCF[1]
+    param_dict['gas_str'] = initial_values_HCF[2]
+    param_dict['pressure'] = initial_values_HCF[3]
+    param_dict['λ0'] = initial_values_HCF[4]
+    param_dict['GDD'] = initial_values_HCF[5]
+    param_dict['energy'] = initial_values_HCF[6]
+    
+    for i in params:
+        args_BO[i] = param_dict[i] #append parameters to be varied to dictionary
     print(args_BO)
+
     def target_func(**args):
         """
         this is the target function of the optimiser. It is created as a nested function to take only the desired variables as inputs.
@@ -68,7 +82,16 @@ def Luna_BO(params, initial_values_HCF, function, init_points=50, n_iter=50, t=n
                 Main.radius = value
             elif 'flength' in key:
                 Main.flength = value
-                
+        
+        domega = 2e15
+        omega = np.linspace(2*np.pi*c/param_dict["λ0"] - domega/2, 2*np.pi*c/param_dict["λ0"] + domega/2, 100)
+
+        E, ϕω = E_field_freq(omega, GD=0.0, wavel=param_dict["λ0"], domega=domega, amp=1, CEP=0, GDD=GDD, TOD=0)
+        Iω = np.abs(E**2)
+
+        Main.ω = omega
+        Main.Iω = Iω  
+        Main.phase = ϕω 
         # Pass data to Luna
         Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
         Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
