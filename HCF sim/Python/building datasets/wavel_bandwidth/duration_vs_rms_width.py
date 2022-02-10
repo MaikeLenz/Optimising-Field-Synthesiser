@@ -53,7 +53,7 @@ for i in τfwhms:
     #assign python variables
     wavel = Main.λ
     I = Main.Iλ
-    width=rms_width(wavel,I)
+    width=rms_width(wavel,I)*10**9
     widths=np.append(widths,width)
 """
 plt.scatter(τfwhms/10**(-15),widths, marker="+")
@@ -68,7 +68,7 @@ theor_widths = []
 for i in range(len(τfwhms)):
     theor_widths.append(theoretical_width(radius, flength, pressure, λ0, τfwhms[i], energy))
 plt.scatter(τfwhms/10**(-15),theor_widths, marker="+", label='Theoretical')
-plt.ylabel("angular frequency width, /s")
+plt.ylabel("Bandwidth, nm")
 plt.xlabel('Pulse duration, fs')
 plt.legend()
 plt.show()
