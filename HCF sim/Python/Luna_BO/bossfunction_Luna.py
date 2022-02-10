@@ -145,6 +145,12 @@ def Luna_BO(params, initial_values_HCF, function, init_points=50, n_iter=50, t=n
     print(optimizer.max) #final parameters
     Main.eval('t, Et = Processing.getEt(duv)')
     Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
+    λ = Main.λ
+    Iλ = Main.Iλ
+    t = Main.t
+    Et_allz=Main.Et #array of Et at all z 
+    Et=Et_allz[:,-1] #last item in each element is pulse shape at the end
+    Et0=Et_allz[:,0]
     plt.figure()
     plt.plot(λ*10**9,Iλ)
     plt.xlabel("Wavelength (nm)")
