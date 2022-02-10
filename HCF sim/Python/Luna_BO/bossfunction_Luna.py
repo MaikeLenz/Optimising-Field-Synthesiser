@@ -6,11 +6,12 @@ julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.0\\bi
 from julia import Main
 
 import sys
+sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\')
+sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
+
 sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\')
 sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
 from Luna_subtargetfunctions import *
-from field_synth_class import *
-from ErrorCorrectionFunction_integrate import *
 
 #this function carries out BO for hollow core fibre
 #params to be varied: 
@@ -76,6 +77,7 @@ def BO(params, initial_values_HCF, function, init_points=50, n_iter=50, goal_fie
         t = Main.t
         Et_allz = Main.Et # array of Et at all z 
         Et = Et_allz[:,-1] # last item in each element is pulse shape at the end
+        Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
 
         λ = Main.λ
         Iλ = Main.Iλ    
@@ -115,96 +117,17 @@ def BO(params, initial_values_HCF, function, init_points=50, n_iter=50, goal_fie
         )
 
     print(optimizer.max) #final parameters
-        
-
-    for i in range(len(Synth._pulse_list)):
-        #update all the original field objects to the optimised parameters
-        Synth._pulse_list[i].Update(Synth,i+1)
-        
+    
     plt.figure()
-    E_tot = np.array([]) #total electric field
-    I=np.array([]) #total intensity
-    gradient=np.array([])
-    E_individual = np.zeros((Synth.no_of_channels(),len(t))) #list of lists containing the E field values of each channel
-    I_individual = np.zeros((Synth.no_of_channels(),len(t))) #list of lists containing the intensity values of each channel
+    plt.plot(λ*10**9,Iλ)
+    plt.xlabel("Wavelength (nm)")
+    plt.ylabel("Spectral energy density (J/m)")
 
-    #creates final arrays for plotting   
-    for i in range(len(t)):
-        #create list of total electric field value at every t
-        E_i= Synth.E_field_value(t[i])
-        E_tot=np.append(E_tot,[E_i])
-        I=np.append(I,[E_i**2])
-        if i==0:
-            gradient=np.append(gradient,[0])
-        else:
-            h=t[1]-t[0]
-            gradient=np.append(gradient,[(E_i**2-Synth.E_field_value(t[i-1])**2)/h])
-        for j in range(len(Synth._pulse_list)):
-            #append individual channel electric fields
-            E_individual[j][i]=Synth._pulse_list[j].E_field_value(t[i])
-            I_individual[j][i]=(Synth._pulse_list[j].E_field_value(t[i]))**2
 
-    """
-    #shift goal field to align with max intensity
-    if function==errorCorrectionAdvanced_int or function==errorCorrection_int:
-        #shift the left electric field to match in time
-        offset=np.argmax(I)-np.argmax(goal_field)
-
-        if offset > 0: #E2 on the left of E1
-            goal_field = goal_field[:len(I)-abs(offset)]
-            goal_field=np.append(np.zeros(abs(offset)),goal_field)
-        elif offset < 0: #E2 on the right of E1
-            goal_field = goal_field[abs(offset):]
-            goal_field=np.append(goal_field,np.zeros(abs(offset)))
-    """
-    #plot results
-    energies=Synth.Energy_distr(t) #energies in each channel
-    f = plt.figure(constrained_layout=True)
-    gs = f.add_gridspec(Synth.no_of_channels(), 2)
-    f_ax_sim = f.add_subplot(gs[:, 0])
-    f_ax_sim.plot(t, E_tot, label="Electric field")
-    f_ax_sim.plot(t, I, label="Intensity")
-    f_ax_sim.plot(t, gradient, label="Intensity Gradient")
-    if function==errorCorrectionAdvanced_int or function==errorCorrection_int:
-        #need another curve which is the goal field
-        #shift this to align with the max intensity?
-        f_ax_sim.plot(t, goal_field, label="Goal Intensity")
-    f_ax_sim.set_xlabel('Time, fs')
-    f_ax_sim.set_ylabel('Electric field / Intensity')
+    plt.figure()
+    plt.plot(t,Et,label="z=1m")
+    plt.plot(t,Et0,label="z=0")
+    plt.xlabel("time,s")
+    plt.ylabel("Electric field, a.u.")
     plt.legend()
-
-    for i in range(Synth.no_of_channels()):
-        #create the subplots for each channel
-        f_ax = f.add_subplot(gs[i, 1])
-        j=i+1
-        f_ax.plot(t, E_individual[i], label="Electric field %s" %j)
-        f_ax.plot(t, I_individual[i], label="Intensity %s" %j)
-        f_ax.set_title("%s of energy"%(round(energies[i],3)))
-        if i == Synth.no_of_channels()-1:
-            f_ax.set_xlabel('Time, fs')
-        plt.legend()
-        if i != (Synth.no_of_channels()-1):
-            f_ax.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
-
     plt.show()
-
-#testing
-
-"""
-#create fields
-Field1=Wavepacket(t0=0.0, wavel=400.0, fwhm=10.0, amp=1.0, CEP=0.0)
-Field2=Wavepacket(t0=0.0, wavel=700.0, fwhm=20.0, amp=1.0, CEP=0.0)
-Field3=Wavepacket(t0=0.0, wavel=1000.0, fwhm=30.0, amp=1.0, CEP=0.0)
-Field4=Wavepacket(t0=0.0, wavel=2000.0, fwhm=10.0, amp=1.0, CEP=0.0)
-Field5=Wavepacket(t0=0.0, wavel=1500.0, fwhm=15.0, amp=1.0, CEP=0.0)
-
-#initialise pulse list and tuple of relative delays (from 1st pulse)
-pulses=[Field1,Field2, Field3, Field4, Field5]
-delays=(10,20,30,10)
-#pass to synthesiser
-Synth=Synthesiser(pulses,delays)
-
-#parameters to be optimised
-params=['CEP5','CEP2','CEP3','CEP4']
-BO(params, Synth, sharpestPeak_triang, 10,10)
-"""
