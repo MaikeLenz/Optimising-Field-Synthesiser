@@ -2,7 +2,8 @@ import numpy as np
 from bayes_opt import BayesianOptimization
 import matplotlib.pyplot as plt
 import julia
-julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
+julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
+#julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
 from julia import Main
 
 import sys
@@ -11,7 +12,10 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\')
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
-from Luna_bossfunction import *
+
+sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\')
+
+from bossfunction_Luna import *
 
 #this function carries out BO for hollow core fibre
 #params to be varied: 
@@ -23,5 +27,5 @@ params=["energy", "pressure"]
 #values:  radius, flength, gas, pressure, wavelength, fwhm duration, energy
 initial_values_HCF=[125e-6,1,"Ne",2,800e-9,30e-15,0.5e-3]
 
-Luna_BO(params, initial_values_HCF, max_bandwidth):     
+Luna_BO(params, initial_values_HCF, function=max_bandwidth, init_points=1, n_iter=1)
  
