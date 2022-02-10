@@ -12,5 +12,5 @@ julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\
 
 from julia import Main
 
-def max_Bandwidth(t,Et,λ,Iλ):
+def max_bandwidth(t,Et,λ,Iλ):
     return rms_width(λ,Iλ)
