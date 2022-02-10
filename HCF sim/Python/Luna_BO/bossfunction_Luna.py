@@ -47,17 +47,18 @@ def Luna_BO(params, initial_values_HCF, function, init_points=50, n_iter=50, t=n
     Main.energy = initial_values_HCF[6]
 
     args_BO = {} #this dictionary will contain only the parameters we want to vary here
-    param_dict={}
-    param_dict['radius'] = initial_values_HCF[0]
-    param_dict['flength'] = initial_values_HCF[1]
-    param_dict['gas_str'] = initial_values_HCF[2]
-    param_dict['pressure'] = initial_values_HCF[3]
-    param_dict['λ0'] = initial_values_HCF[4]
-    param_dict['GDD'] = initial_values_HCF[5]
-    param_dict['energy'] = initial_values_HCF[6]
+    params_dict={}
+    params_dict['radius'] = initial_values_HCF[0]
+    params_dict['flength'] = initial_values_HCF[1]
+    params_dict['gas_str'] = initial_values_HCF[2]
+    params_dict['pressure'] = initial_values_HCF[3]
+    params_dict['λ0'] = initial_values_HCF[4]
+    params_dict['GDD'] = initial_values_HCF[5]
+    params_dict['energy'] = initial_values_HCF[6]
     
     for i in params:
-        args_BO[i] = param_dict[i] #append parameters to be varied to dictionary
+        if i in params_dict:
+            args_BO[i] = params_dict[i] #append parameters to be varied to dictionary
     print(args_BO)
 
     def target_func(**args):
@@ -66,14 +67,12 @@ def Luna_BO(params, initial_values_HCF, function, init_points=50, n_iter=50, t=n
         It will consist of one of the sub-target functions in the subtarget function file or one of the rms error functions in ErrorCorrection_integrate.
         """
         for i in range(len(params)):
-            args_BO[params[i]] = args[params[i]]
+            params_dict[params[i]] = params_dict[params[i]]
             
         # Update the simulation's variables with new parameters
         for key, value in args_BO.items():
             if 'energy' in key:
                 Main.energy = value
-            elif 'τfwhm' in key:
-                Main.τfwhm = value
             elif 'λ0' in key:
                 Main.λ0 = value
             elif 'pressure' in key:
@@ -84,9 +83,9 @@ def Luna_BO(params, initial_values_HCF, function, init_points=50, n_iter=50, t=n
                 Main.flength = value
         
         domega = 2e15
-        omega = np.linspace(2*np.pi*c/param_dict["λ0"] - domega/2, 2*np.pi*c/param_dict["λ0"] + domega/2, 100)
+        omega = np.linspace(2*np.pi*c/params_dict["λ0"] - domega/2, 2*np.pi*c/params_dict["λ0"] + domega/2, 100)
 
-        E, ϕω = E_field_freq(omega, GD=0.0, wavel=param_dict["λ0"], domega=domega, amp=1, CEP=0, GDD=GDD, TOD=0)
+        E, ϕω = E_field_freq(omega, GD=0.0, wavel=params_dict["λ0"], domega=domega, amp=1, CEP=0, GDD=GDD, TOD=0)
         Iω = np.abs(E**2)
 
         Main.ω = omega
@@ -144,7 +143,8 @@ def Luna_BO(params, initial_values_HCF, function, init_points=50, n_iter=50, t=n
         )
 
     print(optimizer.max) #final parameters
-    
+    Main.eval('t, Et = Processing.getEt(duv)')
+    Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
     plt.figure()
     plt.plot(λ*10**9,Iλ)
     plt.xlabel("Wavelength (nm)")
