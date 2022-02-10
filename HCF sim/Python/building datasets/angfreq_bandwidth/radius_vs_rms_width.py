@@ -1,5 +1,6 @@
 import julia
 import matplotlib.pyplot as plt
+import csv
 #plt.rcParams['text.usetex'] = True
 import sys
 #sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
@@ -72,3 +73,14 @@ plt.ylabel("angular frequency width, /s")
 plt.xlabel('Core radius, um')
 plt.legend()
 plt.show()
+
+# Save the data
+header = ['Core radius, um', 'Simulated Angular Frequency Width, /s', 'Theoretical Angular Frequency Width, /s']
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\angfreq_bandwidth\\data\\radius_vs_rms_width.csv', 'w', encoding='UTF8', newline='') as f:
+    writer = csv.writer(f)
+    # write the header
+    writer.writerow(header)
+
+    # write the data
+    for i in range(len(radius)):
+        writer.writerow([radius[i]*10**6, widths[i], theor_widths[i]])
