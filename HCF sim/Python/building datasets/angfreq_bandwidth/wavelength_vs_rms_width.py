@@ -1,12 +1,13 @@
 import julia
 import matplotlib.pyplot as plt
+import csv
 #plt.rcParams['text.usetex'] = True
 import sys
 #sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
 sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
 from theoretical_width import theoretical_width
 
-julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
+#julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
 julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
 
 from julia import Main
@@ -64,3 +65,14 @@ plt.ylabel("angular frequency width, /s")
 plt.xlabel('Wavelength, nm')
 plt.legend()
 plt.show()
+
+# Save the data
+header = ['Wavelength, nm', 'Simulated Angular Frequency Width, /s', 'Theoretical Angular Frequency Width, /s']
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\angfreq_bandwidth\\data\\wavelength_vs_rms_width.csv', 'w', encoding='UTF8', newline='') as f:
+    writer = csv.writer(f)
+    # write the header
+    writer.writerow(header)
+
+    # write the data
+    for i in range(len(λ0s)):
+        writer.writerow([λ0s[i]*10**9, widths[i], theor_widths[i]])

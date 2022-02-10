@@ -1,5 +1,6 @@
 import julia
 import matplotlib.pyplot as plt
+import csv
 import sys
 #sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
 sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
@@ -71,3 +72,14 @@ plt.ylabel("angular frequency width, /s")
 plt.xlabel('Pressure, bar')
 plt.legend()
 plt.show()
+
+# Save the data
+header = ['Pressure, bar', 'Simulated Angular Frequency Width, /s', 'Theoretical Angular Frequency Width, /s']
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\angfreq_bandwidth\\data\\pressure_vs_rms_width.csv', 'w', encoding='UTF8', newline='') as f:
+    writer = csv.writer(f)
+    # write the header
+    writer.writerow(header)
+
+    # write the data
+    for i in range(len(pressures)):
+        writer.writerow([pressures[i], widths[i], theor_widths[i]])
