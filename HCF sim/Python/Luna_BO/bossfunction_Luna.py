@@ -8,7 +8,7 @@ from julia import Main
 import sys
 sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\')
 sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
-from subtargetfunctions import *
+from Luna_subtargetfunctions import *
 from field_synth_class import *
 from ErrorCorrectionFunction_integrate import *
 
@@ -64,37 +64,40 @@ def BO(params, initial_values_HCF, function, init_points=50, n_iter=50, goal_fie
             elif 'flength' in key:
                 Main.flength = value
                 
-        # Run the simulation
-        Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
+        # Pass data to Luna
+        Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
+        Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+
         Main.eval('t, Et = Processing.getEt(duv)')
+        Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
+
         
         # Get values
         t = Main.t
         Et_allz = Main.Et # array of Et at all z 
         Et = Et_allz[:,-1] # last item in each element is pulse shape at the end
+
+        λ = Main.λ
+        Iλ = Main.Iλ    
         
-        # Run minimisation
-        if function == errorCorrectionAdvanced_int or function == errorCorrection_int:
-            #to minimise rms errors, the sub-target function contains another argument, the goal intensity field
-            return function(t, Et**2, goal_field)    
-        else: 
-            #perhaps already pass the array of intensities in here?
-            return function(t, Et) #pass t and E to sub-target function
+        return function(t, Et, λ, Iλ) #pass t and E to sub-target function
 #%%
     # Make pbounds dictionary
     pbounds = {}
     for i in params:
-        #assume standard bounds, same for each channel
-        if 'wavel' in i:
-            pbounds[i] = (400,2000)
-        if 'fwhm' in i:
-            pbounds[i] = (5,70)
-        if 'amp' in i:
-            pbounds[i] = (0.1,3)
-        if 'CEP' in i:
-            pbounds[i] = (0, 2*np.pi)
-        if 'delay' in i:
-            pbounds[i] = (0,50)
+        #assume standard bounds
+        if 'energy' in i:
+            pbounds[i] = (0,1e-3)
+        elif 'τfwhm' in i:
+            pbounds[i] = (20e-15,50e-15)
+        elif 'λ0' in i:
+            pbounds[i] = (700e-9,900e-9)
+        elif 'pressure' in i:
+            pbounds[i] = (0,3)
+        elif 'radius' in i:                
+            pbounds[i] = (125e-6,300e-6)
+        elif 'flength' in i:
+            pbounds[i] = (1,2)
     print(pbounds)
 
     optimizer = BayesianOptimization(
