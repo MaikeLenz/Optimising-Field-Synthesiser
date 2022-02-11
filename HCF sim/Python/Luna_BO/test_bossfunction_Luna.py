@@ -27,5 +27,5 @@ params=["energy", "pressure"]
 #values:  radius, flength, gas, pressure, wavelength, GDD, energy
 initial_values_HCF=[125e-6,1,"Ne",2,800e-9,0,0.5e-3]
 
-Luna_BO(params, initial_values_HCF, function=max_bandwidth, init_points=1, n_iter=1)
+Luna_BO(params, initial_values_HCF, function=max_bandwidth, init_points=10, n_iter=10)
  
