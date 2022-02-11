@@ -22,7 +22,7 @@ from bossfunction_Luna import *
     # Pulse: input energy, τfwhm, central wavelength
     # Fibre: pressure, fibre core radius, fibre length
 
-params=["energy", "pressure"]
+params=["energy", "pressure", "GDD"]
 
 #values:  radius, flength, gas, pressure, wavelength, GDD, energy
 initial_values_HCF=[125e-6,1,"Ne",2,800e-9,0,0.5e-3]

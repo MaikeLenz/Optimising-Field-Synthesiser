@@ -95,6 +95,9 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             pbounds[i] = (400,10000)
         if 'fwhm' in i:
             pbounds[i] = (5,70)
+        if 'GDD' in i:
+            pbounds[i] = (-50,0,50)
+            #technically need to find GDD bounds here that make sense for our pulse
         if 'amp' in i:
             pbounds[i] = (0.1,3)
         if 'CEP' in i:
