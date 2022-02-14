@@ -17,7 +17,7 @@ pressures = df.iloc[:,0].values
 energies = df.iloc[:,1].values
 widths = df.iloc[:,2].values
 
-
+"""
 # Run BO
 params=["pressure", "energy"]
 
@@ -25,40 +25,35 @@ params=["pressure", "energy"]
 initial_values_HCF=[125e-6, 1, "Ne", 2.340607, 800e-9, 0, 0.5e-3]
 τfwhm = 30e-15 # FWHM durations of the pump pulse
 
-Luna_BO(params, initial_values_HCF, Gaussian=True, FWHM=τfwhm, function=max_bandwidth, init_points=1, n_iter=1)
-
+Luna_BO(params, initial_values_HCF, Gaussian=True, FWHM=τfwhm, function=max_bandwidth, init_points=10, n_iter=100)
+"""
 # Then plot point found by BO onto the figure
 # After init_points=10, n_iter=0: (Random search)
-width0 = 8.82001549724403e-07
+width0 = 1.8086054432613795e-07
 energy0 = 0.00010021731215295529
 pressure0 = 5.232656016845757
 
 # After init_points=10, n_iter=5:
-width5 = 8.820269893611299e-07
-energy5 =  0.0018277151208271087
-pressure5 = 8.820792709866982
+width5 = 1.808605497098563e-07
+energy5 =  0.00037883619255251475
+pressure5 = 2.292740326763169
 
 # After init_points=10, n_iter=10:
-width10 = 8.819891998207039e-07
-energy10 = 0.001288983323577848
-pressure10 = 14.997829386205092
+width10 = 1.8086056478246469e-07
+energy10 = 0.0004538944016175747
+pressure10 = 5.837850178602668
 
 # After init_points=10, n_iter=100:
-width100 = 8.820133917334112e-07
-energy100 = 0.00014306863540207445
-pressure100 = 5.232749699547237
-
-# After init_points=100, n_iter=100:
-width100_rep = 8.820265452940038e-07
-energy100_rep = 0.0001358849171117544
-pressure100_rep = 4.281191381863461
+width100 = 1.8086056183140002e-07
+energy100 = 0.001039414750035517
+pressure100 = 2.2776823585771977
 
 
 num_points = 20
 widths_shaped = np.zeros((num_points,num_points))
 for i in range(num_points):
     widths_shaped[i] = widths[i*20:20+i*20]
-"""
+
 # Plot data
 plt.imshow(widths_shaped, extent=(np.amin(pressures), np.amax(pressures),np.amin(energies), np.amax(energies)), aspect = 'auto', origin="lower")
 plt.xlabel("Pressure, bar")
@@ -71,8 +66,6 @@ plt.scatter(pressure0, energy0*(10**3), s=100, marker='o', label='n_init = 10, n
 plt.scatter(pressure5, energy5*(10**3), s=100, marker='o', label='n_init = 10, n_iter = 5')
 plt.scatter(pressure10, energy10*(10**3), s=100, marker='o', label='n_init = 10, n_iter = 10')
 plt.scatter(pressure100, energy100*(10**3), s=100, marker='o', label='n_init = 10, n_iter = 100')
-plt.scatter(pressure100_rep, energy100_rep*(10**3), s=100, marker='o', label='n_init = 100, n_iter = 100')
 plt.legend()
 
 plt.show()
-"""
