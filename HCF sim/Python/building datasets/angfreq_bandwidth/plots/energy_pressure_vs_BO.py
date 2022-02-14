@@ -12,20 +12,20 @@ sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\
 sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\')
 from bossfunction_Luna import *
 
-df = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\angfreq_bandwidth\\data\\energy_and_pressure_vs_rms_width_custom_pulse.csv")
+df = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\angfreq_bandwidth\\data\\energy_and_pressure_vs_rms_width.csv")
 pressures = df.iloc[:,0].values
 energies = df.iloc[:,1].values
 widths = df.iloc[:,2].values
 
-"""
+
 # Run BO
 params=["pressure", "energy"]
 
 #values:  radius, flength, gas, pressure, wavelength, GDD, energy
 initial_values_HCF=[125e-6, 1, "Ne", 2.340607, 800e-9, 0, 0.5e-3]
 
-Luna_BO(params, initial_values_HCF, function=max_bandwidth, init_points=100, n_iter=100)
-"""
+Luna_BO(params, initial_values_HCF, Gaussian=True, function=max_bandwidth, init_points=1, n_iter=1)
+
 # Then plot point found by BO onto the figure
 # After init_points=10, n_iter=0: (Random search)
 width0 = 8.82001549724403e-07
@@ -57,7 +57,7 @@ num_points = 20
 widths_shaped = np.zeros((num_points,num_points))
 for i in range(num_points):
     widths_shaped[i] = widths[i*20:20+i*20]
-
+"""
 # Plot data
 plt.imshow(widths_shaped, extent=(np.amin(pressures), np.amax(pressures),np.amin(energies), np.amax(energies)), aspect = 'auto', origin="lower")
 plt.xlabel("Pressure, bar")
@@ -74,3 +74,4 @@ plt.scatter(pressure100_rep, energy100_rep*(10**3), s=100, marker='o', label='n_
 plt.legend()
 
 plt.show()
+"""
