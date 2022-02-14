@@ -17,15 +17,15 @@ pressures = df.iloc[:,0].values
 energies = df.iloc[:,1].values
 widths = df.iloc[:,2].values
 
-
+"""
 # Run BO
 params=["pressure", "energy"]
 
 #values:  radius, flength, gas, pressure, wavelength, GDD, energy
 initial_values_HCF=[125e-6, 1, "Ne", 2.340607, 800e-9, 0, 0.5e-3]
 
-Luna_BO(params, initial_values_HCF, function=max_bandwidth, init_points=10, n_iter=100)
-
+Luna_BO(params, initial_values_HCF, function=max_bandwidth, init_points=100, n_iter=100)
+"""
 # Then plot point found by BO onto the figure
 # After init_points=10, n_iter=0: (Random search)
 width0 = 8.82001549724403e-07
@@ -43,9 +43,14 @@ energy10 = 0.001288983323577848
 pressure10 = 14.997829386205092
 
 # After init_points=10, n_iter=100:
-width100 = 8.819891998207039e-07
-energy100 = 0.001288983323577848
-pressure100 = 14.997829386205092
+width100 = 8.820133917334112e-07
+energy100 = 0.00014306863540207445
+pressure100 = 5.232749699547237
+
+# After init_points=100, n_iter=100:
+width100_rep = 8.820265452940038e-07
+energy100_rep = 0.0001358849171117544
+pressure100_rep = 4.281191381863461
 
 
 num_points = 20
@@ -61,10 +66,11 @@ plt.ylabel("Pulse energy, mJ")
 cbar = plt.colorbar()
 cbar.ax.set_ylabel('angular frequency bandwidth', rotation=270, labelpad=15)
 
-plt.scatter(pressure0, energy0*(10**3), s=100, c='tab:purple', marker='o', label='0')
-plt.scatter(pressure5, energy5*(10**3), s=100, c='tab:blue', marker='o', label='5')
-plt.scatter(pressure10, energy10*(10**3), s=100, c='tab:green', marker='o', label='10')
-plt.scatter(pressure100, energy100*(10**3), s=100, c='tab:red', marker='o', label='100')
+plt.scatter(pressure0, energy0*(10**3), s=100, marker='o', label='n_init = 10, n_iter = 0')
+plt.scatter(pressure5, energy5*(10**3), s=100, marker='o', label='n_init = 10, n_iter = 5')
+plt.scatter(pressure10, energy10*(10**3), s=100, marker='o', label='n_init = 10, n_iter = 10')
+plt.scatter(pressure100, energy100*(10**3), s=100, marker='o', label='n_init = 10, n_iter = 100')
+plt.scatter(pressure100_rep, energy100_rep*(10**3), s=100, marker='o', label='n_init = 100, n_iter = 100')
 plt.legend()
 
 plt.show()
