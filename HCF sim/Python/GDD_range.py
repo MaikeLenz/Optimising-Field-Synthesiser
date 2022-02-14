@@ -26,7 +26,7 @@ c = 299792458 # m/s
 
 #def efield_time_domain(t, amp, om0, dom, t0, gdd, cep):
 
-def GDD_range(max_duration, starting_value=10,t,t0,wavel,domega, CEP):
+def GDD_range(max_duration, starting_value,t,t0,wavel,domega, CEP):
     GDD=np.abs(starting_value) #need to do this w/positive GDD
     E_real = efield_time_domain(t=t, amp=1, om0=2*np.pi*c/wavel, dom=domega, t0=t0, gdd=GDD, cep=CEP)
     width=rms_width(t,E_real)#width is rms width of E with t
