@@ -27,7 +27,7 @@ from Luna_subtarget import *
 c = 299792458 # m/s
 
 
-def Luna_BO(params, initial_values_HCF, function, init_points=50, n_iter=50, t=np.linspace(-20,100,20000)):     
+def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  domega = 2e15, init_points=50, n_iter=50, t=np.linspace(-20,100,20000)):     
     """
     performs BO with params as specified as strings in params input (params is list of strings) on the HCF.
     init_points: number of initial BO points
@@ -56,7 +56,9 @@ def Luna_BO(params, initial_values_HCF, function, init_points=50, n_iter=50, t=n
     params_dict['λ0'] = initial_values_HCF[4]
     params_dict['GDD'] = initial_values_HCF[5]
     params_dict['energy'] = initial_values_HCF[6]
-    
+    if Gaussian=True:
+        params_dict['FWHM'] = FWHM
+
     for i in params:
         if i in params_dict:
             args_BO[i] = params_dict[i] #append parameters to be varied to dictionary
@@ -82,19 +84,30 @@ def Luna_BO(params, initial_values_HCF, function, init_points=50, n_iter=50, t=n
                 Main.radius = value
             elif 'flength' in key:
                 Main.flength = value
-        
-        domega = 2e15
-        omega = np.linspace(2*np.pi*c/params_dict["λ0"] - domega/2, 2*np.pi*c/params_dict["λ0"] + domega/2, 100)
+            elif 'FWHM' in key:
+                Main.τfwhm = value
 
-        E, ϕω = E_field_freq(omega, GD=0.0, wavel=params_dict["λ0"], domega=domega, amp=1, CEP=0, GDD=GDD, TOD=0)
-        Iω = np.abs(E**2)
+        if Gaussian = False:
+            """
+            Custom data pulse is defined and passed to prop capillary
+            """
+            omega = np.linspace(2*np.pi*c/params_dict["λ0"] - domega/2, 2*np.pi*c/params_dict["λ0"] + domega/2, 100)
 
-        Main.ω = omega
-        Main.Iω = Iω  
-        Main.phase = ϕω 
-        # Pass data to Luna
-        Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
-        Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+            E, ϕω = E_field_freq(omega, GD=0.0, wavel=params_dict["λ0"], domega=domega, amp=1, CEP=0, GDD=GDD, TOD=0)
+            Iω = np.abs(E**2)
+
+            Main.ω = omega
+            Main.Iω = Iω  
+            Main.phase = ϕω 
+            # Pass data to Luna
+            Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
+            Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+
+        else:
+            """
+            default gaussian pulse passed to prop capillary
+            """
+            Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
 
         Main.eval('t, Et = Processing.getEt(duv)')
         Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
