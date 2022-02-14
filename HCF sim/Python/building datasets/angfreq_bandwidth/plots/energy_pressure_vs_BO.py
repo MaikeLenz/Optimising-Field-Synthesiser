@@ -23,8 +23,9 @@ params=["pressure", "energy"]
 
 #values:  radius, flength, gas, pressure, wavelength, GDD, energy
 initial_values_HCF=[125e-6, 1, "Ne", 2.340607, 800e-9, 0, 0.5e-3]
+τfwhm = 30e-15 # FWHM durations of the pump pulse
 
-Luna_BO(params, initial_values_HCF, Gaussian=True, function=max_bandwidth, init_points=1, n_iter=1)
+Luna_BO(params, initial_values_HCF, Gaussian=True, FWHM=τfwhm, function=max_bandwidth, init_points=1, n_iter=1)
 
 # Then plot point found by BO onto the figure
 # After init_points=10, n_iter=0: (Random search)
