@@ -24,25 +24,24 @@ julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\
 from rms_width import *
 c = 299792458 # m/s
 
-def GDD_range(max_duration, starting_value=10,wavel,domega,omega, CEP, TOD):
-    GDD=np.abs(starting_value)
-    E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=domega, amp=1, CEP=CEP, GDD=GDD, TOD=TOD)
-    E_abs=np.abs(E)
-    width=rms_width(omega,E_abs)
+#def efield_time_domain(t, amp, om0, dom, t0, gdd, cep):
+
+def GDD_range(max_duration, starting_value=10,t,t0,wavel,domega, CEP):
+    GDD=np.abs(starting_value) #need to do this w/positive GDD
+    E_real = efield_time_domain(t=t, amp=1, om0=2*np.pi*c/wavel, dom=domega, t0=t0, gdd=GDD, cep=CEP)
+    width=rms_width(t,E_real)#width is rms width of E with t
     if width >max_duration:
         while width>max_duration:
             GDD-=1
-            E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=domega, amp=1, CEP=0, GDD=0, TOD=0)
-            E_abs=np.abs(E)
-            width=rms_width(omega,E_abs)
+            E_real = efield_time_domain(t=t, amp=1, om0=2*np.pi*c/wavel, dom=domega, t0=t0, gdd=GDD, cep=CEP)
+            width=rms_width(t,E_real)#width is rms width of E with t
         return GDD
     elif width<max_duration:
         while width<max_duration:
             GDD+=1
-            E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=domega, amp=1, CEP=0, GDD=0, TOD=0)
-            E_abs=np.abs(E)
-            width=rms_width(omega,E_abs)
-
+            E_real = efield_time_domain(t=t, amp=1, om0=2*np.pi*c/wavel, dom=domega, t0=t0, gdd=GDD, cep=CEP)
+            width=rms_width(t,E_real)#width is rms width of E with t
+        return GDD
 
 
 
