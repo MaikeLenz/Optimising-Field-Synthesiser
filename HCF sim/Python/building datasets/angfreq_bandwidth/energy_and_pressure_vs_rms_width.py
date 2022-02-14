@@ -1,13 +1,20 @@
 import julia
 import matplotlib.pyplot as plt
+import csv  
+import sys
 
-julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
+#julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
+julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
 
 from julia import Main
 
 Main.using("Luna")
+#sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
+sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
 
 from rms_width import *
+from theoretical_width import theoretical_width
+
 # Arguments
 radius = 125e-6 # HCF core radius
 flength = 1 # HCF length
@@ -49,10 +56,28 @@ for i in range(len(energies)):
         width=rms_width(ω,Iω)
         widths[i][j]=width
 
-plt.imshow(widths, extent=(np.amin(pressures)*10**15, np.amax(pressures)*10**15,np.amin(energies)*10**3, np.amax(energies)*10**3), aspect = 'auto', origin="lower")
+plt.imshow(widths, extent=(np.amin(pressures), np.amax(pressures),np.amin(energies)*10**3, np.amax(energies)*10**3), aspect = 'auto', origin="lower")
 plt.xlabel("Pressure, bar")
 plt.ylabel("Pulse energy, mJ")
 #legend
 cbar = plt.colorbar()
 cbar.ax.set_ylabel('angular frequency bandwidth', rotation=270, labelpad=15)
 plt.show()
+
+# Calculate theoretical widths
+theor_widths = np.zeros((len(energies),len(pressures)))
+for i in range(len(energies)):
+    for j in range(len(pressures)):
+        theor_widths[i][j] = theoretical_width(radius, flength, pressures[j], λ0, τfwhm, energies[i])
+
+# Save the data
+header = ['Pressure, bar', 'Pulse energy, mJ', 'Simulated Angular Frequency Width, /s', 'Theoretical Angular Frequency Width, /s']
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\angfreq_bandwidth\\data\\energy_and_pressure_vs_rms_width.csv', 'w', encoding='UTF8', newline='') as f:
+    writer = csv.writer(f)
+    # write the header
+    writer.writerow(header)
+
+    # write the data
+    for i in range(len(energies)):
+        for j in range(len(pressures)):
+            writer.writerow([pressures[j], energies[i]*(10**3), widths[i][j], theor_widths[i][j]])

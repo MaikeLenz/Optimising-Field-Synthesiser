@@ -1,13 +1,20 @@
 import julia
 import matplotlib.pyplot as plt
+import csv  
+import sys
 
-julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
+#julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
+julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
 
 from julia import Main
 
 Main.using("Luna")
+#sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
+sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
 
 from rms_width import *
+from theoretical_width import theoretical_width
+
 # Arguments
 radius = 125e-6 # HCF core radius
 flength = 1 # HCF length
@@ -59,3 +66,21 @@ plt.ylabel("Pulse energy, mJ")
 cbar = plt.colorbar()
 cbar.ax.set_ylabel('angular frequency bandwidth', rotation=270, labelpad=15)
 plt.show()
+
+# Calculate theoretical widths
+theor_widths = np.zeros((len(energies),len(τfwhms)))
+for i in range(len(energies)):
+    for j in range(len(τfwhms)):
+        theor_widths[i][j] = theoretical_width(radius, flength, pressure, λ0, τfwhms[j], energies[i])
+
+# Save the data
+header = ['Pulse duration, fs', 'Pulse energy, mJ', 'Simulated Angular Frequency Width, /s', 'Theoretical Angular Frequency Width, /s']
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\angfreq_bandwidth\\data\\energy_and_duration_vs_rms_width.csv', 'w', encoding='UTF8', newline='') as f:
+    writer = csv.writer(f)
+    # write the header
+    writer.writerow(header)
+
+    # write the data
+    for i in range(len(energies)):
+        for j in range(len(τfwhms)):
+            writer.writerow([τfwhms[j]/10**(-15), energies[i]*(10**3), widths[i][j], theor_widths[i][j]])
