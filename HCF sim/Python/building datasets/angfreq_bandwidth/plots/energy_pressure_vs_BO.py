@@ -25,7 +25,7 @@ params=["pressure", "energy"]
 initial_values_HCF=[125e-6, 1, "Ne", 2.340607, 800e-9, 0, 0.5e-3]
 τfwhm = 30e-15 # FWHM durations of the pump pulse
 
-Luna_BO(params, initial_values_HCF, Gaussian=True, FWHM=τfwhm, function=max_bandwidth, init_points=10, n_iter=100)
+Luna_BO(params, initial_values_HCF, Gaussian=True, FWHM=τfwhm, function=max_bandwidth, init_points=100, n_iter=100)
 """
 # Then plot point found by BO onto the figure
 # After init_points=10, n_iter=0: (Random search)
@@ -48,6 +48,10 @@ width100 = 1.8086056183140002e-07
 energy100 = 0.001039414750035517
 pressure100 = 2.2776823585771977
 
+# After init_points=100, n_iter=100:
+width100_rep = 1.8086057420846162e-07
+energy100_rep = 0.0013934507706072274
+pressure100_rep = 12.303031785957677
 
 num_points = 20
 widths_shaped = np.zeros((num_points,num_points))
@@ -66,6 +70,7 @@ plt.scatter(pressure0, energy0*(10**3), s=100, marker='o', label='n_init = 10, n
 plt.scatter(pressure5, energy5*(10**3), s=100, marker='o', label='n_init = 10, n_iter = 5')
 plt.scatter(pressure10, energy10*(10**3), s=100, marker='o', label='n_init = 10, n_iter = 10')
 plt.scatter(pressure100, energy100*(10**3), s=100, marker='o', label='n_init = 10, n_iter = 100')
+plt.scatter(pressure100_rep, energy100_rep*(10**3), s=100, marker='o', label='n_init = 100, n_iter = 100')
 plt.legend()
 
 plt.show()
