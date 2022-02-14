@@ -1,11 +1,6 @@
+import pandas as pd
+from matplotlib import pyplot as plt
 import numpy as np
-from bayes_opt import BayesianOptimization
-import matplotlib.pyplot as plt
-import julia
-#julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
-julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
-from julia import Main
-
 import sys
 #sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\')
 #sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
@@ -17,15 +12,28 @@ sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\
 sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\')
 from bossfunction_Luna import *
 
-#this function carries out BO for hollow core fibre
-#params to be varied: 
-    # Pulse: input energy, τfwhm, central wavelength
-    # Fibre: pressure, fibre core radius, fibre length
+"""
+Won't work until we add duration into BO
+"""
+df = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\angfreq_bandwidth\\data\\energy_and_duration_vs_rms_width.csv")
+τfwhms = df.iloc[:,0]
+energies = df.iloc[:,1]
+widths = df.iloc[:,2]
 
-params=["energy", "pressure", "GDD"]
+# Plot data
+plt.imshow(widths, extent=(np.amin(τfwhms)*10**15, np.amax(τfwhms)*10**15,np.amin(energies)*10**3, np.amax(energies)*10**3), aspect = 'auto', origin="lower")
+plt.xlabel("Pulse duration, fs")
+plt.ylabel("Pulse energy, mJ")
+#legend
+cbar = plt.colorbar()
+cbar.ax.set_ylabel('angular frequency bandwidth', rotation=270, labelpad=15)
+
+# Run BO
+params=[ "τfwhm", "energy"]
 
 #values:  radius, flength, gas, pressure, wavelength, GDD, energy
-initial_values_HCF=[125e-6,1,"Ne",2,800e-9,0,0.5e-3]
+initial_values_HCF=[125e-6, 1, "Ne", 2.340607, 800e-9, 0, 0.1e-3]
 
 Luna_BO(params, initial_values_HCF, function=max_bandwidth, init_points=1, n_iter=1)
- 
+
+# Then plot point found by BO onto the figure
