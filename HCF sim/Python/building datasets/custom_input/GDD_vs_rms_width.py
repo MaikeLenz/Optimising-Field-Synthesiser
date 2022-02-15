@@ -2,7 +2,7 @@ import julia
 import matplotlib.pyplot as plt
 import csv  
 import sys
-
+"""
 #sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
 sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
 from theoretical_width import theoretical_width
@@ -27,7 +27,7 @@ wavel = 800e-9
 τfwhm = 30e-15 # FWHM duration of the pump pulse
 domega = (0.44/τfwhm)*2*np.pi
 omega = np.linspace(2*np.pi*c/wavel - domega/2, 2*np.pi*c/wavel + domega/2, 100)
-GDDs = np.linspace(0, 100, 100)
+GDDs = np.linspace(0, 100*(10**30), 100) #GDD in /s^2
 Main.energy = energy
 Main.λ0 = wavel
 
@@ -71,27 +71,26 @@ for i in GDDs:
 
 plt.scatter(GDDs,widths,marker="+", label='Luna')
 plt.ylabel("angular frequency width, /s")
-plt.xlabel('GDD, /s^2')
+plt.xlabel('GDD*(10**-30), /fs^2')
 plt.show()
 
 
 # Save the data
-header = ['GDD, /s^2', 'Simulated Angular Frequency Width, /s']
-with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\custom_input\\data\\GDD_vs_rms_width.csv', 'w', encoding='UTF8', newline='') as f:
+header = ['GDD, /fs^2', 'Simulated Angular Frequency Width, /s']
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\custom_input\\data\\GDD_in_fs_vs_rms_width.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     # write the header
     writer.writerow(header)
 
     # write the dataS
     for i in range(len(GDDs)):
-        writer.writerow([GDDs[i], widths[i]])
+        writer.writerow([GDDs[i]*(10**-30), widths[i]])
 
 """
 import pandas as pd
-df = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\custom_input\\data\\GDD_vs_rms_width.csv")
+df = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\custom_input\\data\\GDD_in_seconds_vs_rms_width.csv")
 
 plt.plot(df.iloc[:,0],df.iloc[:,1])
 plt.ylabel("angular frequency width, /s")
-plt.xlabel('GDD, /s^2')
+plt.xlabel('GDD, /fs^2')
 plt.show()
-"""
