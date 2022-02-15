@@ -56,7 +56,8 @@ z_min, z_max = -np.abs(z).max(), np.abs(z).max()
 
 fig, ax = plt.subplots()
 
-c = ax.pcolormesh(x, y, z, cmap='RdBu', vmin=z_min, vmax=z_max)
+#c = ax.pcolormesh(x, y, z, cmap='RdBu', vmin=z_min, vmax=z_max)
+c = ax.pcolormesh(x, y, z, vmin=z_min, vmax=z_max)
 ax.set_title('Rastrigin')
 # set the limits of the plot to the limits of the data
 ax.axis([x.min(), x.max(), y.min(), y.max()])
