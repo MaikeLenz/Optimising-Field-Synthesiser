@@ -25,16 +25,8 @@ from bayes_opt import BayesianOptimization
 # Bounded region of parameter space
 pbounds = {'x': (-5.12, 5.12), 'y': (-5.12, 5.12)}
 
-
-optimizer = BayesianOptimization(
-    f=func,
-    pbounds=pbounds,
-    verbose=2, # verbose = 1 prints only when a maximum is observed, verbose = 0 is silent
-    random_state=1,
-)
-
-inits=np.arange(10,110,20)
-iters=np.arange(10,110,20)
+inits=np.arange(10,130,30)
+iters=np.arange(10,130,30)
 
 #inits=np.array([1,2])
 #iters=np.array([1,2])
@@ -75,7 +67,7 @@ colours = cm.pink(np.linspace(0, 1, len(results)))
 for key, value in results.items():
     plt.scatter(value[0],value[1],label=key,s=15,c=colours[i])
     i+=1
-plt.scatter(0,0,color="darkred",label="Minimum",s=15)
+plt.scatter(0,0,color="red",label="Minimum",s=20)
 plt.xlabel("x")
 plt.ylabel("y")
 plt.legend()
