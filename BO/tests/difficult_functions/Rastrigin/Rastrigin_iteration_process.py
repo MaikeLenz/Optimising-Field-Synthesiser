@@ -33,9 +33,10 @@ z = (x**2 - 10 * np.cos(2 * np.pi * x)) + \
 #now make this the target function
 def func(x, y):
     """
-    Rastrigin function
+    negative of the Rastrigin function
+    BO maximises but the Rastrigin function has a global minimum
     """
-    return (x**2 - 10 * np.cos(2 * np.pi * x)) + (y**2 - 10 * np.cos(2 * np.pi * y)) + 20
+    return - ((x**2 - 10 * np.cos(2 * np.pi * x)) + (y**2 - 10 * np.cos(2 * np.pi * y)) + 20)
 
 
 from bayes_opt import BayesianOptimization
@@ -51,10 +52,12 @@ optimizer = BayesianOptimization(
     random_state=1,
 )
 
+init=100
+iter=100
 
 optimizer.maximize(
-    init_points=100,
-    n_iter=0,
+    init_points=init,
+    n_iter=iter,
 )
 
 print(optimizer.max)
@@ -68,7 +71,11 @@ for i, res in enumerate(optimizer.res):
     ycoords.append(res['params']['y'])
 
 xcoords=np.array(xcoords)
+xinit=xcoords[:init]
+xiter=xcoords[init:]
 ycoords=np.array(ycoords)
+yinit=ycoords[:init]
+yiter=ycoords[init:]
 
 # x and y are bounds, so z should be the value *inside* those bounds.
 # Therefore, remove the last value from the z array.
@@ -82,7 +89,12 @@ ax.set_title('Rastrigin')
 # set the limits of the plot to the limits of the data
 ax.axis([x.min(), x.max(), y.min(), y.max()])
 fig.colorbar(c, ax=ax)
-for i in range(len(xcoords)):
-    plt.scatter(xcoords[i],ycoords[i], label="iteration %s"%i)
+markers=range(len(xiter))
+#plt.scatter(xinit,yinit,s=10, color="black")
+plt.scatter(xiter,yiter,s=10,c=markers,cmap="pink")
+plt.scatter(optimizer.max["params"]["x"],optimizer.max["params"]["y"],color="orange", s=15,label="Result")
+plt.scatter(0,0,color="darkred",label="Minimum",s=15)
+plt.xlabel("x")
+plt.ylabel("y")
 plt.legend()
 plt.show()
