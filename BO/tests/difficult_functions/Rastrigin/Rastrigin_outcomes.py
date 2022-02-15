@@ -33,14 +33,20 @@ optimizer = BayesianOptimization(
     random_state=1,
 )
 
-inits=np.arange(10,150,20)
-iters=np.arange(10,150,20)
+inits=np.arange(10,110,20)
+iters=np.arange(10,110,20)
 
 #inits=np.array([1,2])
 #iters=np.array([1,2])
 results={}
 for i in inits:
     for j in iters:
+        optimizer = BayesianOptimization(
+        f=func,
+        pbounds=pbounds,
+        verbose=1, # verbose = 1 prints only when a maximum is observed, verbose = 0 is silent
+        random_state=1,
+        )
 
         optimizer.maximize(
             init_points=i,
