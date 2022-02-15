@@ -23,35 +23,35 @@ params=["pressure", "energy"]
 
 #values:  radius, flength, gas, pressure, wavelength, GDD, energy
 initial_values_HCF=[125e-6, 1, "Ne", 2.340607, 800e-9, 0, 0.5e-3]
+τfwhm = 30e-15 # FWHM durations of the pump pulse
 
-Luna_BO(params, initial_values_HCF, function=max_bandwidth, init_points=100, n_iter=100)
+Luna_BO(params, initial_values_HCF, Gaussian=True, FWHM=τfwhm, function=max_bandwidth, init_points=100, n_iter=100)
 """
 # Then plot point found by BO onto the figure
 # After init_points=10, n_iter=0: (Random search)
-width0 = 8.82001549724403e-07
+width0 = 1.8086054432613795e-07
 energy0 = 0.00010021731215295529
 pressure0 = 5.232656016845757
 
 # After init_points=10, n_iter=5:
-width5 = 8.820269893611299e-07
-energy5 =  0.0018277151208271087
-pressure5 = 8.820792709866982
+width5 = 1.808605497098563e-07
+energy5 =  0.00037883619255251475
+pressure5 = 2.292740326763169
 
 # After init_points=10, n_iter=10:
-width10 = 8.819891998207039e-07
-energy10 = 0.001288983323577848
-pressure10 = 14.997829386205092
+width10 = 1.8086056478246469e-07
+energy10 = 0.0004538944016175747
+pressure10 = 5.837850178602668
 
 # After init_points=10, n_iter=100:
-width100 = 8.820133917334112e-07
-energy100 = 0.00014306863540207445
-pressure100 = 5.232749699547237
+width100 = 1.8086056183140002e-07
+energy100 = 0.001039414750035517
+pressure100 = 2.2776823585771977
 
 # After init_points=100, n_iter=100:
-width100_rep = 8.820265452940038e-07
-energy100_rep = 0.0001358849171117544
-pressure100_rep = 4.281191381863461
-
+width100_rep = 1.8086057420846162e-07
+energy100_rep = 0.0013934507706072274
+pressure100_rep = 12.303031785957677
 
 num_points = 20
 widths_shaped = np.zeros((num_points,num_points))

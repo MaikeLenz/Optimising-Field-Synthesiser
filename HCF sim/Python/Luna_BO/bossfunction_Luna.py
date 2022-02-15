@@ -46,6 +46,8 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  
     Main.λ0 = initial_values_HCF[4]
     GDD=initial_values_HCF[5]
     Main.energy = initial_values_HCF[6]
+    if FWHM != None:
+        Main.τfwhm = FWHM
 
     args_BO = {} #this dictionary will contain only the parameters we want to vary here
     params_dict={}
@@ -56,7 +58,7 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  
     params_dict['λ0'] = initial_values_HCF[4]
     params_dict['GDD'] = initial_values_HCF[5]
     params_dict['energy'] = initial_values_HCF[6]
-    if Gaussian=True:
+    if Gaussian==True:
         params_dict['FWHM'] = FWHM
 
     for i in params:
@@ -87,7 +89,7 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  
             elif 'FWHM' in key:
                 Main.τfwhm = value
 
-        if Gaussian = False:
+        if Gaussian == False:
             """
             Custom data pulse is defined and passed to prop capillary
             """
