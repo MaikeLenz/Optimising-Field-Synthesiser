@@ -16,7 +16,7 @@ def rms_width(x,y):
     """
     returns the rms width of an intensity distribution over angular frequencies omega
     """
-    return 2* np.sqrt((moment(x,y,2)/moment(x,y,0))-(moment(x,y,1)/moment(x,y,0))**2)
+    return 2* np.sqrt(np.abs((moment(x,y,2)/moment(x,y,0))-(moment(x,y,1)/moment(x,y,0))**2))
 
 """
 def pump_probe_width(omega, I):
