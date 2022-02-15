@@ -2,6 +2,7 @@ import julia
 import matplotlib.pyplot as plt
 import csv  
 import sys
+"""
 #sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
 sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
 from theoretical_width import theoretical_width
@@ -21,17 +22,13 @@ from rms_width import *
 c = 299792458 # m/s
 
 # Define custom pulse in frequency domain
-energies = np.linspace(0.1e-3, 4.1e-3, 100)
+energy = 0.5e-3
 wavel = 800e-9
 τfwhm = 30e-15 # FWHM duration of the pump pulse
 domega = (0.44/τfwhm)*2*np.pi
 omega = np.linspace(2*np.pi*c/wavel - domega/2, 2*np.pi*c/wavel + domega/2, 100)
-E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=domega, amp=1, CEP=0, GDD=0, TOD=0)
-Iω = np.abs(E**2)
-#Main.energy = energy
-Main.ω = omega
-Main.Iω = Iω  
-Main.phase = ϕω
+GDDs = np.linspace(0, 100*(10**30), 100) #GDD in /s^2
+Main.energy = energy
 Main.λ0 = wavel
 
 # Define experimental params
@@ -46,9 +43,13 @@ Main.eval("gas = Symbol(gas_str)")
 Main.pressure = pressure
 
 widths=np.array([])
-for i in energies:
+for i in GDDs:
     print(i)
-    Main.energy = i
+    E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=domega, amp=1, CEP=0, GDD=i, TOD=0)
+    Iω = np.abs(E**2)
+    Main.ω = omega
+    Main.Iω = Iω  
+    Main.phase = ϕω
 
     # Calculations
     # setting pressure to (0,pressure) means a gradient from zero up until given value
@@ -68,25 +69,28 @@ for i in energies:
     width=rms_width(ω,Iω)
     widths=np.append(widths,width)
 
-plt.scatter(energies*10**(3),widths,marker="+", label='Luna')
-
-theor_widths = []
-for i in range(len(energies)):
-    theor_widths.append(theoretical_width(radius, flength, pressure, wavel, τfwhm, energies[i]))
-plt.scatter(energies*10**(3),theor_widths, marker="+", label='Theoretical')
+plt.scatter(GDDs,widths,marker="+", label='Luna')
 plt.ylabel("angular frequency width, /s")
-plt.xlabel('Pulse energy, mJ')
-plt.legend()
+plt.xlabel('GDD*(10**-30), /fs^2')
 plt.show()
 
 
 # Save the data
-header = ['Pulse energy, mJ', 'Simulated Angular Frequency Width, /s', 'Theoretical Angular Frequency Width, /s']
-with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\custom_input\\data\\energy_vs_rms_width.csv', 'w', encoding='UTF8', newline='') as f:
+header = ['GDD, /fs^2', 'Simulated Angular Frequency Width, /s']
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\custom_input\\data\\GDD_in_fs_vs_rms_width.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     # write the header
     writer.writerow(header)
 
-    # write the data
-    for i in range(len(energies)):
-        writer.writerow([energies[i]*10**(3), widths[i], theor_widths[i]])
+    # write the dataS
+    for i in range(len(GDDs)):
+        writer.writerow([GDDs[i]*(10**-30), widths[i]])
+
+"""
+import pandas as pd
+df = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\custom_input\\data\\GDD_in_seconds_vs_rms_width.csv")
+
+plt.plot(df.iloc[:,0],df.iloc[:,1])
+plt.ylabel("angular frequency width, /s")
+plt.xlabel('GDD, /fs^2')
+plt.show()
