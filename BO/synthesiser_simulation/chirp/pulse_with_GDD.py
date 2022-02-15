@@ -19,7 +19,7 @@ def efield_time_domain(t, amp, om0, dom, t0, gdd, cep):
     cep is carrier envelop phase
     """
     
-    q = ( np.log(4)/dom **2 + 0.5 * 1j * gdd )**0.5
+    q = (np.log(4)/dom **2 + 0.5 * 1j * gdd )**0.5
     return np.real(amp * np.log(4)**0.5 * np.exp(-0.25*(t-t0)**2/q**2) * np.exp(1j*om0*(t-t0) + 1j*cep)/(dom*q))
 
 
