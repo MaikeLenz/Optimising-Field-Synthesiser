@@ -40,10 +40,10 @@ def efield_freq_domain(t, amp, om0, dom, t0, gdd, cep):
     omega=np.fft.fftfreq(len(t),d=(t[1]-t[0]))
     return np.real(E_omega), omega
 
-def get_phi(omega, omega0, CEP, GD, GDD, TOD):
-    return CEP + GD * (omega-omega0) + (1/2) * GDD * (omega-omega0)**2 + (1/6) * TOD * (omega-omega0)**3 
+def get_phi(omega, omega0, CEP, GD, GDD, TOD, FoOD, FiOD):
+    return CEP + GD*(omega-omega0) + (1/2)*GDD*(omega-omega0)**2 + (1/6)*TOD*(omega-omega0)**3 + (1/24)*FoOD*(omega-omega0)**4 + (1/120)*FiOD*(omega-omega0)**5
 
-def E_field_freq(omega, GD=0.0, wavel=1000, domega=2, amp=1, CEP=0, GDD=0, TOD=0):
+def E_field_freq(omega, GD=0.0, wavel=1000, domega=2, amp=1, CEP=0, GDD=0, TOD=0, FoOD=0, FiOD=0):
     """
     Defines an E-field pulse in the frequency domain
     omega: array of angular frequencies
@@ -59,7 +59,7 @@ def E_field_freq(omega, GD=0.0, wavel=1000, domega=2, amp=1, CEP=0, GDD=0, TOD=0
     E0 = amp
     omega0 = 2 * np. pi * c/wavel # rad/fs
     E_transform_limited = E0 * np.exp(-2 * np.log(2) * (omega-omega0)**2/domega**2)
-    phi = get_phi(omega, omega0, CEP, GD, GDD, TOD)
+    phi = get_phi(omega, omega0, CEP, GD, GDD, TOD, FoOD, FiOD)
 
     E = E_transform_limited * np.exp(phi * 1J)
     phase_wrapped = np.angle(E)
