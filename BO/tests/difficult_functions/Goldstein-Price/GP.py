@@ -16,7 +16,7 @@ z=((1+((x+y+1)**2)*(19-14*x+3*x**2-14*y+6*x*y+3*y**2))*(30+((2*x-3*y)**2)*(18-32
 # x and y are bounds, so z should be the value *inside* those bounds.
 # Therefore, remove the last value from the z array.
 z = z[:-1, :-1]
-z_min, z_max = -np.abs(z).max(), np.abs(z).max()
+z_min, z_max = z.min(), np.abs(z).max()
 
 fig, ax = plt.subplots()
 
