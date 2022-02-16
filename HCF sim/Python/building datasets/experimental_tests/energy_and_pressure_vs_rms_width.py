@@ -82,7 +82,7 @@ for i in range(len(energies)):
 
 # Save the data
 header = ['Pressure, bar', 'Pulse energy, mJ', 'Simulated Angular Frequency Width, /s']
-with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\angfreq_bandwidth\\data\\energy_and_pressure_Argon_vs_rms_width.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\experimental_tests\\simulation_data\\energy_and_pressure_Argon_vs_rms_width.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     # write the header
     writer.writerow(header)
