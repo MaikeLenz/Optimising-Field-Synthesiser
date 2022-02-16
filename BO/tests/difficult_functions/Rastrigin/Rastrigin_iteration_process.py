@@ -66,7 +66,7 @@ print(optimizer.max)
 xcoords=[]
 ycoords=[]
 for i, res in enumerate(optimizer.res):
-    print("Iteration {}: \n\t{}".format(i, res))
+    #print("Iteration {}: \n\t{}".format(i, res))
     xcoords.append(res['params']['x'])
     ycoords.append(res['params']['y'])
 
