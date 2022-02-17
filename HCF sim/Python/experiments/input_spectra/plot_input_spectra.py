@@ -39,4 +39,3 @@ plt.xlabel("Wavelength, nm")
 plt.ylabel("Intensity")
 plt.show()
 
-f.close()
