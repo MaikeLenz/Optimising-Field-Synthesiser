@@ -7,14 +7,16 @@ f = open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\data\
 
 content = f.read()
 lines=[]
-columns=[]
+columns=[[],[],[],[],[],[],[],[],[],[],[]]
 with open ('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\data\\HCF_scans\\power in\\Input_Power_Scan.txt', 'rt') as myfile:  # Open lorem.txt for reading
     for myline in myfile:
         lines.append(myline)
 
-data=lines[22:]
+data=lines[22:] #gets rid of all the stuff at the top
 for i in data:
-    columns.append(i.split("\t"))
+    split=i.split("\t")
+    for j in enumerate(split):
+        columns[j].append(split[j])
 
 #print(lines[:23])
 print(columns[:10])
