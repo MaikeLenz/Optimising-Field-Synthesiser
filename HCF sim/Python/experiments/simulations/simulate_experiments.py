@@ -68,6 +68,7 @@ plt.legend()
 plt.show()
 """
 #####################################################################################################################
+"""
 # Neon 3bar power scan
 gas = "Ne"
 pressure = 3
@@ -93,6 +94,79 @@ for i in range(len(energies)):
 
     header = ['Wavelength, nm', 'Intensity']
     with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\Ne_PowerScan_'+str(powers[i]), 'w', encoding='UTF8', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(header)
+        for j in range(len(λ)):
+            writer.writerow([λ[j]*(10**9), Iλ[j][0]])
+    
+    plt.plot(λ, Iλ, label=str(i))
+plt.legend()
+plt.show()
+"""
+#####################################################################################################################
+"""
+# Argon 1.1W pressure scan
+gas = "Ar"
+Main.gas_str = gas
+Main.eval("gas = Symbol(gas_str)")
+pressures = [0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4]
+
+E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0s[1], domega=domegas[1], amp=1, CEP=0, GDD=0, TOD=0)
+Iω = np.abs(E**2)
+Main.ω = omega
+Main.Iω = Iω  
+Main.phase = ϕω
+Main.energy = energies[1]
+Main.λ0 = λ0s[1]
+Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
+
+for i in range(len(pressures)):
+    Main.pressure = pressures[i]
+
+    Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+    Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
+
+    λ = Main.λ
+    Iλ = Main.Iλ
+
+    header = ['Wavelength, nm', 'Intensity']
+    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\Ar_PressureScan_'+str(pressures[i]), 'w', encoding='UTF8', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(header)
+        for j in range(len(λ)):
+            writer.writerow([λ[j]*(10**9), Iλ[j][0]])
+    
+    plt.plot(λ, Iλ, label=str(i))
+plt.legend()
+plt.show()
+"""
+#####################################################################################################################
+# Neon 1.1W pressure scan
+gas = "Ne"
+Main.gas_str = gas
+Main.eval("gas = Symbol(gas_str)")
+pressures = [3.6, 3.4, 3.2, 3.0, 2.8, 2.6, 2.4, 2.2, 2.0, 1.8, 1.6, 1.4, 1.2, 1.0]
+
+E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0s[1], domega=domegas[1], amp=1, CEP=0, GDD=0, TOD=0)
+Iω = np.abs(E**2)
+Main.ω = omega
+Main.Iω = Iω  
+Main.phase = ϕω
+Main.energy = energies[1]
+Main.λ0 = λ0s[1]
+Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
+
+for i in range(len(pressures)):
+    Main.pressure = pressures[i]
+
+    Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+    Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
+
+    λ = Main.λ
+    Iλ = Main.Iλ
+
+    header = ['Wavelength, nm', 'Intensity']
+    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\Ne_PressureScan_'+str(pressures[i]), 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         for j in range(len(λ)):
