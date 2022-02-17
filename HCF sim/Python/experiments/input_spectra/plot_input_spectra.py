@@ -14,17 +14,12 @@ with open ('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\dat
 
 data=lines[22:] #gets rid of all the stuff at the top
 for i in data:
-    split=i.split("\t")
+    split=i.split("\t") #delimiter is \t
     for j ,value in enumerate(split):
         columns[j].append(float(value))
 
-#print(lines[:23])
-print(columns[0][:10])
-
 wavel_nm=columns[0]
-#print(wavel_nm)
 intens1_2=columns[1]
-#print(intens1_2)
 intens1_1=columns[2]
 intens1_0=columns[3]
 intens0_9=columns[4]
