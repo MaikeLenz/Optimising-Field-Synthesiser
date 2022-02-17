@@ -1,11 +1,6 @@
 import matplotlib.pyplot as plt
 
 #path to txt file
-#import sys
-#sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\data\\HCF_scans\\power in\\")
-f = open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\data\\HCF_scans\\power in\\Input_Power_Scan.txt', 'r')
-
-content = f.read()
 lines=[]
 columns=[[],[],[],[],[],[],[],[],[],[],[]]
 with open ('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\data\\HCF_scans\\power in\\Input_Power_Scan.txt', 'rt') as myfile:  # Open lorem.txt for reading
