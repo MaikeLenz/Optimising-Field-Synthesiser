@@ -101,7 +101,6 @@ Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
 #assign python variables
 λ = Main.λ
 Iλ = Main.Iλ
-
 #plotting
 plt.figure()
 plt.plot(λ*10**9,Iλ,label="simulation")
