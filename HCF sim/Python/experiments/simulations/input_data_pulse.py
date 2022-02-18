@@ -28,7 +28,7 @@ intens1_2=np.array(columns[1])
 
 omega=2*np.pi*c/(wavel_nm*10**-9)
 
-"""
+
 plt.plot(omega,intens1_2, label="I(omega), 1200mW")
 plt.xlabel("Angular frequency")
 plt.ylabel("Intensity")
@@ -39,7 +39,6 @@ plt.xlabel("Wavelength, nm")
 plt.ylabel("Intensity")
 plt.legend()
 plt.show()
-"""
 
 #get experimental output
 lines2=[]
@@ -68,8 +67,7 @@ Main.using("Luna")
 
 # Define custom pulse in frequency domain
 energy = 1.2e-3 # energy in the pump pulse, 1.2mJ
-wavel = moment(wavel_nm,intens1_2,1)/moment(wavel_nm,intens1_2,0)
-
+wavel = (moment(wavel_nm,intens1_2,1)/moment(wavel_nm,intens1_2,0))*10**-9
 print(wavel)
 
 ϕω=np.zeros(len(intens1_2))
@@ -83,7 +81,7 @@ Main.λ0 = wavel
 radius = 175e-6 # HCF core radius
 flength = 1.05 # HCF length
 gas = "Ne"
-pressure = (0,3) # gas pressure in bar, corresponds to 66% of 3.5 atm
+pressure = 1.98 # gas pressure in bar, corresponds to 66% of 3.5 atm
 Main.radius = radius
 Main.flength = flength
 Main.gas_str = gas
