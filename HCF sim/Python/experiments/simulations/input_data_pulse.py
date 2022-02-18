@@ -69,7 +69,6 @@ Main.using("Luna")
 # Define custom pulse in frequency domain
 energy = 1.2e-3 # energy in the pump pulse, 0.5mJ
 wavel = moment(wavel_nm,intens1_2,1)
-domega = rms_width(omega,intens1_2)
 
 ϕω=np.zeros(len(intens1_2))
 Main.energy = energy
