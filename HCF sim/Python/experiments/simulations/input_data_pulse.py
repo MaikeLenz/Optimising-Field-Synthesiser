@@ -102,7 +102,6 @@ Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
 #assign python variables
 λ = Main.λ
 Iλ = Main.Iλ
-t = Main.t
 
 #plotting
 plt.figure()
