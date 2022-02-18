@@ -17,7 +17,7 @@ with open ('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\dat
 c = 299792458 # m/s
 #print(lines[:22])
 data=lines[22:] #gets rid of all the stuff at the top
-
+data=data[int(len(data)/2):]
 for i in data:
     cut=i.split("\t") #delimiter is \t
     for j ,value in enumerate(cut):
