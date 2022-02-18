@@ -69,11 +69,11 @@ Main.using("Luna")
 energy = 1.2e-3 # energy in the pump pulse, 1.2mJ
 wavel = (moment(wavel_nm,intens1_2,1)/moment(wavel_nm,intens1_2,0))*10**-9
 print(wavel)
-
+#print(omega)
 ϕω=np.zeros(len(intens1_2))
 Main.energy = energy
-Main.ω = omega
-Main.Iω = intens1_2
+Main.ω = omega[::-1]
+Main.Iω = intens1_2[::-1]
 Main.phase = ϕω
 Main.λ0 = wavel
 
@@ -81,7 +81,7 @@ Main.λ0 = wavel
 radius = 175e-6 # HCF core radius
 flength = 1.05 # HCF length
 gas = "Ne"
-pressure = (0.,3.) # gas pressure in bar, corresponds to 66% of 3.5 atm
+pressure = (0.001,3.) # gas pressure in bar, corresponds to 66% of 3.5 atm
 Main.radius = radius
 Main.flength = flength
 Main.gas_str = gas
