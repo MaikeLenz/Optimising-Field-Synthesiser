@@ -67,8 +67,10 @@ from julia import Main
 Main.using("Luna")
 
 # Define custom pulse in frequency domain
-energy = 1.2e-3 # energy in the pump pulse, 0.5mJ
-wavel = moment(wavel_nm,intens1_2,1)
+energy = 1.2e-3 # energy in the pump pulse, 1.2mJ
+wavel = moment(wavel_nm,intens1_2,1)/moment(wavel_nm,intens1_2,0)
+
+print(wavel)
 
 ϕω=np.zeros(len(intens1_2))
 Main.energy = energy
@@ -110,4 +112,5 @@ plt.ylabel("Spectral energy density (J/m)")
 plt.plot(outwavel_nm,outintens1_2, label="experiment")
 plt.legend()
 plt.show()
+
 
