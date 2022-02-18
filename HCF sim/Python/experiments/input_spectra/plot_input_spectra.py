@@ -13,17 +13,17 @@ for i in data:
     for j ,value in enumerate(split):
         columns[j].append(float(value))
 
-wavel_nm=columns[0]
-intens1_2=columns[1]
-intens1_1=columns[2]
-intens1_0=columns[3]
-intens0_9=columns[4]
-intens0_8=columns[5]
-intens0_7=columns[6]
-intens0_6=columns[7]
-intens0_5=columns[8]
-intens0_4=columns[9]
-intens0_3=columns[10]
+wavel_nm=np.array(columns[0])
+intens1_2=np.array(columns[1])
+intens1_1=np.array(columns[2])
+intens1_0=np.array(columns[3])
+intens0_9=np.array(columns[4])
+intens0_8=np.array(columns[5])
+intens0_7=np.array(columns[6])
+intens0_6=np.array(columns[7])
+intens0_5=np.array(columns[8])
+intens0_4=np.array(columns[9])
+intens0_3=np.array(columns[10])
 plt.plot(wavel_nm,intens1_2,label="1200mW")
 plt.plot(wavel_nm,intens1_1,label="1100mW")
 plt.plot(wavel_nm,intens1_0,label="1000mW")
