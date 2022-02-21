@@ -125,7 +125,7 @@ for i in range(len(energies_in)):
     #find simulated output energies
     #energy(grid, Eω; bandpass=nothing)
     #Main.eval("ω, Eω = Processing.getEω(pulse)")
-    Main.eval('energy=energy(duv)')
+    Main.eval('energy=energy(duv,duv["Eω"])')
     #Main.eval("transm=transmission(radius, λ0, flength; kind=:HE, n=1, m=1)")
 
     energy_i=Main.energy
