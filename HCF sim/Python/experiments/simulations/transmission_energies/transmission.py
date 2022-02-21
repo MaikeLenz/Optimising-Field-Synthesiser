@@ -59,8 +59,8 @@ for i in intensities:
 
 print(energy_in)
 
-"""
-#get experimental output
+#################################################################################
+#get experimental output files
 lines2=[]
 columns2=[[],[],[],[],[],[],[],[],[],[],[],[]]
 
@@ -77,8 +77,30 @@ for i in data2:
         columns2[j].append(float(value))
 
 outwavel_nm=np.array(columns2[0])
+outintens1_1=np.array(columns[2])
+outintens1_0=np.array(columns[3])
+outintens0_9=np.array(columns[4])
+outintens0_8=np.array(columns[5])
+outintens0_7=np.array(columns[6])
+outintens0_6=np.array(columns[7])
+outintens0_5=np.array(columns[8])
+outintens0_4=np.array(columns[9])
+outintens0_3=np.array(columns[10])
 outintens1_2=np.array(columns2[11])
 
+outintensities = [outintens1_2,outintens1_1,outintens1_0,outintens0_9,outintens0_8,outintens0_7,outintens0_6,outintens0_5,outintens0_4,outintens0_3]
+
+#################################################################################
+#find output energies
+
+exp_energy_out=[]
+for i in outintensities:
+    energy_out_i = integrate.simps(i, outwavel_nm)
+    exp_energy_out.append(energy_out_i)
+
+print(exp_energy_out)
+
+"""
 import julia
 julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
 #julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
