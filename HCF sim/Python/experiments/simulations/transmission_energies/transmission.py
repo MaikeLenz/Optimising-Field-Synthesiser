@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import julia
 import numpy as np
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
-sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
+sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\")
 from rms_width import *
 
 julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
@@ -17,10 +17,6 @@ Main.using("Luna")
 #path to txt file
 lines=[]
 columns=[[],[],[],[],[],[],[],[],[],[],[]]
-
-import sys
-sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\")
-from rms_width import *
 
 #get input
 with open ('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\data\\HCF_scans\\power in\\Input_Power_Scan.txt', 'rt') as myfile:  # Open lorem.txt for reading
@@ -58,7 +54,7 @@ omega=2*np.pi*c/(wavel_nm*10**-9)
 from scipy import integrate
 energy_in=[]
 for i in intensities:
-    energy_in_i = integrate.simpson(i, wavel_nm)
+    energy_in_i = integrate.simps(i, wavel_nm)
     energy_in.append(energy_in_i)
 
 print(energy_in)
