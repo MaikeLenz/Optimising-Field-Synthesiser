@@ -91,7 +91,6 @@ julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\
 from julia import Main
 Main.using("Luna")
 
-
 energies_in = np.array([1.2e-3,1.1e-3,1.0e-3,0.9e-3,0.8e-3,0.7e-3,0.6e-3,0.5e-3,0.4e-3,0.3e-3]) # energy in the pump pulse, 1.2mJ
 
 sim_energies_out=[]
@@ -125,8 +124,8 @@ for i in range(len(energies_in)):
     #########################################################################################
     #find simulated output energies
     #energy(grid, Eω; bandpass=nothing)
-    Main.eval("ω, Eω = Processing.getEω(duv, :ω, flength)")
-    Main.eval("energy=Processing.energy(duv, Eω")
+    Main.eval("ω, Eω = Processing.getEω(duv)")
+    Main.eval("energy=energy(duv, Eω)")
     energy_i=Main.energy
     sim_energies_out.append(energy_i)
 
