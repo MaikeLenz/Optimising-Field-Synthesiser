@@ -124,9 +124,12 @@ for i in range(len(energies_in)):
     #########################################################################################
     #find simulated output energies
     #energy(grid, Eω; bandpass=nothing)
-    Main.eval("ω, Eω = Processing.getEω(duv)")
-    Main.eval("energy=energy(duv, Eω)")
+    #Main.eval("ω, Eω = Processing.getEω(pulse)")
+    Main.eval("energy=energy(duv, pulse['Eω',flength]; bandpass=nothing)")
+    #Main.eval("transm=transmission(radius, λ0, flength; kind=:HE, n=1, m=1)")
+
     energy_i=Main.energy
+    #energy_i=energies_in[i]*Main.transm
     sim_energies_out.append(energy_i)
 
 plt.plot(energies_in,exp_energies_out,label="experimental")
