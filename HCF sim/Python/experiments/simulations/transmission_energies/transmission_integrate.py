@@ -48,6 +48,7 @@ intens0_3=np.array(columns[10])
 
 #list of input spectra
 intensities = [intens1_2,intens1_1,intens1_0,intens0_9,intens0_8,intens0_7,intens0_6,intens0_5,intens0_4,intens0_3]
+energies_in = np.array([1.2e-3,1.1e-3,1.0e-3,0.9e-3,0.8e-3,0.7e-3,0.6e-3,0.5e-3,0.4e-3,0.3e-3]) # energy in the pump pulse, 1.2mJ
 
 from scipy import integrate
 energies_in_int=[]
@@ -92,10 +93,14 @@ outintensities = [outintens1_2,outintens1_1,outintens1_0,outintens0_9,outintens0
 exp_energies_out_int=[]
 for i in outintensities:
     exp_energies_out_int.append(integrate.simps(i,outwavel_nm)/(np.pi*radius**2))
+exp_energies_out_int=np.array(exp_energies_out_int)
+energies_in_int=np.array(energies_in_int)
+
 
 #from powermeter readings
-exp_energies_out=np.array([780e-3,720e-3,650e-3,590e-3,525e-3,465e-3,390e-3,330e-3,265e-3,190e-3])
-
+exp_energies_out=np.array([780e-6,720e-6,650e-6,590e-6,525e-6,465e-6,390e-6,330e-6,265e-6,190e-6])
+transmission_exp=exp_energies_out_int/energies_in_int
+transmission_actual=exp_energies_out/energies_in
 ##################################################################################
 #simulate output spectra
 import julia
@@ -104,9 +109,8 @@ julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\
 from julia import Main
 Main.using("Luna")
 
-energies_in = np.array([1.2e-3,1.1e-3,1.0e-3,0.9e-3,0.8e-3,0.7e-3,0.6e-3,0.5e-3,0.4e-3,0.3e-3]) # energy in the pump pulse, 1.2mJ
-
 sim_energies_out_int=[]
+sim_energies_in_int=[]
 
 for i in range(len(energies_in)):
     wavel = (moment(wavel_nm,intensities[i],1)/moment(wavel_nm,intensities[i],0))*10**-9
@@ -137,6 +141,7 @@ for i in range(len(energies_in)):
     #########################################################################################
     #find simulated output 
     Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
+    Main.eval("λ2, Iλ2 = Processing.getIω(duv, :λ, 0)")
 
     #energy(grid, Eω; bandpass=nothing)
     #Main.eval("ω, Eω = Processing.getEω(pulse)")
@@ -144,24 +149,32 @@ for i in range(len(energies_in)):
     #Main.eval("transm=transmission(radius, λ0, flength; kind=:HE, n=1, m=1)")
     λ = Main.λ
     Iλ = Main.Iλ
-    print(λ.shape,Iλ.shape)
+    λ2 = Main.λ2
+    Iλ2 = Main.Iλ2
+    
     #energy_i=Main.energy
     #energy_i=energies_in[i]*Main.transm
     sim_energies_out_int.append((integrate.simps(Iλ[:,0],λ))/(np.pi*radius**2))
+    sim_energies_in_int.append((integrate.simps(Iλ2[:,0],λ2))/(np.pi*radius**2))
 
-print(sim_energies_out_int)
-"""
-plt.plot(energies_in_int,exp_energies_out_int,label="experimental")
-plt.plot(energies_in_int,np.array(sim_energies_out_int),label="simulation")
-"""
+sim_energies_out_int=np.array(sim_energies_out_int)
+sim_energies_in_int=np.array(sim_energies_in_int)
 
+transmission_sim=sim_energies_out_int/sim_energies_in_int
+
+plt.plot(energies_in,transmission_actual,label="experimental")
+plt.plot(energies_in,transmission_sim,label="simulation")
+
+"""
 fig, ax_left = plt.subplots()
 ax_right = ax_left.twinx()
 
-ax_left.plot(exp_energies_out_int, color='black',label="experimental")
-ax_right.plot(np.array(sim_energies_out_int), color='red',label="simulation")
+ax_left.plot(transmission_actual, color='black',label="experimental")
+ax_right.plot(transmission_sim, color='red',label="simulation")
+"""
 plt.legend()
 plt.xlabel("Energy in, J")
-plt.ylabel("Energy out, J")
+plt.ylabel("Transmission")
+plt.ylim(top=1.,bottom=0.)
 plt.show()
 
