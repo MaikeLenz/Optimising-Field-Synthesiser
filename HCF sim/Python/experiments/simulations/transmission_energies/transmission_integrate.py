@@ -147,11 +147,19 @@ for i in range(len(energies_in)):
     print(λ.shape,Iλ.shape)
     #energy_i=Main.energy
     #energy_i=energies_in[i]*Main.transm
-    energy_i=(integrate.simps(Iλ,λ))/(np.pi*radius**2)
-    sim_energies_out_int.append(energy_i)
+    sim_energies_out_int.append((integrate.simps(Iλ[:,0],λ))/(np.pi*radius**2))
 
+print(sim_energies_out_int)
+"""
 plt.plot(energies_in_int,exp_energies_out_int,label="experimental")
 plt.plot(energies_in_int,np.array(sim_energies_out_int),label="simulation")
+"""
+
+fig, ax_left = plt.subplots()
+ax_right = ax_left.twinx()
+
+ax_left.plot(exp_energies_out_int, color='black',label="experimental")
+ax_right.plot(np.array(sim_energies_out_int), color='red',label="simulation")
 plt.legend()
 plt.xlabel("Energy in, J")
 plt.ylabel("Energy out, J")
