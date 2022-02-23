@@ -172,7 +172,7 @@ transmission_sim_scaled=transmission_sim*scaling
 
 I0=[]
 for i in range(len(energies_in)):
-    I0.append(str(find_I0(intensities[i],wavel_nm*10**-9,energies_in[i],0.5*175e-6)))
+    I0.append(str(round(find_I0(intensities[i],wavel_nm*10**-9,energies_in[i],0.5*175e-6)*10**-13,1))+"e13")
 
 """
 fig, ax_left = plt.subplots()
@@ -196,13 +196,13 @@ ax1 = fig.add_subplot(111)
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
 ax1.plot(energies_in, transmission_actual,label="experimental",marker="+",ls="None")
 ax1.plot(energies_in,transmission_sim_scaled,label="simulation, scaled down to %s"%(round(scaling,2)),marker="+",ls="None")
-
+ax1.set_xlim(0.2e-3,1.3e-3)
 ax1.set_xlabel("Input Energy, J")
 ax1.set_ylabel("Transmission")
 
 ax2 = ax1.twiny()
 ax2.set_xlabel("Input Intensity (I0), W/cm^2")
-ax2.set_xlim(0, 60)
+ax2.set_xlim(0.2e-3,1.3e-3)
 ax2.set_xticks(list(energies_in))
 ax2.set_xticklabels(I0)
 plt.show()

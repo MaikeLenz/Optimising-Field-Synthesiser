@@ -12,4 +12,6 @@ def find_I0(I,wavels,energy, a):
     Assumes optimal coupling to HCF such that w0=0.64*a where w0= beam radius at waist, a= fibre radius
     Assume transform limited at fibre start
     """
-    return (energy*29979.2458*rms_width(wavels,I))/((np.pi**(3/2))*(0.64*a)**2*np.sqrt(2)*0.44*(moment(wavels,I,1)/moment(wavels,I,0))**2)
+    delta_lambda=rms_width(wavels,I)
+    print(energy, delta_lambda)
+    return (energy*29979.2458*delta_lambda)/((np.pi**(3/2))*(0.64*a)**2*np.sqrt(2)*0.44*(moment(wavels,I,1)/moment(wavels,I,0))**2)
