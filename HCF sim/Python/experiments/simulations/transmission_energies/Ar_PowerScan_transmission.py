@@ -104,7 +104,7 @@ energies_in_int=np.array(energies_in_int)
 
 
 #from powermeter readings
-exp_energies_out=np.array([780e-6,720e-6,650e-6,590e-6,525e-6,465e-6,390e-6,330e-6,265e-6,190e-6])
+exp_energies_out=np.array([485e-6,455e-6,450e-6,435e-6,400e-6,375e-6,340e-6,300e-6,250e-6,190e-6])
 transmission_exp=exp_energies_out_int/energies_in_int
 transmission_actual=exp_energies_out/energies_in
 ##################################################################################
@@ -132,8 +132,8 @@ for i in range(len(energies_in)):
     # Define experimental params
     radius = 175e-6 # HCF core radius
     flength = 1.05 # HCF length
-    gas = "Ne"
-    pressure = (0.001,3.) # gas pressure in bar, corresponds to 66% of 3.5 atm
+    gas = "Ar"
+    pressure = (0,0.8) # gas pressure in bar, corresponds to 66% of 3.5 atm
     Main.radius = radius
     Main.flength = flength
     Main.gas_str = gas
@@ -174,7 +174,7 @@ transmission_sim_scaled=transmission_sim*scaling
 delta_lambda=rms_width(wavel_nm,intens1_2)
 I0=[]
 for i in range(len(energies_in)):
-    I0.append(str(round(find_I0(intensities[i],wavel_nm*10**-9,delta_lambda*10**-9,energies_in[i],0.5*175e-6)*10**-13,1))+"e13")
+    I0.append(str(round(find_I0(intensities[i],wavel_nm*10**-9,delta_lambda*10**-9,energies_in[i],175e-6)*10**-13,1))+"e13")
 
 """
 fig, ax_left = plt.subplots()
