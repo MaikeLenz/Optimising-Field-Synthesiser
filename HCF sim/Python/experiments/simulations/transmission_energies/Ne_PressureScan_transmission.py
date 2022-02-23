@@ -101,15 +101,13 @@ Main.using("Luna")
 
 sim_energies_out_int=[]
 sim_energies_in_int=[]
+wavel = (moment(wavel_nm,intens1_1,1)/moment(wavel_nm,intens1_1],0))*10**-9
 
-for i in range(len(energies_in)):
-    wavel = (moment(wavel_nm,intensities[i],1)/moment(wavel_nm,intensities[i],0))*10**-9
-
-    #print(omega)
-    ϕω=np.zeros(len(intens1_2))
-    Main.energy = energies_in[i]
+for i in range(len(pressures)):
+    ϕω=np.zeros(len(intens1_1))
+    Main.energy = energy_in
     Main.ω = omega[::-1]
-    Main.Iω = intensities[i][::-1]
+    Main.Iω = intens1_1[::-1]
     Main.phase = ϕω
     Main.λ0 = wavel
 
@@ -155,33 +153,15 @@ scaling = transmission_actual[0]/transmission_sim[0]
 
 transmission_sim_scaled=transmission_sim*scaling
 
-delta_lambda=rms_width(wavel_nm,intens1_2)
-I0=[]
-for i in range(len(energies_in)):
-    I0.append(str(round(find_I0(intensities[i],wavel_nm*10**-9,delta_lambda*10**-9,energies_in[i],0.5*175e-6)*10**-13,1))+"e13")
+delta_lambda=rms_width(wavel_nm,intens1_1)
+I0=str(round(find_I0(intens1_1,wavel_nm*10**-9,delta_lambda*10**-9,energy_in,0.5*175e-6)*10**-13,1))+"e13"
 
-"""
-fig, ax_left = plt.subplots()
-ax_right = ax_left.twinx()
-
-ax_left.plot(transmission_actual, color='black',label="experimental")
-ax_right.plot(transmission_sim, color='red',label="simulation")
-"""
-"""
-plt.plot(energies_in,transmission_actual,label="experimental",marker="+",ls="None")
-plt.plot(energies_in,transmission_sim_scaled,label="simulation, scaled down to %s"%(round(scaling,2)),marker="+",ls="None")
-
-plt.legend()
-plt.xlabel("Input Energy, J")
-plt.ylabel("Transmission")
-#plt.ylim(top=1.,bottom=0.)
-"""
 fig = plt.figure()
 ax1 = fig.add_subplot(111)
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
-ax1.plot(energies_in, transmission_actual,label="experimental",marker="+",ls="None")
-ax1.plot(energies_in,transmission_sim_scaled,label="simulation, scaled down to %s"%(round(scaling,2)),marker="+",ls="None")
+ax1.plot(energy_in, transmission_actual,label="experimental",marker="+",ls="None")
+ax1.plot(energy_in,transmission_sim_scaled,label="simulation, scaled down to %s"%(round(scaling,2)),marker="+",ls="None")
 ax1.set_xlim(0.2e-3,1.3e-3)
 ax1.set_xlabel("Input Energy, J")
 ax1.set_ylabel("Transmission")
@@ -189,7 +169,7 @@ ax1.set_ylabel("Transmission")
 ax2 = ax1.twiny()
 ax2.set_xlabel("Input Intensity (I0), W/cm^2")
 ax2.set_xlim(0.2e-3,1.3e-3)
-ax2.set_xticks(list(energies_in))
+ax2.set_xticks(list(energy_in))
 ax2.set_xticklabels(I0)
 plt.show()
 
