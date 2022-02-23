@@ -1,10 +1,15 @@
 import sys
+from matplotlib.cbook import ls_mapper
 import matplotlib.pyplot as plt
 import julia
 import numpy as np
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\")
 from rms_width import *
+
+sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\input_spectra\\")
+#sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\input_spectra\\")
+from find_I0 import *
 
 julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
 
@@ -53,7 +58,7 @@ energies_in = np.array([1.2e-3,1.1e-3,1.0e-3,0.9e-3,0.8e-3,0.7e-3,0.6e-3,0.5e-3,
 from scipy import integrate
 energies_in_int=[]
 for i in intensities:
-    energies_in_int.append(integrate.simps(i,wavel_nm)/(np.pi*radius**2))
+    energies_in_int.append(integrate.simps(i,wavel_nm))
 
 print(energies_in_int)
 
@@ -92,7 +97,7 @@ outintensities = [outintens1_2,outintens1_1,outintens1_0,outintens0_9,outintens0
 
 exp_energies_out_int=[]
 for i in outintensities:
-    exp_energies_out_int.append(integrate.simps(i,outwavel_nm)/(np.pi*radius**2))
+    exp_energies_out_int.append(integrate.simps(i,outwavel_nm))
 exp_energies_out_int=np.array(exp_energies_out_int)
 energies_in_int=np.array(energies_in_int)
 
@@ -134,7 +139,7 @@ for i in range(len(energies_in)):
     Main.eval("gas = Symbol(gas_str)")
     Main.pressure = pressure
 
-    # Pass data to Luna
+    #Pass data to Luna
     Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
     Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
 
@@ -154,16 +159,20 @@ for i in range(len(energies_in)):
     
     #energy_i=Main.energy
     #energy_i=energies_in[i]*Main.transm
-    sim_energies_out_int.append((integrate.simps(Iλ[:,0],λ))/(np.pi*radius**2))
-    sim_energies_in_int.append((integrate.simps(Iλ2[:,0],λ2))/(np.pi*radius**2))
+    sim_energies_out_int.append(integrate.simps(Iλ[:,0],λ))
+    sim_energies_in_int.append(integrate.simps(Iλ2[:,0],λ2))
 
 sim_energies_out_int=np.array(sim_energies_out_int)
 sim_energies_in_int=np.array(sim_energies_in_int)
 
 transmission_sim=sim_energies_out_int/sim_energies_in_int
+scaling = transmission_actual[0]/transmission_sim[0]
 
-plt.plot(energies_in,transmission_actual,label="experimental")
-plt.plot(energies_in,transmission_sim,label="simulation")
+transmission_sim_scaled=transmission_sim*scaling
+
+I0=[]
+for i in range(len(energies_in)):
+    I0.append(str(find_I0(intensities[i],wavel_nm*10**-9,energies_in[i],0.5*175e-6)))
 
 """
 fig, ax_left = plt.subplots()
@@ -172,9 +181,29 @@ ax_right = ax_left.twinx()
 ax_left.plot(transmission_actual, color='black',label="experimental")
 ax_right.plot(transmission_sim, color='red',label="simulation")
 """
+"""
+plt.plot(energies_in,transmission_actual,label="experimental",marker="+",ls="None")
+plt.plot(energies_in,transmission_sim_scaled,label="simulation, scaled down to %s"%(round(scaling,2)),marker="+",ls="None")
+
 plt.legend()
-plt.xlabel("Energy in, J")
+plt.xlabel("Input Energy, J")
 plt.ylabel("Transmission")
-plt.ylim(top=1.,bottom=0.)
+#plt.ylim(top=1.,bottom=0.)
+"""
+fig = plt.figure()
+ax1 = fig.add_subplot(111)
+
+#a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
+ax1.plot(energies_in, transmission_actual,label="experimental",marker="+",ls="None")
+ax1.plot(energies_in,transmission_sim_scaled,label="simulation, scaled down to %s"%(round(scaling,2)),marker="+",ls="None")
+
+ax1.set_xlabel("Input Energy, J")
+ax1.set_ylabel("Transmission")
+
+ax2 = ax1.twiny()
+ax2.set_xlabel("Input Intensity (I0), W/cm^2")
+ax2.set_xlim(0, 60)
+ax2.set_xticks(list(energies_in))
+ax2.set_xticklabels(I0)
 plt.show()
 
