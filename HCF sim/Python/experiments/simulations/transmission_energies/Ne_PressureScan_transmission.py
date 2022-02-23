@@ -40,27 +40,12 @@ for i in data:
         columns[j].append(float(value))
 
 wavel_nm=np.array(columns[0])
-intens1_2=np.array(columns[1])
 intens1_1=np.array(columns[2])
-intens1_0=np.array(columns[3])
-intens0_9=np.array(columns[4])
-intens0_8=np.array(columns[5])
-intens0_7=np.array(columns[6])
-intens0_6=np.array(columns[7])
-intens0_5=np.array(columns[8])
-intens0_4=np.array(columns[9])
-intens0_3=np.array(columns[10])
+energy_in = 1.1e-3
 
-#list of input spectra
-intensities = [intens1_2,intens1_1,intens1_0,intens0_9,intens0_8,intens0_7,intens0_6,intens0_5,intens0_4,intens0_3]
-energies_in = np.array([1.2e-3,1.1e-3,1.0e-3,0.9e-3,0.8e-3,0.7e-3,0.6e-3,0.5e-3,0.4e-3,0.3e-3]) # energy in the pump pulse, 1.2mJ
 
 from scipy import integrate
-energies_in_int=[]
-for i in intensities:
-    energies_in_int.append(integrate.simps(i,wavel_nm))
-
-print(energies_in_int)
+energy_in_int=integrate.simps(i,wavel_nm)
 
 omega=2*np.pi*c/(wavel_nm*10**-9)
 
@@ -69,7 +54,7 @@ omega=2*np.pi*c/(wavel_nm*10**-9)
 lines2=[]
 columns2=[[],[],[],[],[],[],[],[],[],[],[],[]]
 
-with open ('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\data\\HCF_scans\\Argon_0.8bar_PowerScan\\PowerScan.txt', 'rt') as myfile:  # Open lorem.txt for reading
+with open ('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\data\\HCF_scans\\Neon_1.1Win_PressureScan\\pressure_scan.txt', 'rt') as myfile:  # Open lorem.txt for reading
     for myline in myfile:
         lines2.append(myline)
 
@@ -82,17 +67,16 @@ for i in data2:
         columns2[j].append(float(value))
 
 outwavel_nm=np.array(columns2[0])
-outintens1_29=np.array(columns2[1])
-outintens1_2=np.array(columns2[2])
-outintens1_1=np.array(columns2[3])
-outintens1_0=np.array(columns2[4])
-outintens0_9=np.array(columns2[5])
-outintens0_8=np.array(columns2[6])
-outintens0_7=np.array(columns2[7])
-outintens0_6=np.array(columns2[8])
-outintens0_5=np.array(columns2[9])
-outintens0_4=np.array(columns2[10])
-outintens0_3=np.array(columns2[11])
+outintens1_1=np.array(columns2[2])
+outintens1_0=np.array(columns2[3])
+outintens0_9=np.array(columns2[4])
+outintens0_8=np.array(columns2[5])
+outintens0_7=np.array(columns2[6])
+outintens0_6=np.array(columns2[7])
+outintens0_5=np.array(columns2[8])
+outintens0_4=np.array(columns2[9])
+outintens0_3=np.array(columns2[10])
+outintens1_2=np.array(columns2[11])
 
 outintensities = [outintens1_2,outintens1_1,outintens1_0,outintens0_9,outintens0_8,outintens0_7,outintens0_6,outintens0_5,outintens0_4,outintens0_3]
 
@@ -104,7 +88,7 @@ energies_in_int=np.array(energies_in_int)
 
 
 #from powermeter readings
-exp_energies_out=np.array([485e-6,455e-6,450e-6,435e-6,400e-6,375e-6,340e-6,300e-6,250e-6,190e-6])
+exp_energies_out=np.array([780e-6,720e-6,650e-6,590e-6,525e-6,465e-6,390e-6,330e-6,265e-6,190e-6])
 transmission_exp=exp_energies_out_int/energies_in_int
 transmission_actual=exp_energies_out/energies_in
 ##################################################################################
@@ -132,8 +116,8 @@ for i in range(len(energies_in)):
     # Define experimental params
     radius = 175e-6 # HCF core radius
     flength = 1.05 # HCF length
-    gas = "Ar"
-    pressure = (0,0.8) # gas pressure in bar, corresponds to 66% of 3.5 atm
+    gas = "Ne"
+    pressure = (0.001,3.) # gas pressure in bar, corresponds to 66% of 3.5 atm
     Main.radius = radius
     Main.flength = flength
     Main.gas_str = gas
@@ -167,14 +151,14 @@ sim_energies_out_int=np.array(sim_energies_out_int)
 sim_energies_in_int=np.array(sim_energies_in_int)
 
 transmission_sim=sim_energies_out_int/sim_energies_in_int
-scaling = transmission_actual[-1]/transmission_sim[-1]
+scaling = transmission_actual[0]/transmission_sim[0]
 
 transmission_sim_scaled=transmission_sim*scaling
 
 delta_lambda=rms_width(wavel_nm,intens1_2)
 I0=[]
 for i in range(len(energies_in)):
-    I0.append(str(round(find_I0(intensities[i],wavel_nm*10**-9,delta_lambda*10**-9,energies_in[i],175e-6)*10**-13,1))+"e13")
+    I0.append(str(round(find_I0(intensities[i],wavel_nm*10**-9,delta_lambda*10**-9,energies_in[i],0.5*175e-6)*10**-13,1))+"e13")
 
 """
 fig, ax_left = plt.subplots()
@@ -198,7 +182,6 @@ ax1 = fig.add_subplot(111)
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
 ax1.plot(energies_in, transmission_actual,label="experimental",marker="+",ls="None")
 ax1.plot(energies_in,transmission_sim_scaled,label="simulation, scaled down to %s"%(round(scaling,2)),marker="+",ls="None")
-plt.legend()
 ax1.set_xlim(0.2e-3,1.3e-3)
 ax1.set_xlabel("Input Energy, J")
 ax1.set_ylabel("Transmission")
