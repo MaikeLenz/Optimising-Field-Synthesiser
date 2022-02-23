@@ -57,7 +57,7 @@ omega=2*np.pi*c/(wavel_nm*10**-9)
 """
 # Argon 0.8bar power scan
 gas = "Ar"
-pressure = 0.8
+pressure = (0,0.8)
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
 Main.pressure = pressure
@@ -82,7 +82,7 @@ for i in range(len(energies)):
     Iλ = Main.Iλ
 
     header = ['Wavelength, nm', 'Intensity']
-    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pulse_input\\Ar_PowerScan_'+str(powers[i]), 'w', encoding='UTF8', newline='') as f:
+    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\pulse_input\\Ar_PowerScan_'+str(powers[i]), 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         for j in range(len(λ)):
@@ -96,7 +96,7 @@ plt.show()
 """
 # Neon 3bar power scan
 gas = "Ne"
-pressure = 3
+pressure = (0,3)
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
 Main.pressure = pressure
@@ -121,7 +121,7 @@ for i in range(len(energies)):
     Iλ = Main.Iλ
 
     header = ['Wavelength, nm', 'Intensity']
-    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pulse_input\\Ne_PowerScan_'+str(powers[i]), 'w', encoding='UTF8', newline='') as f:
+    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\pulse_input\\Ne_PowerScan_'+str(powers[i]), 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         for j in range(len(λ)):
@@ -137,7 +137,7 @@ plt.show()
 gas = "Ar"
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
-pressures = [0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4]
+pressures = [(0,0.2), (0,0.4), (0,0.6), (0,0.8), (0,1.0), (0,1.2), (0,1.4)]
 
 # Define custom pulse in the frequency domain
 energy = 1.1e-3 
@@ -160,7 +160,7 @@ for i in range(len(pressures)):
     Iλ = Main.Iλ
 
     header = ['Wavelength, nm', 'Intensity']
-    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pulse_input\\Ar_PressureScan_'+str(pressures[i]), 'w', encoding='UTF8', newline='') as f:
+    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\pulse_input\\Ar_PressureScan_'+str(pressures[i][1]), 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         for j in range(len(λ)):
@@ -171,12 +171,12 @@ plt.legend()
 plt.show()
 """
 #####################################################################################################################
-"""
+
 # Neon 1.1W pressure scan
 gas = "Ne"
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
-pressures = [3.6, 3.4, 3.2, 3.0, 2.8, 2.6, 2.4, 2.2, 2.0, 1.8, 1.6, 1.4, 1.2, 1.0]
+pressures = [(0,3.6), (0,3.4), (0,3.2), (0,3.0), (0,2.8), (0,2.6), (0,2.4), (0,2.2), (0,2.0), (0,1.8), (0,1.6), (0,1.4), (0,1.2), (0,1.0)]
 
 # Define custom pulse in the frequency domain
 energy = 1.1e-3 
@@ -199,7 +199,7 @@ for i in range(len(pressures)):
     Iλ = Main.Iλ
 
     header = ['Wavelength, nm', 'Intensity']
-    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pulse_input\\Ne_PressureScan_'+str(pressures[i]), 'w', encoding='UTF8', newline='') as f:
+    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\pulse_input\\Ne_PressureScan_'+str(pressures[i][1]), 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         for j in range(len(λ)):
@@ -208,4 +208,4 @@ for i in range(len(pressures)):
     plt.plot(λ, Iλ, label=str(i))
 plt.legend()
 plt.show()
-"""
+
