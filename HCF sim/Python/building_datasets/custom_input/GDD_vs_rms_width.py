@@ -4,7 +4,7 @@ import csv
 import sys
 
 #sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
-sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
+sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\")
 from theoretical_width import theoretical_width
 
 #sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\chirp\\')
@@ -27,15 +27,15 @@ wavel = 800e-9
 τfwhm = 30e-15 # FWHM duration of the pump pulse
 domega = (0.44/τfwhm)*2*np.pi
 omega = np.linspace(2*np.pi*c/wavel - domega/2, 2*np.pi*c/wavel + domega/2, 100)
-GDDs = np.linspace(-100*(10**-30), 100*(10**-30), 100) #GDD in s^2
+GDDs = np.linspace(-500*(10**-30), 500*(10**-30), 100) #GDD in s^2
 Main.energy = energy
 Main.λ0 = wavel
 
 # Define experimental params
 radius = 125e-6 # HCF core radius
 flength = 1 # HCF length
-gas = "Ne"
-pressure = 2.340607 # gas pressure in bar, corresponds to 66% of 3.5 atm
+gas = "Ar"
+pressure = 0.8*0.66 # gas pressure in bar, corresponds to 66% of 3.5 atm
 Main.radius = radius
 Main.flength = flength
 Main.gas_str = gas
@@ -77,7 +77,7 @@ plt.show()
 
 # Save the data
 header = ['GDD, fs^2', 'Simulated Angular Frequency Width, /s']
-with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\custom_input\\data\\GDD_symmetric_vs_rms_width.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\custom_input\\data\\GDD_Ar_long_range_vs_rms_width.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     # write the header
     writer.writerow(header)
@@ -88,7 +88,7 @@ with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\P
 
 """
 import pandas as pd
-df = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\custom_input\\data\\GDD_symmetric_vs_rms_width.csv")
+df = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\custom_input\\data\\GDD_Ne_long_range_vs_rms_width.csv")
 
 plt.plot(df.iloc[:,0],df.iloc[:,1])
 plt.ylabel("angular frequency width, /s")
