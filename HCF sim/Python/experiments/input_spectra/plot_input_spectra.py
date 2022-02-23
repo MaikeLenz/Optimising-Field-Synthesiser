@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-
+import numpy as np
 #path to txt file
 lines=[]
 columns=[[],[],[],[],[],[],[],[],[],[],[]]

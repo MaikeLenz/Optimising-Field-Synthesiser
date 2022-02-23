@@ -5,13 +5,12 @@ sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 from rms_width import *
 import numpy as np
 
-def find_I0(I,wavels,energy, a):
+def find_I0(I,wavels,delta_lambda,energy, a):
     """
     finds intensity I0 from intenstity spectrum I as function of wavelength, array wavels.
     Pulse has energy "energy"
     Assumes optimal coupling to HCF such that w0=0.64*a where w0= beam radius at waist, a= fibre radius
     Assume transform limited at fibre start
+    rms width in wavelength is delta_lambda
     """
-    delta_lambda=rms_width(wavels,I)
-    print(energy, delta_lambda)
     return (energy*29979.2458*delta_lambda)/((np.pi**(3/2))*(0.64*a)**2*np.sqrt(2)*0.44*(moment(wavels,I,1)/moment(wavels,I,0))**2)
