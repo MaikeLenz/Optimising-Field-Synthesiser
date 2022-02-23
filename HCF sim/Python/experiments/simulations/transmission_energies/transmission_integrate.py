@@ -172,7 +172,7 @@ transmission_sim_scaled=transmission_sim*scaling
 
 I0=[]
 for i in range(len(energies_in)):
-    I0.append(str(find_I0(intensities[i],wavel_nm*10**-9,energies_in[i],0.5*175e-6)))
+    I0.append(str(round(find_I0(intensities[i],wavel_nm*10**-9,energies_in[i],0.5*175e-6)*10**-13,1))+"e13")
 
 """
 fig, ax_left = plt.subplots()
