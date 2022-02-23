@@ -1,6 +1,7 @@
 import sys
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 from rms_width import *
 from theoretical_width import *
@@ -412,11 +413,65 @@ Ne_sim_pulse_PressureScan_widths.append(rms_width(df.iloc[:,0], df.iloc[:,1]))
 
 #####################################################################################################################
 # Calculate theoretical widths
-# theoretical_width(radius, flength, pressure, λ0, τfwhm, energy)
+radius = 175e-6 # HCF core radius
+flength = 1.05 # HCF length
+
+# Read input data
+df = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\HCF_scans\\power in\\extracted_params.csv")
+powers = df.iloc[:,0]
+energies = powers/1000
+λ0s = df.iloc[:,1]
+domegas = df.iloc[:,2]
+
+def ang_freq_to_τ_FWHM(FWHM):
+    freq_FWHM = FWHM/(2*np.pi)
+    return 0.44/freq_FWHM
+def ang_freq_to_wavel_width(width, wavel):
+    c = 299792458 
+    freq_width = width/(2*np.pi)
+    return freq_width*(wavel**2)/c
+
+# Argon power scan
+Ar_power_theor_widths = []
+pressure = 0.8*0.66
+for i in range(len(energies)):
+    ang_freq_width = theoretical_width(radius, flength, pressure, λ0s[i], ang_freq_to_τ_FWHM(domegas[i]), energies[i])
+    Ar_power_theor_widths.append(ang_freq_to_wavel_width(ang_freq_width, λ0s[i])*(10**9))
+# Neon power scan
+Ne_power_theor_widths = []
+pressure = 3*0.66
+for i in range(len(energies)):
+    ang_freq_width = theoretical_width(radius, flength, pressure, λ0s[i], ang_freq_to_τ_FWHM(domegas[i]), energies[i])
+    Ne_power_theor_widths.append(ang_freq_to_wavel_width(ang_freq_width, λ0s[i])*(10**9))
+# Argon pressure scan
+Ar_pressures = [1.4, 1.2, 1.0, 0.8, 0.6, 0.4, 0.2]
+Ar_pressure_theor_widths = []
+energy = energies[1]
+λ0 = λ0s[1]
+domega = domegas[1]
+for i in range(len(Ar_pressures)):
+    ang_freq_width = theoretical_width(radius, flength, Ar_pressures[i]*0.66, λ0, ang_freq_to_τ_FWHM(domega), energy)
+    Ar_pressure_theor_widths.append(ang_freq_to_wavel_width(ang_freq_width, λ0)*(10**9))
+# Neon pressure scan
+Ne_pressures = [3.6, 3.4, 3.2, 3.0, 2.8, 2.6, 2.4, 2.2, 2.0, 1.8, 1.6, 1.4, 1.2, 1.0]
+Ne_pressure_theor_widths = []
+energy = energies[1]
+λ0 = λ0s[1]
+domega = domegas[1]
+for i in range(len(Ne_pressures)):
+    ang_freq_width = theoretical_width(radius, flength, Ne_pressures[i]*0.66, λ0, ang_freq_to_τ_FWHM(domega), energy)
+    Ne_pressure_theor_widths.append(ang_freq_to_wavel_width(ang_freq_width, λ0)*(10**9))
+
 
 #####################################################################################################################
 # Plot results
 fig, axs = plt.subplots(2,2)
+
+axs[0,0].plot(powers, Ar_power_theor_widths, color='red')
+axs[0,1].plot(Ar_pressures, Ar_pressure_theor_widths, color='red')
+axs[1,0].plot(powers, Ne_power_theor_widths, color='red')
+axs[1,1].plot(Ne_pressures, Ne_pressure_theor_widths, color='red', label='Theoretical')
+
 axs[0,0].plot(Ar_powers, Ar_PowerScan_widths,'+', color='black')
 axs[0,0].set_xlabel('Power, W')
 axs[0,0].set_ylabel('RMS width, nm')
