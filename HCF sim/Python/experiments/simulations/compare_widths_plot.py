@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 from rms_width import *
+from theoretical_width import *
 
 filepath = "C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\"
 #####################################################################################################################
@@ -335,6 +336,10 @@ df = pd.read_csv(filepath+"simulations\\data\\pressure_gradient\\pulse_input\\Ne
 Ne_sim_pulse_PressureScan_widths.append(rms_width(df.iloc[:,0], df.iloc[:,1]))
 df = pd.read_csv(filepath+"simulations\\data\\pressure_gradient\\pulse_input\\Ne_PressureScan_3.6")
 Ne_sim_pulse_PressureScan_widths.append(rms_width(df.iloc[:,0], df.iloc[:,1]))
+
+#####################################################################################################################
+# Calculate theoretical widths
+# theoretical_width(radius, flength, pressure, λ0, τfwhm, energy)
 
 #####################################################################################################################
 # Plot results
