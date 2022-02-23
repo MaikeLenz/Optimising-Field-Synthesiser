@@ -28,7 +28,7 @@ wavel = 800e-9
 domega = (0.44/τfwhm)*2*np.pi
 omega = np.linspace(2*np.pi*c/wavel - domega/2, 2*np.pi*c/wavel + domega/2, 100)
 #GDDs = np.linspace(-500*(10**-30), 500*(10**-30), 100) #GDD in s^2
-GDDs = np.linspace(75*(10**-30), 80*(10**-30), 5) #GDD in s^2
+GDDs = np.array([77*(10**-30), 78*(10**-30), 79*(10**-30)]) #GDD in s^2
 Main.energy = energy
 Main.λ0 = wavel
 
@@ -45,7 +45,7 @@ Main.eval("gas = Symbol(gas_str)")
 Main.pressure = pressure
 
 widths=np.array([])
-f, axs = plt.subplots(1,5)
+f, axs = plt.subplots(1,3)
 f.suptitle('Neon GDD Scan')
 plt.setp(axs, xlabel='Angular frequency, \s')
 plt.setp(axs[0], ylabel='Intensity')
