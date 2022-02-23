@@ -7,6 +7,10 @@ import numpy as np
 sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\")
 from rms_width import *
 
+sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\input_spectra\\")
+#sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\input_spectra\\")
+from find_I0 import *
+
 julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
 
 from julia import Main
@@ -168,9 +172,8 @@ transmission_sim_scaled=transmission_sim*scaling
 
 I0=[]
 for i in range(len(energies_in)):
-    I0.append(energies_in[i]/((np.pi**(3/2))*rms_width(wavel_nm,intensities[i])*(0.64*0.5*175e-6)**2))
+    I0.append(str(find_I0(intensities[i],wavel_nm*10**-9,energies_in[i],0.5*175e-6)))
 
-I0=np.array(I0)
 """
 fig, ax_left = plt.subplots()
 ax_right = ax_left.twinx()
@@ -178,7 +181,7 @@ ax_right = ax_left.twinx()
 ax_left.plot(transmission_actual, color='black',label="experimental")
 ax_right.plot(transmission_sim, color='red',label="simulation")
 """
-
+"""
 plt.plot(energies_in,transmission_actual,label="experimental",marker="+",ls="None")
 plt.plot(energies_in,transmission_sim_scaled,label="simulation, scaled down to %s"%(round(scaling,2)),marker="+",ls="None")
 
@@ -186,5 +189,21 @@ plt.legend()
 plt.xlabel("Input Energy, J")
 plt.ylabel("Transmission")
 #plt.ylim(top=1.,bottom=0.)
+"""
+fig = plt.figure()
+ax1 = fig.add_subplot(111)
+
+#a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
+ax1.plot(energies_in, transmission_actual,label="experimental",marker="+",ls="None")
+ax1.plot(energies_in,transmission_sim_scaled,label="simulation, scaled down to %s"%(round(scaling,2)),marker="+",ls="None")
+
+ax1.set_xlabel("Input Energy, J")
+ax1.set_ylabel("Transmission")
+
+ax2 = ax1.twiny()
+ax2.set_xlabel("Input Intensity (I0), W/cm^2")
+ax2.set_xlim(0, 60)
+ax2.set_xticks(list(energies_in))
+ax2.set_xticklabels(I0)
 plt.show()
 
