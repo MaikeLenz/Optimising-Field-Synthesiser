@@ -29,12 +29,26 @@ plt.setp(axs_Ne_pressures, xlim=(0,1250))
 plt.setp(axs_Ne_pressures[-1, :], xlabel='Wavelength, nm')
 plt.setp(axs_Ne_pressures[:, 0], ylabel='Intensity')
 
+fig_Ne_GDDs, axs_Ne_GDDs = plt.subplots(3,5)
+fig_Ne_GDDs.suptitle('Neon GDD Scan', size=24)
+#plt.setp(axs_Ne_GDDs, xlim=(0,1250))
+plt.setp(axs_Ne_GDDs[-1, :], xlabel='Wavelength, nm')
+plt.setp(axs_Ne_GDDs[:, 0], ylabel='Intensity')
+
+fig_Ne_GDDs_fine, axs_Ne_GDDs_fine = plt.subplots(4,4)
+fig_Ne_GDDs_fine.suptitle('Neon GDD Scan', size=24)
+#plt.setp(axs_Ne_GDDs_fine, xlim=(0,1250))
+plt.setp(axs_Ne_GDDs_fine[-1, :], xlabel='Wavelength, nm')
+plt.setp(axs_Ne_GDDs_fine[:, 0], ylabel='Intensity')
+
 #####################################################################################################################
 # Read simulation data
 Ar_sim_powers = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2]
 Ne_sim_powers = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2]
 Ar_sim_pressures = [0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4]
 Ne_sim_pressures = [1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.4, 2.6, 2.8, 3.0, 3.2, 3.4, 3.6]
+GDDs = [1*0.05, 2*0.05, 3*0.05, 4*0.05, 5*0.05, 6*0.05, 7*0.05, 8*0.05, 9*0.05, 10*0.05, 11*0.05, 12*0.05, 13*0.05, 14*0.05, 15*0.05]
+GDDs_fine = [6*0.05, 6*0.05 + 0.004, 6*0.05 + 0.008, 7*0.05 + 0.002, 7*0.05 + 0.006, 8*0.05, 8*0.05 + 0.004, 8*0.05 + 0.008, 9*0.05 + 0.002, 9*0.05 + 0.006, 10*0.05, 10*0.05 +0.004, 10*0.05 + 0.008, 11*0.05 + 0.002, 11*0.05 +0.006, 12*0.05]
 
 # Gaussian input simulations
 # Argon power scan
@@ -220,11 +234,6 @@ df = pd.read_csv(filepath+"simulations\\data\\pressure_gradient\\pulse_input\\Ne
 axs_Ne_pressures[0,0].plot(df.iloc[:,0], df.iloc[:,1])
 #####################################################################################################################
 # Read experimental data
-Ar_PowerScan_widths = []
-Ne_PowerScan_widths = []
-Ar_PressureScan_widths = []
-Ne_PressureScan_widths = []
-
 Ar_powers = [1.29, 1.2, 1.1, 1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3]
 Ne_powers = [1.24, 1.2, 1.1, 1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3]
 Ar_pressures = [1.4, 1.2, 1.0, 0.8, 0.6, 0.4, 0.2]
@@ -380,6 +389,102 @@ axs_Ne_pressures[2,3].plot(wavel_nm, I1_4, color='black')
 axs_Ne_pressures[3,0].plot(wavel_nm, I1_2, color='black')
 axs_Ne_pressures[3,1].plot(wavel_nm, I1_0, color='black', label='Experimental data')
 
+# Neon GDD Scan
+lines=[]
+columns=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
+with open (filepath+'HCF_scans\\Neon_3bar_1.1W_GDDScan\\GDDScan.txt', 'rt') as myfile:  # Open lorem.txt for reading
+    for myline in myfile:
+        lines.append(myline)
+
+data=lines[22:] #gets rid of all the stuff at the top
+for i in data:
+    split=i.split("\t") #delimiter is \t
+    for j ,value in enumerate(split):
+        columns[j].append(float(value))
+
+wavel_nm=columns[0]
+I1=columns[1]
+I2=columns[2]
+I3=columns[3]
+I4=columns[4]
+I5=columns[5]
+I6=columns[6]
+I7=columns[7]
+I8=columns[8]
+I9=columns[9]
+I10=columns[10]
+I11=columns[11]
+I12=columns[12]
+I13=columns[13]
+I14=columns[14]
+I15=columns[15]
+
+# Plot experimental data
+axs_Ne_GDDs[0,0].plot(wavel_nm, I1, color='black')
+axs_Ne_GDDs[0,1].plot(wavel_nm, I2, color='black')
+axs_Ne_GDDs[0,2].plot(wavel_nm, I3, color='black')
+axs_Ne_GDDs[0,3].plot(wavel_nm, I4, color='black')
+axs_Ne_GDDs[0,4].plot(wavel_nm, I5, color='black')
+axs_Ne_GDDs[1,0].plot(wavel_nm, I6, color='black')
+axs_Ne_GDDs[1,1].plot(wavel_nm, I7, color='black')
+axs_Ne_GDDs[1,2].plot(wavel_nm, I8, color='black')
+axs_Ne_GDDs[1,3].plot(wavel_nm, I9, color='black')
+axs_Ne_GDDs[1,4].plot(wavel_nm, I10, color='black')
+axs_Ne_GDDs[2,0].plot(wavel_nm, I11, color='black')
+axs_Ne_GDDs[2,1].plot(wavel_nm, I12, color='black')
+axs_Ne_GDDs[2,2].plot(wavel_nm, I13, color='black')
+axs_Ne_GDDs[2,3].plot(wavel_nm, I14, color='black')
+axs_Ne_GDDs[2,4].plot(wavel_nm, I15, color='black', label='Experimental data')
+
+# Neon GDD Fine Scan
+lines=[]
+columns=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
+with open (filepath+'HCF_scans\\Neon_3bar_1.1W_GDDScan\\GDDScan_fine.txt', 'rt') as myfile:  # Open lorem.txt for reading
+    for myline in myfile:
+        lines.append(myline)
+
+data=lines[22:] #gets rid of all the stuff at the top
+for i in data:
+    split=i.split("\t") #delimiter is \t
+    for j ,value in enumerate(split):
+        columns[j].append(float(value))
+
+wavel_nm=columns[0]
+I6_0=columns[1]
+I6_4=columns[2]
+I6_8=columns[3]
+I7_2=columns[4]
+I7_6=columns[5]
+I8_0=columns[6]
+I8_4=columns[7]
+I8_8=columns[8]
+I9_2=columns[9]
+I9_6=columns[10]
+I10_0=columns[11]
+I10_4=columns[12]
+I10_8=columns[13]
+I11_2=columns[14]
+I11_6=columns[15]
+I12_0=columns[16]
+
+# Plot experimental data
+axs_Ne_GDDs_fine[0,0].plot(wavel_nm, I6_0, color='black')
+axs_Ne_GDDs_fine[0,1].plot(wavel_nm, I6_4, color='black')
+axs_Ne_GDDs_fine[0,2].plot(wavel_nm, I6_8, color='black')
+axs_Ne_GDDs_fine[0,3].plot(wavel_nm, I7_2, color='black')
+axs_Ne_GDDs_fine[1,0].plot(wavel_nm, I7_6, color='black')
+axs_Ne_GDDs_fine[1,1].plot(wavel_nm, I8_0, color='black')
+axs_Ne_GDDs_fine[1,2].plot(wavel_nm, I8_4, color='black')
+axs_Ne_GDDs_fine[1,3].plot(wavel_nm, I8_8, color='black')
+axs_Ne_GDDs_fine[2,0].plot(wavel_nm, I9_2, color='black')
+axs_Ne_GDDs_fine[2,1].plot(wavel_nm, I9_6, color='black')
+axs_Ne_GDDs_fine[2,2].plot(wavel_nm, I10_0, color='black')
+axs_Ne_GDDs_fine[2,3].plot(wavel_nm, I10_4, color='black')
+axs_Ne_GDDs_fine[3,0].plot(wavel_nm, I10_8, color='black')
+axs_Ne_GDDs_fine[3,1].plot(wavel_nm, I11_2, color='black')
+axs_Ne_GDDs_fine[3,2].plot(wavel_nm, I11_6, color='black')
+axs_Ne_GDDs_fine[3,3].plot(wavel_nm, I12_0, color='black', label='Experimental data')
+
 #####################################################################################################################
 # Format plots
 fig_Ar_powers.delaxes(axs_Ar_powers[2,2])
@@ -434,6 +539,39 @@ axs_Ne_pressures[2,2].set_title('1.6 bar')
 axs_Ne_pressures[2,3].set_title('1.4 bar')
 axs_Ne_pressures[3,0].set_title('1.2 bar')
 axs_Ne_pressures[3,1].set_title('1.0 bar')
+
+axs_Ne_GDDs[0,0].set_title('0.05 mm')
+axs_Ne_GDDs[0,1].set_title('0.10 mm')
+axs_Ne_GDDs[0,2].set_title('0.15 mm')
+axs_Ne_GDDs[0,3].set_title('0.20 mm')
+axs_Ne_GDDs[0,4].set_title('0.25 mm')
+axs_Ne_GDDs[1,0].set_title('0.30 mm')
+axs_Ne_GDDs[1,1].set_title('0.35 mm')
+axs_Ne_GDDs[1,2].set_title('0.40 mm')
+axs_Ne_GDDs[1,3].set_title('0.45 mm')
+axs_Ne_GDDs[1,4].set_title('0.50 mm')
+axs_Ne_GDDs[2,0].set_title('0.55 mm')
+axs_Ne_GDDs[2,1].set_title('0.60 mm')
+axs_Ne_GDDs[2,2].set_title('0.65 mm')
+axs_Ne_GDDs[2,3].set_title('0.70 mm')
+axs_Ne_GDDs[2,4].set_title('0.75 mm')
+
+axs_Ne_GDDs_fine[0,0].set_title('0.30 mm')
+axs_Ne_GDDs_fine[0,1].set_title('0.32 mm')
+axs_Ne_GDDs_fine[0,2].set_title('0.34 mm')
+axs_Ne_GDDs_fine[0,3].set_title('0.36 mm')
+axs_Ne_GDDs_fine[1,0].set_title('0.38 mm')
+axs_Ne_GDDs_fine[1,1].set_title('0.40 mm')
+axs_Ne_GDDs_fine[1,2].set_title('0.44 mm')
+axs_Ne_GDDs_fine[1,3].set_title('0.48 mm')
+axs_Ne_GDDs_fine[2,0].set_title('0.52 mm')
+axs_Ne_GDDs_fine[2,1].set_title('0.56 mm')
+axs_Ne_GDDs_fine[2,2].set_title('0.60 mm')
+axs_Ne_GDDs_fine[2,3].set_title('0.64 mm')
+axs_Ne_GDDs_fine[3,0].set_title('0.68 mm')
+axs_Ne_GDDs_fine[3,1].set_title('0.72 mm')
+axs_Ne_GDDs_fine[3,2].set_title('0.76 mm')
+axs_Ne_GDDs_fine[3,3].set_title('0.80 mm')
 
 axs_Ar_powers[2,1].legend(loc='center left', bbox_to_anchor=(1, 0.5))
 axs_Ne_powers[2,1].legend(loc='center left', bbox_to_anchor=(1, 0.5))
