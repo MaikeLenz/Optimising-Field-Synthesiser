@@ -12,6 +12,8 @@ Ar_PowerScan_widths = []
 Ne_PowerScan_widths = []
 Ar_PressureScan_widths = []
 Ne_PressureScan_widths = []
+Ne_GDDScan_widths = []
+Ne_GDDScan_fine_widths = []
 
 Ar_powers = [1.29, 1.2, 1.1, 1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3]
 Ne_powers = [1.24, 1.2, 1.1, 1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3]
@@ -136,6 +138,77 @@ I = [I3_6, I3_4, I3_2, I3_0, I2_8, I2_6, I2_4, I2_2, I2_0, I1_8, I1_6, I1_4, I1_
 
 for i in range(len(I)):
     Ne_PressureScan_widths.append(rms_width(wavel_nm, I[i]))
+
+# Neon GDD Scan (both normal and fine scans combined)
+lines=[]
+columns=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
+with open (filepath+'HCF_scans\\Neon_3bar_1.1W_GDDScan\\GDDScan.txt', 'rt') as myfile:  # Open lorem.txt for reading
+    for myline in myfile:
+        lines.append(myline)
+
+data=lines[22:] #gets rid of all the stuff at the top
+for i in data:
+    split=i.split("\t") #delimiter is \t
+    for j ,value in enumerate(split):
+        columns[j].append(float(value))
+
+wavel_nm=columns[0]
+I1=columns[1]
+I2=columns[2]
+I3=columns[3]
+I4=columns[4]
+I5=columns[5]
+I6=columns[6]
+I7=columns[7]
+I8=columns[8]
+I9=columns[9]
+I10=columns[10]
+I11=columns[11]
+I12=columns[12]
+I13=columns[13]
+I14=columns[14]
+I15=columns[15]
+
+lines=[]
+columns=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
+with open (filepath+'HCF_scans\\Neon_3bar_1.1W_GDDScan\\GDDScan_fine.txt', 'rt') as myfile:  # Open lorem.txt for reading
+    for myline in myfile:
+        lines.append(myline)
+
+data=lines[22:] #gets rid of all the stuff at the top
+for i in data:
+    split=i.split("\t") #delimiter is \t
+    for j ,value in enumerate(split):
+        columns[j].append(float(value))
+
+wavel_nm=columns[0]
+I6_0=columns[1]
+I6_4=columns[2]
+I6_8=columns[3]
+I7_2=columns[4]
+I7_6=columns[5]
+I8_0=columns[6]
+I8_4=columns[7]
+I8_8=columns[8]
+I9_2=columns[9]
+I9_6=columns[10]
+I10_0=columns[11]
+I10_4=columns[12]
+I10_8=columns[13]
+I11_2=columns[14]
+I11_6=columns[15]
+I12_0=columns[16]
+I = [I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12, I13, I14, I15]
+Ne_GDDs = [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75]
+I2 = [I6_0, I6_4, I6_8, I7_2, I7_6, I8_0, I8_4, I8_8, I9_2, I9_6, I10_0, I10_4, I10_8, I11_2, I11_6, I12_0]
+Ne_GDDs_fine = [0.30, 0.32, 0.34, 0.36, 0.38, 0.40, 0.42, 0.44, 0.46, 0.48, 0.50, 0.52, 0.54, 0.56, 0.58, 0.60]
+
+for i in range(len(I)):
+    Ne_GDDScan_widths.append(rms_width(wavel_nm, I[i]))
+for i in range(len(I2)):
+    Ne_GDDScan_fine_widths.append(rms_width(wavel_nm, I2[i]))
+
+
 
 #####################################################################################################################
 # Read simulation data
@@ -373,4 +446,13 @@ axs[1,0].set_title('Neon Power Scan')
 axs[1,1].set_title('Neon Pressure Scan')
 
 plt.legend()
+
+plt.figure()
+plt.plot(Ne_GDDs, Ne_GDDScan_widths, '+', color='tab:blue', label='Rough scan')
+plt.plot(Ne_GDDs_fine, Ne_GDDScan_fine_widths, '+', color='tab:red', label='Fine Scan')
+plt.title('Neon GDD Scan Widths')
+plt.xlabel('Compressor grating displacement, mm')
+plt.ylabel('RMS width, nm')
+plt.legend()
+
 plt.show()
