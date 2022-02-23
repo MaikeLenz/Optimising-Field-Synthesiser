@@ -27,15 +27,17 @@ wavel = 800e-9
 τfwhm = 30e-15 # FWHM duration of the pump pulse
 domega = (0.44/τfwhm)*2*np.pi
 omega = np.linspace(2*np.pi*c/wavel - domega/2, 2*np.pi*c/wavel + domega/2, 100)
-GDDs = np.linspace(-500*(10**-30), 500*(10**-30), 100) #GDD in s^2
+#GDDs = np.linspace(-500*(10**-30), 500*(10**-30), 100) #GDD in s^2
+GDDs = np.array([77*(10**-30), 78*(10**-30), 79*(10**-30)]) #GDD in s^2
 Main.energy = energy
 Main.λ0 = wavel
 
 # Define experimental params
 radius = 125e-6 # HCF core radius
 flength = 1 # HCF length
-gas = "Ar"
-pressure = 0.8*0.66 # gas pressure in bar, corresponds to 66% of 3.5 atm
+gas = "Ne"
+#pressure = 0.8*0.66 # gas pressure in bar, corresponds to 66% of 3.5 atm
+pressure = 2.340607 # gas pressure in bar, corresponds to 66% of 3.5 atm
 Main.radius = radius
 Main.flength = flength
 Main.gas_str = gas
@@ -43,9 +45,15 @@ Main.eval("gas = Symbol(gas_str)")
 Main.pressure = pressure
 
 widths=np.array([])
-for i in GDDs:
+f, axs = plt.subplots(1,3)
+f.suptitle('Neon GDD Scan')
+plt.setp(axs, xlabel='Angular frequency, \s')
+plt.setp(axs[0], ylabel='Intensity')
+plt.setp(axs, xlim=(2e15,2.6e15))
+
+for i in range(len(GDDs)):
     print(i)
-    E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=domega, amp=1, CEP=0, GDD=i, TOD=0)
+    E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=domega, amp=1, CEP=0, GDD=GDDs[i], TOD=0)
     Iω = np.abs(E**2)
     Main.ω = omega
     Main.Iω = Iω  
@@ -69,15 +77,20 @@ for i in GDDs:
     width=rms_width(ω,Iω)
     widths=np.append(widths,width)
 
+    axs[i].plot(ω, Iω, label='%se14 /s'%round(width*(10**-14),3))
+    axs[i].legend()
+    axs[i].set_title('GDD = %s fs^2'% round(GDDs[i]*(10**30), 0))
+
+plt.figure()
 plt.scatter(GDDs*(10**30),widths,marker="+", label='Luna')
 plt.ylabel("angular frequency width, /s")
 plt.xlabel('GDD, fs^2')
 plt.show()
 
-
+"""
 # Save the data
 header = ['GDD, fs^2', 'Simulated Angular Frequency Width, /s']
-with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\custom_input\\data\\GDD_Ar_long_range_vs_rms_width.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\custom_input\\data\\GDD_Ar_long_range_vs_rms_width.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     # write the header
     writer.writerow(header)
@@ -85,7 +98,7 @@ with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\P
     # write the dataS
     for i in range(len(GDDs)):
         writer.writerow([GDDs[i]*(10**30), widths[i]])
-
+"""
 """
 import pandas as pd
 df = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\custom_input\\data\\GDD_Ne_long_range_vs_rms_width.csv")
