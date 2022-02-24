@@ -24,7 +24,7 @@ def threshold(x,y):
     """
     Find points where signal reaches certain level above noise and find the distance between them
     """
-    thresh=0.5
+    thresh=0.1
     rows = np.where(y > max(y)*thresh)[0]
     if len(rows) <= 1:
         print("Set a lower threshold")
