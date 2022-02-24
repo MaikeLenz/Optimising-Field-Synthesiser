@@ -25,12 +25,20 @@ def threshold(x,y):
     Find points where signal reaches certain level above noise and find the distance between them
     """
     thresh=0.1
-    rows = np.where(y > max(y)*thresh)
+    rows = np.where(y > max(y)*thresh)[0]
+    
     if len(rows) > 0:
         min_index = rows[0]
         max_index = min_index
     else:
         min_index = rows[0]
         max_index = rows[-1]
+    print(min_index,max_index)
     return x[max_index]-x[min_index]
-    
+
+
+def E(x):
+    return np.exp(-(x-50)**2)
+x=np.linspace(0,100,1000)
+E=E(x)
+print(threshold(x,E))
