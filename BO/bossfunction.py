@@ -103,7 +103,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         if 'CEP' in i:
             pbounds[i] = (0, 2*np.pi)
         if 'delay' in i:
-            pbounds[i] = (0,50)
+            pbounds[i] = (-10,10)
     print(pbounds)
 
     optimizer = BayesianOptimization(
