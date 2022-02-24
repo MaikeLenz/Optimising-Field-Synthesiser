@@ -14,8 +14,8 @@ def norm_and_int(x, y):
         norm.append(i/maximum)
     return simps(norm, x)
 
-def superGauss(x, A, x0, sigma, P):
+def superGauss(x, A, x0, sigma):
     """
     Fit as super Gaussian to the data and extract the parameter sigma to show the width
     """
-    return A*np.exp(-2*((x-x0)/sigma)**P)
+    return A*np.exp(-2*((x-x0)/sigma)**4)
