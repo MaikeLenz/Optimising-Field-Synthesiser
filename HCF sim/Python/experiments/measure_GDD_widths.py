@@ -5,6 +5,7 @@ import sys
 from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
 import numpy as np
+import math as math
 #sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 from rms_width import *
@@ -77,21 +78,30 @@ thresh_widths=[]
 for i in range(len(I)):
     thresh_widths.append(threshold(wavel_nm, np.array(I[i])))
 
-# Fourier transform to time domain
+#####################################################################################################################
+# Pulse in time-domain
 # First convert to frequencies
 c = 299792458
 freq = []
 for i in range(len(wavel_nm)):
     freq.append(c/(wavel_nm[i]*(10**-9)))
-#plt.plot(wavel_nm, I[0])
-#plt.figure()
-#plt.plot(freq, I[0])
 
+# Fourier transform to time-domain
+ts = np.zeros((len(I), math.ceil(len(I[0])/2)))
+Its = np.zeros((len(I), math.ceil(len(I[0])/2)))
 for i in range(len(I)):
     t, It = f_to_t(freq, I[i])
-    plt.figure()
-    plt.plot(t, It)
-plt.show()
+    #plt.figure()
+    #plt.plot(t, It)
+    ts[i] = t
+    Its[i] = It
+#plt.show()
+
+# Determine width of pulse in time-domain
+# RMS width
+time_RMS_widths = []
+for i in range(len(I)):
+    time_RMS_widths.append(rms_width(ts[i], np.abs(Its[i])))
 
 #####################################################################################################################
 # Plot results
@@ -99,7 +109,7 @@ positions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
 
 f, axs = plt.subplots(2,2)
 plt.setp(axs[-1, :], xlabel='Compressor Grating Position, mm')
-plt.setp(axs[:, 0], ylabel='Width')
+plt.setp(axs[:, 0], ylabel='Width, nm')
 
 axs[0,0].plot(positions, RMS_widths)
 axs[0,0].set_title('RMS Width')
@@ -109,4 +119,10 @@ axs[1,0].plot(positions, superGauss_widths)
 axs[1,0].set_title('Super Gaussian Fit')
 axs[1,1].plot(positions, thresh_widths)
 axs[1,1].set_title('Threshold')
+
+plt.figure()
+plt.plot(positions, time_RMS_widths)
+plt.title('RMS width in time-domain')
+plt.xlabel('Compressor Grating Position, mm')
+plt.ylabel('Width, s')
 plt.show()
