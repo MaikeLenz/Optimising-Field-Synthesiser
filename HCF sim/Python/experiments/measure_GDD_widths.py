@@ -103,6 +103,16 @@ time_RMS_widths = []
 for i in range(len(I)):
     time_RMS_widths.append(rms_width(ts[i], np.abs(Its[i])))
 
+# Normalise and integrate
+time_norm_and_int_widths = []
+for i in range(len(I)):
+    time_norm_and_int_widths.append(norm_and_int(ts[i], np.abs(Its[i])))
+
+# Determine from threshold
+time_thresh_widths=[]
+for i in range(len(I)):
+    time_thresh_widths.append(threshold(ts[i], np.abs(Its[i])))
+
 #####################################################################################################################
 # Plot results
 positions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
@@ -110,6 +120,7 @@ positions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
 f, axs = plt.subplots(2,2)
 plt.setp(axs[-1, :], xlabel='Compressor Grating Position, mm')
 plt.setp(axs[:, 0], ylabel='Width, nm')
+plt.suptitle('Wavelength-Domain Widths')
 
 axs[0,0].plot(positions, RMS_widths)
 axs[0,0].set_title('RMS Width')
@@ -120,9 +131,15 @@ axs[1,0].set_title('Super Gaussian Fit')
 axs[1,1].plot(positions, thresh_widths)
 axs[1,1].set_title('Threshold')
 
-plt.figure()
-plt.plot(positions, time_RMS_widths)
-plt.title('RMS width in time-domain')
-plt.xlabel('Compressor Grating Position, mm')
-plt.ylabel('Width, s')
+f2, axs2 = plt.subplots(2,2)
+plt.setp(axs2[-1, :], xlabel='Compressor Grating Position, mm')
+plt.setp(axs2[:, 0], ylabel='Width, s')
+plt.suptitle('Time-Domain Widths')
+
+axs2[0,0].plot(positions, time_RMS_widths)
+axs2[0,0].set_title('RMS Width')
+axs2[0,1].plot(positions, time_norm_and_int_widths)
+axs2[0,1].set_title('Normalised & Integrated')
+axs2[1,1].plot(positions, time_thresh_widths)
+axs2[1,1].set_title('Threshold')
 plt.show()
