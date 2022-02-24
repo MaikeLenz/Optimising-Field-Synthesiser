@@ -69,7 +69,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
 
             E=np.append(E,[E_i])
             I=np.append(I,[E_i**2])
-
+        
         if window!=None:
             #if a window of interest is defined, only care about that section
             max_index = statistics.median(np.argwhere(abs(E) == np.amax(np.absolute(E))).flatten().tolist()) #finds index of middle maximum
@@ -103,7 +103,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         if 'CEP' in i:
             pbounds[i] = (0, 2*np.pi)
         if 'delay' in i:
-            pbounds[i] = (-10,10)
+            pbounds[i] = (-5,5)
     print(pbounds)
 
     optimizer = BayesianOptimization(
@@ -123,10 +123,13 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
 
     print(optimizer.max) #final parameters
         
-
+    
     for i in range(len(Synth._pulse_list)):
         #update all the original field objects to the optimised parameters
+        #print("before",Synth._pulse_list[i]._t0)
         Synth._pulse_list[i].Update(Synth,i+1)
+        #print("after",Synth._pulse_list[i]._t0)
+
         
     #plt.figure()
     E_tot = np.array([]) #total electric field

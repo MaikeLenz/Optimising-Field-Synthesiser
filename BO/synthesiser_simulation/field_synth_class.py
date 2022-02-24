@@ -38,10 +38,14 @@ class Wavepacket(Element):
         self._amplitude=list(Synth._param_list[2])[channel_index-1]
         self._CEP=list(Synth._param_list[3])[channel_index-1]
         delays=list(Synth._param_list[4])
+        """
         if delays[channel_index-1] == min(delays):
             self._t0=list(Synth._param_list[4])[channel_index-1]
         else:
             self._t0=list(Synth._param_list[4])[channel_index-1] + min(delays)
+        """
+        self._t0+=list(Synth._param_list[4])[channel_index-1]
+        print(self._t0)
 
     def Energy(self,t):
         """
@@ -89,11 +93,18 @@ class Synthesiser(Element):
         if len(delays) != len(self._pulse_list)-1:
             raise "Error: Synthesiser not created successfully, dimension of delays doesn't match number of fields."
         times=[]
+        """
         for i in range(len(self._pulse_list)):
             if i !=0:
-                times.append(self._pulse_list[i]._t0+delays[i-i])
+                times.append(self._pulse_list[i]._t0+delays[i-1])
             else:
                 times.append(self._pulse_list[i]._t0)
+        """
+        for i in range(len(self._pulse_list)):
+            if i !=0:
+                times.append(delays[i-1])
+            else:
+                times.append(0)
         delay1=(times)
         #delay1=(0,)+delays #delay of 1st pulse is zero
         list=[wavel,fwhm,amp,CEP,delay1] #list of tuples that hold the channel parameters
@@ -114,8 +125,8 @@ class Synthesiser(Element):
             delay = self._param_list[4][i]
 
             sigma=fwhm_duration/(2.0*np.sqrt(2.0*np.log(2.0))) #fwhm to std of gaussian
-            gauss = np.exp(-0.5*((t-delay)/sigma)**2.0)
-            cos = np.cos(freq*(t-delay)+CEP) #CEP is phase of cosine relative to gaussian
+            gauss = np.exp(-0.5*((t-self._pulse_list[0]._t0-delay)/sigma)**2.0)
+            cos = np.cos(freq*(t-self._pulse_list[0]._t0-delay)+CEP) #CEP is phase of cosine relative to gaussian
             E_tot += amp*gauss*cos
         return E_tot
 
