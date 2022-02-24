@@ -4,6 +4,7 @@ Compare different measurements of the width for the GDD scan data
 import sys
 from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
+import numpy as np
 sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 from rms_width import *
@@ -69,7 +70,7 @@ for i in range(len(I)):
     """
 thresh_widths=[]
 for i in range(len(I)):
-    thresh_widths.append(threshold(wavel_nm, I[i]))
+    thresh_widths.append(threshold(wavel_nm, np.array(I[i])))
 #####################################################################################################################
 # Plot results
 positions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
