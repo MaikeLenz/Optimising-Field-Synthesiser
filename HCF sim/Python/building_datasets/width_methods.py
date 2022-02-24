@@ -26,7 +26,8 @@ def threshold(x,y):
     """
     thresh=0.1
     rows = np.where(y > max(y)*thresh)[0]
-    if len(rows) == 1:
+    if len(rows) <= 1:
+        print("Set a lower threshold")
         min_index = rows[0]
         max_index = min_index
     else:
