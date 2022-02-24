@@ -4,12 +4,14 @@ Compare different measurements of the width for the GDD scan data
 import sys
 from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
-sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
+sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
+#sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 from rms_width import *
 from theoretical_width import *
 from width_methods import *
 
-filepath = "C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\"
+filepath = "C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\"
+#filepath = "C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\"
 #####################################################################################################################
 # Read experimental data
 lines=[]
@@ -65,7 +67,9 @@ for i in range(len(I)):
     plt.plot(wavel_nm, I[i])
     plt.plot(wavel_nm, superGauss(wavel_nm, *popt))
     """
-
+thresh_widths=[]
+for i in range(len(I)):
+    thresh_widths.append(threshold(wavel_nm, I[i]))
 #####################################################################################################################
 # Plot results
 positions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
@@ -80,4 +84,6 @@ axs[0,1].plot(positions, norm_and_int_widths)
 axs[0,1].set_title('Normalised & Integrated')
 axs[1,0].plot(positions, superGauss_widths)
 axs[1,0].set_title('Super Gaussian Fit')
+axs[1,1].plot(positions, thresh_widths)
+axs[1,1].set_title('Threshold')
 plt.show()
