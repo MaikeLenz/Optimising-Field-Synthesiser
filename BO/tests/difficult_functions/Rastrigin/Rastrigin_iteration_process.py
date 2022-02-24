@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm 
 from mpl_toolkits.mplot3d import Axes3D 
-"""
+
 X = np.linspace(-5.12, 5.12, 100)     
 Y = np.linspace(-5.12, 5.12, 100)     
 X, Y = np.meshgrid(X, Y) 
@@ -16,14 +16,13 @@ fig = plt.figure()
 
 plt.colormap(x,y,z)
 #3d plot
-#ax = fig.gca(projection='3d') 
-#ax.plot_surface(X, Y, Z, rstride=1, cstride=1,
-#  cmap=cm.nipy_spectral, linewidth=0.08,
-#  antialiased=True)    
-# plt.savefig('rastrigin_graph.png')
-
+ax = fig.gca(projection='3d') 
+ax.plot_surface(X, Y, Z, rstride=1, cstride=1,
+  cmap=cm.nipy_spectral, linewidth=0.08,
+  antialiased=True)    
+#plt.savefig('rastrigin_graph.png')
+plt.show()
 """
-
 # generate 2 2d grids for the x & y bounds
 y, x = np.meshgrid(np.linspace(-5.12, 5.12, 200), np.linspace(-5.12, 5.12, 200))
 #z as a function of x and y
@@ -33,8 +32,8 @@ z = (x**2 - 10 * np.cos(2 * np.pi * x)) + \
 #now make this the target function
 def func(x, y):
     """
-    negative of the Rastrigin function
-    BO maximises but the Rastrigin function has a global minimum
+    #negative of the Rastrigin function
+    #BO maximises but the Rastrigin function has a global minimum
     """
     return - ((x**2 - 10 * np.cos(2 * np.pi * x)) + (y**2 - 10 * np.cos(2 * np.pi * y)) + 20)
 
@@ -98,3 +97,4 @@ plt.xlabel("x")
 plt.ylabel("y")
 plt.legend()
 plt.show()
+"""
