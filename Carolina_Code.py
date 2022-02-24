@@ -63,7 +63,7 @@ yf=spf.fft(s1)
 #this is your signal 1
 xf=spf.fftfreq(len(p))#second arg is sample spacing in seconds 1/f
 
- # setting the correct x-axis for the fourier transform. Osciallations/step
+# setting the correct x-axis for the fourier transform. Osciallations/step
 #this is you stage position
 
 #now some shifts to make plotting easier (google if interested)
