@@ -26,19 +26,18 @@ def threshold(x,y):
     """
     thresh=0.1
     rows = np.where(y > max(y)*thresh)[0]
-    
-    if len(rows) > 0:
+    if len(rows) == 1:
         min_index = rows[0]
         max_index = min_index
     else:
         min_index = rows[0]
         max_index = rows[-1]
-    print(min_index,max_index)
     return x[max_index]-x[min_index]
 
-
+"""
 def E(x):
-    return np.exp(-(x-50)**2)
+    return np.exp(-(x-50)**2/100)
 x=np.linspace(0,100,1000)
 E=E(x)
 print(threshold(x,E))
+"""
