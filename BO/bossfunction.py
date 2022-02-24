@@ -92,7 +92,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         #assume standard bounds, same for each channel
         if 'wavel' in i:
             #pbounds[i] = (400,2000)
-            pbounds[i] = (400,10000)
+            pbounds[i] = (400,2000)
         if 'fwhm' in i:
             pbounds[i] = (5,70)
         if 'GDD' in i:
@@ -186,7 +186,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
     f_ax_sim = f.add_subplot(gs[:, 0])
     f_ax_sim.plot(t, E_tot, label="Electric field")
     f_ax_sim.plot(t, I, label="Intensity")
-    f_ax_sim.plot(t, gradient, label="Intensity Gradient")
+    #f_ax_sim.plot(t, gradient, label="Intensity Gradient")
     if function==errorCorrectionAdvanced_int or function==errorCorrection_int:
         #need another curve which is the goal field
         #shift this to align with the max intensity?
