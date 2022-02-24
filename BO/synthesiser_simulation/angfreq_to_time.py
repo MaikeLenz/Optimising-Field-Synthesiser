@@ -8,9 +8,8 @@ def E_omega_to_E_time(E_om,om):
     """
     Fourier transforms from ang freq to time domain 
     """
-    #mu=om/(2*np.pi)
-
-    Fs=2*(om.max()/(2*np.pi)) #samplicng frequency
+    print(E_om[np.nonzero(E_om)[-1]])
+    Fs=2*(E_om[np.nonzero(E_om)[-1]]/(2*np.pi)) #samplicng frequency
     n=len(E_om)
     E_t = sp.fft.ifft(E_om)
     t = np.linspace(0,len(E_t)/Fs,len(E_t))
