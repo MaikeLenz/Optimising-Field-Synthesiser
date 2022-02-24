@@ -58,14 +58,18 @@ def f_to_t(f, Ef):
     Et = ifft(Ef)
     N = len(Ef) # Number of points
     #t = 1/f
-    fs = f[1]-f[0]
+    fs = np.abs(f[1]-f[0])
     sr = 1/fs
     N = len(Et)
     n = np.arange(N)
     T = N/sr
     t = n/T
-    return t, Et
 
+    Et_oneside = Et[:N//2]
+    t_oneside = t[:N//2]
+    return t_oneside, Et_oneside
+
+"""
 t = np.linspace(0,1,100)
 freq = 2
 Et = 3*np.sin(2*np.pi*freq*t)
@@ -82,3 +86,4 @@ plt.figure()
 plt.plot(t2, Et2, label='After IFFT')
 plt.legend()
 plt.show()
+"""

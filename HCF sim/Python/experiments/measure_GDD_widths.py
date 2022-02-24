@@ -5,14 +5,17 @@ import sys
 from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
 import numpy as np
-sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
-#sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
+#sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
+sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 from rms_width import *
-from theoretical_width import *
+#from theoretical_width import *
 from width_methods import *
+#sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
+sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
+from angfreq_to_time import *
 
-filepath = "C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\"
-#filepath = "C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\"
+#filepath = "C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\"
+filepath = "C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\"
 #####################################################################################################################
 # Read experimental data
 lines=[]
@@ -68,9 +71,28 @@ for i in range(len(I)):
     plt.plot(wavel_nm, I[i])
     plt.plot(wavel_nm, superGauss(wavel_nm, *popt))
     """
+
+# Determine from threshold
 thresh_widths=[]
 for i in range(len(I)):
     thresh_widths.append(threshold(wavel_nm, np.array(I[i])))
+
+# Fourier transform to time domain
+# First convert to frequencies
+c = 299792458
+freq = []
+for i in range(len(wavel_nm)):
+    freq.append(c/(wavel_nm[i]*(10**-9)))
+#plt.plot(wavel_nm, I[0])
+#plt.figure()
+#plt.plot(freq, I[0])
+
+for i in range(len(I)):
+    t, It = f_to_t(freq, I[i])
+    plt.figure()
+    plt.plot(t, It)
+plt.show()
+
 #####################################################################################################################
 # Plot results
 positions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
