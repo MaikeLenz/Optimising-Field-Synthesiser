@@ -73,9 +73,9 @@ random_rms=statistics.mean(random_rms_l)
 
 ##################################################################################################################################################
 #run BO
-n_inits=np.linspace(1,15)
-n_iters=np.linspace(1,15)
-outcomes=np.zeros((15,15))
+n_inits=np.array([1,2,3,4,5])
+n_iters=np.array([1,2,3,4,5])
+outcomes=np.zeros((5,5))
 #create fields
 Field1=Wavepacket(t0=50.0, wavel=400.0, fwhm=33.0, amp=1.0, CEP=0.0)
 Field2=Wavepacket(t0=50.0, wavel=775.0, fwhm=4.0, amp=1.0, CEP=0.0)
@@ -90,7 +90,7 @@ Synth=Synthesiser(pulses,delays)
 params=['CEP1','CEP2','CEP3','amp1','amp2','amp3','delay2','delay3','wavel3']
 for i in range(len(n_inits)):
     for j in range(len(n_iters)):
-        BO_out=BO(params, Synth, errorCorrectionAdvanced_int, init_points=n_initi,n_iter=j, t=t,goal_field=I_goal)
+        BO_out=BO(params, Synth, errorCorrectionAdvanced_int, init_points=n_inits[i],n_iter=n_iters[j], t=t,goal_field=I_goal)
         outcomes[i][j]=BO_out["target"]/random_rms
 
 ###################################################################################################################
