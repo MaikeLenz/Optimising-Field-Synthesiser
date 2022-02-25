@@ -7,7 +7,7 @@ Main.using("Luna")
 
 def theoretical_width(radius, flength, pressure, λ0, τfwhm, energy):
     """
-    Returns theoretical calculation for SPM frequency width that comes from Luna simulation.
+    Returns theoretical calculation for SPM angular frequency width that comes from Luna simulation.
     Assumes Ne gas for now
     Still a factor of 10 out!!
     """
@@ -30,3 +30,46 @@ def theoretical_width(radius, flength, pressure, λ0, τfwhm, energy):
     n2 = Main.n2 # n2 in m^2/W (probably)
 
     return 2*np.sqrt(2)*np.exp(-0.5)*ω0*n2*I0*L/(c*τ)
+
+def theoretical_width_exp(radius, flength, energy, pressure, gas, dλ_rms, λ0):
+    """
+    Returns calculation for SPM angular frequency width from experimental parameters
+    """
+    c = 299792458 # m/s
+    beta = (2*np.sqrt(2)*np.exp(-0.5)*(np.pi**-0.5)*(c**2))/((0.64**2)*(0.44**2))
+
+    ω0 = 2*np.pi*c/λ0
+    Main.ω = ω0
+    Main.gas_str = gas
+    Main.eval("gas = Symbol(gas_str)")
+    Main.pressure = pressure
+    Main.eval('N0, n0, n2 = Tools.getN0n0n2(ω, gas; P=pressure, T=PhysData.roomtemp)')
+    n2 = Main.n2
+
+    return (beta*n2*energy*flength*(dλ_rms**2))/((λ0**5)*(radius**2))
+
+def theoretical_width_exp_error(radius, flength, energy, pressure, gas, dλ_rms, λ0, Δradius=0, Δflength=0, Δn2=0, Δenergy=0, Δdλ_rms=0, Δλ0=0):
+    """
+    Returns error for calculation for SPM angular frequency width from experimental parameters, in units /s
+    """
+    c = 299792458 # m/s
+    beta = (2*np.sqrt(2)*np.exp(-0.5)*(np.pi**-0.5)*(c**2))/((0.64**2)*(0.44**2))
+
+    ω0 = 2*np.pi*c/λ0
+    Main.ω = ω0
+    Main.gas_str = gas
+    Main.eval("gas = Symbol(gas_str)")
+    Main.pressure = pressure
+    Main.eval('N0, n0, n2 = Tools.getN0n0n2(ω, gas; P=pressure, T=PhysData.roomtemp)')
+    n2 = Main.n2
+
+    n2_err = (((beta*energy*flength*(dλ_rms**2))/((λ0**5)*(radius**2)))**2) * (Δn2**2)
+    energy_err = (((beta*n2*flength*(dλ_rms**2))/((λ0**5)*(radius**2)))**2) * (Δenergy**2)
+    flength_err = (((beta*n2*energy*(dλ_rms**2))/((λ0**5)*(radius**2)))**2) * (Δflength**2)
+    dλ_rms_err = (((beta*n2*energy*flength*2*dλ_rms)/((λ0**5)*(radius**2)))**2) * (Δdλ_rms**2)
+    λ0_err = (((5*beta*n2*energy*flength*(dλ_rms**2))/((λ0**6)*(radius**2)))**2) * (Δλ0**2)
+    radius_err = (((2*beta*n2*energy*flength*(dλ_rms**2))/((λ0**5)*(radius**3)))**2) * (Δradius**2)
+
+    spm_width = theoretical_width_exp(radius, flength, energy, pressure, gas, dλ_rms, λ0)
+
+    return spm_width*np.sqrt(n2_err + energy_err + flength_err + dλ_rms_err + λ0_err + radius_err)
