@@ -109,12 +109,12 @@ plt.figure()
 plt.plot(λ_0*(10**9), Iλ_0, label = 'Random, Δλ = ' + str(round(width_0*(10**9))) + 'nm', color='tab:blue')
 plt.plot(λ_100*(10**9), Iλ_100, label = 'Optimised, Δλ = ' + str(round(width_100*(10**9))) + 'nm', color='tab:orange')
 plt.xlabel('Wavelength, nm', fontsize=22)
-plt.ylabel('Intensity', fontsize=22)
+plt.ylabel('Intensity', fontsize=24)
 plt.xticks(fontsize=16)
 plt.yticks(fontsize=16)
 #plt.title('Optimised Output Pulse')
 plt.xlim((200,2000))
-plt.legend(fontsize=16)
+plt.legend(fontsize=26)
 
 """
 #creating indicative bar to show rms width
