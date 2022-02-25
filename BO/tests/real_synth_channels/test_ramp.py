@@ -37,5 +37,5 @@ print(len(t_goal))
 I_goal=ramp(t_goal,12/30)
 
 #parameters to be optimised
-params=['CEP1','CEP2','CEP3','amp1','amp2','amp3','delay2','delay3']
-BO(params, Synth, errorCorrectionAdvanced_int, 1000,1000, t=t,goal_field=I_goal)
+params=['CEP1','CEP2','CEP3','amp1','amp2','amp3','delay2','delay3','wavel3']
+BO(params, Synth, errorCorrectionAdvanced_int, 50,50, t=t,goal_field=I_goal)

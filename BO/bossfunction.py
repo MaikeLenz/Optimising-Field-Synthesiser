@@ -92,7 +92,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         #assume standard bounds, same for each channel
         if 'wavel' in i:
             #pbounds[i] = (400,2000)
-            pbounds[i] = (400,2000)
+            pbounds[i] = (1100,2100)
         if 'fwhm' in i:
             pbounds[i] = (5,70)
         if 'GDD' in i:
@@ -188,15 +188,16 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
     gs = f.add_gridspec(Synth.no_of_channels(), 2)
     f_ax_sim = f.add_subplot(gs[:, 0])
     f_ax_sim.plot(t, E_tot, label="Electric field")
+    f_ax_sim.set_title("Synthesised Field",fontsize=20)
     f_ax_sim.plot(t, I, label="Intensity")
     #f_ax_sim.plot(t, gradient, label="Intensity Gradient")
     if function==errorCorrectionAdvanced_int or function==errorCorrection_int:
         #need another curve which is the goal field
         #shift this to align with the max intensity?
         f_ax_sim.plot(t, goal_field, label="Goal Intensity")
-    f_ax_sim.set_xlabel('Time, fs')
-    f_ax_sim.set_ylabel('Electric field / Intensity')
-    plt.legend()
+    f_ax_sim.set_xlabel('Time, fs',fontsize=22)
+    f_ax_sim.set_ylabel('Electric field / Intensity',fontsize=22)
+    plt.legend(fontsize=16)
 
     for i in range(Synth.no_of_channels()):
         #create the subplots for each channel
@@ -204,10 +205,13 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         j=i+1
         f_ax.plot(t, E_individual[i], label="Electric field %s" %j)
         f_ax.plot(t, I_individual[i], label="Intensity %s" %j)
-        f_ax.set_title("%s of energy"%(round(energies[i],3)))
+        #f_ax.set_title("%s of energy"%(round(energies[i],3)))
+        if i==0:
+            f_ax.set_title("Individual channels", fontsize=22)
+        
         if i == Synth.no_of_channels()-1:
-            f_ax.set_xlabel('Time, fs')
-        plt.legend()
+            f_ax.set_xlabel('Time, fs',fontsize=22)
+        plt.legend(fontsize=16)
         if i != (Synth.no_of_channels()-1):
             f_ax.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 
