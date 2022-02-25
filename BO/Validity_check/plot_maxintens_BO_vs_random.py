@@ -65,9 +65,9 @@ random_rms=statistics.mean(random_rms_l)
 
 ##################################################################################################################################################
 #run BO
-n_inits=np.array([4,5])
-n_iters=np.array([2,3])
-outcomes=np.zeros((2,2))
+n_inits=np.array([2,4,6,8,10])
+n_iters=np.array([2,4,6,8,10])
+outcomes=np.zeros((5,5))
 
 #n_inits=np.array([1,2])
 #n_iters=np.array([1,2])
