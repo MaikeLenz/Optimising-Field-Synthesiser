@@ -24,15 +24,9 @@ from ErrorCorrectionFunction_integrate import *
 import random
 import statistics
 ###############################################################################################################################
-#define goal: ramp
-def ramp(x,a):
-    return a*x
+
 #note: the time array must have the same spacing for the synthesiser and for the goal field!
 t=np.linspace(0,100,10000)
-#we want 30fs, so this is fraction of the whole t array
-t_goal=t[:int((30/100)*10000)]
-print(len(t_goal))
-I_goal=ramp(t_goal,12/30)
 
 ###############################################################################################################################
 #find mean of 5 random rms error outcomes
@@ -61,40 +55,39 @@ for i in range(5):
     Synth_=Synthesiser(pulses_,delays_)
 
     E_rand=[]
-    I_rand=[]
     for i in range(len(t)):
         Ei=Synth_.E_field_value(i)
         E_rand.append(Ei)
-        I_rand.append(Ei**2)
-    I_rand=np.array(I_rand)
-    random_rms_l.append(errorCorrectionAdvanced_int(t, I_rand, I_goal))
+    E_rand=np.array(E_rand)
+    random_rms_l.append(maxIntens(t, E_rand))
 
 random_rms=statistics.mean(random_rms_l)
 
 ##################################################################################################################################################
 #run BO
-#n_inits=np.array([1,2,3,4,5])
-#n_iters=np.array([1,2,3,4,5,6,7,8,9,10])
-#outcomes=np.zeros((10,5))
+n_inits=np.array([2,4,6,8,10])
+n_iters=np.array([2,4,6,8,10])
+outcomes=np.zeros((5,5))
 
-n_inits=np.array([1,2])
-n_iters=np.array([1,2])
-outcomes=np.zeros((2,2))
+#n_inits=np.array([1,2])
+#n_iters=np.array([1,2])
+#outcomes=np.zeros((2,2))
 #create fields
-Field1=Wavepacket(t0=50.0, wavel=400.0, fwhm=33.0, amp=1.0, CEP=0.0)
-Field2=Wavepacket(t0=50.0, wavel=775.0, fwhm=4.0, amp=1.0, CEP=0.0)
-Field3=Wavepacket(t0=50.0, wavel=1100.0, fwhm=45.0, amp=1.0, CEP=0.0)
-#initialise pulse list and tuple of relative delays (from 1st pulse)
-pulses=[Field1,Field2, Field3]
-delays=(0,0)
-#pass to synthesiser
-Synth=Synthesiser(pulses,delays)
+
 
 #parameters to be optimised
 params=['CEP1','CEP2','CEP3','amp1','amp2','amp3','delay2','delay3','wavel3']
 for i in range(len(n_inits)):
     for j in range(len(n_iters)):
-        BO_out=BO(params, Synth, errorCorrectionAdvanced_int, init_points=n_inits[i],n_iter=n_iters[j], t=t,goal_field=I_goal)
+        Field1=Wavepacket(t0=50.0, wavel=400.0, fwhm=33.0, amp=1.0, CEP=0.0)
+        Field2=Wavepacket(t0=50.0, wavel=775.0, fwhm=4.0, amp=1.0, CEP=0.0)
+        Field3=Wavepacket(t0=50.0, wavel=1100.0, fwhm=45.0, amp=1.0, CEP=0.0)
+        #initialise pulse list and tuple of relative delays (from 1st pulse)
+        pulses=[Field1,Field2, Field3]
+        delays=(0,0)
+        #pass to synthesiser
+        Synth=Synthesiser(pulses,delays)
+        BO_out=BO(params, Synth, maxIntens, init_points=n_inits[i],n_iter=n_iters[j], t=t)
         outcomes[i][j]=BO_out["target"]/random_rms
 
 ###################################################################################################################
@@ -104,6 +97,6 @@ plt.imshow(outcomes,extent=(n_iters[0],n_iters[-1],n_inits[0],n_inits[-1]),aspec
 plt.xlabel("Iterations",fontsize=16)
 plt.ylabel("Initial Points",fontsize=16)
 cbar=plt.colorbar()
-cbar.ax.set_ylabel('fraction of rms error with random input', rotation=270, labelpad=15,fontsize=16)
+cbar.ax.set_ylabel('ratio of max intensity to random input', rotation=270, labelpad=15,fontsize=16)
 plt.show()
 

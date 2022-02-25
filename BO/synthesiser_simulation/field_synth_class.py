@@ -37,7 +37,6 @@ class Wavepacket(Element):
         self._fwhm_duration=list(Synth._param_list[1])[channel_index-1]
         self._amplitude=list(Synth._param_list[2])[channel_index-1]
         self._CEP=list(Synth._param_list[3])[channel_index-1]
-        delays=list(Synth._param_list[4])
         """
         if delays[channel_index-1] == min(delays):
             self._t0=list(Synth._param_list[4])[channel_index-1]
@@ -45,7 +44,7 @@ class Wavepacket(Element):
             self._t0=list(Synth._param_list[4])[channel_index-1] + min(delays)
         """
         self._t0+=list(Synth._param_list[4])[channel_index-1]
-        #print(self._t0)
+        print("t0=",self._t0)
 
     def Energy(self,t):
         """

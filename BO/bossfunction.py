@@ -99,7 +99,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             pbounds[i] = (-50,0,50)
             #technically need to find GDD bounds here that make sense for our pulse
         if 'amp' in i:
-            pbounds[i] = (0.1,3)
+            pbounds[i] = (0.1,1)
         if 'CEP' in i:
             pbounds[i] = (0, 2*np.pi)
         if 'delay' in i:
@@ -122,14 +122,34 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         )
 
     print(optimizer.max) #final parameters
+    final_dict=Synth.create_dict()
+    for key,value in optimizer.max["params"].items():
+            final_dict[key] = value
+    final_params = np.zeros((Synth.no_of_channels(),5))
+    for key, value in final_dict.items():
+        for i in range(Synth.no_of_channels()):                
+            #print("i is",i)
+            if str(i+1) in key:
+                #iterate through parameters and insert into organised params array
+                if 'wavel' in key:
+                    final_params[i][0] = value
+                elif 'fwhm' in key:
+                    final_params[i][1] = value
+                elif 'amp' in key:
+                    final_params[i][2] = value
+                elif 'CEP' in key:
+                    final_params[i][3] = value
+                elif 'delay' in key:
+                    final_params[i][4] = value
+        # Now update synthesiser- parameters should be in the right order now
+        for i in range(len(final_params)):
+            Synth.Update(i+1 , *final_params[i])
         
-    
     for i in range(len(Synth._pulse_list)):
         #update all the original field objects to the optimised parameters
-        #print("before",Synth._pulse_list[i]._t0)
+        print("before",Synth._pulse_list[i]._t0)
         Synth._pulse_list[i].Update(Synth,i+1)
-        #print("after",Synth._pulse_list[i]._t0)
-
+        print("after",Synth._pulse_list[i]._t0)
         
     #plt.figure()
     E_tot = np.array([]) #total electric field
