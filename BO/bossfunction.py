@@ -147,9 +147,9 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         
     for i in range(len(Synth._pulse_list)):
         #update all the original field objects to the optimised parameters
-        #print("before",Synth._pulse_list[i]._t0)
+        print("before",Synth._pulse_list[i]._t0)
         Synth._pulse_list[i].Update(Synth,i+1)
-        #print("after",Synth._pulse_list[i]._t0)
+        print("after",Synth._pulse_list[i]._t0)
         
     #plt.figure()
     E_tot = np.array([]) #total electric field
