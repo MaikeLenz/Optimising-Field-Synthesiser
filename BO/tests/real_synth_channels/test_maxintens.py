@@ -25,17 +25,18 @@ pulses=[Field1,Field2, Field3]
 delays=(0,0)
 #pass to synthesiser
 Synth=Synthesiser(pulses,delays)
+t=np.linspace(0,100,10000)
 
+"""
 #define goal field
 def ramp(x,a):
     return a*x
 #note: the time array must have the same spacing for the synthesiser and for the goal field!
-t=np.linspace(0,100,10000)
 #we want 30fs, so this is fraction of the whole t array
 t_goal=t[:int((30/100)*10000)]
 print(len(t_goal))
 I_goal=ramp(t_goal,12/30)
-
+"""
 #parameters to be optimised
 params=['CEP1','CEP2','CEP3','amp1','amp2','amp3','delay2','delay3','wavel3']
-BO(params, Synth, errorCorrectionAdvanced_int, 50,50, t=t,goal_field=I_goal)
+BO(params, Synth, maxIntens, 50,50, t=t)

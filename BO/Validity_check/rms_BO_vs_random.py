@@ -12,6 +12,7 @@ from bossfunction import *
 from field_synth_class import *
 #from ErrorCorrectionFunction import * #out of date functions
 from ErrorCorrectionFunction_integrate import *
+import random
 
 """
 test if the bossfunction works to mimic rms error and reproduce a linear ramp
@@ -38,4 +39,7 @@ I_goal=ramp(t_goal,12/30)
 
 #parameters to be optimised
 params=['CEP1','CEP2','CEP3','amp1','amp2','amp3','delay2','delay3','wavel3']
-BO(params, Synth, errorCorrectionAdvanced_int, 50,50, t=t,goal_field=I_goal)
+BO_out=BO(params, Synth, errorCorrectionAdvanced_int, 50,50, t=t,goal_field=I_goal)
+print(BO_out)
+###########################################################################
+#now use random inputs and compare:
