@@ -23,7 +23,7 @@ Main.using("Luna")
 from rms_width import *
 c = 299792458 # m/s
 
-GDDs = np.linspace(-5000*(10**-30), 5000*(10**-30), 100)
+GDDs = np.linspace(-10000*(10**-30), 10000*(10**-30), 100)
 
 # Read input pulse params
 df = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\HCF_scans\\power in\\extracted_params.csv")
