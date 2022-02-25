@@ -7,7 +7,7 @@ import sys
 
 #sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
 sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\")
-from theoretical_width import theoretical_width
+#from theoretical_width import theoretical_width
 
 #sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\chirp\\')
 sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\chirp\\')
@@ -23,7 +23,7 @@ Main.using("Luna")
 from rms_width import *
 c = 299792458 # m/s
 
-GDDs = np.linspace(-500*(10**-30), 500*(10**-30), 100)
+GDDs = np.linspace(-5000*(10**-30), 5000*(10**-30), 100)
 
 # Read input pulse params
 df = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\HCF_scans\\power in\\extracted_params.csv")
@@ -78,7 +78,7 @@ for i in range(len(freq_widths)):
 
 plt.figure()
 plt.scatter(GDDs*(10**30),wavel_widths*(10**9),marker="+")
-plt.ylabel("RMS width, /nm")
+plt.ylabel("RMS width, nm")
 plt.xlabel('GDD, fs^2')
 plt.title('Simulated GDD Scan')
 plt.show()
@@ -86,7 +86,7 @@ plt.show()
 
 # Save the data
 header = ['GDD, fs^2', 'Simulated RMS Width, nm']
-with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\GDD_Scan.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\GDD_Scan_huge_range.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     # write the header
     writer.writerow(header)
