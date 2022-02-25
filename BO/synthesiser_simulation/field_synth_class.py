@@ -45,7 +45,7 @@ class Wavepacket(Element):
             self._t0=list(Synth._param_list[4])[channel_index-1] + min(delays)
         """
         self._t0+=list(Synth._param_list[4])[channel_index-1]
-        print(self._t0)
+        #print(self._t0)
 
     def Energy(self,t):
         """
