@@ -216,3 +216,4 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             f_ax.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 
     plt.show()
+    return optimizer.max
