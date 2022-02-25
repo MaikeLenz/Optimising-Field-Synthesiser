@@ -1,0 +1,2 @@
+init_points,n_iter,"width, nm","energy, J","pressure, bar","radius, m","flength, m","FWHM, s","wavel, m",gas
+100,100,8.989897827548432e-07,0.0014395203213496963,7.898316514907424,0.00013903626307114282,2.9858440446202477,3e-14,8e-07,Ne

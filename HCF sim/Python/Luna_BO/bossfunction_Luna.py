@@ -132,18 +132,23 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  
         #assume standard bounds
         if 'energy' in i:
             #pbounds[i] = (0,1e-3)
-            pbounds[i] = (0.1e-3,2.0e-3)
+            #pbounds[i] = (0.1e-3,2.0e-3)
+            pbounds[i] = (0.1e-3, 2e-3)
         elif 'τfwhm' in i:
-            pbounds[i] = (20e-15,50e-15)
+            #pbounds[i] = (20e-15,50e-15)
+            pbounds[i] = (4e-15, 30e-15)
         elif 'λ0' in i:
             pbounds[i] = (700e-9,900e-9)
         elif 'pressure' in i:
             #pbounds[i] = (0,3)
-            pbounds[i] = (1,15)
+            #pbounds[i] = (1,15)
+            pbounds[i] = (1, 15)
         elif 'radius' in i:                
-            pbounds[i] = (125e-6,300e-6)
+            #pbounds[i] = (125e-6,300e-6)
+            pbounds[i] = (50e-6, 500e-6)
         elif 'flength' in i:
-            pbounds[i] = (1,2)
+            #pbounds[i] = (1,2)
+            pbounds[i] = (0.1, 6)
     print(pbounds)
 
     optimizer = BayesianOptimization(
@@ -182,3 +187,5 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  
     plt.ylabel("Electric field, a.u.")
     plt.legend()
     plt.show()
+
+    return optimizer.max
