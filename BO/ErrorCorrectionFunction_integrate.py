@@ -46,7 +46,13 @@ def errorCorrectionAdvanced_int(t, synth_field, goal_field):
         #need the point at median_synth to become the index median_goal to line fields up
         if offset >0:
             #crop synth field to the length of the goal field but starting after offset such that maxima align
-            synth_field=synth_field[offset:offset+len(goal_field)]
+
+            if offset+len(goal_field)>len(synth_field):
+                dif=offset+len(goal_field)-len(synth_field)
+                synth_field=synth_field[offset-dif:offset+len(goal_field)]
+            else:
+                synth_field=synth_field[offset:offset+len(goal_field)]
+
             t=t[:len(goal_field)]
         elif offset<0:
             #have to pad start of synth field to line up with the goal
@@ -69,7 +75,7 @@ def errorCorrectionAdvanced_int(t, synth_field, goal_field):
     edge_left = np.argwhere(args_below_ten_reverse < median_synth)
     edge_right = np.argwhere(args_below_ten > median_synth)
     """
-    print(len(synth_field),len(goal_field))
+    print(len(synth_field),len(goal_field),len(t))
     return errorCorrection_int(t,synth_field,goal_field) #now carry out rms minimisation with aligned and normalised arrays
 
 
