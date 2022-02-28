@@ -44,9 +44,9 @@ def dip(x,a):
 #note: the time array must have the same spacing for the synthesiser and for the goal field!
 t=np.linspace(0,100,10000)
 #we want 50fs, so this is fraction of the whole t array
-t_goal=t[:int((500/100)*10000)]
+t_goal=t[:int((30/100)*10000)]
 print(len(t_goal))
-I_goal_mid=dip(t_goal[10:len(t)-10],10/15**2)
+I_goal_mid=dip(t_goal[10:len(t_goal)-10],10/15**2)
 I_goal1=np.append(np.zeros((10)),I_goal_mid)
 I_goal=np.append(I_goal1,np.zeros((10)))
 print(len(I_goal))
@@ -55,7 +55,7 @@ params=['wavel1','wavel2','wavel3','wavel4','wavel5','wavel6','wavel7','wavel8',
 'CEP1','CEP2','CEP3','CEP4','CEP5','CEP6','CEP7','CEP8','CEP9','CEP10','CEP11','CEP12','CEP13','CEP14','CEP15',
 'fwhm1','fwhm2','fwhm3','fwhm4','fwhm5','fwhm6','fwhm7','fwhm8','fwhm9','fwhm10','fwhm11','fwhm12','fwhm13','fwhm14','fwhm15',
 'amp1','amp2','amp3','amp4','amp5','amp6','amp7','amp8','amp9','amp10','amp11','amp12','amp13','amp14','amp15','delay1','delay2','delay3','delay4','delay5','delay6','delay7']
-BO(params, Synth, errorCorrectionAdvanced_int, 5,5, t=t,goal_field=I_goal)
+BO(params, Synth, errorCorrectionAdvanced_int, 500,500, t=t,goal_field=I_goal)
 
 #outcome
 #{'target': -0.023362542107608592, 'params': {'CEP1': 2.625309433445063, 'CEP10': 1.9727166597748305, 'CEP11': 1.4057751313304347, 'CEP12': 3.583063209921351, 'CEP13': 4.900404403751832, 'CEP14': 4.833658580359074, 'CEP15': 4.3584645468565215, 'CEP2': 3.613645235450449, 'CEP3': 5.69686570086343, 'CEP4': 0.598524070290253, 'CEP5': 0.22219950458113022, 'CEP6': 1.9682770896892372, 

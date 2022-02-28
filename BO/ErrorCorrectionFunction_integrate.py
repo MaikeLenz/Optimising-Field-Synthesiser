@@ -38,7 +38,7 @@ def errorCorrectionAdvanced_int(t, synth_field, goal_field):
     median_goal = statistics.median(max_indices_goal) 
 
     offset = int(median_synth - median_goal) #might not be a perfect shift, limited to integer values
-    
+    print("offset in rms:",offset)
     if len(synth_field) > len(goal_field):
         #if goal field is shorter, then we only care about that section of the intensity distribution.
         #line up the fields
@@ -69,7 +69,7 @@ def errorCorrectionAdvanced_int(t, synth_field, goal_field):
     edge_left = np.argwhere(args_below_ten_reverse < median_synth)
     edge_right = np.argwhere(args_below_ten > median_synth)
     """
-
+    print(len(synth_field),len(goal_field))
     return errorCorrection_int(t,synth_field,goal_field) #now carry out rms minimisation with aligned and normalised arrays
 
 
