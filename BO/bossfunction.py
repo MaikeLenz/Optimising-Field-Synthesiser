@@ -189,12 +189,14 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         median_goal = statistics.median(max_indices_goal) 
 
         offset = int(median_synth - median_goal)
-
+        print("offset:",offset)
         if offset > 0: #I on the right of goal
             goal_field = np.append(np.zeros(offset),goal_field)
             goal_field=np.append(goal_field,np.zeros(len(I)-len(goal_field)))
         elif offset < 0: #I on the left of goal
+            print("pre shift",len(goal_field))
             goal_field = np.append(goal_field,np.zeros(len(I)-len(goal_field)))
+            print("post shift",len(goal_field))
             """
             I= np.append(np.zeros(abs(offset)),I)
             I=I[:len(I)-abs(offset)]
