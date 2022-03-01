@@ -35,7 +35,6 @@ t=np.linspace(0,100,10000)
 t_goal=t[:int((20/100)*10000)]
 print(len(t_goal))
 I_goal=ramp(t_goal,12/20)
-
 #parameters to be optimised
 params=['CEP1','CEP2','CEP3','amp1','amp2','amp3','delay2','delay3','wavel3']
 BO(params, Synth, errorCorrectionAdvanced_int, 100,100, t=t,goal_field=I_goal)
