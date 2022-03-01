@@ -33,14 +33,14 @@ wavel = 800e-9
 gas = 'Ne'
 GDD = 0
 
-#radius_init = 125e-6
-#flength_init = 1
-#pressure_init = 2
-#energy_init = 0.5e-3
-radius_init = randint(50, 500)*(10**-6)
-flength_init = randint(1, 30)*0.1
-pressure_init = randint(1, 10)
-energy_init= randint(1, 10)*(10**-4)
+radius_init = 50e-6
+flength_init = 3
+pressure_init = 10
+energy_init = 1e-3
+#radius_init = randint(50, 500)*(10**-6)
+#flength_init = randint(1, 30)*0.1
+#pressure_init = randint(1, 10)
+#energy_init= randint(1, 10)*(10**-4)
 
 #values:  radius, flength, gas, pressure, wavelength, GDD, energy
 initial_values_HCF=[radius_init, flength_init, gas, pressure_init, wavel, GDD, energy_init]
@@ -54,7 +54,7 @@ flength = opt_dict['params']['flength']
 
 # Save the data
 header = ['init_points', 'n_iter', 'width, nm', 'energy, J', 'pressure, bar', 'radius, m', 'flength, m', 'FWHM, s', 'wavel, m', 'gas']
-with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna_data\\random_init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna_data\\predicted_max__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     # write the header
     writer.writerow(header)
