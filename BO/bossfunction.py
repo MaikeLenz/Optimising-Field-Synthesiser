@@ -233,6 +233,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         if i==1:
             f_ax.plot(t, E_individual[i], label="Electric fields")
             f_ax.plot(t, I_individual[i], label="Intensities")
+            plt.legend(fontsize=16)
         else:
             f_ax.plot(t, E_individual[i])
             f_ax.plot(t, I_individual[i])
@@ -244,7 +245,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         
         if i == Synth.no_of_channels()-1:
             f_ax.set_xlabel('Time, fs',fontsize=22)
-        plt.legend(fontsize=16)
+        #plt.legend(fontsize=16)
         if i != (Synth.no_of_channels()-1):
             f_ax.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 
