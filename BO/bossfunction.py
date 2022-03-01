@@ -219,7 +219,9 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         #shift this to align with the max intensity?
         f_ax_sim.plot(t, goal_field, label="Goal Intensity",color="tab:green")
     f_ax_sim.set_xlabel('Time, fs',fontsize=22)
-    f_ax_sim.set_ylabel('Electric field / Intensity (a.u.)',fontsize=22)
+    #f_ax_sim.set_ylabel('Electric field / Intensity (a.u.)',fontsize=22)
+    f_ax_sim.set_ylabel('Intensity (a.u.)',fontsize=22)
+
     plt.xticks(fontsize=16)
     plt.yticks(fontsize=16)
     plt.legend(fontsize=16)
