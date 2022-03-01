@@ -228,8 +228,14 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         #create the subplots for each channel
         f_ax = f.add_subplot(gs[i, 1])
         j=i+1
-        f_ax.plot(t, E_individual[i], label="Electric field %s" %j)
-        f_ax.plot(t, I_individual[i], label="Intensity %s" %j)
+        #f_ax.plot(t, E_individual[i], label="Electric field %s" %j)
+        #f_ax.plot(t, I_individual[i], label="Intensity %s" %j)
+        if i==1:
+            f_ax.plot(t, E_individual[i], label="Electric fields")
+            f_ax.plot(t, I_individual[i], label="Intensities")
+        else:
+            f_ax.plot(t, E_individual[i])
+            f_ax.plot(t, I_individual[i])
         plt.xticks(fontsize=16)
         plt.yticks(fontsize=16)
         #f_ax.set_title("%s of energy"%(round(energies[i],3)))
