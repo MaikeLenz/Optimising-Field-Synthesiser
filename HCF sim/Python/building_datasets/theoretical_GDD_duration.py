@@ -9,3 +9,4 @@ def GDD_duration(GDD, tp):
 
 #print(GDD_duration(1,5))
 #print(GDD_duration(100, 5))
+print(GDD_duration(5000, 30))

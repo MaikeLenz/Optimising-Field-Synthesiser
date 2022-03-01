@@ -6,6 +6,7 @@ import sys
 #sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 from rms_width import *
+from width_methods import *
 
 filepath = 'C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\'
 
@@ -21,6 +22,7 @@ df_100 = pd.read_csv(filepath+"init_100_niter_100.csv")
 width_100 = df_100.iloc[:,2][0]
 #axs_Ne_powers[2,1].plot(df.iloc[:,0], df.iloc[:,1], label='Simulation with Experimental input')
 
+"""
 # Pass into Luna
 # Random pulse
 Main.radius = df_0.iloc[:,5][0]
@@ -41,7 +43,7 @@ t_0 = Main.t
 Et_allz_0 = Main.Et # array of Et at all z 
 Et_0 = Et_allz_0[:,-1] # last item in each element is pulse shape at the end
 Et0_0=Et_allz_0[:,0] #first item in each element is pulse shape at the start
-
+"""
 # Optimised pulse
 Main.radius = df_100.iloc[:,5][0]
 Main.flength = df_100.iloc[:,6][0]
@@ -56,12 +58,41 @@ Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, 
 Main.eval('t, Et = Processing.getEt(duv)')
 Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
 λ_100 = Main.λ
-Iλ_100 = Main.Iλ  
+Iλ_100 = Main.Iλ[:,0]
 t_100 = Main.t
 Et_allz_100 = Main.Et # array of Et at all z 
 Et_100 = Et_allz_100[:,-1] # last item in each element is pulse shape at the end
 Et0_100=Et_allz_100[:,0] #first item in each element is pulse shape at the start
 
+
+width_100 = rms_width(λ_100, Iλ_100)
+#width_100 = norm_and_int(λ_100, Iλ_100[:,0])
+#print(width_100)
+
+
+# Expected optimised pulse
+# Optimised pulse
+Main.radius = 120e-6
+Main.flength = 6
+Main.gas_str = 'Ne'
+Main.eval("gas = Symbol(gas_str)")
+Main.pressure = 10
+Main.λ0 = 800e-9
+Main.τfwhm = 30e-15
+Main.energy = 1.5e-3
+
+Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
+Main.eval('t, Et = Processing.getEt(duv)')
+Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
+λ_max = Main.λ
+Iλ_max = Main.Iλ[:,0]
+t_max = Main.t
+Et_allz_max = Main.Et # array of Et at all z 
+Et_max = Et_allz_max[:,-1] # last item in each element is pulse shape at the end
+Et0_max=Et_allz_max[:,0] #first item in each element is pulse shape at the start
+
+width_max = rms_width(λ_max,Iλ_max)
+#width_max = norm_and_int(λ_max, Iλ_max[:,0])
 # Plot results
 """
 plt.figure()
@@ -106,8 +137,9 @@ plt.show()
 """
 
 plt.figure()
-plt.plot(λ_0*(10**9), Iλ_0, label = 'Random, Δλ = ' + str(round(width_0*(10**9))) + 'nm', color='tab:blue')
+#plt.plot(λ_0*(10**9), Iλ_0, label = 'Random, Δλ = ' + str(round(width_0*(10**9))) + 'nm', color='tab:blue')
 plt.plot(λ_100*(10**9), Iλ_100, label = 'Optimised, Δλ = ' + str(round(width_100*(10**9))) + 'nm', color='tab:orange')
+plt.plot(λ_max*(10**9), Iλ_max, label = 'Expected Optimum, Δλ = ' + str(round(width_max*(10**9))) + 'nm', color='tab:blue')
 plt.xlabel('Wavelength, nm', fontsize=22)
 plt.ylabel('Intensity', fontsize=24)
 plt.xticks(fontsize=16)
