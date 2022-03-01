@@ -91,9 +91,9 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
     for i in params:
         #assume standard bounds, same for each channel
         if 'wavel' in i:
-            #pbounds[i] = (400,2000)
+            pbounds[i] = (400,2000)
             #pbounds[i] = (1100,2100)
-            pbounds[i]=(400,10000)
+            #pbounds[i]=(400,10000)
         if 'fwhm' in i:
             pbounds[i] = (5,70)
         if 'GDD' in i:
