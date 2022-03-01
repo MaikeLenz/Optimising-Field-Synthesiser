@@ -33,10 +33,10 @@ wavel = 800e-9
 gas = 'Ne'
 GDD = 0
 
-radius_init = 50e-6
-flength_init = 3
+radius_init = 130e-6
+flength_init = 6
 pressure_init = 10
-energy_init = 1e-3
+energy_init = 1.5e-3
 #radius_init = randint(50, 500)*(10**-6)
 #flength_init = randint(1, 30)*0.1
 #pressure_init = randint(1, 10)

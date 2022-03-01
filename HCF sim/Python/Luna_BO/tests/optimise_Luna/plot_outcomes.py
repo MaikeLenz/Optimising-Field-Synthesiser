@@ -65,8 +65,8 @@ Et_100 = Et_allz_100[:,-1] # last item in each element is pulse shape at the end
 Et0_100=Et_allz_100[:,0] #first item in each element is pulse shape at the start
 
 
-width_100 = rms_width(λ_100, Iλ_100)
-#width_100 = norm_and_int(λ_100, Iλ_100[:,0])
+#width_100 = rms_width(λ_100, Iλ_100)
+width_100 = threshold(λ_100, Iλ_100)
 #print(width_100)
 
 
@@ -91,8 +91,8 @@ Et_allz_max = Main.Et # array of Et at all z
 Et_max = Et_allz_max[:,-1] # last item in each element is pulse shape at the end
 Et0_max=Et_allz_max[:,0] #first item in each element is pulse shape at the start
 
-width_max = rms_width(λ_max,Iλ_max)
-#width_max = norm_and_int(λ_max, Iλ_max[:,0])
+#width_max = rms_width(λ_max,Iλ_max)
+width_max = threshold(λ_max, Iλ_max)
 # Plot results
 """
 plt.figure()
@@ -138,10 +138,10 @@ plt.show()
 
 plt.figure()
 #plt.plot(λ_0*(10**9), Iλ_0, label = 'Random, Δλ = ' + str(round(width_0*(10**9))) + 'nm', color='tab:blue')
-plt.plot(λ_100*(10**9), Iλ_100, label = 'Optimised, Δλ = ' + str(round(width_100*(10**9))) + 'nm', color='tab:orange')
-plt.plot(λ_max*(10**9), Iλ_max, label = 'Expected Optimum, Δλ = ' + str(round(width_max*(10**9))) + 'nm', color='tab:blue')
+plt.plot(λ_100*(10**9), Iλ_100/1000, label = 'Optimised, Δλ = ' + str(round(width_100*(10**9))) + 'nm', color='tab:orange')
+plt.plot(λ_max*(10**9), Iλ_max/1000, label = 'Expected Optimum, Δλ = ' + str(round(width_max*(10**9))) + 'nm', color='tab:blue')
 plt.xlabel('Wavelength, nm', fontsize=22)
-plt.ylabel('Intensity', fontsize=24)
+plt.ylabel('Spectral Energy Density, mJ/nm', fontsize=24)
 plt.xticks(fontsize=16)
 plt.yticks(fontsize=16)
 #plt.title('Optimised Output Pulse')
