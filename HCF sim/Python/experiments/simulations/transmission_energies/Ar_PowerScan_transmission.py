@@ -1,6 +1,7 @@
 import sys
 from matplotlib.cbook import ls_mapper
 import matplotlib.pyplot as plt
+
 import julia
 import numpy as np
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
@@ -167,14 +168,14 @@ sim_energies_out_int=np.array(sim_energies_out_int)
 sim_energies_in_int=np.array(sim_energies_in_int)
 
 transmission_sim=sim_energies_out_int/sim_energies_in_int
-scaling = transmission_actual[-1]/transmission_sim[-1]
+scaling = ((transmission_actual[2]/transmission_sim[2]) + (transmission_actual[3]/transmission_sim[3]))/2
 
 transmission_sim_scaled=transmission_sim*scaling
 
 delta_lambda=rms_width(wavel_nm,intens1_2)
 I0=[]
 for i in range(len(energies_in)):
-    I0.append(str(round(find_I0(intensities[i],wavel_nm*10**-9,delta_lambda*10**-9,energies_in[i],175e-6)*10**-13,1))+"e13")
+    I0.append(str(round(find_I0(intensities[i],wavel_nm*10**-9,delta_lambda*10**-9,energies_in[i],175e-6)*10**-13,1)))
 
 """
 fig, ax_left = plt.subplots()
@@ -196,17 +197,22 @@ fig = plt.figure()
 ax1 = fig.add_subplot(111)
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
-ax1.plot(energies_in, transmission_actual,label="experimental",marker="+",ls="None")
-ax1.plot(energies_in,transmission_sim_scaled,label="simulation, scaled down to %s"%(round(scaling,2)),marker="+",ls="None")
-plt.legend()
-ax1.set_xlim(0.2e-3,1.3e-3)
-ax1.set_xlabel("Input Energy, J")
-ax1.set_ylabel("Transmission")
+ax1.plot(energies_in*1000, transmission_actual,label="experimental",marker="+",ls="None")
+ax1.plot(energies_in*1000,transmission_sim_scaled,label="simulation times %s"%(round(scaling,2)),marker="+",ls="None")
+plt.legend(fontsize=14)
+ax1.set_xticks(list(energies_in*1000))
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+ax1.set_xlim(0.2,1.3)
+ax1.set_xlabel("Input Energy, mJ",fontsize=16)
+ax1.set_ylabel("Transmission",fontsize=16)
 
 ax2 = ax1.twiny()
-ax2.set_xlabel("Input Intensity (I0), W/cm^2")
-ax2.set_xlim(0.2e-3,1.3e-3)
-ax2.set_xticks(list(energies_in))
+ax2.set_xlabel("Input Intensity (I0), $\mathrm{10^{13} W/cm^2}$",fontsize=16)
+ax2.set_xlim(0.2,1.3)
+plt.xticks(fontsize=14)
+ax2.set_xticks(list(energies_in*1000))
+ax2.set_title("Argon Power Scan, 0.8 bar",fontsize=20)
 ax2.set_xticklabels(I0)
 plt.show()
 
