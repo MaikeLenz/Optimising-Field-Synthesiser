@@ -67,6 +67,7 @@ for i in range(len(GDDs_and_TODs)):
     
     #now extract datasets
     Main.eval("ω, Iω = Processing.getIω(duv, :ω, flength)")
+    Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
     Main.eval('t, Et = Processing.getEt(duv)')
 
     ## These next lines show how t, Et and zactual could be accessed in the Python namespace for analysis
@@ -75,19 +76,21 @@ for i in range(len(GDDs_and_TODs)):
     #assign python variables
     ω = Main.ω
     Iω = Main.Iω[:,0]
+    λ = Main.λ
+    Iλ = Main.Iλ[:,0]
     width=rms_width(ω,Iω)
     freq_widths=np.append(freq_widths,width)
 
     # Save the data
-    header = ['Omega, /s', 'Intensity']
+    header = ['Wavelength, nm', 'Intensity']
     with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\GDD_scans\\data\\real_range\\GDD' +str(GDDs_and_TODs[i][0]) + '_TOD' + str(round(GDDs_and_TODs[i][1]*(10**-5), 2)) + '_pos' + str(grating_pos[i]) + '.csv', 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         # write the header
         writer.writerow(header)
 
         # write the dataS
-        for j in range(len(ω)):
-            writer.writerow([ω[j], Iω[j]])
+        for j in range(len(λ)):
+            writer.writerow([λ[j]*(10**9), Iλ[j]])
 
 wavel_widths = np.array([])
 for i in range(len(freq_widths)):
