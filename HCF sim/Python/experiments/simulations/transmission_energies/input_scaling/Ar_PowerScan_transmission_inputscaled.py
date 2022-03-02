@@ -198,7 +198,7 @@ ax1 = fig.add_subplot(111)
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
 ax1.plot(energies_in*1000, transmission_actual,label="experimental",marker="+",ls="None")
-ax1.plot(energies_in*1000,transmission_sim,label="simulation times %s"%(round(scaling,2)),marker="+",ls="None")
+ax1.plot(energies_in*1000,transmission_sim,label="simulation, input energy times %s"%(round(scaling,2)),marker="+",ls="None")
 plt.legend(fontsize=14)
 ax1.set_xticks(list(energies_in*1000))
 plt.xticks(fontsize=14)
