@@ -149,13 +149,13 @@ scaling = transmission_actual[0]/transmission_sim[0]
 transmission_sim_scaled=transmission_sim*scaling
 
 delta_lambda=rms_width(wavel_nm,intens1_1)
-I0=str(round(find_I0(intens1_1,wavel_nm*10**-9,delta_lambda*10**-9,energy_in,0.5*175e-6)*10**-13,1))+"e13"
+I0=str(round(find_I0(intens1_1,wavel_nm*10**-9,delta_lambda*10**-9,energy_in,0.5*175e-6)*10**-13,1))
 
 fig = plt.figure()
 ax1 = fig.add_subplot(111)
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
-ax1.plot(np.array(pressures), transmission_actual,label="experiment, I0="+I0+"$\mathrm{W/cm^2}",marker="+",ls="None")
+ax1.plot(np.array(pressures), transmission_actual,label=r"experiment, I0="+I0+"x"+"$\mathrm{10^{13}W/cm^2}$",marker="+",ls="None")
 ax1.plot(np.array(pressures),transmission_sim_scaled,label="simulation times %s"%(round(scaling,2)),marker="+",ls="None")
 ax1.set_xlim(0.1,1.5)
 ax1.set_xticks(list(pressures))
