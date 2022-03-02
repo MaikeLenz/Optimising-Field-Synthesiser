@@ -144,7 +144,7 @@ sim_energies_out_int=np.array(sim_energies_out_int)
 sim_energies_in_int=np.array(sim_energies_in_int)
 
 transmission_sim=sim_energies_out_int/sim_energies_in_int
-scaling = transmission_actual[0]/transmission_sim[0]
+scaling = transmission_actual[-2]/transmission_sim[-2]
 
 transmission_sim_scaled=transmission_sim*scaling
 
@@ -158,9 +158,13 @@ ax1 = fig.add_subplot(111)
 ax1.plot(np.array(pressures), transmission_actual,label="experiment, I0="+I0+"W/cm^2",marker="+",ls="None")
 ax1.plot(np.array(pressures),transmission_sim_scaled,label="simulation, scaled down to %s"%(round(scaling,2)),marker="+",ls="None")
 ax1.set_xlim(0.1,1.5)
-ax1.set_xlabel("Pressure, Bar")
-ax1.set_ylabel("Transmission")
-plt.legend()
+ax1.set_xticks(list(pressures))
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+ax1.set_xlabel("Pressure, Bar",fontsize=16)
+ax1.set_ylabel("Transmission",fontsize=16)
+ax1.set_title("Argon Pressure Scan, 1.1mJ",fontsize=20)
+plt.legend(fontsize=14)
 """
 ax2 = ax1.twiny()
 ax2.set_xlabel("Input Intensity (I0), W/cm^2")
