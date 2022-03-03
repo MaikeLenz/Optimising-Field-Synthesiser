@@ -20,14 +20,8 @@ from scipy.optimize import curve_fit
 gas="Ar"
 header = ['radius', 'Fibre Length', 'Transmission']
 lines=[]
-filepath='C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\plots\\transmission\\grazing_reflection\\low_energy_transmission_' + gas+ '_mediumradii.csv'
+filepath='C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\plots\\transmission\\grazing_reflection\\low_energy_transmission_' + gas+ '.csv'
 
-"""
-with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\plots\\transmission\\grazing_reflection\\low_energy_transmission_' + gas+ '_mediumradii.csv', 'w', encoding='UTF8', newline='') as f:
-    for myline in f:
-        lines.append(myline)
-
-"""
 file=open(filepath)
 csvreader = csv.reader(file)
 header = []
@@ -67,7 +61,7 @@ for i in range(len(sims)):
     popt,_=curve_fit(func,L,sims[i])
     fit_params.append(popt)
     ax1.plot(L, sims[i],label="radius=%s$\mathrm{\mu}$m"%int(radii[i]*10**6))
-plt.legend(fontsize=14,loc="upper right")
+plt.legend(fontsize=14,loc="lower right")
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
 ax1.set_xlim(0,3)

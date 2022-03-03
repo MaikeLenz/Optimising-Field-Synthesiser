@@ -81,7 +81,6 @@ for i in range(len(sim_transmission)):
 plt.legend(fontsize=14)
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
-ax1.set_xlim(0.2,1.3)
 ax1.set_title("Neon Low Energy Transmission",fontsize=20)
 ax1.set_xlabel("Fibre Length, m",fontsize=16)
 ax1.set_ylabel("Transmission",fontsize=16)
