@@ -22,7 +22,7 @@ Main.using("Luna")
 ##################################################################################
 #simulate output spectra
 
-radii=np.linspace(30e-6,40e-6,50e-6,60e-6,70e-6)
+radii=np.array([30e-6,50e-6,70e-6,90e-6,110e-6,130e-6])
 L=np.linspace(0.1,3,30)
 
 sim_transmission=np.ones((len(radii),len(L)))
@@ -88,7 +88,7 @@ ax1.set_ylabel("Transmission",fontsize=16)
 
 # Save the data
 header = ['radius', 'Fibre Length', 'Transmission']
-with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\plots\\transmission\\grazing_reflection\\low_energy_transmission_' + gas+ '.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\plots\\transmission\\grazing_reflection\\low_energy_transmission_' + gas+ '_mediumradii.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     # write the header
     writer.writerow(header)
