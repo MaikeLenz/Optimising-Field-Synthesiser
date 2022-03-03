@@ -2,7 +2,7 @@ import sys
 from matplotlib.cbook import ls_mapper
 import matplotlib.pyplot as plt
 from scipy import integrate
-
+import csv
 import julia
 import numpy as np
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
@@ -22,8 +22,8 @@ Main.using("Luna")
 ##################################################################################
 #simulate output spectra
 
-radii=np.linspace(5e-6,500e-6,1)
-L=np.linspace(0.1,3,2)
+radii=np.linspace(50e-6,500e-6,6)
+L=np.linspace(0.1,3,20)
 
 sim_transmission=np.ones((len(radii),len(L)))
 
@@ -31,11 +31,12 @@ for i in range(len(radii)):
     for j in range(len(L)):
         radius=radii[i]
         flength = L[j] # HCF length
+        print(radius,flength)
         gas = "Ar"
         pressure = 0.1 # gas pressure in bar
         λ0 = 800e-9 # central wavelength of the pump pulse
         τfwhm = 30e-15 # FWHM duration of the pump pulse
-        energy = 1e-7 # energy in the pump pulse
+        energy = 1e-5 # energy in the pump pulse
 
         # Assign arguments to Main namespace
         Main.radius = radius
@@ -71,18 +72,32 @@ for i in range(len(radii)):
         sim_transmission[i][j]=integrate.simps(Iλ[:,0],λ)/integrate.simps(Iλ2[:,0],λ2)
 
 
-
 fig = plt.figure()
 ax1 = fig.add_subplot(111)
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
 for i in range(len(sim_transmission)):
-    ax1.plot(L, sim_transmission[i],label="radius=%s"%radii[i],ls="None")
+    ax1.plot(L, sim_transmission[i],label="radius=%s$\mathrm{\mu}$m"%round(radii[i]*10**6,1))
 plt.legend(fontsize=14)
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
 ax1.set_xlim(0.2,1.3)
+ax1.set_title("Argon Low Energy Transmission",fontsize=20)
 ax1.set_xlabel("Fibre Length, m",fontsize=16)
 ax1.set_ylabel("Transmission",fontsize=16)
 
+# Save the data
+header = ['radius', 'Fibre Length', 'Transmission']
+with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\plots\\transmission\\grazing_reflection\\low_energy_transmission_' + gas+ '.csv', 'w', encoding='UTF8', newline='') as f:
+    writer = csv.writer(f)
+    # write the header
+    writer.writerow(header)
+
+    # write the data
+    for i in range(len(radii)):
+        for j in range(len(L)):
+            writer.writerow([radii[i],L[j],sim_transmission[i][j]])
+
 plt.show()
+
+
