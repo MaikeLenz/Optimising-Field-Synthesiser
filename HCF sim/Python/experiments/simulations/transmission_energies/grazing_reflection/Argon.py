@@ -22,8 +22,8 @@ Main.using("Luna")
 ##################################################################################
 #simulate output spectra
 
-radii=np.linspace(10e-6,500e-6,6)
-L=np.linspace(0.1,3,20)
+radii=np.linspace(30e-6,40e-6,50e-6,60e-6,70e-6)
+L=np.linspace(0.1,3,30)
 
 sim_transmission=np.ones((len(radii),len(L)))
 
