@@ -22,7 +22,7 @@ Main.using("Luna")
 ##################################################################################
 #simulate output spectra
 
-radii=np.linspace(50e-6,500e-6,6)
+radii=np.linspace(10e-6,500e-6,6)
 L=np.linspace(0.1,3,20)
 
 sim_transmission=np.ones((len(radii),len(L)))
@@ -77,7 +77,7 @@ ax1 = fig.add_subplot(111)
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
 for i in range(len(sim_transmission)):
-    ax1.plot(L, sim_transmission[i],label="radius=%s$\mathrm{\mu}$m"%round(radii[i]*10**6,1))
+    ax1.plot(L, sim_transmission[i],label="radius=%s$\mathrm{\mu}$m"%int(radii[i]*10**6))
 plt.legend(fontsize=14)
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
