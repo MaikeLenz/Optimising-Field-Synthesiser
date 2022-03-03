@@ -20,7 +20,7 @@ from scipy.optimize import curve_fit
 gas="Ar"
 header = ['radius', 'Fibre Length', 'Transmission']
 lines=[]
-filepath='C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\plots\\transmission\\grazing_reflection\\low_energy_transmission_' + gas+ '.csv'
+filepath='C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\plots\\transmission\\grazing_reflection\\low_energy_transmission_' + gas+ '_mediumradii.csv'
 
 file=open(filepath)
 csvreader = csv.reader(file)
@@ -92,6 +92,7 @@ ax2.plot(r_3,line(r_3,*popt),label=r"$\mathrm{\alpha}$=%sr$\mathrm{^{-3}}$"%(int
 plt.ylabel("Decay coefficient, $\mathrm{m^{-1}}$",fontsize=16)
 plt.xlabel("Inverse of Fibre Radius cubed, $\mathrm{\mu m^{-3}}$",fontsize=16)
 plt.title("Argon Low Energy Transmission Decay Coefficient",fontsize=20)
+print(np.sqrt(_[0][0]))
 plt.legend(fontsize=14)
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
