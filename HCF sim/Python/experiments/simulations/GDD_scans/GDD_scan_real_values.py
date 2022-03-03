@@ -56,9 +56,14 @@ for i in range(len(GDDs_and_TODs)):
     GDD = (GDDs_and_TODs[i][0] - GDDs_and_TODs[8][0])*(10**-30) #fs^2 to s^2
     TOD = (GDDs_and_TODs[i][1] - GDDs_and_TODs[8][1])*(10**-45) #fs^3 to s^3
     print(i)
+
     # Add additional width of 15fs 
-    additional_domega = (2*np.pi*0.44)/(15e-15)
-    domega = domegas[1] + additional_domega
+    tau = (2*np.pi*0.44)/(domegas[1])
+    new_tau = tau + 15e-15
+    domega = (2*np.pi*0.44)/(new_tau)
+    print(tau)
+    print(new_tau)
+
     E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0s[1], domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
     Iω = np.abs(E**2)
     Main.ω = omega
@@ -88,7 +93,7 @@ for i in range(len(GDDs_and_TODs)):
 
     # Save the data
     header = ['Wavelength, nm', 'Intensity']
-    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\GDD_scans\\data\\real_range_plus_15fs_input_duration\\GDD' +str(GDDs_and_TODs[i][0]) + '_TOD' + str(round(GDDs_and_TODs[i][1]*(10**-5), 2)) + '_pos' + str(grating_pos[i]) + '.csv', 'w', encoding='UTF8', newline='') as f:
+    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\GDD_scans\\data\\real_range_plus_100fs_input_duration\\GDD' +str(GDDs_and_TODs[i][0]) + '_TOD' + str(round(GDDs_and_TODs[i][1]*(10**-5), 2)) + '_pos' + str(grating_pos[i]) + '.csv', 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         # write the header
         writer.writerow(header)
@@ -112,7 +117,7 @@ axs[1].set_ylabel('TOD, fs^3')
 
 # Save the data
 header = ['Grating Position, mm', 'GDD, fs^2', 'TOD, fs^3', 'Simulated RMS Width, nm']
-with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\GDD_scans\\data\\real_range_plus_15fs_input_duration\\GDD_TOD_Scan_Widths.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\GDD_scans\\data\\real_range_plus_100fs_input_duration\\GDD_TOD_Scan_Widths.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     # write the header
     writer.writerow(header)
