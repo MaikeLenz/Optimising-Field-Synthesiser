@@ -6,7 +6,7 @@ filepath = "C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\
 # Plotting on same plot
 fig, axs = plt.subplots(3,5)
 fig.suptitle('GDD Scan Experimental vs Simulated', size=24)
-plt.setp(axs, xlim=(500,900))
+plt.setp(axs, xlim=(450,1000))
 plt.setp(axs[-1, :], xlabel='Wavelength, nm')
 plt.setp(axs[:, 0], ylabel='Intensity')
 

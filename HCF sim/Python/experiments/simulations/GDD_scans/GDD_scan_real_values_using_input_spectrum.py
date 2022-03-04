@@ -30,27 +30,21 @@ GDDs_and_TODs = [(1870, -4.09e3), (1640, -3.58e3), (1410, -3.06e3), (1170, -2.55
 grating_pos = [-0.40, -0.35, -0.30, -0.25, -0.20, -0.15, -0.10, -0.05, 0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30]
 
 # Read input pulse params
-lines=[]
-columns=[[],[],[],[],[],[],[],[],[],[],[]]
+lines = []
+columns = [[],[],[],[],[],[],[],[],[],[],[]]
 with open ('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\HCF_scans\\power in\\Input_Power_Scan.txt', 'rt') as myfile:  # Open lorem.txt for reading
     for myline in myfile:
         lines.append(myline)
 
-data=lines[22:] #gets rid of all the stuff at the top
+data = lines[22:] #gets rid of all the stuff at the top
 for i in data:
-    split=i.split("\t") #delimiter is \t
+    split = i.split("\t") #delimiter is \t
     for j ,value in enumerate(split):
         columns[j].append(float(value))
-wavel_nm=columns[0]
-intens=columns[2]
+wavel_nm = np.array(columns[0])
+intens = np.array(columns[2])
 
-def wavel_to_freq(wavel):
-    c = 299792458
-    return 2*np.pi*c/wavel
-
-omega = []
-for i in wavel_nm:
-    omega.append(wavel_to_freq(i))
+omega=2*np.pi*c/(wavel_nm*10**-9)
 ω = omega[::-1]
 Iω = intens[::-1]
 
@@ -66,6 +60,10 @@ Main.eval("gas = Symbol(gas_str)")
 pressure = (0,3)
 Main.pressure = pressure
 
+wavel = (moment(wavel_nm,intens,1)/moment(wavel_nm,intens,0))*10**-9
+Main.λ0 = wavel
+omega0 = 2*np.pi*c/wavel
+
 freq_widths=np.array([])
 for i in range(len(GDDs_and_TODs)):
     GDD = (GDDs_and_TODs[i][0] - GDDs_and_TODs[8][0])*(10**-30) #fs^2 to s^2
@@ -78,13 +76,11 @@ for i in range(len(GDDs_and_TODs)):
     Main.Iω = Iω
     Main.energy = 1.1/1000
 
-    λ0 = 800e-9
-    omega0 = 2*np.pi*c/λ0
+    #phase = np.zeros(len(ω))
     phase = []
     for j in range(len(ω)):
         phase.append(get_phi(omega=ω[j], omega0=omega0, CEP=0, GD=0, GDD=GDD, TOD=TOD, FoOD=0, FiOD=0))
     Main.phase = phase
-    Main.λ0 = λ0
 
     Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
     Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
@@ -118,7 +114,7 @@ for i in range(len(GDDs_and_TODs)):
 
 wavel_widths = np.array([])
 for i in range(len(freq_widths)):
-    wavel_widths = np.append(wavel_widths, freq_widths[i]*(λ0s[1]**2)/c)
+    wavel_widths = np.append(wavel_widths, freq_widths[i]*(wavel**2)/c)
 
 f, axs = plt.subplots(1, 2)
 for i in range(len(GDDs_and_TODs)):
