@@ -24,19 +24,35 @@ from rms_width import *
 c = 299792458 # m/s
 
 # Values found from https://lasercalculator.com/grating-pair-dispersion-calculator/
-# GDD in ps^2, TOD in fs^3, (GDD, TOD) - incorrect
-#GDDs_and_TODs = [(-0.0984, 2.15e5), (-0.101, 2.20e5), (-0.103, 2.25e5), (-0.105, 2.30e5), (-0.108, 2.35e5), (-0.110, 2.40e5), (-0.112, 2.45e5), (-0.115, 2.50e5), (-0.117, 2.55e5), (-0.120, 2.60e5), (-0.122, 2.66e5), (-0.124, 2.71e5), (-0.127, 2.76e5), (-0.129, 2.81e5), (-0.131, 2.86e5)]
-# GDD in fs^2, TOD in fs^3, (GDD, TOD) - correct
+# GDD in fs^2, TOD in fs^3, (GDD, TOD)
 GDDs_and_TODs = [(1870, -4.09e3), (1640, -3.58e3), (1410, -3.06e3), (1170, -2.55e3), (937, -2.04e3), (703, -1.53e3), (469, -1.02e3), (234, -511), (0,0), (-234, 511), (-469, 1.02e3), (-703,1.53e3), (-937,2.04e3), (-1170,2.55e3), (-1410,3.06e3)]
 # Grating positions in mm
 grating_pos = [-0.40, -0.35, -0.30, -0.25, -0.20, -0.15, -0.10, -0.05, 0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30]
 
 # Read input pulse params
-df = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\HCF_scans\\power in\\extracted_params.csv")
-powers = df.iloc[:,0]
-energies = powers/1000
-λ0s = df.iloc[:,1]
-domegas = df.iloc[:,2]
+lines=[]
+columns=[[],[],[],[],[],[],[],[],[],[],[]]
+with open ('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\HCF_scans\\power in\\Input_Power_Scan.txt', 'rt') as myfile:  # Open lorem.txt for reading
+    for myline in myfile:
+        lines.append(myline)
+
+data=lines[22:] #gets rid of all the stuff at the top
+for i in data:
+    split=i.split("\t") #delimiter is \t
+    for j ,value in enumerate(split):
+        columns[j].append(float(value))
+wavel_nm=columns[0]
+intens=columns[2]
+
+def wavel_to_freq(wavel):
+    c = 299792458
+    return 2*np.pi*c/wavel
+
+omega = []
+for i in wavel_nm:
+    omega.append(wavel_to_freq(i))
+ω = omega[::-1]
+Iω = intens[::-1]
 
 # Define fixed params
 radius = 175e-6 # HCF core radius
@@ -44,7 +60,6 @@ flength = 1.05 # HCF length
 Main.radius = radius
 Main.flength = flength
 c = 299792458 
-omega = np.linspace(2*np.pi*c/λ0s[0] - domegas[0]/2, 2*np.pi*c/λ0s[0] + domegas[0]/2, 100)
 gas = "Ne"
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
@@ -57,20 +72,19 @@ for i in range(len(GDDs_and_TODs)):
     TOD = (GDDs_and_TODs[i][1] - GDDs_and_TODs[8][1])*(10**-45) #fs^3 to s^3
     print(i)
 
-    # Add additional width of 15fs 
-    tau = (2*np.pi*0.44)/(domegas[1])
-    new_tau = tau + 15e-15
-    domega = (2*np.pi*0.44)/(new_tau)
-    print(tau)
-    print(new_tau)
+    ω = omega[::-1]
+    Iω = intens[::-1]
+    Main.ω = ω
+    Main.Iω = Iω
+    Main.energy = 1.1/1000
 
-    E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0s[1], domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
-    Iω = np.abs(E**2)
-    Main.ω = omega
-    Main.Iω = Iω  
-    Main.phase = ϕω
-    Main.energy = energies[1]
-    Main.λ0 = λ0s[1]
+    λ0 = 800e-9
+    omega0 = 2*np.pi*c/λ0
+    phase = []
+    for j in range(len(ω)):
+        phase.append(get_phi(omega=ω[j], omega0=omega0, CEP=0, GD=0, GDD=GDD, TOD=TOD, FoOD=0, FiOD=0))
+    Main.phase = phase
+    Main.λ0 = λ0
 
     Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
     Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
@@ -93,7 +107,7 @@ for i in range(len(GDDs_and_TODs)):
 
     # Save the data
     header = ['Wavelength, nm', 'Intensity']
-    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\GDD_scans\\data\\real_range_plus_100fs_input_duration\\GDD' +str(GDDs_and_TODs[i][0]) + '_TOD' + str(round(GDDs_and_TODs[i][1]*(10**-5), 2)) + '_pos' + str(grating_pos[i]) + '.csv', 'w', encoding='UTF8', newline='') as f:
+    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\GDD_scans\\data\\real_range_exp_pulse_input\\GDD' +str(GDDs_and_TODs[i][0]) + '_TOD' + str(round(GDDs_and_TODs[i][1]*(10**-5), 2)) + '_pos' + str(grating_pos[i]) + '.csv', 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         # write the header
         writer.writerow(header)
@@ -117,7 +131,7 @@ axs[1].set_ylabel('TOD, fs^3')
 
 # Save the data
 header = ['Grating Position, mm', 'GDD, fs^2', 'TOD, fs^3', 'Simulated RMS Width, nm']
-with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\GDD_scans\\data\\real_range_plus_100fs_input_duration\\GDD_TOD_Scan_Widths.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\GDD_scans\\data\\real_range_exp_pulse_input\\GDD_TOD_Scan_Widths.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     # write the header
     writer.writerow(header)
