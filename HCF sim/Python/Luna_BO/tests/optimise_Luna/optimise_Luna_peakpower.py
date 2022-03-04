@@ -26,8 +26,8 @@ from bossfunction_Luna import *
 
 params=["energy", "pressure", "radius", "flength"]
 
-init_points = 0
-n_iter = 0
+init_points = 10
+n_iter = 10
 FWHM = 30e-15
 wavel = 800e-9
 gas = 'Ne'

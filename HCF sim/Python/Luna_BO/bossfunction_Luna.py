@@ -166,6 +166,21 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  
         )
 
     print(optimizer.max) #final parameters
+    results=optimizer.max["params"]
+    for key, value in args_BO.items():
+        if 'energy' in key:
+            Main.energy = results[key]
+        elif 'λ0' in key:
+            Main.λ0 = results[key]
+        elif 'pressure' in key:
+            Main.pressure = results[key]
+        elif 'radius' in key:
+            Main.radius = results[key]
+        elif 'flength' in key:
+            Main.flength = results[key]
+        elif 'FWHM' in key:
+            Main.τfwhm = results[key]
+
     Main.eval('t, Et = Processing.getEt(duv)')
     Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
     λ = Main.λ

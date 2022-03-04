@@ -21,3 +21,4 @@ def max_peak_power(t,Et,λ,Iλ):
     for i in Et:
         I.append(np.abs(i**2))
     return max(I)
+
