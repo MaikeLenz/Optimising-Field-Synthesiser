@@ -107,16 +107,19 @@ for i in range(len(GDDs)):
    
 
 rms_widths=[]
-SPM_widths=[]
-GDD_width=[]
+#SPM_widths=[]
+GDD_widths=[]
 for i in range(len(Et_out)):
-    rms_widths.append(rms_width(Et_out))
-    SPM_widths.append(theoretical_width(radius, flength, pressure, wavel, fwhm_duration, energy))
-    GDD_width.append(GDD_duration(GDDs[i],fwhm_duration))
-
+    rms_widths.append(rms_width(t_out[i],Et_out[i]))
+    #SPM_widths.append(theoretical_width(radius, flength, pressure, wavel, fwhm_duration, energy))
+    GDD_widths.append(GDD_duration(GDDs[i],fwhm_duration))
+GDDs=np.array(GDDs)
+rms_widths=np.array(rms_widths)
+#SPM_widths=np.array(SPM_widths)
+GDD_widths=np.array(GDD_widths)
 plt.plot(GDDs*10**30,rms_widths,label="RMS Width")
-plt.plot(GDDs*10**30, GDD_width,label="Theoretical GDD Broadening")
-plt.plot(GDDs*10**30,SPM_widths,label="Theoretical SPM Broadening")
+plt.plot(GDDs*10**30, GDD_widths,label="Theoretical GDD Broadening")
+#plt.plot(GDDs*10**30,SPM_widths,label="Theoretical SPM Broadening")
 plt.xlabel("GDD, fs$\mathrm{^2}$",fontsize=14)
 plt.ylabel("Width",fontsize=14)
 plt.legend(fontsize=16)
