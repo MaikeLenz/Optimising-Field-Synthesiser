@@ -26,7 +26,7 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 from rms_width import *
 c = 299792458 # m/s
 n=5
-gdd_step=100e-30 #in fs^2
+gdd_step=400e-30 #in fs^2
 gdd_mid=0
 GDDs=[gdd_mid-2*gdd_step,gdd_mid-gdd_step,gdd_mid,gdd_mid+gdd_step,gdd_mid+2*gdd_step]
 
@@ -121,8 +121,8 @@ left  = 0.125  # the left side of the subplots of the figure
 right = 0.9    # the right side of the subplots of the figure
 bottom = 0.1   # the bottom of the subplots of the figure
 top = 0.9      # the top of the subplots of the figure
-wspace = 0.5   # the amount of width reserved for blank space between subplots
-hspace = 0.4   # the amount of height reserved for white space between subplots
+wspace = 0.3   # the amount of width reserved for blank space between subplots
+hspace = 0.47   # the amount of height reserved for white space between subplots
 
 plt.subplots_adjust(left, bottom, right, top, wspace, hspace)
 
@@ -130,25 +130,26 @@ plt.subplots_adjust(left, bottom, right, top, wspace, hspace)
 axes=[ax1,ax2,ax3,ax4,ax5,ax6,ax7,ax8,ax9,ax10,ax11,ax12,ax13,ax14,ax15]
 for i in range(len(axes)):
     if i<5:
-        if i==0:
-            axes[i].set_title("Input Temporal Electric Field")
-        axes[i].plot(t*10**15,Et_in[i], label="%s"%GDDs[i])
-        axes[i].set_ylabel("E, a.u.")
-        axes[i].set_xlabel("t, fs")
+        if i==2:
+            axes[i].set_title("Input Temporal Electric Field",fontsize=16)
+        axes[i].plot(t*10**15,Et_in[i], label="GDD="+str(int(GDDs[i]*10**30))+"fs$\mathrm{^2}$")
+        axes[i].set_ylabel("E, a.u.",fontsize=12)
+        axes[i].set_xlabel("t, fs",fontsize=12)
+        axes[i].legend(fontsize=12,loc="lower right")
        
     elif i <10:
-        if i==5:
-            axes[i].set_title("Output Temporal Electric Field")
+        if i==7:
+            axes[i].set_title("Output Temporal Electric Field",fontsize=16)
         axes[i].plot(t_out[i-5]*10**15,Et_out[i-5]/50000)
-        axes[i].set_ylabel("E, a.u.")
-        axes[i].set_xlabel("t, fs")
+        axes[i].set_ylabel("E, a.u.",fontsize=12)
+        axes[i].set_xlabel("t, fs",fontsize=12)
     else:
-        if i==10:
-            axes[i].set_title("Output Spectral Energy Density")
+        if i==12:
+            axes[i].set_title("Output Spectral Energy Density",fontsize=16)
         axes[i].plot(om_out[i-10]*10**-15,Iom_out[i-10]*10**18)
         axes[i].set_xlim(2.1,2.6)
-        axes[i].set_ylabel("I, a.u.")
-        axes[i].set_xlabel("$\mathrm{\omega}$, 10$\mathrm{^{-15}}$s$\mathrm{^{-1}}$")
+        axes[i].set_ylabel("I, a.u.",fontsize=12)
+        axes[i].set_xlabel("$\mathrm{\omega}$, 10$\mathrm{^{-15}}$s$\mathrm{^{-1}}$",fontsize=12)
 #ax3.plot(t,zero_GDD_shape)
-plt.legend()
+
 plt.show()
