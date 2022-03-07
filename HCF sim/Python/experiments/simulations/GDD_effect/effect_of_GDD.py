@@ -26,7 +26,7 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 from rms_width import *
 c = 299792458 # m/s
 n=5
-gdd_step=400e-30 #in fs^2
+gdd_step=200e-30 #in fs^2
 gdd_mid=0
 GDDs=[gdd_mid-2*gdd_step,gdd_mid-gdd_step,gdd_mid,gdd_mid+gdd_step,gdd_mid+2*gdd_step]
 
@@ -48,13 +48,13 @@ Main.λ0 = wavel
 Main.energy=energy
 
 def fwhm_to_sigma(fwhm, power=2):
-    return fwhm / (2 * (2 * np.log10(2))**(1 / power))
+    return fwhm / (2 * (2 * np.log(2))**(1 / power))
 
 def Gauss(x,x0,sigma,power=2):
     return np.exp(-1/2 * ((x-x0)/sigma)**power)
 
 fwhm_duration=30e-15#30fs fwhm duration input pulse
-t=np.linspace(-50e-15,50e-15,1000)
+t=np.linspace(-100e-15,100e-15,1000)
 t0=0
 zero_GDD_shape=Gauss(t,t0,fwhm_to_sigma(fwhm_duration))
 
@@ -121,7 +121,7 @@ left  = 0.125  # the left side of the subplots of the figure
 right = 0.9    # the right side of the subplots of the figure
 bottom = 0.1   # the bottom of the subplots of the figure
 top = 0.9      # the top of the subplots of the figure
-wspace = 0.3   # the amount of width reserved for blank space between subplots
+wspace = 0.38   # the amount of width reserved for blank space between subplots
 hspace = 0.47   # the amount of height reserved for white space between subplots
 
 plt.subplots_adjust(left, bottom, right, top, wspace, hspace)
