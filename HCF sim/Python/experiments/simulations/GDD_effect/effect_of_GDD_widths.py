@@ -13,6 +13,12 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\chirp\\')
 from pulse_with_GDD import *
 
+sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\")
+#sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\")
+from theoretical_width import *
+from theoretical_GDD_duration import *
+
+
 julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
 #julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
 
@@ -26,9 +32,9 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 from rms_width import *
 c = 299792458 # m/s
 n=5
-gdd_step=300e-30 #in fs^2
+gdd_step=200e-30 #in fs^2
 gdd_mid=0
-GDDs=[gdd_mid-2*gdd_step,gdd_mid-gdd_step,gdd_mid,gdd_mid+gdd_step,gdd_mid+2*gdd_step]
+GDDs=[gdd_mid-4*gdd_step,gdd_mid-3*gdd_step,gdd_mid-2*gdd_step,gdd_mid-gdd_step,gdd_mid,gdd_mid+gdd_step,gdd_mid+2*gdd_step,gdd_mid+3*gdd_step,gdd_mid+4*gdd_step]
 
 # Define fixed params
 c = 299792458 
@@ -99,61 +105,23 @@ for i in range(len(GDDs)):
     Et_out.append(Et_i)
     t_out.append(t_i)
    
-f = plt.figure(constrained_layout=True)
 
-ax1 = plt.subplot2grid((3,5), (0, 0))
-ax2 = plt.subplot2grid((3,5), (0, 1))
-ax3 = plt.subplot2grid((3,5), (0, 2))
-ax4 = plt.subplot2grid((3,5), (0, 3))
-ax5 = plt.subplot2grid((3,5), (0, 4))
-ax6 = plt.subplot2grid((3,5), (1, 0))
-ax7 = plt.subplot2grid((3,5), (1, 1))
-ax8 = plt.subplot2grid((3,5), (1, 2))
-ax9 = plt.subplot2grid((3,5), (1, 3))
-ax10 = plt.subplot2grid((3,5), (1, 4))
-ax11 = plt.subplot2grid((3,5), (2, 0))
-ax12 = plt.subplot2grid((3,5), (2, 1))
-ax13 = plt.subplot2grid((3,5), (2, 2))
-ax14 = plt.subplot2grid((3,5), (2, 3))
-ax15 = plt.subplot2grid((3,5), (2, 4))
+rms_widths=[]
+SPM_widths=[]
+GDD_width=[]
+for i in range(len(Et_out)):
+    rms_widths.append(rms_width(Et_out))
+    SPM_widths.append(theoretical_width(radius, flength, pressure, wavel, fwhm_duration, energy))
+    GDD_width.append(GDD_duration(GDDs[i],fwhm_duration))
 
-left  = 0.125  # the left side of the subplots of the figure
-right = 0.9    # the right side of the subplots of the figure
-bottom = 0.1   # the bottom of the subplots of the figure
-top = 0.9      # the top of the subplots of the figure
-wspace = 0.38   # the amount of width reserved for blank space between subplots
-hspace = 0.47   # the amount of height reserved for white space between subplots
-
-plt.subplots_adjust(left, bottom, right, top, wspace, hspace)
-
-
-axes=[ax1,ax2,ax3,ax4,ax5,ax6,ax7,ax8,ax9,ax10,ax11,ax12,ax13,ax14,ax15]
-for i in range(len(axes)):
-    if i<5:
-        if i==2:
-            axes[i].set_title("Input Temporal Electric Field",fontsize=16)
-        axes[i].plot(t*10**15,Et_in[i], label="GDD="+str(int(GDDs[i]*10**30))+"fs$\mathrm{^2}$")
-        axes[i].set_ylabel("E, a.u.",fontsize=12)
-        axes[i].set_xlabel("t, fs",fontsize=12)
-        axes[i].legend(fontsize=12,loc="lower right")
-       
-    elif i <10:
-        if i==7:
-            axes[i].set_title("Output Temporal Electric Field",fontsize=16)
-        axes[i].plot(t_out[i-5]*10**15,Et_out[i-5]/50000)
-        axes[i].set_ylabel("E, a.u.",fontsize=12)
-        axes[i].set_xlabel("t, fs",fontsize=12)
-    else:
-        if i==12:
-            axes[i].set_title("Output Spectral Energy Density",fontsize=16)
-        axes[i].plot(om_out[i-10]*10**-15,Iom_out[i-10]*10**18)
-        axes[i].set_xlim(2.1,2.6)
-        axes[i].set_ylabel("I, a.u.",fontsize=12)
-        axes[i].set_xlabel("$\mathrm{\omega}$, 10$\mathrm{^{-15}}$s$\mathrm{^{-1}}$",fontsize=12)
-#ax3.plot(t,zero_GDD_shape)
-
+plt.plot(GDDs*10**30,rms_widths,label="RMS Width")
+plt.plot(GDDs*10**30, GDD_width,label="Theoretical GDD Broadening")
+plt.plot(GDDs*10**30,SPM_widths,label="Theoretical SPM Broadening")
+plt.xlabel("GDD, fs$\mathrm{^2}$",fontsize=14)
+plt.ylabel("Width",fontsize=14)
+plt.legend(fontsize=16)
+plt.title("Width Comparison", fontsize=20)
 plt.show()
-
 
 
 
