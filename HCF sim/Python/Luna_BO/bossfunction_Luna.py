@@ -96,7 +96,7 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  
         Pcrit = Main.Pcrit
         Pmin = 0
         if Gaussian == False:
-            τfwhm = 0.44/domega
+            τfwhm = 2*np.pi*0.44/domega
         else:
             τfwhm = Main.τfwhm
         tau = τfwhm/(2*np.sqrt(np.log(2)))
