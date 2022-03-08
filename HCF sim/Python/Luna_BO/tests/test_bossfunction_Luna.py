@@ -25,7 +25,7 @@ from bossfunction_Luna import *
 params=["energy", "pressure", "GDD"]
 
 #values:  radius, flength, gas, pressure, wavelength, GDD, energy, τfwhm
-initial_values_HCF=[125e-6, 1, "Ne", 2, 800e-9, 0, 0.5e-3, 30e-15]
+initial_values_HCF=[125e-6, 1, "Ne", 2, 800e-9, 0, 0.5e-3, 5e-15]
 
-Luna_BO(params, initial_values_HCF, function=max_bandwidth, init_points=5, n_iter=5)
+Luna_BO(params, initial_values_HCF, function=peak_power_window, init_points=5, n_iter=5, wavel_bounds=(1300e-9, 1500e-9))
  
