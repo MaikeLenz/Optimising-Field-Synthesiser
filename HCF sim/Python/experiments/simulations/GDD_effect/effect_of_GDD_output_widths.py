@@ -33,7 +33,7 @@ from rms_width import *
 from width_methods import *
 c = 299792458 # m/s
 n=5
-gdd_step=200e-30 #in fs^2
+gdd_step=500e-30 #in fs^2
 gdd_mid=0
 #GDDs=[gdd_mid-4*gdd_step,gdd_mid-3*gdd_step,gdd_mid-2*gdd_step,gdd_mid-gdd_step,gdd_mid,gdd_mid+gdd_step,gdd_mid+2*gdd_step,gdd_mid+3*gdd_step,gdd_mid+4*gdd_step]
 GDDs=np.linspace(-1000e-30,1000e-30,20)
@@ -42,7 +42,7 @@ GDDs=np.linspace(-1000e-30,1000e-30,20)
 # Define fixed params
 c = 299792458 
 wavel=800e-9
-energy=0.5e-3
+energy=1e-3
 
 gas = "Ne"
 Main.gas_str = gas
@@ -63,7 +63,7 @@ def Gauss(x,x0,sigma,power=2):
     return np.exp(-1/2 * ((x-x0)/sigma)**power)
 
 fwhm_duration=30e-15#30fs fwhm duration input pulse
-t=np.linspace(-100e-15,100e-15,1000)
+t=np.linspace(-500e-15,500e-15,1000)
 t0=0
 zero_GDD_shape=Gauss(t,t0,fwhm_to_sigma(fwhm_duration))
 
