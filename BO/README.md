@@ -10,12 +10,20 @@ The simulation class of the multi-channel field synthesiser and the Bayesian opt
 2) fails - Old BO classes
 3) initial optimisation tests - Trial optimisations of our simulation for different figures of merit.
 
+## Validity_check
+Test how BO optimises a parameter for a given number of inital points and interations.
+
 ## examples
 Example code to show how the BO class can be used.
 
 ## synthesiser_simulation_classes
 The field synthesiser class which is used to simulate multi-channel laser field synthesis by combining multiple pulses.
+1) chirp - pulse defined in frequency-domain with GDD
+2) fails - old field synthesiser classes
 
 ## tests
 Test scripts to run BO for different simulations and different figures of merit.
+1) difficult_functions - optimising functions using BO that are hard to optimise
+2) real_synth_channels - running BO of the synthesiser with real synthesiser parameters
+3) shapes - running BO to match the synthesised field to different shapes
 
