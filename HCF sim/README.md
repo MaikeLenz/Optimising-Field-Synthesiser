@@ -1,9 +1,10 @@
 # HCF sim
 
 ## Julia
-Test of the Luna simulation run in julia using the parameters from our lab.
+Test of the Luna simulation run in julia.
 
 ## Python
-1) Luna_subtarget - Figures of merit to be optimised by our Bayesian optimisation simulation
-2) bossfunction_Luna - Full Bayesian optimisation function to optimse the Luna simulation
-3) python_luna_interface - Run the Luna simulation via python
+1) Luna_BO - Luna bossfunction and subtarget functions for running the optimisation
+2) building_datasets - tools for determining width and theoretical predictions. Simulations run using these tools.
+3) experiments - experimental data from our HCF and analysis.
+4) tests - GDD range test.
