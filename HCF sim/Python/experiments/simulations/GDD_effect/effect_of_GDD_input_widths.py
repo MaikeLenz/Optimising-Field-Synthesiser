@@ -119,11 +119,7 @@ from scipy.optimize import curve_fit
 for i in range(len(Et_in)):
     rms_widths.append(rms_width(t,Et_in[i]))
     thresh_widths.append(threshold(t,Et_in[i]))
-    if i<10:
-        popt, pcov = curve_fit(superGauss, t, Et_in[i], p0=[1, 0, 30e-15])
-    else:
-        popt, pcov = curve_fit(superGauss, t, Et_in[i], p0=[1, 0, 100e-15])
-
+    popt, pcov = curve_fit(superGauss, t, Et_in[i], p0=[1, 0, 50e-15])
     superG_widths.append(popt[2])
     normint_widths.append(norm_and_int(t,Et_in[i]))
     #SPM_widths.append(theoretical_width(radius, flength, pressure, wavel, fwhm_duration, energy))
@@ -140,9 +136,9 @@ fig, ax1 = plt.subplots()
 
 #ax2 = ax1.twinx()
 ax1.plot(GDDs*10**30,GDD_widths*10**15,label="Theoretical GDD Broadening",color="tab:blue")
-ax1.plot(GDDs*10**30,rms_widths*0.5*10**15,label="RMS Width times 0.5",color="tab:orange")
-ax1.plot(GDDs*10**30,thresh_widths*0.3*10**15,label="Threshold Width times 0.3",color="tab:green")
-ax1.plot(GDDs*10**30,superG_widths*10**(15)*0.3,label="Super Gaussian Width times 0.3",color="tab:red")
+ax1.plot(GDDs*10**30,rms_widths*0.8*10**15,label="RMS Width times 0.8",color="tab:orange")
+ax1.plot(GDDs*10**30,thresh_widths*0.4*10**15,label="Threshold Width times 0.4",color="tab:green")
+ax1.plot(GDDs*10**30,superG_widths*10**(15)*0.7,label="Super Gaussian Width times 0.7",color="tab:red")
 ax1.plot(GDDs*10**30,normint_widths*10**(15),label="Normalised Integral",color="tab:purple")
 
 
