@@ -27,7 +27,7 @@ from Luna_subtarget import *
 c = 299792458 # m/s
 
 
-def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  domega = 2e15, init_points=50, n_iter=50, t=np.linspace(-20,100,20000), plotting=True):     
+def Luna_BO(params, initial_values_HCF, function, Gaussian = False, init_points=50, n_iter=50, t=np.linspace(-20,100,20000), plotting=True):     
     """
     performs BO with params as specified as strings in params input (params is list of strings) on the HCF.
     init_points: number of initial BO points
@@ -46,8 +46,7 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  
     Main.λ0 = initial_values_HCF[4]
     GDD=initial_values_HCF[5]
     Main.energy = initial_values_HCF[6]
-    if FWHM != None:
-        Main.τfwhm = FWHM
+    Main.τfwhm = initial_values_HCF[7]
 
     args_BO = {} #this dictionary will contain only the parameters we want to vary here
     params_dict={}
@@ -58,8 +57,7 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  
     params_dict['λ0'] = initial_values_HCF[4]
     params_dict['GDD'] = initial_values_HCF[5]
     params_dict['energy'] = initial_values_HCF[6]
-    if Gaussian==True:
-        params_dict['FWHM'] = FWHM
+    params_dict['FWHM'] = initial_values_HCF[7]
 
     for i in params:
         if i in params_dict:
@@ -88,26 +86,24 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  
                 Main.flength = value
             elif 'FWHM' in key:
                 Main.τfwhm = value
-        """
+
         # Critical power condition
         Main.eval('ω = PhysData.wlfreq(λ0)')
         Main.eval('_, n0, n2  = Tools.getN0n0n2(ω, gas; P=pressure)')
         Main.eval('Pcrit = Tools.Pcr(ω, n0, n2)')
         Pcrit = Main.Pcrit
         Pmin = 0
-        if Gaussian == False:
-            τfwhm = 2*np.pi*0.44/domega
-        else:
-            τfwhm = Main.τfwhm
+        τfwhm = Main.τfwhm
         tau = τfwhm/(2*np.sqrt(np.log(2)))
         P = Main.energy/(np.sqrt(np.pi)*tau)
         power_condition = int(Pmin <= P <= Pcrit)
-        """
+
         try:
             if Gaussian == False:
                 """
                 Custom data pulse is defined and passed to prop capillary
                 """
+                domega = 2*np.pi*0.44/τfwhm
                 omega = np.linspace(2*np.pi*c/params_dict["λ0"] - domega/2, 2*np.pi*c/params_dict["λ0"] + domega/2, 100)
 
                 E, ϕω = E_field_freq(omega, GD=0.0, wavel=params_dict["λ0"], domega=domega, amp=1, CEP=0, GDD=GDD, TOD=0)
@@ -141,7 +137,7 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  
             λ = Main.λ
             Iλ = Main.Iλ    
             
-            return function(t, Et, λ, Iλ) #pass t and E to sub-target function
+            return function(t, Et, λ, Iλ)*power_condition #pass t and E to sub-target function
         except:
             return 0
 
@@ -204,6 +200,8 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  
         try:
             if Gaussian == False:
                 λ0 = Main.λ0
+                τfwhm = Main.τfwhm
+                domega = 2*np.pi*0.44/τfwhm
                 omega = np.linspace(2*np.pi*c/λ0 - domega/2, 2*np.pi*c/λ0 + domega/2, 100)
 
                 E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0, domega=domega, amp=1, CEP=0, GDD=GDD, TOD=0)
