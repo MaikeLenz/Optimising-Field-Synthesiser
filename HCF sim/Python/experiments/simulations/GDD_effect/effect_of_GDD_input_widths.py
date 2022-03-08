@@ -33,8 +33,8 @@ from rms_width import *
 from width_methods import *
 c = 299792458 # m/s
 n=5
-gdd_step=200e-30 #in fs^2
-gdd_mid=0
+#gdd_step=200e-30 #in fs^2
+#gdd_mid=0
 #GDDs=[gdd_mid-4*gdd_step,gdd_mid-3*gdd_step,gdd_mid-2*gdd_step,gdd_mid-gdd_step,gdd_mid,gdd_mid+gdd_step,gdd_mid+2*gdd_step,gdd_mid+3*gdd_step,gdd_mid+4*gdd_step]
 GDDs=np.linspace(-1000e-30,1000e-30,20)
 
