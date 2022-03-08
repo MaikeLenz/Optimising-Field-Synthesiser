@@ -21,13 +21,19 @@ def theoretical_width(radius, flength, pressure, λ0, τfwhm, energy):
     I0 = power/(np.pi*(W0**2)) # I0 in J/s/m^2 
 
     # Get data for n2 from Luna
-    Main.ω = ω0
-    gas = "Ne"
-    Main.gas_str = gas
-    Main.eval("gas = Symbol(gas_str)")
-    Main.pressure = pressure
-    Main.eval('N0, n0, n2 = Tools.getN0n0n2(ω, gas; P=pressure, T=PhysData.roomtemp)')
-    n2 = Main.n2 # n2 in m^2/W (probably)
+    #Main.ω = ω0
+    #gas = "Ne"
+    #Main.gas_str = gas
+    #Main.eval("gas = Symbol(gas_str)")
+    #Main.pressure = pressure
+
+    #Main.eval('N0, n0, n2 = Tools.getN0n0n2(ω, gas; P=pressure, T=PhysData.roomtemp)')
+    #n2 = Main.n2 # n2 in m^2/W (probably)
+
+    #get n2 from paper: https://link.springer.com/article/10.1007/s00340-013-5354-0
+    #n2=(9.30 ± 0.25) × 10−21 cm2/W bar
+    n2=9.3e-21*pressure/10000 #convert to m^2/W
+
 
     return 2*np.sqrt(2)*np.exp(-0.5)*ω0*n2*I0*L/(c*τ)
 
