@@ -26,15 +26,15 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 from rms_width import *
 c = 299792458 # m/s
 n=5
-gdd_step=100e-30 #in fs^2
-gdd_mid=0
+gdd_step=50e-30 #in fs^2
+gdd_mid=-200e-30
 GDDs=[gdd_mid-2*gdd_step,gdd_mid-gdd_step,gdd_mid,gdd_mid+gdd_step,gdd_mid+2*gdd_step]
 #GDDs=np.array([-200e-30,-100e-30,0,100e-30,200e-30])
 print(GDDs)
 # Define fixed params
 c = 299792458 
 wavel=800e-9
-energy=0.5e-3
+energy=1e-3
 
 gas = "Ne"
 Main.gas_str = gas
