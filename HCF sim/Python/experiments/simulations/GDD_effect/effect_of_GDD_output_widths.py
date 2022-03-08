@@ -115,13 +115,13 @@ normint_widths=[]
 SPM_widths=[]
 from scipy.optimize import curve_fit
 for i in range(len(Et_out)):
-    rms_widths.append(rms_width(om_out[i],I_out[i]))
-    thresh_widths.append(threshold(om_out[i],I_out[i]))
-    popt, pcov = curve_fit(superGauss, om_out[i], I_out[i])#, p0=[4000, 800, 20])
+    rms_widths.append(rms_width(om_out[i],Iom_out[i]))
+    thresh_widths.append(threshold(om_out[i],Iom_out[i]))
+    popt, pcov = curve_fit(superGauss, om_out[i], Iom_out[i], p0=[100, 2*np.pi*c/800e-9, 6e14])
     superG_widths.append(popt[2])
-    normint_widths.append(norm_and_int(om_out,I_out[i]))
+    normint_widths.append(norm_and_int(om_out[i],Iom_out[i]))
     GDD_width=GDD_duration(GDDs[i],fwhm_duration)
-    SPM_widths.append(theoretical_width(radius, flength, pressure, wavel, GDD_width, energy))
+    SPM_widths.append(theoretical_width(radius, flength, 0.66*pressure[1], wavel, GDD_width, energy))
 
 GDDs=np.array(GDDs)
 rms_widths=np.array(rms_widths)
@@ -130,19 +130,24 @@ superG_widths=np.array(superG_widths)
 SPM_widths=np.array(SPM_widths)
 normint_widths=np.array(normint_widths)
 
+scaling_rms=max(SPM_widths)/max(rms_widths)
+scaling_thresh=max(SPM_widths)/max(thresh_widths)
+scaling_superG=max(SPM_widths)/max(superG_widths)
+scaling_normint=max(SPM_widths)/max(normint_widths)
+
 fig, ax1 = plt.subplots()
 
 #ax2 = ax1.twinx()
 ax1.plot(GDDs*10**30,SPM_widths,label="Theoretical SPM Broadening",color="tab:blue")
-ax1.plot(GDDs*10**30,rms_widths,label="RMS Width",color="tab:orange")
-ax1.plot(GDDs*10**30,thresh_widths,label="Threshold Width",color="tab:green")
-ax1.plot(GDDs*10**30,superG_widths,label="Super Gaussian Width",color="tab:red")
-ax1.plot(GDDs*10**30,normint_widths,label="Normalised Integral",color="tab:purple")
+ax1.plot(GDDs*10**30,rms_widths*scaling_rms,label="RMS Width times %s"%(round(scaling_rms,2)),color="tab:orange")
+ax1.plot(GDDs*10**30,thresh_widths*scaling_thresh,label="Threshold Width times %s"%(round(scaling_thresh,2)),color="tab:green")
+ax1.plot(GDDs*10**30,superG_widths*scaling_superG,label="Super Gaussian Width times %s"%(round(scaling_superG,2)),color="tab:red")
+ax1.plot(GDDs*10**30,normint_widths*scaling_normint,label="Normalised Integral times %s"%(round(scaling_normint,2)),color="tab:purple")
 
 ax1.set_xlabel("GDD, fs$\mathrm{^2}$",fontsize=14)
 ax1.set_ylabel("Widths, s$\mathrm{^{-1}}$",fontsize=14)
 #ax2.set_ylabel("Theoretical GDD Broadening/ Threshold Width, s",fontsize=14)
-plt.legend(fontsize=16)
+plt.legend(fontsize=16,loc="lower right")
 plt.title("Frequency Width Comparison Output Pulse", fontsize=20)
 plt.show()
 """
