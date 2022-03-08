@@ -29,7 +29,8 @@ n=5
 #gdd_step=300e-30 #in fs^2
 #gdd_mid=0
 #GDDs=[gdd_mid-2*gdd_step,gdd_mid-gdd_step,gdd_mid,gdd_mid+gdd_step,gdd_mid+2*gdd_step]
-GDDs=np.linspace(-1000e-30,1000e-30,5)
+GDDs=np.array([-200e-30,-100e-30,0,100e-30,200e-30])
+print(GDDs)
 # Define fixed params
 c = 299792458 
 wavel=800e-9
@@ -117,11 +118,11 @@ ax13 = plt.subplot2grid((3,5), (2, 2))
 ax14 = plt.subplot2grid((3,5), (2, 3))
 ax15 = plt.subplot2grid((3,5), (2, 4))
 
-left  = 0.125  # the left side of the subplots of the figure
+left  = 0.1  # the left side of the subplots of the figure
 right = 0.9    # the right side of the subplots of the figure
 bottom = 0.1   # the bottom of the subplots of the figure
-top = 0.9      # the top of the subplots of the figure
-wspace = 0.38   # the amount of width reserved for blank space between subplots
+top = 0.9     # the top of the subplots of the figure
+wspace = 0.4   # the amount of width reserved for blank space between subplots
 hspace = 0.47   # the amount of height reserved for white space between subplots
 
 plt.subplots_adjust(left, bottom, right, top, wspace, hspace)
@@ -133,6 +134,7 @@ for i in range(len(axes)):
         if i==2:
             axes[i].set_title("Input Temporal Electric Field",fontsize=16)
         axes[i].plot(t*10**15,Et_in[i], label="GDD="+str(int(GDDs[i]*10**30))+"fs$\mathrm{^2}$")
+        axes[i].set_yticks([-1,-0.5,0,0.5,1])
         axes[i].set_ylabel("E, a.u.",fontsize=12)
         axes[i].set_xlabel("t, fs",fontsize=12)
         axes[i].legend(fontsize=12,loc="lower right")
