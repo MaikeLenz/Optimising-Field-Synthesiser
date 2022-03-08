@@ -89,6 +89,16 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  
             elif 'FWHM' in key:
                 Main.τfwhm = value
 
+        # Below critical power condition
+        Main.eval('ω = PhysData.wlfreq(λ0)')
+        Main.eval('_, n0, n2  = Tools.getN0n0n2(ω, gas; P=pressure)')
+        Main.eval('Pcrit = Tools.Pcr(ω, n0, n2)')
+        Pcrit = Main.Pcrit
+        Pmin = 0
+        tau = Main.τfwhm/(2*np.sqrt(np.log(2)))
+        P = Main.energy/(np.sqrt(np.pi)*tau)
+        power_condition = int(Pmin <= P <= Pcrit)
+
         if Gaussian == False:
             """
             Custom data pulse is defined and passed to prop capillary
@@ -124,7 +134,7 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  
         λ = Main.λ
         Iλ = Main.Iλ    
         
-        return function(t, Et, λ, Iλ) #pass t and E to sub-target function
+        return function(t, Et, λ, Iλ)*power_condition #pass t and E to sub-target function
 #%%
     # Make pbounds dictionary
     pbounds = {}
