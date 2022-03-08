@@ -26,15 +26,15 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 from rms_width import *
 c = 299792458 # m/s
 n=5
-#gdd_step=300e-30 #in fs^2
-#gdd_mid=0
-#GDDs=[gdd_mid-2*gdd_step,gdd_mid-gdd_step,gdd_mid,gdd_mid+gdd_step,gdd_mid+2*gdd_step]
-GDDs=np.array([-200e-30,-100e-30,0,100e-30,200e-30])
+gdd_step=100e-30 #in fs^2
+gdd_mid=0
+GDDs=[gdd_mid-2*gdd_step,gdd_mid-gdd_step,gdd_mid,gdd_mid+gdd_step,gdd_mid+2*gdd_step]
+#GDDs=np.array([-200e-30,-100e-30,0,100e-30,200e-30])
 print(GDDs)
 # Define fixed params
 c = 299792458 
 wavel=800e-9
-energy=1e-3
+energy=0.5e-3
 
 gas = "Ne"
 Main.gas_str = gas
@@ -151,7 +151,7 @@ for i in range(len(axes)):
         axes[i].plot(om_out[i-10]*10**-15,Iom_out[i-10]*10**18)
         axes[i].set_xlim(2.1,2.6)
         axes[i].set_ylabel("I, a.u.",fontsize=12)
-        axes[i].set_xlabel("$\mathrm{\omega}$, 10$\mathrm{^{-15}}$s$\mathrm{^{-1}}$",fontsize=12)
+        axes[i].set_xlabel("$\mathrm{\omega}$, 10$\mathrm{^{15}}$s$\mathrm{^{-1}}$",fontsize=12)
 #ax3.plot(t,zero_GDD_shape)
 
 plt.show()

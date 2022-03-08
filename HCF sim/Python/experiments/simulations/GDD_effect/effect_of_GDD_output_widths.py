@@ -118,7 +118,7 @@ from scipy.optimize import curve_fit
 for i in range(len(Et_out)):
     rms_widths.append(rms_width(om_out[i],Iom_out[i]))
     thresh_widths.append(threshold(om_out[i],Iom_out[i]))
-    popt, pcov = curve_fit(superGauss, om_out[i], Iom_out[i], p0=[100, 2*np.pi*c/800e-9, 6e14])
+    popt, pcov = curve_fit(superGauss, om_out[i], Iom_out[i], p0=[6, 2*np.pi*c/800e-9, 2e14])
     superG_widths.append(popt[2])
     normint_widths.append(norm_and_int(om_out[i],Iom_out[i]))
     GDD_width=GDD_duration(GDDs[i],fwhm_duration)
@@ -148,6 +148,8 @@ ax1.plot(GDDs*10**30,normint_widths*scaling_normint,label="Normalised Integral t
 ax1.set_xlabel("GDD, fs$\mathrm{^2}$",fontsize=14)
 ax1.set_ylabel("Widths, s$\mathrm{^{-1}}$",fontsize=14)
 #ax2.set_ylabel("Theoretical GDD Broadening/ Threshold Width, s",fontsize=14)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
 plt.legend(fontsize=16,loc="lower right")
 plt.title("Frequency Width Comparison Output Pulse", fontsize=20)
 plt.show()
