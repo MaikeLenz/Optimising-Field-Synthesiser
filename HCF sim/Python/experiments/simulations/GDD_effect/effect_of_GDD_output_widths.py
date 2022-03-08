@@ -113,6 +113,7 @@ rms_widths=[]
 superG_widths=[]
 normint_widths=[]
 SPM_widths=[]
+
 from scipy.optimize import curve_fit
 for i in range(len(Et_out)):
     rms_widths.append(rms_width(om_out[i],Iom_out[i]))

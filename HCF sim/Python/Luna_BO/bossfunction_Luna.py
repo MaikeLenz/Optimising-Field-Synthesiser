@@ -27,7 +27,7 @@ from Luna_subtarget import *
 c = 299792458 # m/s
 
 
-def Luna_BO(params, initial_values_HCF, function, Gaussian = False, init_points=50, n_iter=50, t=np.linspace(-20,100,20000), plotting=True):     
+def Luna_BO(params, initial_values_HCF, function, Gaussian = False, init_points=50, n_iter=50, t=np.linspace(-20,100,20000), plotting=True, wavel_bounds=None):     
     """
     performs BO with params as specified as strings in params input (params is list of strings) on the HCF.
     init_points: number of initial BO points
@@ -126,8 +126,11 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, init_points=
 
             Main.eval('t, Et = Processing.getEt(duv)')
             Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
-
-            
+            if function == peak_power_window:
+                Main.wavel_bounds=wavel_bounds
+                Main.eval("peak_power=peakpower(duv['grid'], duv['Eω'], λlims=wavel_bounds; label=nothing)")
+                peak_power=Main.peak_power
+                return peak_power*power_condition
             # Get values
             t = Main.t
             Et_allz = Main.Et # array of Et at all z 
