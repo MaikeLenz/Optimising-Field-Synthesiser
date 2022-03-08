@@ -29,7 +29,7 @@ n=5
 #gdd_step=300e-30 #in fs^2
 #gdd_mid=0
 #GDDs=[gdd_mid-2*gdd_step,gdd_mid-gdd_step,gdd_mid,gdd_mid+gdd_step,gdd_mid+2*gdd_step]
-GDDs=np.linspace(-1000e-30,1000e-30,20)
+GDDs=np.linspace(-1000e-30,1000e-30,5)
 # Define fixed params
 c = 299792458 
 wavel=800e-9
@@ -54,7 +54,7 @@ def Gauss(x,x0,sigma,power=2):
     return np.exp(-1/2 * ((x-x0)/sigma)**power)
 
 fwhm_duration=30e-15#30fs fwhm duration input pulse
-t=np.linspace(-100e-15,100e-15,1000)
+t=np.linspace(-150e-15,150e-15,1000)
 t0=0
 zero_GDD_shape=Gauss(t,t0,fwhm_to_sigma(fwhm_duration))
 
@@ -73,7 +73,7 @@ omega=np.linspace(2*np.pi*c/wavel - dom/2, 2*np.pi*c/wavel + dom/2, 1000)
 for i in range(len(GDDs)):
     Et = efield_time_domain(t, 1, 2*np.pi*c/wavel, dom, t0, GDDs[i], 0)
     E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=dom, amp=1, CEP=0, GDD=GDDs[i], TOD=0)
-    Et_in.append(np.abs(Et))
+    Et_in.append(Et.real)
     Iω = np.abs(E**2)
     Main.ω = omega
     Main.Iω = Iω  
