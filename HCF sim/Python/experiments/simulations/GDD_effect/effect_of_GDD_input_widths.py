@@ -64,7 +64,7 @@ def Gauss(x,x0,sigma,power=2):
     return np.exp(-1/2 * ((x-x0)/sigma)**power)
 
 fwhm_duration=30e-15#30fs fwhm duration input pulse
-t=np.linspace(-100e-15,100e-15,1000)
+t=np.linspace(-500e-15,500e-15,1000)
 t0=0
 zero_GDD_shape=Gauss(t,t0,fwhm_to_sigma(fwhm_duration))
 
@@ -114,12 +114,18 @@ rms_widths=[]
 superG_widths=[]
 #SPM_widths=[]
 GDD_widths=[]
+normint_widths=[]
 from scipy.optimize import curve_fit
 for i in range(len(Et_in)):
     rms_widths.append(rms_width(t,Et_in[i]))
     thresh_widths.append(threshold(t,Et_in[i]))
-    popt, pcov = curve_fit(superGauss, t, Et_in[i])#, p0=[4000, 800, 20])
+    if i<10:
+        popt, pcov = curve_fit(superGauss, t, Et_in[i], p0=[1, 0, 30e-15])
+    else:
+        popt, pcov = curve_fit(superGauss, t, Et_in[i], p0=[1, 0, 100e-15])
+
     superG_widths.append(popt[2])
+    normint_widths.append(norm_and_int(t,Et_in[i]))
     #SPM_widths.append(theoretical_width(radius, flength, pressure, wavel, fwhm_duration, energy))
     GDD_widths.append(GDD_duration(GDDs[i],fwhm_duration))
 GDDs=np.array(GDDs)
@@ -128,19 +134,24 @@ thresh_widths=np.array(thresh_widths)
 superG_widths=np.array(superG_widths)
 #SPM_widths=np.array(SPM_widths)
 GDD_widths=np.array(GDD_widths)
+normint_widths=np.array(normint_widths)
 
 fig, ax1 = plt.subplots()
 
 #ax2 = ax1.twinx()
-ax1.plot(GDDs*10**30,rms_widths*0.15,label="RMS Width times 0.5",color="tab:blue")
-ax1.plot(GDDs*10**30,thresh_widths*0.3,label="Threshold Width times 0.3",color="tab:green")
-ax1.plot(GDDs*10**30,superG_widths*10**(-13),label="Super Gaussian Width times $\mathrm{10^{-13}}$",color="tab:red")
-ax1.plot(GDDs*10**30, GDD_widths,label="Theoretical GDD Broadening",color="tab:orange")
+ax1.plot(GDDs*10**30,GDD_widths*10**15,label="Theoretical GDD Broadening",color="tab:blue")
+ax1.plot(GDDs*10**30,rms_widths*0.5*10**15,label="RMS Width times 0.5",color="tab:orange")
+ax1.plot(GDDs*10**30,thresh_widths*0.3*10**15,label="Threshold Width times 0.3",color="tab:green")
+ax1.plot(GDDs*10**30,superG_widths*10**(15)*0.3,label="Super Gaussian Width times 0.3",color="tab:red")
+ax1.plot(GDDs*10**30,normint_widths*10**(15),label="Normalised Integral",color="tab:purple")
+
 
 ax1.set_xlabel("GDD, fs$\mathrm{^2}$",fontsize=14)
-ax1.set_ylabel("Widths, s",fontsize=14)
+ax1.set_ylabel("Widths, fs",fontsize=14)
 #ax2.set_ylabel("Theoretical GDD Broadening/ Threshold Width, s",fontsize=14)
-plt.legend(fontsize=16)
+plt.legend(fontsize=16,loc="upper right")
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
 plt.title("Width Comparison", fontsize=20)
 plt.show()
 """
