@@ -36,7 +36,7 @@ n=5
 gdd_step=500e-30 #in fs^2
 gdd_mid=0
 #GDDs=[gdd_mid-4*gdd_step,gdd_mid-3*gdd_step,gdd_mid-2*gdd_step,gdd_mid-gdd_step,gdd_mid,gdd_mid+gdd_step,gdd_mid+2*gdd_step,gdd_mid+3*gdd_step,gdd_mid+4*gdd_step]
-GDDs=np.linspace(-1000e-30,1000e-30,200)
+GDDs=np.linspace(-1000e-30,1000e-30,100)
 
 
 # Define fixed params
