@@ -19,7 +19,7 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\')
 from bossfunction_Luna import *
 
-#this function carries out BO for hollow core fibre
+#compare the output width for optimisations with different subtarget functions
 #params to be varied: 
     # Pulse: input energy, τfwhm, central wavelength
     # Fibre: pressure, fibre core radius, fibre length
@@ -45,15 +45,35 @@ energy_init = 0.5e-3
 #values:  radius, flength, gas, pressure, wavelength, GDD, energy
 initial_values_HCF=[radius_init, flength_init, gas, pressure_init, wavel, GDD, energy_init]
 
-opt_dict = Luna_BO(params, initial_values_HCF, function=max_peak_power, init_points=init_points, n_iter=n_iter, FWHM=FWHM)
-peak_power = opt_dict['target']
-energy = opt_dict['params']['energy']
-pressure = opt_dict['params']['pressure']
-radius = opt_dict['params']['radius']
-flength = opt_dict['params']['flength']
+opt_dict_width = Luna_BO(params, initial_values_HCF, function=max_bandwidth, init_points=init_points, n_iter=n_iter, FWHM=FWHM)
+opt_dict_peakpower = Luna_BO(params, initial_values_HCF, function=max_peak_power, init_points=init_points, n_iter=n_iter, FWHM=FWHM)
 
+##############################################################################
+width_width = opt_dict_width['target']
+
+#############################################################################
+#find width from max peak power
+
+energy = opt_dict_peakpower['params']['energy']
+pressure = opt_dict_peakpower['params']['pressure']
+radius = opt_dict_peakpower['params']['radius']
+flength = opt_dict_peakpower['params']['flength']
+initial_values_HCF_peakpower=[radius, flength, gas, pressure, wavel, GDD, energy]
+
+out= Luna_BO(params, initial_values_HCF_peakpower, function=max_bandwidth, init_points=0, n_iter=0, FWHM=FWHM)
+width_peakpower=out["target"]
+##############################################################################
+print("width optimisation: ",width_width)
+print("peak power optimisation: ", width_peakpower)
+
+
+#result:
+#width optimisation:  1.0116987594576812e-06
+# power optimisation:  9.071406086303432e-07
+
+"""
 # Save the data
-header = ['init_points', 'n_iter', 'peak power', 'energy, J', 'pressure, bar', 'radius, m', 'flength, m', 'FWHM, s', 'wavel, m', 'gas']
+header = ['init_points', 'n_iter', 'width, nm', 'energy, J', 'pressure, bar', 'radius, m', 'flength, m', 'FWHM, s', 'wavel, m', 'gas']
 #with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna_data\\data\\predicted_max__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'w', encoding='UTF8', newline='') as f:
 with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\peak_power__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
@@ -61,4 +81,5 @@ with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code
     writer.writerow(header)
 
     # write the dataS
-    writer.writerow([init_points, n_iter, peak_power, energy, pressure, radius, flength, FWHM, wavel, gas])
+    writer.writerow([init_points, n_iter, width, energy, pressure, radius, flength, FWHM, wavel, gas])
+"""
