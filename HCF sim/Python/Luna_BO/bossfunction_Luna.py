@@ -2,21 +2,21 @@ import numpy as np
 from bayes_opt import BayesianOptimization
 import matplotlib.pyplot as plt
 import julia
-julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
-#julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
+#julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
+julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
 from julia import Main
 
 import sys
-sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\')
-sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
+#sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\')
+#sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
 
-#sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\')
-#sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
+sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\')
+sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
 
-sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\')
-sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\chirp\\')
-#sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\chirp\\')
-#sys.path.append('C:\\Users\\iammo\\Documents\\\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\')
+#sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\')
+#sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\chirp\\')
+sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\chirp\\')
+sys.path.append('C:\\Users\\iammo\\Documents\\\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\')
 from pulse_with_GDD import *
 from Luna_subtarget import *
 
@@ -27,7 +27,7 @@ from Luna_subtarget import *
 c = 299792458 # m/s
 
 
-def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  domega = 2e15, init_points=50, n_iter=50, t=np.linspace(-20,100,20000)):     
+def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  domega = 2e15, init_points=50, n_iter=50, t=np.linspace(-20,100,20000), plotting=True):     
     """
     performs BO with params as specified as strings in params input (params is list of strings) on the HCF.
     init_points: number of initial BO points
@@ -88,54 +88,63 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  
                 Main.flength = value
             elif 'FWHM' in key:
                 Main.τfwhm = value
-
-        # Below critical power condition
+        """
+        # Critical power condition
         Main.eval('ω = PhysData.wlfreq(λ0)')
         Main.eval('_, n0, n2  = Tools.getN0n0n2(ω, gas; P=pressure)')
         Main.eval('Pcrit = Tools.Pcr(ω, n0, n2)')
         Pcrit = Main.Pcrit
         Pmin = 0
-        tau = Main.τfwhm/(2*np.sqrt(np.log(2)))
+        if Gaussian == False:
+            τfwhm = 0.44/domega
+        else:
+            τfwhm = Main.τfwhm
+        tau = τfwhm/(2*np.sqrt(np.log(2)))
         P = Main.energy/(np.sqrt(np.pi)*tau)
         power_condition = int(Pmin <= P <= Pcrit)
+        """
+        try:
+            if Gaussian == False:
+                """
+                Custom data pulse is defined and passed to prop capillary
+                """
+                omega = np.linspace(2*np.pi*c/params_dict["λ0"] - domega/2, 2*np.pi*c/params_dict["λ0"] + domega/2, 100)
 
-        if Gaussian == False:
-            """
-            Custom data pulse is defined and passed to prop capillary
-            """
-            omega = np.linspace(2*np.pi*c/params_dict["λ0"] - domega/2, 2*np.pi*c/params_dict["λ0"] + domega/2, 100)
+                E, ϕω = E_field_freq(omega, GD=0.0, wavel=params_dict["λ0"], domega=domega, amp=1, CEP=0, GDD=GDD, TOD=0)
+                Iω = np.abs(E**2)
 
-            E, ϕω = E_field_freq(omega, GD=0.0, wavel=params_dict["λ0"], domega=domega, amp=1, CEP=0, GDD=GDD, TOD=0)
-            Iω = np.abs(E**2)
 
-            Main.ω = omega
-            Main.Iω = Iω  
-            Main.phase = ϕω 
-            # Pass data to Luna
-            Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
-            Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+                Main.ω = omega
+                Main.Iω = Iω  
+                Main.phase = ϕω 
+                # Pass data to Luna
+                Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
+                Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
 
-        else:
-            """
-            default gaussian pulse passed to prop capillary
-            """
-            Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
+            else:
+                """
+                default gaussian pulse passed to prop capillary
+                """
+                Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
 
-        Main.eval('t, Et = Processing.getEt(duv)')
-        Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
 
-        
-        # Get values
-        t = Main.t
-        Et_allz = Main.Et # array of Et at all z 
-        Et = Et_allz[:,-1] # last item in each element is pulse shape at the end
-        Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
+            Main.eval('t, Et = Processing.getEt(duv)')
+            Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
 
-        λ = Main.λ
-        Iλ = Main.Iλ    
-        
-        return function(t, Et, λ, Iλ)*power_condition #pass t and E to sub-target function
-#%%
+            
+            # Get values
+            t = Main.t
+            Et_allz = Main.Et # array of Et at all z 
+            Et = Et_allz[:,-1] # last item in each element is pulse shape at the end
+            Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
+
+            λ = Main.λ
+            Iλ = Main.Iλ    
+            
+            return function(t, Et, λ, Iλ) #pass t and E to sub-target function
+        except:
+            return 0
+
     # Make pbounds dictionary
     pbounds = {}
     for i in params:
@@ -143,7 +152,7 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  
         if 'energy' in i:
             #pbounds[i] = (0,1e-3)
             #pbounds[i] = (0.1e-3,2.0e-3)
-            pbounds[i] = (0.1e-3, 2e-3)
+            pbounds[i] = (0.1e-3, 1.5e-3)
         elif 'τfwhm' in i:
             #pbounds[i] = (20e-15,50e-15)
             pbounds[i] = (4e-15, 30e-15)
@@ -152,7 +161,7 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  
         elif 'pressure' in i:
             #pbounds[i] = (0,3)
             #pbounds[i] = (1,15)
-            pbounds[i] = (1, 15)
+            pbounds[i] = (1, 10)
         elif 'radius' in i:                
             #pbounds[i] = (125e-6,300e-6)
             pbounds[i] = (50e-6, 500e-6)
@@ -189,28 +198,48 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, FWHM=None,  
         elif 'flength' in key:
             Main.flength = results[key]
         elif 'FWHM' in key:
-            Main.τfwhm = results[key]
+            Main.τfwhm = results[key]   
 
-    Main.eval('t, Et = Processing.getEt(duv)')
-    Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
-    λ = Main.λ
-    Iλ = Main.Iλ
-    t = Main.t
-    Et_allz=Main.Et #array of Et at all z 
-    Et=Et_allz[:,-1] #last item in each element is pulse shape at the end
-    Et0=Et_allz[:,0]
-    plt.figure()
-    plt.plot(λ*10**9,Iλ)
-    plt.xlabel("Wavelength (nm)")
-    plt.ylabel("Spectral energy density (J/m)")
+    if plotting == True:
+        try:
+            if Gaussian == False:
+                λ0 = Main.λ0
+                omega = np.linspace(2*np.pi*c/λ0 - domega/2, 2*np.pi*c/λ0 + domega/2, 100)
+
+                E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0, domega=domega, amp=1, CEP=0, GDD=GDD, TOD=0)
+                Iω = np.abs(E**2)
+
+                Main.ω = omega
+                Main.Iω = Iω  
+                Main.phase = ϕω 
+                Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
+                Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+
+            else:
+                Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
+
+            Main.eval('t, Et = Processing.getEt(duv)')
+            Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
+            λ = Main.λ
+            Iλ = Main.Iλ
+            t = Main.t
+            Et_allz=Main.Et #array of Et at all z 
+            Et=Et_allz[:,-1] #last item in each element is pulse shape at the end
+            Et0=Et_allz[:,0]
+            plt.figure()
+            plt.plot(λ*10**9,Iλ)
+            plt.xlabel("Wavelength (nm)")
+            plt.ylabel("Spectral energy density (J/m)")
 
 
-    plt.figure()
-    plt.plot(t,Et,label="z=1m")
-    plt.plot(t,Et0,label="z=0")
-    plt.xlabel("time,s")
-    plt.ylabel("Electric field, a.u.")
-    plt.legend()
-    plt.show()
+            plt.figure()
+            plt.plot(t,Et,label="z=1m")
+            plt.plot(t,Et0,label="z=0")
+            plt.xlabel("time,s")
+            plt.ylabel("Electric field, a.u.")
+            plt.legend()
+            plt.show()
+        except:
+            print('No optimal parameters found below the critical power threshold')
 
     return optimizer.max
