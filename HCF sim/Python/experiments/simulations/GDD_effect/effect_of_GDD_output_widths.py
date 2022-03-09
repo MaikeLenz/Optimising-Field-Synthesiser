@@ -42,9 +42,9 @@ GDDs=np.linspace(-1000e-30,1000e-30,100)
 # Define fixed params
 c = 299792458 
 wavel=800e-9
-energy=1.5e-3
+energy=1e-3
 
-gas = "Ne"
+gas = "Ar"
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
 pressure = (0,3)
