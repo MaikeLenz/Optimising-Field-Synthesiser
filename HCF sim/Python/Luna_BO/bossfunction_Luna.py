@@ -15,10 +15,13 @@ sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\
 
 #sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\')
 #sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\chirp\\')
+#sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\chirp\\')
 sys.path.append('C:\\Users\\iammo\\Documents\\\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\')
+sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 from pulse_with_GDD import *
 from Luna_subtarget import *
+from compressor_grating_to_values import *
 
 #this function carries out BO for hollow core fibre
 #params to be varied: 
@@ -44,9 +47,9 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, init_points=
     Main.eval("gas = Symbol(gas_str)")
     Main.pressure = initial_values_HCF[3]
     Main.λ0 = initial_values_HCF[4]
-    GDD=initial_values_HCF[5]
-    Main.energy = initial_values_HCF[6]
-    Main.τfwhm = initial_values_HCF[7]
+    Main.energy = initial_values_HCF[5]
+    Main.τfwhm = initial_values_HCF[6]
+    grating_pair_displacement = initial_values_HCF[7]
 
     args_BO = {} #this dictionary will contain only the parameters we want to vary here
     params_dict={}
@@ -55,9 +58,9 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, init_points=
     params_dict['gas_str'] = initial_values_HCF[2]
     params_dict['pressure'] = initial_values_HCF[3]
     params_dict['λ0'] = initial_values_HCF[4]
-    params_dict['GDD'] = initial_values_HCF[5]
-    params_dict['energy'] = initial_values_HCF[6]
-    params_dict['FWHM'] = initial_values_HCF[7]
+    params_dict['energy'] = initial_values_HCF[5]
+    params_dict['FWHM'] = initial_values_HCF[6]
+    params_dict['grating_pair_displacement'] = initial_values_HCF[7]
 
     for i in params:
         if i in params_dict:
@@ -86,6 +89,8 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, init_points=
                 Main.flength = value
             elif 'FWHM' in key:
                 Main.τfwhm = value
+            elif 'grating_pair_displacement' in key:
+                grating_pair_displacement = value
 
         # Critical power condition
         Main.eval('ω = PhysData.wlfreq(λ0)')
@@ -100,13 +105,13 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, init_points=
 
         try:
             if Gaussian == False:
-                """
-                Custom data pulse is defined and passed to prop capillary
-                """
+                #Custom data pulse is defined and passed to prop capillary
                 domega = 2*np.pi*0.44/τfwhm
                 omega = np.linspace(2*np.pi*c/params_dict["λ0"] - domega/2, 2*np.pi*c/params_dict["λ0"] + domega/2, 100)
 
-                E, ϕω = E_field_freq(omega, GD=0.0, wavel=params_dict["λ0"], domega=domega, amp=1, CEP=0, GDD=GDD, TOD=0)
+                GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=params_dict["grating_pair_displacement"]*1000)
+
+                E, ϕω = E_field_freq(omega, GD=0.0, wavel=params_dict["λ0"], domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
                 Iω = np.abs(E**2)
 
 
@@ -118,9 +123,7 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, init_points=
                 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
 
             else:
-                """
-                default gaussian pulse passed to prop capillary
-                """
+                #default gaussian pulse passed to prop capillary
                 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
 
 
@@ -143,7 +146,7 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, init_points=
             return function(t, Et, λ, Iλ)*power_condition #pass t and E to sub-target function
         except:
             return 0
-
+        
     # Make pbounds dictionary
     pbounds = {}
     for i in params:
@@ -167,6 +170,8 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, init_points=
         elif 'flength' in i:
             #pbounds[i] = (1,2)
             pbounds[i] = (0.1, 6)
+        elif 'grating_pair_displacement' in i:
+            pbounds[i] = (-0.5e-3, 0.5e-3)
     print(pbounds)
 
     optimizer = BayesianOptimization(
@@ -198,6 +203,8 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, init_points=
             Main.flength = results[key]
         elif 'FWHM' in key:
             Main.τfwhm = results[key]   
+        elif 'grating_pair_separation' in key:
+            grating_pair_displacement = results[key]
 
     if plotting == True:
         try:
@@ -207,7 +214,9 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, init_points=
                 domega = 2*np.pi*0.44/τfwhm
                 omega = np.linspace(2*np.pi*c/λ0 - domega/2, 2*np.pi*c/λ0 + domega/2, 100)
 
-                E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0, domega=domega, amp=1, CEP=0, GDD=GDD, TOD=0)
+                GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=grating_pair_displacement*1000)
+
+                E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0, domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
                 Iω = np.abs(E**2)
 
                 Main.ω = omega
