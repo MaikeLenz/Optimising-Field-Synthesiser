@@ -68,6 +68,7 @@ freq_widths=np.array([])
 for i in range(len(GDDs_and_TODs)):
     GDD = (GDDs_and_TODs[i][0] - GDDs_and_TODs[8][0])*(10**-30) #fs^2 to s^2
     TOD = (GDDs_and_TODs[i][1] - GDDs_and_TODs[8][1])*(10**-45) #fs^3 to s^3
+    #TOD = 0
     print(i)
 
     ω = omega[::-1]
@@ -103,7 +104,7 @@ for i in range(len(GDDs_and_TODs)):
 
     # Save the data
     header = ['Wavelength, nm', 'Intensity']
-    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\GDD_scans\\data\\real_range_exp_pulse_input\\GDD' +str(GDDs_and_TODs[i][0]) + '_TOD' + str(round(GDDs_and_TODs[i][1]*(10**-5), 2)) + '_pos' + str(grating_pos[i]) + '.csv', 'w', encoding='UTF8', newline='') as f:
+    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\GDD_scans\\data\\no_TOD_exp_pulse_input\\GDD' +str(GDDs_and_TODs[i][0]) + '_TOD' + str(round(GDDs_and_TODs[i][1]*(10**-5), 2)) + '_pos' + str(grating_pos[i]) + '.csv', 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         # write the header
         writer.writerow(header)
@@ -120,6 +121,7 @@ f, axs = plt.subplots(1, 2)
 for i in range(len(GDDs_and_TODs)):
     axs[0].plot(grating_pos[i], GDDs_and_TODs[i][0], 'x', color='tab:red')
     axs[1].plot(grating_pos[i], GDDs_and_TODs[i][1], 'x', color='tab:blue')
+    axs[1].plot(grating_pos[i], 0, 'x', color='tab:blue')
 axs[0].set_xlabel('Compressor Grating Position, mm')
 axs[1].set_xlabel('Compressor Grating Position, mm')
 axs[0].set_ylabel('GDD, fs^2')
@@ -127,10 +129,11 @@ axs[1].set_ylabel('TOD, fs^3')
 
 # Save the data
 header = ['Grating Position, mm', 'GDD, fs^2', 'TOD, fs^3', 'Simulated RMS Width, nm']
-with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\GDD_scans\\data\\real_range_exp_pulse_input\\GDD_TOD_Scan_Widths.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\GDD_scans\\data\\no_TOD_exp_pulse_input\\GDD_TOD_Scan_Widths.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     # write the header
     writer.writerow(header)
     # write the dataS
     for i in range(len(GDDs_and_TODs)):
         writer.writerow([grating_pos[i], GDDs_and_TODs[i][0], GDDs_and_TODs[i][1], wavel_widths[i]*(10**9)])
+        #writer.writerow([grating_pos[i], GDDs_and_TODs[i][0], 0, wavel_widths[i]*(10**9)])
