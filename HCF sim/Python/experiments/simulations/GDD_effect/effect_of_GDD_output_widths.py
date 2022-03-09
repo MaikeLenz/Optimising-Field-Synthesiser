@@ -42,7 +42,7 @@ GDDs=np.linspace(-1000e-30,1000e-30,100)
 # Define fixed params
 c = 299792458 
 wavel=800e-9
-energy=1e-3
+energy=1.5e-3
 
 gas = "Ne"
 Main.gas_str = gas
@@ -89,7 +89,7 @@ for i in range(len(GDDs)):
     Main.phase = ϕω
 
     Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
-    Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+    Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')#, plasma=false)')
     
     #now extract datasets
     Main.eval("ω, Iω = Processing.getIω(duv, :ω, flength)")
