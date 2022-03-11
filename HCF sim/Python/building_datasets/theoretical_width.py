@@ -15,10 +15,11 @@ def theoretical_width(radius, flength, pressure, λ0, τfwhm, energy, gas, trans
     c = 299792458 # m/s
     L = flength # m
     ω0 = 2*np.pi*c/λ0 # λ0 in m, ω0 in /s
-    τ = τfwhm/(2*np.sqrt(2*np.log(2))) # τfwhm in s, τ in s
+    τ = 2*τfwhm/(2*np.sqrt(2*np.log(2))) # τfwhm in s, τ in s
     power = energy/(np.sqrt(np.pi)*τ) # energy in J, power in J/s
     W0 = 0.64*radius # W0 in m, radius in m
     I0 = (power/(np.pi*(W0**2)))*transmission_fraction # I0 in J/s/m^2 
+
 
     # Get data for n2 from Luna
     #Main.ω = ω0
