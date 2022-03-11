@@ -252,4 +252,4 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, init_points=
         except:
             print('No optimal parameters found below the critical power threshold')
 
-    return optimizer.max
+    return optimizer.max, optimizer.res
