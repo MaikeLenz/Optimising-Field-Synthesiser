@@ -503,7 +503,7 @@ for i in range(len(energies)):
     Δλ0=0.1*λ0
     Δenergy= 0.1*energy
     #Ne_pow_errs.append(theoretical_width_exp_error(radius, flength, energy, pressure, gas, dλ_rms, λ0, Δradius, Δflength, Δn2, Δenergy, Δdλ_rms, Δλ0))
-    Ne_pow_errs.append(0.65*Ne_power_theor_widths[i])
+    Ne_pow_errs.append(0.32*Ne_power_theor_widths[i])
 
 Ne_pow_errs = np.array(Ne_pow_errs)
 
