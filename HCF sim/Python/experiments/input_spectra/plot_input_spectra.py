@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
+plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
+
 #path to txt file
 lines=[]
 columns=[[],[],[],[],[],[],[],[],[],[],[]]
@@ -34,8 +36,11 @@ plt.plot(wavel_nm,intens0_6,label="600mW")
 plt.plot(wavel_nm,intens0_5,label="500mW")
 plt.plot(wavel_nm,intens0_4,label="400mW")
 plt.plot(wavel_nm,intens0_3,label="300mW")
-plt.legend()
-plt.xlabel("Wavelength, nm")
-plt.ylabel("Intensity")
+plt.legend(fontsize=14)
+plt.yticks(fontsize=14)
+plt.xticks(fontsize=14)
+plt.title("Input Spectra", fontsize=20)
+plt.xlabel("Wavelength, nm", fontsize=14)
+plt.ylabel("Intensity, a.u.", fontsize=14)
 plt.show()
 
