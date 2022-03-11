@@ -2,6 +2,7 @@ import numpy as np
 from bayes_opt import BayesianOptimization
 import matplotlib.pyplot as plt
 import statistics
+plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
 
 import sys
 sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\')
@@ -252,4 +253,4 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             f_ax.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 
     plt.show()
-    return optimizer.max
+    return optimizer.max,optimizer.res
