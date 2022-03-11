@@ -18,11 +18,11 @@ from bayes_opt import BayesianOptimization
 # Bounded region of parameter space
 pbounds = {'x': (-5, 5), 'y': (-5, 5)}
 
-inits=np.arange(10,130,30)
-iters=np.arange(10,130,30)
+#inits=np.arange(10,130,30)
+#iters=np.arange(10,130,30)
 labels=[]
-#inits=np.array([1,2])
-#iters=np.array([1,2])
+inits=np.array([1,2])
+iters=np.array([1,2])
 results={}
 for i in inits:
     for j in iters:
