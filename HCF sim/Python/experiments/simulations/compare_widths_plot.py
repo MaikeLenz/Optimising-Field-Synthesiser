@@ -484,7 +484,8 @@ dλ_rms= ang_freq_to_wavel_width(domegas[1],λ0)/(4*np.sqrt(np.log(2)))
 Δλ0=0.1*λ0
 for i in range(len(Ne_pressures)):
     pressure=Ne_pressures[i]
-    Ne_press_errs.append(theoretical_width_exp_error(radius, flength, energy, pressure, gas, dλ_rms, λ0, Δradius, Δflength, Δn2, Δenergy, Δdλ_rms, Δλ0))
+    #Ne_press_errs.append(theoretical_width_exp_error(radius, flength, energy, pressure, gas, dλ_rms, λ0, Δradius, Δflength, Δn2, Δenergy, Δdλ_rms, Δλ0))
+    Ne_press_errs.append(0.32*Ne_pressure_theor_widths[i])
 Ne_press_errs = np.array(Ne_press_errs)
 
 #Ne power scan
@@ -501,7 +502,9 @@ for i in range(len(energies)):
     Δdλ_rms= 0.01*dλ_rms
     Δλ0=0.1*λ0
     Δenergy= 0.1*energy
-    Ne_pow_errs.append(theoretical_width_exp_error(radius, flength, energy, pressure, gas, dλ_rms, λ0, Δradius, Δflength, Δn2, Δenergy, Δdλ_rms, Δλ0))
+    #Ne_pow_errs.append(theoretical_width_exp_error(radius, flength, energy, pressure, gas, dλ_rms, λ0, Δradius, Δflength, Δn2, Δenergy, Δdλ_rms, Δλ0))
+    Ne_power_errs.append(0.32*Ne_power_theor_widths[i])
+
 Ne_pow_errs = np.array(Ne_pow_errs)
 
 #Ar pressure scan
@@ -518,7 +521,9 @@ dλ_rms= ang_freq_to_wavel_width(domegas[1],λ0)/(4*np.sqrt(np.log(2)))
 Δλ0=0.1*λ0
 for i in range(len(Ar_pressures)):
     pressure=Ar_pressures[i]
-    Ar_press_errs.append(theoretical_width_exp_error(radius, flength, energy, pressure, gas, dλ_rms, λ0, Δradius, Δflength, Δn2, Δenergy, Δdλ_rms, Δλ0))
+    #Ar_press_errs.append(theoretical_width_exp_error(radius, flength, energy, pressure, gas, dλ_rms, λ0, Δradius, Δflength, Δn2, Δenergy, Δdλ_rms, Δλ0))
+    Ar_press_errs.append(0.32*Ar_pressure_theor_widths[i])
+
 Ar_press_errs = np.array(Ar_press_errs)
 
 #Ar power scan
@@ -535,7 +540,9 @@ for i in range(len(energies)):
     Δdλ_rms= 0.01*dλ_rms
     Δλ0=0.1*λ0
     Δenergy= 0.1*energy
-    Ar_pow_errs.append(theoretical_width_exp_error(radius, flength, energy, pressure, gas, dλ_rms, λ0, Δradius, Δflength, Δn2, Δenergy, Δdλ_rms, Δλ0))
+    #Ar_pow_errs.append(theoretical_width_exp_error(radius, flength, energy, pressure, gas, dλ_rms, λ0, Δradius, Δflength, Δn2, Δenergy, Δdλ_rms, Δλ0))
+    Ar_pow_errs.append(0.32*Ar_power_theor_widths[i])
+
 Ar_pow_errs = np.array(Ar_pow_errs)
 
 #######################################################################################################################
