@@ -56,7 +56,7 @@ def theoretical_width_exp(radius, flength, energy, pressure, gas, dλ_rms, λ0):
 
 def theoretical_width_exp_error(radius, flength, energy, pressure, gas, dλ_rms, λ0, Δradius=0, Δflength=0, Δn2=0, Δenergy=0, Δdλ_rms=0, Δλ0=0):
     """
-    Returns error for calculation for SPM angular frequency width from experimental parameters, in units /s
+    Returns absolute error for calculation for SPM angular frequency width from experimental parameters, in units /s
     """
     c = 299792458 # m/s
     beta = (2*np.sqrt(2)*np.exp(-0.5)*(np.pi**-0.5)*(c**2))/((0.64**2)*(0.44**2))
@@ -78,4 +78,4 @@ def theoretical_width_exp_error(radius, flength, energy, pressure, gas, dλ_rms,
 
     spm_width = theoretical_width_exp(radius, flength, energy, pressure, gas, dλ_rms, λ0)
 
-    return spm_width*np.sqrt(n2_err + energy_err + flength_err + dλ_rms_err + λ0_err + radius_err)
+    return np.sqrt(n2_err + energy_err + flength_err + dλ_rms_err + λ0_err + radius_err)
