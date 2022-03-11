@@ -23,6 +23,8 @@ from pulse_with_GDD import *
 from Luna_subtarget import *
 from compressor_grating_to_values import *
 
+filepath = 'C:\\Users\\iammo\\Documents\\'
+
 #this function carries out BO for hollow core fibre
 #params to be varied: 
     # Pulse: input energy, τfwhm, central wavelength
@@ -30,7 +32,7 @@ from compressor_grating_to_values import *
 c = 299792458 # m/s
 
 
-def Luna_BO(params, initial_values_HCF, function, Gaussian = False, init_points=50, n_iter=50, t=np.linspace(-20,100,20000), plotting=True, wavel_bounds=None):     
+def Luna_BO(params, initial_values_HCF, function, Gaussian = False, ImperialLab = False, init_points=50, n_iter=50, t=np.linspace(-20,100,20000), plotting=True, wavel_bounds=None):     
     """
     performs BO with params as specified as strings in params input (params is list of strings) on the HCF.
     init_points: number of initial BO points
@@ -105,23 +107,55 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, init_points=
 
         try:
             if Gaussian == False:
-                #Custom data pulse is defined and passed to prop capillary
-                domega = 2*np.pi*0.44/τfwhm
-                omega = np.linspace(2*np.pi*c/params_dict["λ0"] - domega/2, 2*np.pi*c/params_dict["λ0"] + domega/2, 100)
+                if ImperialLab == False:
+                    #Custom data pulse is defined and passed to prop capillary
+                    domega = 2*np.pi*0.44/τfwhm
+                    omega = np.linspace(2*np.pi*c/params_dict["λ0"] - domega/2, 2*np.pi*c/params_dict["λ0"] + domega/2, 100)
 
-                GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=params_dict["grating_pair_displacement"]*1000)
+                    GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=params_dict["grating_pair_displacement"]*1000)
 
-                E, ϕω = E_field_freq(omega, GD=0.0, wavel=params_dict["λ0"], domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
-                Iω = np.abs(E**2)
+                    E, ϕω = E_field_freq(omega, GD=0.0, wavel=params_dict["λ0"], domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
+                    Iω = np.abs(E**2)
 
 
-                Main.ω = omega
-                Main.Iω = Iω  
-                Main.phase = ϕω 
-                # Pass data to Luna
-                Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
-                Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+                    Main.ω = omega
+                    Main.Iω = Iω  
+                    Main.phase = ϕω 
+                    # Pass data to Luna
+                    Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
+                    Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+                else:
+                    # Get experimental input spectrum, scale energy and apply phase
+                    lines=[]
+                    columns=[[],[],[],[],[],[],[],[],[],[],[]]
+                    with open (filepath+'Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\HCF_scans\\power in\\Input_Power_Scan.txt', 'rt') as myfile:  # Open lorem.txt for reading
+                        for myline in myfile:
+                            lines.append(myline)
 
+                    c = 299792458 # m/s
+                    #print(lines[:22])
+                    data=lines[22:] #gets rid of all the stuff at the top
+                    data=data[int(len(data)/2):]
+                    for i in data:
+                        cut=i.split("\t") #delimiter is \t
+                        for j ,value in enumerate(cut):
+                            columns[j].append(float(value))
+
+                    wavel_nm = np.array(columns[0])
+                    intens = np.array(columns[3])
+                    omega_list=2*np.pi*c/(wavel_nm*10**-9)
+                    Main.ω = omega_list[::-1]
+                    Main.Iω = intens[::-1]
+
+                    GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=params_dict["grating_pair_displacement"]*1000)
+                    phase = []
+                    for j in range(len(omega_list)):
+                        phase.append(get_phi(omega=omega_list[j], omega0=2*np.pi*c/params_dict["λ0"], CEP=0, GD=0, GDD=GDD, TOD=TOD, FoOD=0, FiOD=0))
+                    Main.phase = phase
+
+                    Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
+                    Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+                
             else:
                 #default gaussian pulse passed to prop capillary
                 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
@@ -142,7 +176,7 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, init_points=
 
             λ = Main.λ
             Iλ = Main.Iλ    
-            
+                
             return function(t, Et, λ, Iλ)*power_condition #pass t and E to sub-target function
         except:
             return 0
@@ -210,22 +244,54 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, init_points=
     if plotting == True:
         try:
             if Gaussian == False:
-                λ0 = Main.λ0
-                τfwhm = Main.τfwhm
-                domega = 2*np.pi*0.44/τfwhm
-                omega = np.linspace(2*np.pi*c/λ0 - domega/2, 2*np.pi*c/λ0 + domega/2, 100)
+                if ImperialLab == False:
+                    λ0 = Main.λ0
+                    τfwhm = Main.τfwhm
+                    domega = 2*np.pi*0.44/τfwhm
+                    omega = np.linspace(2*np.pi*c/λ0 - domega/2, 2*np.pi*c/λ0 + domega/2, 100)
 
-                GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=grating_pair_displacement*1000)
+                    GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=grating_pair_displacement*1000)
 
-                E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0, domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
-                Iω = np.abs(E**2)
+                    E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0, domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
+                    Iω = np.abs(E**2)
 
-                Main.ω = omega
-                Main.Iω = Iω  
-                Main.phase = ϕω 
-                Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
-                Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+                    Main.ω = omega
+                    Main.Iω = Iω  
+                    Main.phase = ϕω 
+                    Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
+                    Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+                else:
+                    # Get experimental input spectrum, scale energy and apply phase
+                    lines=[]
+                    columns=[[],[],[],[],[],[],[],[],[],[],[]]
+                    with open (filepath+'Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\HCF_scans\\power in\\Input_Power_Scan.txt', 'rt') as myfile:  # Open lorem.txt for reading
+                        for myline in myfile:
+                            lines.append(myline)
 
+                    c = 299792458 # m/s
+                    #print(lines[:22])
+                    data=lines[22:] #gets rid of all the stuff at the top
+                    data=data[int(len(data)/2):]
+                    for i in data:
+                        cut=i.split("\t") #delimiter is \t
+                        for j ,value in enumerate(cut):
+                            columns[j].append(float(value))
+
+                    wavel_nm = np.array(columns[0])
+                    intens = np.array(columns[3])
+                    omega_list=2*np.pi*c/(wavel_nm*10**-9)
+                    Main.ω = omega_list[::-1]
+                    Main.Iω = intens[::-1]
+
+                    GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=grating_pair_displacement*1000)
+                    phase = []
+                    for j in range(len(omega_list)):
+                        phase.append(get_phi(omega=omega_list[j], omega0=2*np.pi*c/params_dict["λ0"], CEP=0, GD=0, GDD=GDD, TOD=TOD, FoOD=0, FiOD=0))
+                    Main.phase = phase
+
+                    Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
+                    Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+                
             else:
                 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
 
