@@ -470,22 +470,65 @@ for i in range(len(Ne_pressures)):
 Ne_press_errs=[]
 energy=energies[1]
 gas = "Ne"
-dλ_rms=
 λ0 = λ0s[1]
+dλ_rms= ang_freq_to_wavel_width(domegas[1],λ0)/(4*np.sqrt(np.log(2)))
 Δradius= 0
 Δflength= 0
 Δn2= 0.25e-21/10000
 Δenergy= 0.1*energy
 Δdλ_rms= 0.01*dλ_rms
-Δλ0=
+Δλ0=0.1*λ0
 for i in range(len(Ne_pressures)):
-    
-
     pressure=pressure[i]
-    err_i=theoretical_width_exp_error(radius, flength, energy, pressure, gas, dλ_rms, λ0, Δradius, Δflength, Δn2, Δenergy, Δdλ_rms, Δλ0)
+    Ne_press_errs.append(theoretical_width_exp_error(radius, flength, energy, pressure, gas, dλ_rms, λ0, Δradius, Δflength, Δn2, Δenergy, Δdλ_rms, Δλ0))
 
+#Ne power scan
+Ne_pow_errs=[]
+gas = "Ne"
+Δradius= 0
+Δflength= 0
+Δn2= 0.25e-21/10000
+pressure=3*0.66
+for i in range(len(energies)):
+    energy=energies[i]
+    λ0=λ0s[i]
+    dλ_rms= ang_freq_to_wavel_width(domegas[i],λ0)/(4*np.sqrt(np.log(2)))
+    Δdλ_rms= 0.01*dλ_rms
+    Δλ0=0.1*λ0
+    Δenergy= 0.1*energy
+    Ne_pow_errs.append(theoretical_width_exp_error(radius, flength, energy, pressure, gas, dλ_rms, λ0, Δradius, Δflength, Δn2, Δenergy, Δdλ_rms, Δλ0))
 
+#Ar pressure scan
+Ar_press_errs=[]
+energy=energies[1]
+gas = "Ar"
+λ0 = λ0s[1]
+dλ_rms= ang_freq_to_wavel_width(domegas[1],λ0)/(4*np.sqrt(np.log(2)))
+Δradius= 0
+Δflength= 0
+Δn2= 0.05e-19/10000
+Δenergy= 0.1*energy
+Δdλ_rms= 0.01*dλ_rms
+Δλ0=0.1*λ0
+for i in range(len(Ar_pressures)):
+    pressure=pressure[i]
+    Ne_press_errs.append(theoretical_width_exp_error(radius, flength, energy, pressure, gas, dλ_rms, λ0, Δradius, Δflength, Δn2, Δenergy, Δdλ_rms, Δλ0))
 
+#Ar power scan
+Ar_pow_errs=[]
+gas = "Ar"
+Δradius= 0
+Δflength= 0
+Δn2= 0.05e-19/10000
+pressure= 0.8*0.66
+for i in range(len(energies)):
+    energy=energies[i]
+    λ0=λ0s[i]
+    dλ_rms= ang_freq_to_wavel_width(domegas[i],λ0)/(4*np.sqrt(np.log(2)))
+    Δdλ_rms= 0.01*dλ_rms
+    Δλ0=0.1*λ0
+    Δenergy= 0.1*energy
+    Ne_pow_errs.append(theoretical_width_exp_error(radius, flength, energy, pressure, gas, dλ_rms, λ0, Δradius, Δflength, Δn2, Δenergy, Δdλ_rms, Δλ0))
 
 
 #######################################################################################################################
