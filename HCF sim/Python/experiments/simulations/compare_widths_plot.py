@@ -435,13 +435,13 @@ def ang_freq_to_wavel_width(width, wavel):
 Ar_power_theor_widths = []
 pressure = 0.8*0.66
 for i in range(len(energies)):
-    ang_freq_width = theoretical_width(radius, flength, pressure, λ0s[i], ang_freq_to_τ_FWHM(domegas[i]), energies[i])
+    ang_freq_width = theoretical_width(radius, flength, pressure, λ0s[i], ang_freq_to_τ_FWHM(domegas[i]), energies[i], 'Ne', 0.56)
     Ar_power_theor_widths.append(ang_freq_to_wavel_width(ang_freq_width, λ0s[i])*(10**9))
 # Neon power scan
 Ne_power_theor_widths = []
 pressure = 3*0.66
 for i in range(len(energies)):
-    ang_freq_width = theoretical_width(radius, flength, pressure, λ0s[i], ang_freq_to_τ_FWHM(domegas[i]), energies[i])
+    ang_freq_width = theoretical_width(radius, flength, pressure, λ0s[i], ang_freq_to_τ_FWHM(domegas[i]), energies[i], 'Ne', 0.69)
     Ne_power_theor_widths.append(ang_freq_to_wavel_width(ang_freq_width, λ0s[i])*(10**9))
 # Argon pressure scan
 Ar_pressures = [1.4, 1.2, 1.0, 0.8, 0.6, 0.4, 0.2]
@@ -450,7 +450,7 @@ energy = energies[1]
 λ0 = λ0s[1]
 domega = domegas[1]
 for i in range(len(Ar_pressures)):
-    ang_freq_width = theoretical_width(radius, flength, Ar_pressures[i]*0.66, λ0, ang_freq_to_τ_FWHM(domega), energy)
+    ang_freq_width = theoretical_width(radius, flength, Ar_pressures[i]*0.66, λ0, ang_freq_to_τ_FWHM(domega), energy, 'Ne', 0.62)
     Ar_pressure_theor_widths.append(ang_freq_to_wavel_width(ang_freq_width, λ0)*(10**9))
 # Neon pressure scan
 Ne_pressures = [3.6, 3.4, 3.2, 3.0, 2.8, 2.6, 2.4, 2.2, 2.0, 1.8, 1.6, 1.4, 1.2, 1.0]
@@ -459,7 +459,7 @@ energy = energies[1]
 λ0 = λ0s[1]
 domega = domegas[1]
 for i in range(len(Ne_pressures)):
-    ang_freq_width = theoretical_width(radius, flength, Ne_pressures[i]*0.66, λ0, ang_freq_to_τ_FWHM(domega), energy)
+    ang_freq_width = theoretical_width(radius, flength, Ne_pressures[i]*0.66, λ0, ang_freq_to_τ_FWHM(domega), energy, 'Ne', 0.71)
     Ne_pressure_theor_widths.append(ang_freq_to_wavel_width(ang_freq_width, λ0)*(10**9))
 
 
