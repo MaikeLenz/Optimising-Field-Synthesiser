@@ -76,6 +76,6 @@ def theoretical_width_exp_error(radius, flength, energy, pressure, gas, dλ_rms,
     λ0_err = (((5*beta*n2*energy*flength*(dλ_rms**2))/((λ0**6)*(radius**2)))**2) * (Δλ0**2)
     radius_err = (((2*beta*n2*energy*flength*(dλ_rms**2))/((λ0**5)*(radius**3)))**2) * (Δradius**2)
 
-    spm_width = theoretical_width_exp(radius, flength, energy, pressure, gas, dλ_rms, λ0)
+    #spm_width = theoretical_width_exp(radius, flength, energy, pressure, gas, dλ_rms, λ0)
 
     return np.sqrt(n2_err + energy_err + flength_err + dλ_rms_err + λ0_err + radius_err)
