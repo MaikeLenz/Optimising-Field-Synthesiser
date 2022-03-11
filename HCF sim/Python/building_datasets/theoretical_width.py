@@ -15,10 +15,11 @@ def theoretical_width(radius, flength, pressure, λ0, τfwhm, energy, gas, trans
     c = 299792458 # m/s
     L = flength # m
     ω0 = 2*np.pi*c/λ0 # λ0 in m, ω0 in /s
-    τ = τfwhm/(2*np.sqrt(2*np.log(2))) # τfwhm in s, τ in s
+    τ = 2*τfwhm/(2*np.sqrt(2*np.log(2))) # τfwhm in s, τ in s
     power = energy/(np.sqrt(np.pi)*τ) # energy in J, power in J/s
     W0 = 0.64*radius # W0 in m, radius in m
     I0 = power/(np.pi*(W0**2))*transmission_fraction # I0 in J/s/m^2 
+
 
     # Get data for n2 from Luna
     #Main.ω = ω0
@@ -32,14 +33,14 @@ def theoretical_width(radius, flength, pressure, λ0, τfwhm, energy, gas, trans
     #get n2 from paper: https://link.springer.com/article/10.1007/s00340-013-5354-0
     if gas == 'Ne':
         #n2=(9.30 ± 0.25) × 10−21 cm2/W bar
-        n2=(9.3e-21*pressure/10000)/10 #convert to m^2/W
+        n2=(9.3e-21*pressure/10000) #convert to m^2/W
         #second Neon paper: 7.5 × 10−21 cm2/W bar
         #from M. Nurhuda, A. Suda, M. Kaku, K. Midorikawa, Appl. Phys. B 89, 209 (2007)
         #n2=7.5e-21*pressure/10000
     elif gas == 'Ar':
         #n2 for Argon:
         #(1.11 ± 0.05) × 10−19 cm2/W bar
-        n2=(1.11e-19*pressure/10000)/10
+        n2=(1.11e-19*pressure/10000)
 
     return 2*np.sqrt(2)*np.exp(-0.5)*ω0*n2*I0*L/(c*τ)
 

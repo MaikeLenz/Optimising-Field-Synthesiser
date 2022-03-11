@@ -467,6 +467,15 @@ for i in range(len(Ne_pressures)):
 # Plot results
 fig, axs = plt.subplots(2,2)
 
+left  = 0.1  # the left side of the subplots of the figure
+right = 0.9    # the right side of the subplots of the figure
+bottom = 0.1   # the bottom of the subplots of the figure
+top = 0.9     # the top of the subplots of the figure
+wspace = 0.4   # the amount of width reserved for blank space between subplots
+hspace = 0.47   # the amount of height reserved for white space between subplots
+
+plt.subplots_adjust(left, bottom, right, top, wspace, hspace)
+
 axs[0,0].plot(powers, Ar_power_theor_widths, color='red')
 axs[0,1].plot(Ar_pressures, Ar_pressure_theor_widths, color='red')
 axs[1,0].plot(powers, Ne_power_theor_widths, color='red')
