@@ -65,9 +65,9 @@ random_rms=statistics.mean(random_rms_l)
 
 ##################################################################################################################################################
 #run BO
-n_inits=np.array([2,4,6,8,10])
-n_iters=np.array([2,4,6,8,10])
-outcomes=np.zeros((5,5))
+n_inits=np.array([2,4,6,8,10,12,14])
+n_iters=np.array([2,4,6,8,10,12,14])
+outcomes=np.zeros((7,7))
 
 #n_inits=np.array([1,2])
 #n_iters=np.array([1,2])
@@ -87,7 +87,7 @@ for i in range(len(n_inits)):
         delays=(0,0)
         #pass to synthesiser
         Synth=Synthesiser(pulses,delays)
-        BO_out=BO(params, Synth, maxIntens, init_points=n_inits[i],n_iter=n_iters[j], t=t)
+        BO_out,BO_res=BO(params, Synth, maxIntens, init_points=n_inits[i],n_iter=n_iters[j], t=t)
         outcomes[i][j]=BO_out["target"]/random_rms
 
 ###################################################################################################################
@@ -97,6 +97,8 @@ plt.imshow(outcomes,extent=(n_iters[0],n_iters[-1],n_inits[0],n_inits[-1]),aspec
 plt.xlabel("Iterations",fontsize=16)
 plt.ylabel("Initial Points",fontsize=16)
 cbar=plt.colorbar()
-cbar.ax.set_ylabel('ratio of max intensity to random input', rotation=270, labelpad=15,fontsize=16)
+cbar.ax.set_ylabel('Ratio', rotation=270, labelpad=15,fontsize=16)
+cbar.ax.tick_params(labelsize=14)
+plt.title("Ration optimised maximum intensity to random input",fontsize=20)
 plt.show()
 
