@@ -28,17 +28,16 @@ params=["energy", "pressure", "grating_pair_displacement"]
 gas="Ne"
 initial_values_HCF=[175e-6, 1.05, gas, 2, 800e-9, 0.5e-3, 30e-15, 0]
 
-result,iterations=Luna_BO(params, initial_values_HCF, function=max_bandwidth, init_points=100, n_iter=100, wavel_bounds=(1300e-9, 1500e-9))
+result,iterations=Luna_BO(params, initial_values_HCF, function=max_bandwidth, ImperialLab=True, init_points=100, n_iter=100, wavel_bounds=(1300e-9, 1500e-9))
 
 #for i, res in enumerate(iterations):
 #    print("Iteration {}: \n\t{}".format(i, res))
 
 
 header = ['Iteration', "target width, \m", "energy, J","pressure, bar","grating pair displacement, m"]
-with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\'+gas+".csv", 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\'+gas+"_Exp_Input.csv", 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     writer.writerow(header)
     for i, res in enumerate(iterations):
         writer.writerow([i,res["target"],res["params"]["energy"],res["params"]["pressure"],res["params"]["grating_pair_displacement"]])
-
         
