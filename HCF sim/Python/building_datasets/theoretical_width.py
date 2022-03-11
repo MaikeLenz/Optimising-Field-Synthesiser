@@ -33,6 +33,10 @@ def theoretical_width(radius, flength, pressure, λ0, τfwhm, energy, gas, trans
     #n2=(9.30 ± 0.25) × 10−21 cm2/W bar
     #n2=9.3e-21*pressure/10000 #convert to m^2/W
 
+    #n2 for Argon:
+    #(1.11 ± 0.05) × 10−19 cm2/W bar
+    n2=1.11e-19*pressure/10000
+
 
     return 2*np.sqrt(2)*np.exp(-0.5)*ω0*n2*I0*L/(c*τ)
 
