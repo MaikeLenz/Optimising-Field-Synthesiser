@@ -122,7 +122,8 @@ for i in range(len(Et_out)):
     superG_widths.append(popt[2])
     normint_widths.append(norm_and_int(om_out[i],Iom_out[i]))
     GDD_width=GDD_duration(GDDs[i],fwhm_duration)
-    SPM_widths.append(theoretical_width(radius, flength, 0.66*pressure[1], wavel, GDD_width, energy))
+    transmission_fraction=0.6
+    SPM_widths.append(theoretical_width(radius, flength, 0.66*pressure[1], wavel, GDD_width, energy, gas, transmission_fraction))
 
 GDDs=np.array(GDDs)
 rms_widths=np.array(rms_widths)
