@@ -37,6 +37,10 @@ def theoretical_width(radius, flength, pressure, λ0, τfwhm, energy, gas, trans
     #(1.11 ± 0.05) × 10−19 cm2/W bar
     n2=1.11e-19*pressure/10000
 
+    #second Neon paper: 7.5 × 10−21 cm2/W bar
+    #from M. Nurhuda, A. Suda, M. Kaku, K. Midorikawa, Appl. Phys. B 89, 209 (2007)
+    n2=7.5e-21*pressure/10000
+
 
     return 2*np.sqrt(2)*np.exp(-0.5)*ω0*n2*I0*L/(c*τ)
 
