@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import csv  
 import sys
+plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
 
 sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
 #sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\")
@@ -36,15 +37,15 @@ n=5
 gdd_step=500e-30 #in fs^2
 gdd_mid=0
 #GDDs=[gdd_mid-4*gdd_step,gdd_mid-3*gdd_step,gdd_mid-2*gdd_step,gdd_mid-gdd_step,gdd_mid,gdd_mid+gdd_step,gdd_mid+2*gdd_step,gdd_mid+3*gdd_step,gdd_mid+4*gdd_step]
-GDDs=np.linspace(-1000e-30,1000e-30,100)
+GDDs=np.linspace(-10000e-30,10000e-30,100)
 
 
 # Define fixed params
 c = 299792458 
 wavel=800e-9
-energy=1e-3
+energy=1.5e-3
 
-gas = "Ar"
+gas = "Ne"
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
 pressure = (0,3)
@@ -89,7 +90,7 @@ for i in range(len(GDDs)):
     Main.phase = ϕω
 
     Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
-    Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6), plasma=false)')
+    Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
     
     #now extract datasets
     Main.eval("ω, Iω = Processing.getIω(duv, :ω, flength)")
@@ -97,8 +98,7 @@ for i in range(len(GDDs)):
 
     ω = Main.ω
     Iω = Main.Iω
-    Iω=Iω.reshape((-1,))[0:500]
-    ω=ω[0:500]
+    Iω=Iω.reshape((-1,))
     Iom_out.append(Iω)
     om_out.append(ω)
 
@@ -123,7 +123,7 @@ for i in range(len(Et_out)):
     normint_widths.append(norm_and_int(om_out[i],Iom_out[i]))
     GDD_width=GDD_duration(GDDs[i],fwhm_duration)
     transmission_fraction=0.6
-    SPM_widths.append(theoretical_width(radius, flength, 0.66*pressure[1], wavel, GDD_width, energy, gas, transmission_fraction))
+    SPM_widths.append(theoretical_width(radius, flength, 0.66*pressure[1], wavel, GDD_width, energy, gas, transmission_fraction)/(4*np.sqrt(np.log(2))))
 
 GDDs=np.array(GDDs)
 rms_widths=np.array(rms_widths)
@@ -140,18 +140,25 @@ scaling_normint=max(SPM_widths)/max(normint_widths)
 fig, ax1 = plt.subplots()
 
 #ax2 = ax1.twinx()
-ax1.plot(GDDs*10**30,SPM_widths,label="Theoretical SPM Broadening",color="tab:blue")
-ax1.plot(GDDs*10**30,rms_widths*scaling_rms,label="RMS Width times %s"%(round(scaling_rms,2)),color="tab:orange")
-ax1.plot(GDDs*10**30,thresh_widths*scaling_thresh,label="Threshold Width times %s"%(round(scaling_thresh,2)),color="tab:green")
-ax1.plot(GDDs*10**30,superG_widths*scaling_superG,label="Super Gaussian Width times %s"%(round(scaling_superG,2)),color="tab:red")
-ax1.plot(GDDs*10**30,normint_widths*scaling_normint,label="Normalised Integral times %s"%(round(scaling_normint,2)),color="tab:purple")
+"""
+ax1.plot(GDDs*10**30,SPM_widths,label="Theoretical SPM Broadening")
+ax1.plot(GDDs*10**30,rms_widths*scaling_rms,label="RMS Width times %s"%(round(scaling_rms,2)))
+ax1.plot(GDDs*10**30,thresh_widths*scaling_thresh,label="Threshold Width times %s"%(round(scaling_thresh,2)))
+ax1.plot(GDDs*10**30,superG_widths*scaling_superG,label="Super Gaussian Width times %s"%(round(scaling_superG,2)))
+ax1.plot(GDDs*10**30,normint_widths*scaling_normint,label="Normalised Integral times %s"%(round(scaling_normint,2)))
+"""
+ax1.plot(GDDs*10**30,SPM_widths,label="Theoretical SPM Broadening")
+ax1.plot(GDDs*10**30,rms_widths,label="RMS Width")
+ax1.plot(GDDs*10**30,thresh_widths,label="Threshold Width")
+#ax1.plot(GDDs*10**30,superG_widths,label="Super Gaussian Width times %s"%(round(scaling_superG,2)))
+ax1.plot(GDDs*10**30,normint_widths,label="Normalised Integral")
 
 ax1.set_xlabel("GDD, fs$\mathrm{^2}$",fontsize=14)
 ax1.set_ylabel("Widths, s$\mathrm{^{-1}}$",fontsize=14)
 #ax2.set_ylabel("Theoretical GDD Broadening/ Threshold Width, s",fontsize=14)
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
-plt.legend(fontsize=16,loc="lower right")
+plt.legend(fontsize=16,loc="upper right")
 plt.title("Frequency Width Comparison Output Pulse", fontsize=20)
 plt.show()
 """

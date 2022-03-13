@@ -13,6 +13,12 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\chirp\\')
 from pulse_with_GDD import *
 
+sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\")
+#sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\")
+from theoretical_width import *
+from theoretical_GDD_duration import *
+
+
 julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
 #julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
 
@@ -24,17 +30,21 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 
 from rms_width import *
+from width_methods import *
+
+plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
+
 c = 299792458 # m/s
 n=5
 gdd_step=50e-30 #in fs^2
-gdd_mid=-200e-30
-GDDs=[gdd_mid-2*gdd_step,gdd_mid-gdd_step,gdd_mid,gdd_mid+gdd_step,gdd_mid+2*gdd_step]
-#GDDs=np.array([-200e-30,-100e-30,0,100e-30,200e-30])
+gdd_mid=0
+
+GDDs=np.array([-1000e-30,-500e-30,0,500e-30,1000e-30])
 print(GDDs)
 # Define fixed params
 c = 299792458 
 wavel=800e-9
-energy=1e-3
+energy=1.5e-3
 
 gas = "Ar"
 Main.gas_str = gas
@@ -89,8 +99,8 @@ for i in range(len(GDDs)):
 
     ω = Main.ω
     Iω = Main.Iω
-    Iω=Iω.reshape((-1,))[0:500]
-    ω=ω[0:500]
+    Iω=Iω.reshape((-1,))
+    ω=ω
     Iom_out.append(Iω)
     om_out.append(ω)
 
@@ -149,12 +159,75 @@ for i in range(len(axes)):
         if i==12:
             axes[i].set_title("Output Spectral Energy Density",fontsize=16)
         axes[i].plot(om_out[i-10]*10**-15,Iom_out[i-10]*10**18)
-        axes[i].set_xlim(2.1,2.6)
+        #axes[i].set_xlim(2.1,2.6)
         axes[i].set_ylabel("I, a.u.",fontsize=12)
         axes[i].set_xlabel("$\mathrm{\omega}$, 10$\mathrm{^{15}}$s$\mathrm{^{-1}}$",fontsize=12)
 #ax3.plot(t,zero_GDD_shape)
 
+thresh_widths=[]
+rms_widths=[]
+#superG_widths=[]
+normint_widths=[]
+SPM_widths=[]
+
+from scipy.optimize import curve_fit
+for i in range(len(Et_out)):
+    rms_widths.append(rms_width(om_out[i],Iom_out[i]))
+    thresh_widths.append(threshold(om_out[i],Iom_out[i]))
+    #popt, pcov = curve_fit(superGauss, om_out[i], Iom_out[i], p0=[6, 2*np.pi*c/800e-9, 2e14])
+    #superG_widths.append(popt[2])
+    normint_widths.append(norm_and_int(om_out[i],Iom_out[i]))
+    GDD_width=GDD_duration(GDDs[i],fwhm_duration)
+    transmission_fraction=0.6
+    SPM_widths.append(theoretical_width(radius, flength, 0.66*pressure[1], wavel, GDD_width, energy, gas, transmission_fraction)/(4*np.sqrt(np.log(2))))
+
+GDDs=np.array(GDDs)
+rms_widths=np.array(rms_widths)
+thresh_widths=np.array(thresh_widths)
+#superG_widths=np.array(superG_widths)
+SPM_widths=np.array(SPM_widths)
+normint_widths=np.array(normint_widths)
+
+scaling_rms=max(SPM_widths)/max(rms_widths)
+scaling_thresh=max(SPM_widths)/max(thresh_widths)
+#scaling_superG=max(SPM_widths)/max(superG_widths)
+scaling_normint=max(SPM_widths)/max(normint_widths)
+
+fig, ax1 = plt.subplots()
+
+#ax2 = ax1.twinx()
+"""
+ax1.plot(GDDs*10**30,SPM_widths,label="Theoretical SPM Broadening")
+ax1.plot(GDDs*10**30,rms_widths*scaling_rms,label="RMS Width times %s"%(round(scaling_rms,2)))
+ax1.plot(GDDs*10**30,thresh_widths*scaling_thresh,label="Threshold Width times %s"%(round(scaling_thresh,2)))
+ax1.plot(GDDs*10**30,superG_widths*scaling_superG,label="Super Gaussian Width times %s"%(round(scaling_superG,2)))
+ax1.plot(GDDs*10**30,normint_widths*scaling_normint,label="Normalised Integral times %s"%(round(scaling_normint,2)))
+"""
+ax1.plot(GDDs*10**30,SPM_widths,label="Theoretical SPM Broadening")
+ax1.plot(GDDs*10**30,rms_widths,label="RMS Width")
+ax1.plot(GDDs*10**30,thresh_widths,label="Threshold Width")
+#ax1.plot(GDDs*10**30,superG_widths,label="Super Gaussian Width times %s"%(round(scaling_superG,2)))
+ax1.plot(GDDs*10**30,normint_widths,label="Normalised Integral")
+
+ax1.set_xlabel("GDD, fs$\mathrm{^2}$",fontsize=14)
+ax1.set_ylabel("Widths, s$\mathrm{^{-1}}$",fontsize=14)
+#ax2.set_ylabel("Theoretical GDD Broadening/ Threshold Width, s",fontsize=14)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.legend(fontsize=16,loc="upper right")
+plt.title("Frequency Width Comparison Output Pulse", fontsize=20)
 plt.show()
+"""
+plt.plot(GDDs*10**30,rms_widths,label="RMS Width")
+plt.plot(GDDs*10**30, GDD_widths,label="Theoretical GDD Broadening")
+#plt.plot(GDDs*10**30,SPM_widths,label="Theoretical SPM Broadening")
+plt.xlabel("GDD, fs$\mathrm{^2}$",fontsize=14)
+plt.ylabel("Width",fontsize=14)
+plt.legend(fontsize=16)
+plt.title("Width Comparison", fontsize=20)
+plt.show()
+"""
+
 
 
 
