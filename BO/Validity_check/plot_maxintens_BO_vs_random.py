@@ -18,6 +18,7 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
 from subtargetfunctions import *
 from bossfunction import *
+from bossfunction_noplots import *
 from field_synth_class import *
 #from ErrorCorrectionFunction import * #out of date functions
 from ErrorCorrectionFunction_integrate import *
@@ -65,9 +66,9 @@ random_rms=statistics.mean(random_rms_l)
 
 ##################################################################################################################################################
 #run BO
-n_inits=np.array([2,4,6,8,10,12,14])
-n_iters=np.array([2,4,6,8,10,12,14])
-outcomes=np.zeros((7,7))
+n_inits=np.array([0,2,4,6,8,10,12,14,16,18,20])
+n_iters=np.array([0,2,4,6,8,10,12,14,16,18,20])
+outcomes=np.zeros((11,11))
 
 #n_inits=np.array([1,2])
 #n_iters=np.array([1,2])
@@ -87,7 +88,7 @@ for i in range(len(n_inits)):
         delays=(0,0)
         #pass to synthesiser
         Synth=Synthesiser(pulses,delays)
-        BO_out,BO_res=BO(params, Synth, maxIntens, init_points=n_inits[i],n_iter=n_iters[j], t=t)
+        BO_out,BO_res=BO_noplot(params, Synth, maxIntens, init_points=n_inits[i],n_iter=n_iters[j], t=t)
         outcomes[i][j]=BO_out["target"]/random_rms
 
 ###################################################################################################################

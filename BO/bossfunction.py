@@ -124,6 +124,9 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         )
 
     print(optimizer.max) #final parameters
+
+    
+
     final_dict=Synth.create_dict()
     for key,value in optimizer.max["params"].items():
             final_dict[key] = value
