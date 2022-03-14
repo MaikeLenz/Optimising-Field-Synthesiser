@@ -1,6 +1,10 @@
 import sys
 import matplotlib.pyplot as plt
 import pandas as pd
+plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
+plt.rcParams['xtick.labelsize'] = 12
+plt.rcParams['ytick.labelsize'] = 12
+plt.rcParams['axes.labelsize'] = 16
 
 filepath = "C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\"
 #####################################################################################################################
@@ -9,37 +13,37 @@ fig_Ar_powers, axs_Ar_powers = plt.subplots(3,4)
 fig_Ar_powers.suptitle('Argon Power Scan', size=24)
 plt.setp(axs_Ar_powers, xlim=(0,1500))
 plt.setp(axs_Ar_powers[-1, :], xlabel='Wavelength, nm')
-plt.setp(axs_Ar_powers[:, 0], ylabel='Intensity')
+plt.setp(axs_Ar_powers[:, 0], ylabel='Intensity, a.u.')
 
 fig_Ne_powers, axs_Ne_powers = plt.subplots(3,4)
 fig_Ne_powers.suptitle('Neon Power Scan', size=24)
 plt.setp(axs_Ne_powers, xlim=(0,1400))
 plt.setp(axs_Ne_powers[-1, :], xlabel='Wavelength, nm')
-plt.setp(axs_Ne_powers[:, 0], ylabel='Intensity')
+plt.setp(axs_Ne_powers[:, 0], ylabel='Intensity, a.u.')
 
 fig_Ar_pressures, axs_Ar_pressures = plt.subplots(2,4)
 fig_Ar_pressures.suptitle('Argon Pressure Scan', size=24)
 plt.setp(axs_Ar_pressures, xlim=(0,1600))
 plt.setp(axs_Ar_pressures[-1, :], xlabel='Wavelength, nm')
-plt.setp(axs_Ar_pressures[:, 0], ylabel='Intensity')
+plt.setp(axs_Ar_pressures[:, 0], ylabel='Intensity, a.u.')
 
 fig_Ne_pressures, axs_Ne_pressures = plt.subplots(4,4)
 fig_Ne_pressures.suptitle('Neon Pressure Scan', size=24)
 plt.setp(axs_Ne_pressures, xlim=(0,1250))
 plt.setp(axs_Ne_pressures[-1, :], xlabel='Wavelength, nm')
-plt.setp(axs_Ne_pressures[:, 0], ylabel='Intensity')
+plt.setp(axs_Ne_pressures[:, 0], ylabel='Intensity, a.u.')
 
 fig_Ne_GDDs, axs_Ne_GDDs = plt.subplots(3,5)
 fig_Ne_GDDs.suptitle('Neon GDD Scan', size=24)
 #plt.setp(axs_Ne_GDDs, xlim=(0,1250))
 plt.setp(axs_Ne_GDDs[-1, :], xlabel='Wavelength, nm')
-plt.setp(axs_Ne_GDDs[:, 0], ylabel='Intensity')
+plt.setp(axs_Ne_GDDs[:, 0], ylabel='Intensity, a.u.')
 
 fig_Ne_GDDs_fine, axs_Ne_GDDs_fine = plt.subplots(4,4)
 fig_Ne_GDDs_fine.suptitle('Neon GDD Scan', size=24)
 #plt.setp(axs_Ne_GDDs_fine, xlim=(0,1250))
 plt.setp(axs_Ne_GDDs_fine[-1, :], xlabel='Wavelength, nm')
-plt.setp(axs_Ne_GDDs_fine[:, 0], ylabel='Intensity')
+plt.setp(axs_Ne_GDDs_fine[:, 0], ylabel='Intensity, a.u.')
 
 #####################################################################################################################
 # Read simulation data
@@ -50,6 +54,7 @@ Ne_sim_pressures = [1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.4, 2.6, 2.8, 3.0, 3.2, 
 GDDs = [1*0.05, 2*0.05, 3*0.05, 4*0.05, 5*0.05, 6*0.05, 7*0.05, 8*0.05, 9*0.05, 10*0.05, 11*0.05, 12*0.05, 13*0.05, 14*0.05, 15*0.05]
 GDDs_fine = [6*0.05, 6*0.05 + 0.004, 6*0.05 + 0.008, 7*0.05 + 0.002, 7*0.05 + 0.006, 8*0.05, 8*0.05 + 0.004, 8*0.05 + 0.008, 9*0.05 + 0.002, 9*0.05 + 0.006, 10*0.05, 10*0.05 +0.004, 10*0.05 + 0.008, 11*0.05 + 0.002, 11*0.05 +0.006, 12*0.05]
 
+"""
 # Gaussian input simulations
 # Argon power scan
 df = pd.read_csv(filepath+"simulations\\data\\pressure_gradient\\gaussian_input\\Ar_PowerScan_0.3")
@@ -140,12 +145,12 @@ df = pd.read_csv(filepath+"simulations\\data\\pressure_gradient\\gaussian_input\
 axs_Ne_pressures[0,1].plot(df.iloc[:,0], df.iloc[:,1])
 df = pd.read_csv(filepath+"simulations\\data\\pressure_gradient\\gaussian_input\\Ne_PressureScan_3.6")
 axs_Ne_pressures[0,0].plot(df.iloc[:,0], df.iloc[:,1])
-
+"""
 #####################################################################################################################
 # Pulse input simulations
 # Argon power scan
 df = pd.read_csv(filepath+"simulations\\data\\pressure_gradient\\pulse_input\\Ar_PowerScan_0.3")
-axs_Ar_powers[2,1].plot(df.iloc[:,0], df.iloc[:,1], label='Simulation with Experimental input')
+axs_Ar_powers[2,1].plot(df.iloc[:,0], df.iloc[:,1], label='Luna Simulation')
 df = pd.read_csv(filepath+"simulations\\data\\pressure_gradient\\pulse_input\\Ar_PowerScan_0.4")
 axs_Ar_powers[2,0].plot(df.iloc[:,0], df.iloc[:,1])
 df = pd.read_csv(filepath+"simulations\\data\\pressure_gradient\\pulse_input\\Ar_PowerScan_0.5")
@@ -167,7 +172,7 @@ axs_Ar_powers[0,0].plot(df.iloc[:,0], df.iloc[:,1])
 
 # Neon power scan
 df = pd.read_csv(filepath+"simulations\\data\\pressure_gradient\\pulse_input\\Ne_PowerScan_0.3")
-axs_Ne_powers[2,1].plot(df.iloc[:,0], df.iloc[:,1], label='Simulation with Experimental input')
+axs_Ne_powers[2,1].plot(df.iloc[:,0], df.iloc[:,1], label='Luna Simulation')
 df = pd.read_csv(filepath+"simulations\\data\\pressure_gradient\\pulse_input\\Ne_PowerScan_0.4")
 axs_Ne_powers[2,0].plot(df.iloc[:,0], df.iloc[:,1])
 df = pd.read_csv(filepath+"simulations\\data\\pressure_gradient\\pulse_input\\Ne_PowerScan_0.5")
@@ -189,7 +194,7 @@ axs_Ne_powers[0,0].plot(df.iloc[:,0], df.iloc[:,1])
 
 # Argon pressure scan
 df = pd.read_csv(filepath+"simulations\\data\\pressure_gradient\\pulse_input\\Ar_PressureScan_0.2")
-axs_Ar_pressures[1,2].plot(df.iloc[:,0], df.iloc[:,1], label='Simulation with Experimental input')
+axs_Ar_pressures[1,2].plot(df.iloc[:,0], df.iloc[:,1], label='Luna Simulation')
 df = pd.read_csv(filepath+"simulations\\data\\pressure_gradient\\pulse_input\\Ar_PressureScan_0.4")
 axs_Ar_pressures[1,1].plot(df.iloc[:,0], df.iloc[:,1])
 df = pd.read_csv(filepath+"simulations\\data\\pressure_gradient\\pulse_input\\Ar_PressureScan_0.6")
@@ -205,7 +210,7 @@ axs_Ar_pressures[0,0].plot(df.iloc[:,0], df.iloc[:,1])
 
 # Neon pressure scan
 df = pd.read_csv(filepath+"simulations\\data\\pressure_gradient\\pulse_input\\Ne_PressureScan_1.0")
-axs_Ne_pressures[3,1].plot(df.iloc[:,0], df.iloc[:,1], label='Simulation with Experimental input')
+axs_Ne_pressures[3,1].plot(df.iloc[:,0], df.iloc[:,1], label='Luna Simulation')
 df = pd.read_csv(filepath+"simulations\\data\\pressure_gradient\\pulse_input\\Ne_PressureScan_1.2")
 axs_Ne_pressures[3,0].plot(df.iloc[:,0], df.iloc[:,1])
 df = pd.read_csv(filepath+"simulations\\data\\pressure_gradient\\pulse_input\\Ne_PressureScan_1.4")
@@ -266,16 +271,16 @@ I0_4=columns[10]
 I0_3=columns[11]
 
 # Plot experimental data
-axs_Ar_powers[0,0].plot(wavel_nm, I1_2, color='black')
-axs_Ar_powers[0,1].plot(wavel_nm, I1_1, color='black')
-axs_Ar_powers[0,2].plot(wavel_nm, I1_0, color='black')
-axs_Ar_powers[0,3].plot(wavel_nm, I0_9, color='black')
-axs_Ar_powers[1,0].plot(wavel_nm, I0_8, color='black')
-axs_Ar_powers[1,1].plot(wavel_nm, I0_7, color='black')
-axs_Ar_powers[1,2].plot(wavel_nm, I0_6, color='black')
-axs_Ar_powers[1,3].plot(wavel_nm, I0_5, color='black')
-axs_Ar_powers[2,0].plot(wavel_nm, I0_4, color='black')
-axs_Ar_powers[2,1].plot(wavel_nm, I0_3, color='black', label='Experimental data')
+axs_Ar_powers[0,0].plot(wavel_nm, I1_2)
+axs_Ar_powers[0,1].plot(wavel_nm, I1_1)
+axs_Ar_powers[0,2].plot(wavel_nm, I1_0)
+axs_Ar_powers[0,3].plot(wavel_nm, I0_9)
+axs_Ar_powers[1,0].plot(wavel_nm, I0_8)
+axs_Ar_powers[1,1].plot(wavel_nm, I0_7)
+axs_Ar_powers[1,2].plot(wavel_nm, I0_6)
+axs_Ar_powers[1,3].plot(wavel_nm, I0_5)
+axs_Ar_powers[2,0].plot(wavel_nm, I0_4)
+axs_Ar_powers[2,1].plot(wavel_nm, I0_3, label='Experimental Data')
 
 
 # Neon PowerScan
@@ -304,16 +309,16 @@ I0_4=columns[9]
 I0_3=columns[10]
 I1_2=columns[11]
 
-axs_Ne_powers[0,0].plot(wavel_nm, I1_2, color='black')
-axs_Ne_powers[0,1].plot(wavel_nm, I1_1, color='black')
-axs_Ne_powers[0,2].plot(wavel_nm, I1_0, color='black')
-axs_Ne_powers[0,3].plot(wavel_nm, I0_9, color='black')
-axs_Ne_powers[1,0].plot(wavel_nm, I0_8, color='black')
-axs_Ne_powers[1,1].plot(wavel_nm, I0_7, color='black')
-axs_Ne_powers[1,2].plot(wavel_nm, I0_6, color='black')
-axs_Ne_powers[1,3].plot(wavel_nm, I0_5, color='black')
-axs_Ne_powers[2,0].plot(wavel_nm, I0_4, color='black')
-axs_Ne_powers[2,1].plot(wavel_nm, I0_3, color='black', label='Experimental data')
+axs_Ne_powers[0,0].plot(wavel_nm, I1_2)
+axs_Ne_powers[0,1].plot(wavel_nm, I1_1)
+axs_Ne_powers[0,2].plot(wavel_nm, I1_0)
+axs_Ne_powers[0,3].plot(wavel_nm, I0_9)
+axs_Ne_powers[1,0].plot(wavel_nm, I0_8)
+axs_Ne_powers[1,1].plot(wavel_nm, I0_7)
+axs_Ne_powers[1,2].plot(wavel_nm, I0_6)
+axs_Ne_powers[1,3].plot(wavel_nm, I0_5)
+axs_Ne_powers[2,0].plot(wavel_nm, I0_4)
+axs_Ne_powers[2,1].plot(wavel_nm, I0_3, label='Experimental Data')
 
 # Argon PressureScan
 lines=[]
@@ -337,13 +342,13 @@ I1_0=columns[5]
 I1_2=columns[6]
 I1_4=columns[7]
 
-axs_Ar_pressures[0,0].plot(wavel_nm, I1_4, color='black')
-axs_Ar_pressures[0,1].plot(wavel_nm, I1_2, color='black')
-axs_Ar_pressures[0,2].plot(wavel_nm, I1_0, color='black')
-axs_Ar_pressures[0,3].plot(wavel_nm, I0_8, color='black')
-axs_Ar_pressures[1,0].plot(wavel_nm, I0_6, color='black')
-axs_Ar_pressures[1,1].plot(wavel_nm, I0_4, color='black')
-axs_Ar_pressures[1,2].plot(wavel_nm, I0_2, color='black', label='Experimental data')
+axs_Ar_pressures[0,0].plot(wavel_nm, I1_4)
+axs_Ar_pressures[0,1].plot(wavel_nm, I1_2)
+axs_Ar_pressures[0,2].plot(wavel_nm, I1_0)
+axs_Ar_pressures[0,3].plot(wavel_nm, I0_8)
+axs_Ar_pressures[1,0].plot(wavel_nm, I0_6)
+axs_Ar_pressures[1,1].plot(wavel_nm, I0_4)
+axs_Ar_pressures[1,2].plot(wavel_nm, I0_2, label='Experimental Data')
 
 # Neon PressureScan
 lines=[]
@@ -374,20 +379,20 @@ I1_4=columns[12]
 I1_2=columns[13]
 I1_0=columns[14]
 
-axs_Ne_pressures[0,0].plot(wavel_nm, I3_6, color='black')
-axs_Ne_pressures[0,1].plot(wavel_nm, I3_4, color='black')
-axs_Ne_pressures[0,2].plot(wavel_nm, I3_2, color='black')
-axs_Ne_pressures[0,3].plot(wavel_nm, I3_0, color='black')
-axs_Ne_pressures[1,0].plot(wavel_nm, I2_8, color='black')
-axs_Ne_pressures[1,1].plot(wavel_nm, I2_6, color='black')
-axs_Ne_pressures[1,2].plot(wavel_nm, I2_4, color='black')
-axs_Ne_pressures[1,3].plot(wavel_nm, I2_2, color='black')
-axs_Ne_pressures[2,0].plot(wavel_nm, I2_0, color='black')
-axs_Ne_pressures[2,1].plot(wavel_nm, I1_8, color='black')
-axs_Ne_pressures[2,2].plot(wavel_nm, I1_6, color='black')
-axs_Ne_pressures[2,3].plot(wavel_nm, I1_4, color='black')
-axs_Ne_pressures[3,0].plot(wavel_nm, I1_2, color='black')
-axs_Ne_pressures[3,1].plot(wavel_nm, I1_0, color='black', label='Experimental data')
+axs_Ne_pressures[0,0].plot(wavel_nm, I3_6)
+axs_Ne_pressures[0,1].plot(wavel_nm, I3_4)
+axs_Ne_pressures[0,2].plot(wavel_nm, I3_2)
+axs_Ne_pressures[0,3].plot(wavel_nm, I3_0)
+axs_Ne_pressures[1,0].plot(wavel_nm, I2_8)
+axs_Ne_pressures[1,1].plot(wavel_nm, I2_6)
+axs_Ne_pressures[1,2].plot(wavel_nm, I2_4)
+axs_Ne_pressures[1,3].plot(wavel_nm, I2_2)
+axs_Ne_pressures[2,0].plot(wavel_nm, I2_0)
+axs_Ne_pressures[2,1].plot(wavel_nm, I1_8)
+axs_Ne_pressures[2,2].plot(wavel_nm, I1_6)
+axs_Ne_pressures[2,3].plot(wavel_nm, I1_4)
+axs_Ne_pressures[3,0].plot(wavel_nm, I1_2)
+axs_Ne_pressures[3,1].plot(wavel_nm, I1_0, label='Experimental Data')
 
 # Neon GDD Scan
 lines=[]
@@ -495,50 +500,50 @@ fig_Ar_pressures.delaxes(axs_Ar_pressures[1,3])
 fig_Ne_pressures.delaxes(axs_Ne_pressures[3,2])
 fig_Ne_pressures.delaxes(axs_Ne_pressures[3,3])
 
-axs_Ar_powers[0,0].set_title('1.2W')
-axs_Ar_powers[0,1].set_title('1.1W')
-axs_Ar_powers[0,2].set_title('1.0W')
-axs_Ar_powers[0,3].set_title('0.9W')
-axs_Ar_powers[1,0].set_title('0.8W')
-axs_Ar_powers[1,1].set_title('0.7W')
-axs_Ar_powers[1,2].set_title('0.6W')
-axs_Ar_powers[1,3].set_title('0.5W')
-axs_Ar_powers[2,0].set_title('0.4W')
-axs_Ar_powers[2,1].set_title('0.3W')
+axs_Ar_powers[0,0].set_title('1.2W', fontsize=16)
+axs_Ar_powers[0,1].set_title('1.1W', fontsize=16)
+axs_Ar_powers[0,2].set_title('1.0W', fontsize=16)
+axs_Ar_powers[0,3].set_title('0.9W', fontsize=16)
+axs_Ar_powers[1,0].set_title('0.8W', fontsize=16)
+axs_Ar_powers[1,1].set_title('0.7W', fontsize=16)
+axs_Ar_powers[1,2].set_title('0.6W', fontsize=16)
+axs_Ar_powers[1,3].set_title('0.5W', fontsize=16)
+axs_Ar_powers[2,0].set_title('0.4W', fontsize=16)
+axs_Ar_powers[2,1].set_title('0.3W', fontsize=16)
 
-axs_Ne_powers[0,0].set_title('1.2W')
-axs_Ne_powers[0,1].set_title('1.1W')
-axs_Ne_powers[0,2].set_title('1.0W')
-axs_Ne_powers[0,3].set_title('0.9W')
-axs_Ne_powers[1,0].set_title('0.8W')
-axs_Ne_powers[1,1].set_title('0.7W')
-axs_Ne_powers[1,2].set_title('0.6W')
-axs_Ne_powers[1,3].set_title('0.5W')
-axs_Ne_powers[2,0].set_title('0.4W')
-axs_Ne_powers[2,1].set_title('0.3W')
+axs_Ne_powers[0,0].set_title('1.2W', fontsize=16)
+axs_Ne_powers[0,1].set_title('1.1W', fontsize=16)
+axs_Ne_powers[0,2].set_title('1.0W', fontsize=16)
+axs_Ne_powers[0,3].set_title('0.9W', fontsize=16)
+axs_Ne_powers[1,0].set_title('0.8W', fontsize=16)
+axs_Ne_powers[1,1].set_title('0.7W', fontsize=16)
+axs_Ne_powers[1,2].set_title('0.6W', fontsize=16)
+axs_Ne_powers[1,3].set_title('0.5W', fontsize=16)
+axs_Ne_powers[2,0].set_title('0.4W', fontsize=16)
+axs_Ne_powers[2,1].set_title('0.3W', fontsize=16)
 
-axs_Ar_pressures[0,0].set_title('1.4 bar')
-axs_Ar_pressures[0,1].set_title('1.2 bar')
-axs_Ar_pressures[0,2].set_title('1.0 bar')
-axs_Ar_pressures[0,3].set_title('0.8 bar')
-axs_Ar_pressures[1,0].set_title('0.6 bar')
-axs_Ar_pressures[1,1].set_title('0.4 bar')
-axs_Ar_pressures[1,2].set_title('0.2 bar')
+axs_Ar_pressures[0,0].set_title('1.4 bar', fontsize=16)
+axs_Ar_pressures[0,1].set_title('1.2 bar', fontsize=16)
+axs_Ar_pressures[0,2].set_title('1.0 bar', fontsize=16)
+axs_Ar_pressures[0,3].set_title('0.8 bar', fontsize=16)
+axs_Ar_pressures[1,0].set_title('0.6 bar', fontsize=16)
+axs_Ar_pressures[1,1].set_title('0.4 bar', fontsize=16)
+axs_Ar_pressures[1,2].set_title('0.2 bar', fontsize=16)
 
-axs_Ne_pressures[0,0].set_title('3.6 bar')
-axs_Ne_pressures[0,1].set_title('3.4 bar')
-axs_Ne_pressures[0,2].set_title('3.2 bar')
-axs_Ne_pressures[0,3].set_title('3.0 bar')
-axs_Ne_pressures[1,0].set_title('2.8 bar')
-axs_Ne_pressures[1,1].set_title('2.6 bar')
-axs_Ne_pressures[1,2].set_title('2.4 bar')
-axs_Ne_pressures[1,3].set_title('2.2 bar')
-axs_Ne_pressures[2,0].set_title('2.0 bar')
-axs_Ne_pressures[2,1].set_title('1.8 bar')
-axs_Ne_pressures[2,2].set_title('1.6 bar')
-axs_Ne_pressures[2,3].set_title('1.4 bar')
-axs_Ne_pressures[3,0].set_title('1.2 bar')
-axs_Ne_pressures[3,1].set_title('1.0 bar')
+axs_Ne_pressures[0,0].set_title('3.6 bar', fontsize=16)
+axs_Ne_pressures[0,1].set_title('3.4 bar', fontsize=16)
+axs_Ne_pressures[0,2].set_title('3.2 bar', fontsize=16)
+axs_Ne_pressures[0,3].set_title('3.0 bar', fontsize=16)
+axs_Ne_pressures[1,0].set_title('2.8 bar', fontsize=16)
+axs_Ne_pressures[1,1].set_title('2.6 bar', fontsize=16)
+axs_Ne_pressures[1,2].set_title('2.4 bar', fontsize=16)
+axs_Ne_pressures[1,3].set_title('2.2 bar', fontsize=16)
+axs_Ne_pressures[2,0].set_title('2.0 bar', fontsize=16)
+axs_Ne_pressures[2,1].set_title('1.8 bar', fontsize=16)
+axs_Ne_pressures[2,2].set_title('1.6 bar', fontsize=16)
+axs_Ne_pressures[2,3].set_title('1.4 bar', fontsize=16)
+axs_Ne_pressures[3,0].set_title('1.2 bar', fontsize=16)
+axs_Ne_pressures[3,1].set_title('1.0 bar', fontsize=16)
 
 axs_Ne_GDDs[0,0].set_title('0.05 mm')
 axs_Ne_GDDs[0,1].set_title('0.10 mm')
@@ -573,8 +578,8 @@ axs_Ne_GDDs_fine[3,1].set_title('0.56 mm')
 axs_Ne_GDDs_fine[3,2].set_title('0.58 mm')
 axs_Ne_GDDs_fine[3,3].set_title('0.60 mm')
 
-axs_Ar_powers[2,1].legend(loc='center left', bbox_to_anchor=(1, 0.5))
-axs_Ne_powers[2,1].legend(loc='center left', bbox_to_anchor=(1, 0.5))
-axs_Ar_pressures[1,2].legend(loc='center left', bbox_to_anchor=(1, 0.5))
-axs_Ne_pressures[3,1].legend(loc='center left', bbox_to_anchor=(1, 0.5))
+axs_Ar_powers[2,1].legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=16)
+axs_Ne_powers[2,1].legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=16)
+axs_Ar_pressures[1,2].legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=16)
+axs_Ne_pressures[3,1].legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=16)
 plt.show()
