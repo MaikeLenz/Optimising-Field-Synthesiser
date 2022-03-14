@@ -21,6 +21,7 @@ powers = df.iloc[:,0]
 energies = powers/1000
 λ0s = df.iloc[:,1]
 domegas = df.iloc[:,2]
+correction_to_tau = 1.25
 
 #####################################################################################################################
 # Define fixed params
@@ -32,7 +33,6 @@ c = 299792458
 omega = np.linspace(2*np.pi*c/λ0s[0] - domegas[0]/2, 2*np.pi*c/λ0s[0] + domegas[0]/2, 100)
 
 #####################################################################################################################
-"""
 # Argon 0.8bar power scan
 gas = "Ar"
 pressure = (0,0.8)
@@ -41,7 +41,7 @@ Main.eval("gas = Symbol(gas_str)")
 Main.pressure = pressure
 
 for i in range(len(energies)):
-    E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0s[i], domega=domegas[i], amp=1, CEP=0, GDD=0, TOD=0)
+    E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0s[i], domega=domegas[i]/correction_to_tau, amp=1, CEP=0, GDD=0, TOD=0)
     Iω = np.abs(E**2)
     Main.ω = omega
     Main.Iω = Iω  
@@ -57,7 +57,7 @@ for i in range(len(energies)):
     Iλ = Main.Iλ
 
     header = ['Wavelength, nm', 'Intensity']
-    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\gaussian_input\\Ar_PowerScan_'+str(powers[i]), 'w', encoding='UTF8', newline='') as f:
+    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\gaussian_input_with_1.25_correction\\Ar_PowerScan_'+str(powers[i]), 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         for j in range(len(λ)):
@@ -77,7 +77,7 @@ Main.eval("gas = Symbol(gas_str)")
 Main.pressure = pressure
 
 for i in range(len(energies)):
-    E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0s[i], domega=domegas[i], amp=1, CEP=0, GDD=0, TOD=0)
+    E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0s[i], domega=domegas[i]/correction_to_tau, amp=1, CEP=0, GDD=0, TOD=0)
     Iω = np.abs(E**2)
     Main.ω = omega
     Main.Iω = Iω  
@@ -93,7 +93,7 @@ for i in range(len(energies)):
     Iλ = Main.Iλ
 
     header = ['Wavelength, nm', 'Intensity']
-    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\gaussian_input\\Ne_PowerScan_'+str(powers[i]), 'w', encoding='UTF8', newline='') as f:
+    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\gaussian_input_with_1.25_correction\\Ne_PowerScan_'+str(powers[i]), 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         for j in range(len(λ)):
@@ -102,7 +102,6 @@ for i in range(len(energies)):
     plt.plot(λ, Iλ, label=str(i))
 plt.legend()
 plt.show()
-"""
 #####################################################################################################################
 
 # Argon 1.1W pressure scan
@@ -111,7 +110,7 @@ Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
 pressures = [(0,0.2), (0,0.4), (0,0.6), (0,0.8), (0,1.0), (0,1.2), (0,1.4)]
 
-E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0s[1], domega=domegas[1], amp=1, CEP=0, GDD=0, TOD=0)
+E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0s[1], domega=domegas[1]/correction_to_tau, amp=1, CEP=0, GDD=0, TOD=0)
 Iω = np.abs(E**2)
 Main.ω = omega
 Main.Iω = Iω  
@@ -130,7 +129,7 @@ for i in range(len(pressures)):
     Iλ = Main.Iλ
 
     header = ['Wavelength, nm', 'Intensity']
-    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\gaussian_input\\Ar_PressureScan_'+str(pressures[i][1]), 'w', encoding='UTF8', newline='') as f:
+    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\gaussian_input_with_1.25_correction\\Ar_PressureScan_'+str(pressures[i][1]), 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         for j in range(len(λ)):
@@ -148,7 +147,7 @@ Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
 pressures = [(0,3.6), (0,3.4), (0,3.2), (0,3.0), (0,2.8), (0,2.6), (0,2.4), (0,2.2), (0,2.0), (0,1.8), (0,1.6), (0,1.4), (0,1.2), (0,1.0)]
 
-E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0s[1], domega=domegas[1], amp=1, CEP=0, GDD=0, TOD=0)
+E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0s[1], domega=domegas[1]/correction_to_tau, amp=1, CEP=0, GDD=0, TOD=0)
 Iω = np.abs(E**2)
 Main.ω = omega
 Main.Iω = Iω  
@@ -167,7 +166,7 @@ for i in range(len(pressures)):
     Iλ = Main.Iλ
 
     header = ['Wavelength, nm', 'Intensity']
-    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\gaussian_input\\Ne_PressureScan_'+str(pressures[i][1]), 'w', encoding='UTF8', newline='') as f:
+    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\gaussian_input_with_1.25_correction\\Ne_PressureScan_'+str(pressures[i][1]), 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         for j in range(len(λ)):

@@ -1,11 +1,11 @@
 import numpy as np
 import julia
-julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
-#julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
+#julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
+julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
 from julia import Main
 Main.using("Luna")
 
-def theoretical_width(radius, flength, pressure, λ0, τfwhm, energy, gas, transmission_fraction):
+def theoretical_width(radius, flength, pressure, λ0, τfwhm, energy, gas, transmission_fraction=1, correction_to_τ=1):
     """
     Returns theoretical calculation for SPM angular frequency width that comes from Luna simulation.
     Assumes Ne gas for now
@@ -15,7 +15,7 @@ def theoretical_width(radius, flength, pressure, λ0, τfwhm, energy, gas, trans
     c = 299792458 # m/s
     L = flength # m
     ω0 = 2*np.pi*c/λ0 # λ0 in m, ω0 in /s
-    τ = 2*τfwhm/(2*np.sqrt(2*np.log(2))) # τfwhm in s, τ in s
+    τ = correction_to_τ*τfwhm/(2*np.sqrt(2*np.log(2))) # τfwhm in s, τ in s
     power = energy/(np.sqrt(np.pi)*τ) # energy in J, power in J/s
     W0 = 0.64*radius # W0 in m, radius in m
     I0 = (power/(np.pi*(W0**2)))*transmission_fraction # I0 in J/s/m^2 

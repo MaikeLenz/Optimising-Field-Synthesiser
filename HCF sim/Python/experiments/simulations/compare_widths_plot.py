@@ -6,6 +6,11 @@ sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF 
 from rms_width import *
 from theoretical_width import *
 
+plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
+plt.rcParams['xtick.labelsize'] = 12
+plt.rcParams['ytick.labelsize'] = 12
+plt.rcParams['axes.labelsize'] = 16
+
 filepath = "C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\"
 #####################################################################################################################
 # Read experimental data
@@ -16,8 +21,8 @@ Ne_PressureScan_widths = []
 Ne_GDDScan_widths = []
 Ne_GDDScan_fine_widths = []
 
-Ar_powers = [1.29, 1.2, 1.1, 1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3]
-Ne_powers = [1.24, 1.2, 1.1, 1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3]
+Ar_powers = [1.2, 1.1, 1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3]
+Ne_powers = [1.2, 1.1, 1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3]
 Ar_pressures = [1.4, 1.2, 1.0, 0.8, 0.6, 0.4, 0.2]
 Ne_pressures = [3.6, 3.4, 3.2, 3.0, 2.8, 2.6, 2.4, 2.2, 2.0, 1.8, 1.6, 1.4, 1.2, 1.0]
 
@@ -46,7 +51,7 @@ I0_6=columns[8]
 I0_5=columns[9]
 I0_4=columns[10]
 I0_3=columns[11]
-I = [I1_29, I1_2, I1_1, I1_0, I0_9, I0_8, I0_7, I0_6, I0_5, I0_4, I0_3]
+I = [I1_2, I1_1, I1_0, I0_9, I0_8, I0_7, I0_6, I0_5, I0_4, I0_3]
 
 for i in range(len(I)):
     Ar_PowerScan_widths.append(rms_width(wavel_nm, I[i]))
@@ -76,7 +81,7 @@ I0_5=columns[8]
 I0_4=columns[9]
 I0_3=columns[10]
 I1_2=columns[11]
-I = [I1_24, I1_2, I1_1, I1_0, I0_9, I0_8, I0_7, I0_6, I0_5, I0_4, I0_3]
+I = [I1_2, I1_1, I1_0, I0_9, I0_8, I0_7, I0_6, I0_5, I0_4, I0_3]
 
 for i in range(len(I)):
     Ne_PowerScan_widths.append(rms_width(wavel_nm, I[i]))
@@ -435,15 +440,15 @@ def ang_freq_to_wavel_width(width, wavel):
 Ar_power_theor_widths = []
 pressure = 0.8*0.66
 for i in range(len(energies)):
-    ang_freq_width = theoretical_width(radius, flength, pressure, λ0s[i], ang_freq_to_τ_FWHM(domegas[i]), energies[i], 'Ar', 0.56)
-    Ar_power_theor_widths.append(ang_freq_to_wavel_width(ang_freq_width, λ0s[i])*(10**9))
+    ang_freq_width = theoretical_width(radius, flength, pressure, λ0s[i], ang_freq_to_τ_FWHM(domegas[i]), energies[i], 'Ar', 0.56, correction_to_τ=1.25)
+    Ar_power_theor_widths.append(ang_freq_to_wavel_width(ang_freq_width/(4*np.sqrt(np.log(2))), λ0s[i])*(10**9))
 Ar_power_theor_widths = np.array(Ar_power_theor_widths)
 # Neon power scan
 Ne_power_theor_widths = []
 pressure = 3*0.66
 for i in range(len(energies)):
-    ang_freq_width = theoretical_width(radius, flength, pressure, λ0s[i], ang_freq_to_τ_FWHM(domegas[i]), energies[i], 'Ne', 0.69)
-    Ne_power_theor_widths.append(ang_freq_to_wavel_width(ang_freq_width, λ0s[i])*(10**9))
+    ang_freq_width = theoretical_width(radius, flength, pressure, λ0s[i], ang_freq_to_τ_FWHM(domegas[i]), energies[i], 'Ne', 0.69, correction_to_τ=1.25)
+    Ne_power_theor_widths.append(ang_freq_to_wavel_width(ang_freq_width/(4*np.sqrt(np.log(2))), λ0s[i])*(10**9))
 Ne_power_theor_widths = np.array(Ne_power_theor_widths)
 # Argon pressure scan
 Ar_pressures = [1.4, 1.2, 1.0, 0.8, 0.6, 0.4, 0.2]
@@ -452,8 +457,8 @@ energy = energies[1]
 λ0 = λ0s[1]
 domega = domegas[1]
 for i in range(len(Ar_pressures)):
-    ang_freq_width = theoretical_width(radius, flength, Ar_pressures[i]*0.66, λ0, ang_freq_to_τ_FWHM(domega), energy, 'Ar', 0.62)
-    Ar_pressure_theor_widths.append(ang_freq_to_wavel_width(ang_freq_width, λ0)*(10**9))
+    ang_freq_width = theoretical_width(radius, flength, Ar_pressures[i]*0.66, λ0, ang_freq_to_τ_FWHM(domega), energy, 'Ar', 0.62, correction_to_τ=1.25)
+    Ar_pressure_theor_widths.append(ang_freq_to_wavel_width(ang_freq_width/(4*np.sqrt(np.log(2))), λ0)*(10**9))
 Ar_pressure_theor_widths = np.array(Ar_pressure_theor_widths)
 # Neon pressure scan
 Ne_pressures = [3.6, 3.4, 3.2, 3.0, 2.8, 2.6, 2.4, 2.2, 2.0, 1.8, 1.6, 1.4, 1.2, 1.0]
@@ -462,8 +467,8 @@ energy = energies[1]
 λ0 = λ0s[1]
 domega = domegas[1]
 for i in range(len(Ne_pressures)):
-    ang_freq_width = theoretical_width(radius, flength, Ne_pressures[i]*0.66, λ0, ang_freq_to_τ_FWHM(domega), energy, 'Ne', 0.71)
-    Ne_pressure_theor_widths.append(ang_freq_to_wavel_width(ang_freq_width, λ0)*(10**9))
+    ang_freq_width = theoretical_width(radius, flength, Ne_pressures[i]*0.66, λ0, ang_freq_to_τ_FWHM(domega), energy, 'Ne', 0.71, correction_to_τ=1.25)
+    Ne_pressure_theor_widths.append(ang_freq_to_wavel_width(ang_freq_width/(4*np.sqrt(np.log(2))), λ0)*(10**9))
 Ne_pressure_theor_widths = np.array(Ne_pressure_theor_widths)
 
 
@@ -558,44 +563,45 @@ hspace = 0.3  # the amount of height reserved for white space between subplots
 
 plt.subplots_adjust(left, bottom, right, top, wspace, hspace)
 
-axs[0,0].plot(powers, Ar_power_theor_widths, color='red')
-axs[0,0].fill_between(powers, Ar_power_theor_widths - Ar_pow_errs, Ar_power_theor_widths + Ar_pow_errs, alpha=0.2, color='red')
-axs[0,1].plot(Ar_pressures, Ar_pressure_theor_widths, color='red')
-axs[0,1].fill_between(Ar_pressures, Ar_pressure_theor_widths - Ar_press_errs, Ar_pressure_theor_widths + Ar_press_errs, alpha=0.2, color='red')
-axs[1,0].plot(powers, Ne_power_theor_widths, color='red')
-axs[1,0].fill_between(powers, Ne_power_theor_widths - Ne_pow_errs, Ne_power_theor_widths + Ne_pow_errs, alpha=0.2, color='red')
-axs[1,1].plot(Ne_pressures, Ne_pressure_theor_widths, color='red', label='Theoretical')
-axs[1,1].fill_between(Ne_pressures, Ne_pressure_theor_widths - Ne_press_errs, Ne_pressure_theor_widths + Ne_press_errs, alpha=0.2, color='red')
+#axs[0,0].plot(powers, Ar_power_theor_widths)
+axs[0,0].fill_between(powers, Ar_power_theor_widths - Ar_pow_errs, Ar_power_theor_widths + Ar_pow_errs, alpha=0.2)
+#axs[0,1].(Ar_pressures, Ar_pressure_theor_widths)
+axs[0,1].fill_between(Ar_pressures, Ar_pressure_theor_widths - Ar_press_errs, Ar_pressure_theor_widths + Ar_press_errs, alpha=0.2)
+#axs[1,0].plot(powers, Ne_power_theor_widths)
+axs[1,0].fill_between(powers, Ne_power_theor_widths - Ne_pow_errs, Ne_power_theor_widths + Ne_pow_errs, alpha=0.2)
+#axs[1,1].plot(Ne_pressures, Ne_pressure_theor_widths, label='Theoretical SPM Width')
+axs[1,1].fill_between(Ne_pressures, Ne_pressure_theor_widths - Ne_press_errs, Ne_pressure_theor_widths + Ne_press_errs, alpha=0.2, label='Theoretical SPM Width')
 
-axs[0,0].plot(Ar_powers, Ar_PowerScan_widths,'+', color='black')
+axs[0,0].plot(Ar_powers, Ar_PowerScan_widths,'+')
 axs[0,0].set_xlabel('Power, W')
-axs[0,0].set_ylabel('RMS width, nm')
-axs[0,1].plot(Ar_pressures, Ar_PressureScan_widths,'+', color='black')
+axs[0,0].set_ylabel('RMS Width, nm')
+axs[0,1].plot(Ar_pressures, Ar_PressureScan_widths,'+')
 axs[0,1].set_xlabel('Pressure, bar')
-axs[0,1].set_ylabel('RMS width, nm')
-axs[1,0].plot(Ne_powers, Ne_PowerScan_widths,'+', color='black')
+axs[0,1].set_ylabel('RMS Width, nm')
+axs[1,0].plot(Ne_powers, Ne_PowerScan_widths,'+')
 axs[1,0].set_xlabel('Power, W')
-axs[1,0].set_ylabel('RMS width, nm')
-axs[1,1].plot(Ne_pressures, Ne_PressureScan_widths,'+', color='black', label='Experimental data')
+axs[1,0].set_ylabel('RMS Width, nm')
+axs[1,1].plot(Ne_pressures, Ne_PressureScan_widths,'+', label='Experimental Data')
 axs[1,1].set_xlabel('Pressure, bar')
-axs[1,1].set_ylabel('RMS width, nm')
+axs[1,1].set_ylabel('RMS Width, nm')
 
 axs[0,0].plot(Ar_sim_powers, Ar_sim_gauss_PowerScan_widths,'+')
 axs[0,1].plot(Ar_sim_pressures, Ar_sim_gauss_PressureScan_widths,'+')
 axs[1,0].plot(Ne_sim_powers, Ne_sim_gauss_PowerScan_widths,'+')
-axs[1,1].plot(Ne_sim_pressures, Ne_sim_gauss_PressureScan_widths,'+', label='Simulation with Gaussian input')
+axs[1,1].plot(Ne_sim_pressures, Ne_sim_gauss_PressureScan_widths,'+', label='Simulation with Gaussian Input')
 
 axs[0,0].plot(Ar_sim_powers, Ar_sim_pulse_PowerScan_widths,'+')
 axs[0,1].plot(Ar_sim_pressures, Ar_sim_pulse_PressureScan_widths,'+')
 axs[1,0].plot(Ne_sim_powers, Ne_sim_pulse_PowerScan_widths,'+')
-axs[1,1].plot(Ne_sim_pressures, Ne_sim_pulse_PressureScan_widths,'+', label='Simulation with experimental input')
+axs[1,1].plot(Ne_sim_pressures, Ne_sim_pulse_PressureScan_widths,'+', label='Simulation with Experimental Input')
 
-axs[0,0].set_title('Argon Power Scan')
-axs[0,1].set_title('Argon Pressure Scan')
-axs[1,0].set_title('Neon Power Scan')
-axs[1,1].set_title('Neon Pressure Scan')
+axs[0,0].set_title('Argon Power Scan', fontsize=18)
+axs[0,1].set_title('Argon Pressure Scan', fontsize=18)
+axs[1,0].set_title('Neon Power Scan', fontsize=18)
+axs[1,1].set_title('Neon Pressure Scan', fontsize=18)
 
 plt.legend(loc='upper left')
+plt.suptitle('Comparing Experimental, Simulated and Theoretical RMS Width', fontsize=24)
 
 plt.figure()
 plt.plot(Ne_GDDs, Ne_GDDScan_widths, '+', color='tab:blue', label='Rough scan')
