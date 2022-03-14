@@ -1,12 +1,13 @@
 import pandas as pd
 from matplotlib import pyplot as plt
+plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
 
-df_duration = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\angfreq_bandwidth\\data\\duration_vs_rms_width.csv")
-df_energy = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\angfreq_bandwidth\\data\\energy_vs_rms_width.csv")
-df_flength = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\angfreq_bandwidth\\data\\flength_vs_rms_width.csv")
-df_pressure = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\angfreq_bandwidth\\data\\pressure_vs_rms_width.csv")
-df_radius = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\angfreq_bandwidth\\data\\radius_vs_rms_width.csv")
-df_wavelength = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\angfreq_bandwidth\\data\\wavelength_vs_rms_width.csv")
+df_duration = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\gaussian_input\\angfreq_bandwidth\\data\\duration_vs_rms_width.csv")
+df_energy = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\gaussian_input\\angfreq_bandwidth\\data\\energy_vs_rms_width.csv")
+df_flength = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\gaussian_input\\angfreq_bandwidth\\data\\flength_vs_rms_width.csv")
+df_pressure = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\gaussian_input\\angfreq_bandwidth\\data\\pressure_vs_rms_width.csv")
+df_radius = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\gaussian_input\\angfreq_bandwidth\\data\\radius_vs_rms_width.csv")
+df_wavelength = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\gaussian_input\\angfreq_bandwidth\\data\\wavelength_vs_rms_width.csv")
 
 f = plt.figure(constrained_layout=True)
 layout=[2,3]
@@ -20,6 +21,9 @@ f_ax4 = f.add_subplot(gs[1,0])
 f_ax5 = f.add_subplot(gs[1,1])
 f_ax6 = f.add_subplot(gs[1,2])
 
+f_ax1.set_ylabel('Angular Frequency RMS Width, /s', fontsize=16)
+f_ax4.set_ylabel('Angular Frequency RMS Width, /s', fontsize=16)
+
 ymin = 0
 ymax = 3.5e16
 f_ax1.set_ylim([ymin, ymax])
@@ -29,32 +33,45 @@ f_ax4.set_ylim([ymin, ymax])
 f_ax5.set_ylim([ymin, ymax])
 f_ax6.set_ylim([ymin, ymax])
 
-
-f_ax1.plot(df_duration.iloc[:,0], df_duration.iloc[:,1], label='Luna')
-f_ax1.plot(df_duration.iloc[:,0], df_duration.iloc[:,2], label='Theoretical')
-f_ax1.set_xlabel('Pulse duration, fs')
-
-f_ax2.plot(df_energy.iloc[:,0], df_energy.iloc[:,1], label='Luna')
-f_ax2.plot(df_energy.iloc[:,0], df_energy.iloc[:,2], label='Theoretical')
-f_ax2.set_xlabel('Pulse energy, mJ')
-
-f_ax3.plot(df_flength.iloc[:,0], df_flength.iloc[:,1], label='Luna')
-f_ax3.plot(df_flength.iloc[:,0], df_flength.iloc[:,2], label='Theoretical')
-f_ax3.set_xlabel('Fibre Length, m')
-
-f_ax4.plot(df_pressure.iloc[:,0], df_pressure.iloc[:,1], label='Luna')
-f_ax4.plot(df_pressure.iloc[:,0], df_pressure.iloc[:,2], label='Theoretical')
-f_ax4.set_xlabel('Pressure, bar')
-
-f_ax5.plot(df_radius.iloc[:,0], df_radius.iloc[:,1], label='Luna')
-f_ax5.plot(df_radius.iloc[:,0], df_radius.iloc[:,2], label='Theoretical')
-f_ax5.set_xlabel('Core radius, um')
-
-f_ax6.plot(df_wavelength.iloc[:,0], df_wavelength.iloc[:,1], label='Luna')
-f_ax6.plot(df_wavelength.iloc[:,0], df_wavelength.iloc[:,2], label='Theoretical')
-f_ax6.set_xlabel('Wavelength, nm')
-plt.legend()
+f_ax1.xaxis.set_tick_params(labelsize=12)
+f_ax1.yaxis.set_tick_params(labelsize=12)
+f_ax2.xaxis.set_tick_params(labelsize=12)
+f_ax2.yaxis.set_tick_params(labelsize=12)
+f_ax3.xaxis.set_tick_params(labelsize=12)
+f_ax3.yaxis.set_tick_params(labelsize=12)
+f_ax4.xaxis.set_tick_params(labelsize=12)
+f_ax4.yaxis.set_tick_params(labelsize=12)
+f_ax5.xaxis.set_tick_params(labelsize=12)
+f_ax5.yaxis.set_tick_params(labelsize=12)
+f_ax6.xaxis.set_tick_params(labelsize=12)
+f_ax6.yaxis.set_tick_params(labelsize=12)
 
 
-plt.suptitle("Parameter vs Bandwidth for Luna Simulation")
+f_ax1.plot(df_duration.iloc[:,0], df_duration.iloc[:,1], '+', label='Luna')
+f_ax1.plot(df_duration.iloc[:,0], df_duration.iloc[:,2], '+', label='Theoretical')
+f_ax1.set_xlabel('Pulse Duration, fs', fontsize=16)
+
+f_ax2.plot(df_energy.iloc[:,0], df_energy.iloc[:,1], '+', label='Luna')
+f_ax2.plot(df_energy.iloc[:,0], df_energy.iloc[:,2], '+', label='Theoretical')
+f_ax2.set_xlabel('Pulse Energy, mJ', fontsize=16)
+
+f_ax3.plot(df_flength.iloc[:,0], df_flength.iloc[:,1], '+', label='Luna')
+f_ax3.plot(df_flength.iloc[:,0], df_flength.iloc[:,2], '+', label='Theoretical')
+f_ax3.set_xlabel('Fibre Length, m', fontsize=16)
+
+f_ax4.plot(df_pressure.iloc[:,0], df_pressure.iloc[:,1], '+', label='Luna')
+f_ax4.plot(df_pressure.iloc[:,0], df_pressure.iloc[:,2], '+', label='Theoretical')
+f_ax4.set_xlabel('Pressure, bar', fontsize=16)
+
+f_ax5.plot(df_radius.iloc[:,0], df_radius.iloc[:,1], '+', label='Luna')
+f_ax5.plot(df_radius.iloc[:,0], df_radius.iloc[:,2], '+', label='Theoretical')
+f_ax5.set_xlabel('Fibre Radius, μm', fontsize=16)
+
+f_ax6.plot(df_wavelength.iloc[:,0], df_wavelength.iloc[:,1], '+', label='Luna Simulation')
+f_ax6.plot(df_wavelength.iloc[:,0], df_wavelength.iloc[:,2], '+', label='Theoretical')
+f_ax6.set_xlabel('Wavelength, nm', fontsize=16)
+plt.legend(fontsize=16)
+
+
+plt.suptitle("Parameters vs Bandwidth for the Luna Simulation", fontsize=24)
 plt.show()
