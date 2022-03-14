@@ -26,8 +26,10 @@ optimizer.register(
 
 for _ in range(10):
     next_point = optimizer.suggest(utility)
-    target = input("What is the target? ")
+    print("Next point to probe is:", next_point)
+
+    target = float(input("What is the target? "))
     optimizer.register(params=next_point, target=target)
     
-    print(target, next_point)
+    #print(target, next_point)
 print(optimizer.max)
