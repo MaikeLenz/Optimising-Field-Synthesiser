@@ -24,7 +24,7 @@ pbounds=pbounds,
 verbose=1, # verbose = 1 prints only when a maximum is observed, verbose = 0 is silent
 random_state=1,
 )
-optimizer.maximize(init_points=5,n_iter=0)
+optimizer.maximize(init_points=10,n_iter=0)
 
 while error>0.01:
     iterations+=1
@@ -35,3 +35,4 @@ while error>0.01:
 print(iterations, error)
 #0 initial points: killed at 500 iterations
 #5 initial points: killed at 500 iterations
+#10 initial points: killed at 500 iterations
