@@ -62,7 +62,7 @@ for i in range(len(GDDs)):
     for j in range(len(TODs)):
         print(TODs[j])
 
-        E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0, domega=domega, amp=1, CEP=0, GDD=GDDs[i], TOD=TODs[j], FOoD=0)
+        E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0, domega=domega, amp=1, CEP=0, GDD=GDDs[i], TOD=TODs[j], FoOD=0)
         Iω = np.abs(E**2)
         Main.ω = omega
         Main.Iω = Iω  
@@ -83,7 +83,7 @@ for i in range(len(GDDs)):
     for j in range(len(FODs)):
         print(FODs[j])
 
-        E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0, domega=domega, amp=1, CEP=0, GDD=GDDs[i], TOD=0, FOoD=FODs[j])
+        E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0, domega=domega, amp=1, CEP=0, GDD=GDDs[i], TOD=0, FoOD=FODs[j])
         Iω = np.abs(E**2)
         Main.ω = omega
         Main.Iω = Iω  
@@ -104,7 +104,7 @@ for i in range(len(TODs)):
     for j in range(len(FODs)):
         print(FODs[j])
 
-        E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0, domega=domega, amp=1, CEP=0, GDD=0, TOD=TODs[i], FOoD=FODs[j])
+        E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0, domega=domega, amp=1, CEP=0, GDD=0, TOD=TODs[i], FoOD=FODs[j])
         Iω = np.abs(E**2)
         Main.ω = omega
         Main.Iω = Iω  
