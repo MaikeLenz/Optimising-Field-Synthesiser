@@ -170,23 +170,28 @@ with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\P
         for j in range(len(grating_positions)):
             writer.writerow([pressures[i], grating_positions[j], widths_E_P[i][j]])
 
-"""
 plt.figure()
-plt.imshow(widths, extent=(np.amin(pressures), np.amax(pressures),np.amin(energies)*10**3, np.amax(energies)*10**3), aspect = 'auto', origin="lower")
+plt.imshow(widths_E_P, extent=(np.amin(pressures), np.amax(pressures),np.amin(energies)*10**3, np.amax(energies)*10**3), aspect = 'auto', origin="lower")
 plt.xlabel("Pressure, bar")
 plt.ylabel("Pulse energy, mJ")
 cbar = plt.colorbar()
 cbar.ax.set_ylabel('angular frequency bandwidth', rotation=270, labelpad=15)
 
 plt.figure()
-plt.imshow(widths, extent=(np.amin(pressures), np.amax(pressures),np.amin(grating_positions), np.amax(grating_positions)), aspect = 'auto', origin="lower")
+plt.imshow(widths_E_G, extent=(np.amin(energies)*10**3, np.amax(energies)*10**3 ,np.amin(grating_positions), np.amax(grating_positions)), aspect = 'auto', origin="lower")
+plt.xlabel("Pulse energy, mJ")
+plt.ylabel("Compressor Grating Position, m")
+cbar = plt.colorbar()
+cbar.ax.set_ylabel('angular frequency bandwidth', rotation=270, labelpad=15)
+
+plt.figure()
+plt.imshow(widths_P_G, extent=(np.amin(pressures), np.amax(pressures),np.amin(grating_positions), np.amax(grating_positions)), aspect = 'auto', origin="lower")
 plt.xlabel("Pressure, bar")
 plt.ylabel("Compressor Grating Position, m")
 cbar = plt.colorbar()
 cbar.ax.set_ylabel('angular frequency bandwidth', rotation=270, labelpad=15)
 
 plt.show()
-"""
 
 """
 df = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\angfreq_bandwidth\\data\\energy_and_pressure_vs_rms_width.csv")
