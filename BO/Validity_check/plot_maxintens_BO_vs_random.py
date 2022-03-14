@@ -66,13 +66,14 @@ random_rms=statistics.mean(random_rms_l)
 
 ##################################################################################################################################################
 #run BO
-n_inits=np.array([0,2,4,6,8,10,12,14,16,18,20])
-n_iters=np.array([0,2,4,6,8,10,12,14,16,18,20])
-outcomes=np.zeros((11,11))
+#n_inits=np.array([0,2,4,6,8,10,12,14,16,18,20])
+#n_iters=np.array([0,2,4,6,8,10,12,14,16,18,20])
+#outcomes=np.zeros((11,11))
 
-#n_inits=np.array([1,2])
-#n_iters=np.array([1,2])
-#outcomes=np.zeros((2,2))
+n_inits=np.array([1,2,3])
+n_iters=np.array([1,2])
+#outcomes shape:(iter,init)
+outcomes=np.zeros((3,2))
 #create fields
 
 
@@ -100,6 +101,6 @@ plt.ylabel("Initial Points",fontsize=16)
 cbar=plt.colorbar()
 cbar.ax.set_ylabel('Ratio', rotation=270, labelpad=15,fontsize=16)
 cbar.ax.tick_params(labelsize=14)
-plt.title("Ration optimised maximum intensity to random input",fontsize=20)
+plt.title("Ratio optimised maximum intensity to random input",fontsize=20)
 plt.show()
 
