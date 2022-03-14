@@ -52,6 +52,7 @@ widths_E_G=np.zeros((len(energies),len(grating_positions)))
 widths_P_G=np.zeros((len(pressures),len(grating_positions)))
 
 print('Assigned values')
+"""
 print('Energy vs Pressure')
 for i in range(len(energies)):
     Main.energy = energies[i]
@@ -109,6 +110,7 @@ for i in range(len(energies)):
         Iω = Main.Iω
         width=rms_width(ω,Iω)
         widths_E_G[i][j]=width
+"""
 print('Pressure vs Grating Pos')
 for i in range(len(pressures)):
     Main.pressure = pressures[i]
@@ -137,7 +139,7 @@ for i in range(len(pressures)):
         width=rms_width(ω,Iω)
         widths_P_G[i][j]=width
 
-
+"""
 # Save the data
 header = ['Pulse energy, mJ', 'Pressure, bar', 'Simulated Angular Frequency Width, /s']
 with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\gaussian_input\\angfreq_bandwidth\\energy_pressure_GDD_BO\\Ne_energy_pressure.csv', 'w', encoding='UTF8', newline='') as f:
@@ -159,6 +161,7 @@ with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\P
     for i in range(len(energies)):
         for j in range(len(grating_positions)):
             writer.writerow([energies[i]*(10**3), grating_positions[j], widths_E_G[i][j]])
+"""
 header = ['Pressure, bar', 'Compressor Grating Position, m', 'Simulated Angular Frequency Width, /s']
 with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\gaussian_input\\angfreq_bandwidth\\energy_pressure_GDD_BO\\Ne_pressure_grating.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
@@ -168,8 +171,8 @@ with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\P
     # write the data
     for i in range(len(pressures)):
         for j in range(len(grating_positions)):
-            writer.writerow([pressures[i], grating_positions[j], widths_E_P[i][j]])
-
+            writer.writerow([pressures[i], grating_positions[j], widths_P_G[i][j]])
+"""
 plt.figure()
 plt.imshow(widths_E_P, extent=(np.amin(pressures), np.amax(pressures),np.amin(energies)*10**3, np.amax(energies)*10**3), aspect = 'auto', origin="lower")
 plt.xlabel("Pressure, bar")
@@ -192,10 +195,4 @@ cbar = plt.colorbar()
 cbar.ax.set_ylabel('angular frequency bandwidth', rotation=270, labelpad=15)
 
 plt.show()
-
-"""
-df = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\angfreq_bandwidth\\data\\energy_and_pressure_vs_rms_width.csv")
-pressures = df.iloc[:,0].values
-energies = df.iloc[:,1].values
-widths = df.iloc[:,2].values
 """
