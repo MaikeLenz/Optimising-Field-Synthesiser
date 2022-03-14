@@ -4,14 +4,14 @@ from bayes_opt import BayesianOptimization
 
 def func(x, y):
     """
-    returns the negative of the Ackley function
+    returns the negative of the sphere function
     """
-    return -(-20.0 * np.exp(-0.2 * np.sqrt(0.5 * (x**2 + y**2)))-np.exp(0.5 * (np.cos(2 * np.pi * x)+np.cos(2 * np.pi * y))) + np.e + 20)
+    return -(x**2+y**2)
 
 # generate 2 2d grids for the x & y bounds
 y, x = np.meshgrid(np.linspace(-5, 5, 200), np.linspace(-5, 5, 200))
 #z as a function of x and y
-z = -20.0 * np.exp(-0.2 * np.sqrt(0.5 * (x**2 + y**2)))-np.exp(0.5 * (np.cos(2 * np.pi * x)+np.cos(2 * np.pi * y))) + np.e + 20
+z = x**2+y**2
 
 # Bounded region of parameter space
 pbounds = {'x': (-5, 5), 'y': (-5, 5)}
@@ -30,9 +30,9 @@ while error>0.01:
     iterations+=1
     optimizer.maximize(init_points=0,n_iter=1)
     print(iterations, optimizer.max)
-    error=optimizer.max["params"]["x"]**2+optimizer.max["params"]["y"]**2
+    error=(optimizer.max["params"]["x"])**2+(optimizer.max["params"]["y"])**2
         
 print(iterations, error)
-#0 initial points:needed 52 iterations, error 7.11e-5
-#5 initial points: needed 25 iterations, error 0.00162
-#10 initial points: needed 32 iterations, 0.00339
+#0 initial points: needed 14 iterations, error 0.00582
+#5 initial points: needed 15 iterations, 0.000348
+#10 initial points: needed 12 iterations, 0.00178
