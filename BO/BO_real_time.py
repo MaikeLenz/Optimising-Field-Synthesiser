@@ -16,7 +16,7 @@ utility = UtilityFunction(kind="ucb", kappa=2.5, xi=0.0)
 next_point_to_probe = optimizer.suggest(utility)
 print("Next point to probe is:", next_point_to_probe)
 
-target =  input("What is the target? ")
+target =  float(input("What is the target? "))
 print("Found the target value to be:", target)
 
 optimizer.register(
