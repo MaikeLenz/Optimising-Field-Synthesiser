@@ -33,9 +33,9 @@ for i in range(num_points):
     widths_E_G_shaped[i] = widths_E_G[i*20:20+i*20]
 
 #plt.figure()
-axs[1].imshow(widths_E_G_shaped, extent=(np.amin(energies), np.amax(energies) ,np.amin(grating_positions), np.amax(grating_positions)), aspect = 'auto', origin="lower", vmin=0, vmax=5e14)
+axs[1].imshow(widths_E_G_shaped, extent=(np.amin(energies), np.amax(energies) ,np.amin(grating_positions)*(10**3), np.amax(grating_positions)*(10**3)), aspect = 'auto', origin="lower", vmin=0, vmax=5e14)
 axs[1].set_xlabel("Pulse energy, mJ")
-axs[1].set_ylabel("Compressor Grating Position, m")
+axs[1].set_ylabel("Compressor Grating Position, mm")
 #cbar = plt.colorbar()
 #cbar.ax.set_ylabel('Angular Frequency Bandwidth, /s', rotation=270, labelpad=15)
 
@@ -49,9 +49,9 @@ for i in range(num_points):
     widths_P_G_shaped[i] = widths_P_G[i*20:20+i*20]
 
 #plt.figure()
-im = axs[2].imshow(widths_P_G_shaped, extent=(np.amin(pressures), np.amax(pressures),np.amin(grating_positions), np.amax(grating_positions)), aspect = 'auto', origin="lower", vmin=0, vmax=5e14)
+im = axs[2].imshow(widths_P_G_shaped, extent=(np.amin(pressures), np.amax(pressures),np.amin(grating_positions)*(10**3), np.amax(grating_positions)*(10**3)), aspect = 'auto', origin="lower", vmin=0, vmax=5e14)
 axs[2].set_xlabel("Pressure, bar")
-axs[2].set_ylabel("Compressor Grating Position, m")
+axs[2].set_ylabel("Compressor Grating Position, mm")
 
 cbar = f.colorbar(im, orientation='vertical')
 cbar.ax.set_ylabel('Angular Frequency Bandwidth, /s', rotation=270, labelpad=15)
