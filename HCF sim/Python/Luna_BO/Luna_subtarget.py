@@ -41,6 +41,9 @@ def min_duration(t,Et,λ,Iλ):
 
 
 def max_intens_integral(λ,Iλ,bounds):
+    """
+    integrates spectral intensity between wavelength bounds
+    """
     λ_truncated1 = λ[bounds[0] <λ]
     λ_truncated=λ_truncated1[λ_truncated1< bounds[1]]
     Iλ_truncated1 = Iλ[bounds[0] <λ]
