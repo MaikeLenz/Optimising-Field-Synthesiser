@@ -9,6 +9,8 @@ iters_matyas=np.array([34,34,34,36,47,29,54,63,30,32,47,17,15,10,5,4,11,39,2,2])
 
 def func(x,a,b,c):
     return a*np.exp(-b*x)+c
+def func2(x,a,b,c):
+    return a*np.exp(-b*x)+inits
 
 from scipy.optimize import curve_fit
 
@@ -20,24 +22,36 @@ popt_matyas,_=curve_fit(func,inits,iters_matyas)
 def sum(x,y):
     s=[]
     for i in range(len(x)):
-        i.append(i+y[i])
+        s.append(x[i]+y[i])
     return np.array(s)
-
+"""
 plt.plot(inits,iters_booth,label="Booth function",marker="+",ls="None")
 plt.plot(inits, iters_ackley, label="Ackley function",marker="+",ls="None")
 plt.plot(inits, iters_sphere, label="Sphere function",marker="+",ls="None")
 plt.plot(inits, iters_matyas, label="Matyas function",marker="+",ls="None")
+"""
+plt.plot(inits,sum(inits,iters_booth),label="Booth function",marker="+",ls="None")
+plt.plot(inits, sum(inits,iters_ackley), label="Ackley function",marker="+",ls="None")
+plt.plot(inits, sum(inits,iters_sphere), label="Sphere function",marker="+",ls="None")
+plt.plot(inits, sum(inits,iters_matyas), label="Matyas function",marker="+",ls="None")
 
-plt.plot(inits,func(inits,*popt_ackley),color=plt.cm.Set2(1))
-plt.plot(inits,func(inits,*popt_booth),color=plt.cm.Set2(0))
-plt.plot(inits,func(inits,*popt_sphere),color=plt.cm.Set2(2))
-plt.plot(inits,func(inits,*popt_matyas),color=plt.cm.Set2(3))
+plt.plot(inits,func2(inits,*popt_ackley),color=plt.cm.Set2(1))
+plt.plot(inits,func2(inits,*popt_booth),color=plt.cm.Set2(0))
+plt.plot(inits,func2(inits,*popt_sphere),color=plt.cm.Set2(2))
+plt.plot(inits,func2(inits,*popt_matyas),color=plt.cm.Set2(3))
+
+"""
+plt.plot(inits,sum(inits,func(inits,*popt_ackley)),color=plt.cm.Set2(1))
+plt.plot(inits,sum(inits,func(inits,*popt_booth)),color=plt.cm.Set2(0))
+plt.plot(inits,sum(inits,func(inits,*popt_sphere)),color=plt.cm.Set2(2))
+plt.plot(inits,sum(inits,func(inits,*popt_matyas)),color=plt.cm.Set2(3))
+"""
 
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
 plt.title("Penetrating within 0.1 of global optima of difficult functions", fontsize=20)
 plt.xlabel("Random Initial Points", fontsize=16)
-plt.ylabel("Number of iterations required",fontsize=16)
+plt.ylabel("Total Number of Evaluations",fontsize=16)
 
 plt.legend(fontsize=14)
 
