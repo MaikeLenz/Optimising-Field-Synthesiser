@@ -65,5 +65,6 @@ with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code
     writer.writerow([init_points, n_iter, max_intens_integral, energy, pressure, radius, flength, FWHM, wavel, gas])
 
 
-#final values for 1200nm {'target': 3.4476846631037324e-11, 'params': {'energy': 0.0014419722696427826, 'flength': 5.245634714473661, 'grating_pair_displacement': 0.00038611804084966866, 'pressure': 6.622451813042336, 'radius': 0.00015892780922243437}}
-#{'target': 3.447764986674295e-11, 'params': {'energy': 0.0008787363275865865, 'flength': 0.9050858313980417, 'grating_pair_displacement': -0.00044008231048778837, 'pressure': 2.092091101666636, 'radius': 7.004834534514277e-05}}
+#final values for 1200nm (both 50 inits)
+#100 iters: {'target': 3.4476846631037324e-11, 'params': {'energy': 0.0014419722696427826, 'flength': 5.245634714473661, 'grating_pair_displacement': 0.00038611804084966866, 'pressure': 6.622451813042336, 'radius': 0.00015892780922243437}}
+#150 iters: {'target': 3.447764986674295e-11, 'params': {'energy': 0.0008787363275865865, 'flength': 0.9050858313980417, 'grating_pair_displacement': -0.00044008231048778837, 'pressure': 2.092091101666636, 'radius': 7.004834534514277e-05}}
