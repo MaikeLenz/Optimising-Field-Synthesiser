@@ -228,11 +228,21 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
         init_points=init_points,
         n_iter=0,
         )
+    init_res = optimizer.res
     if save_results == True:
         columns = ['iteration', 'target']
         for key, value in args_BO.items():
             columns.append(key)
-        with open(save_path + save_filename +'.csv', 'w', encoding='UTF8', newline='') as f:
+        with open(save_path + save_filename +'_init.csv', 'w', encoding='UTF8', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(columns)
+            for i, res in enumerate(init_res):
+                row = [i, res["target"]]
+                for key, value in args_BO.items():
+                    row.append(res["params"][key])
+                writer.writerow(row)
+
+        with open(save_path + save_filename +'_iters.csv', 'w', encoding='UTF8', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(columns)
     end_time_init = time.time()
@@ -246,7 +256,7 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
         result = optimizer.max
     
         if save_results == True:
-            with open(save_path + save_filename + '.csv', 'a', encoding='UTF8', newline='') as f:
+            with open(save_path + save_filename + '_iters.csv', 'a', encoding='UTF8', newline='') as f:
                 writer = csv.writer(f)
                 row = [i, result["target"]]
                 for key, value in args_BO.items():

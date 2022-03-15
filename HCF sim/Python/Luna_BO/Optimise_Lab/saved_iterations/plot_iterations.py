@@ -5,7 +5,7 @@ plt.rcParams['xtick.labelsize'] = 12
 plt.rcParams['ytick.labelsize'] = 12
 plt.rcParams['axes.labelsize'] = 16
 
-df = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\Ne_Exp_Input.csv")
+df = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\saved_iterations\\Ne_Exp_Input.csv")
 iteration = df.iloc[:,0]
 target_width = df.iloc[:,1] # \m
 energy = df.iloc[:,2] # J
