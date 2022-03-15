@@ -66,8 +66,9 @@ class Wavepacket(Element):
         carrier_freq=(299.792458)/(self._wavelength)
         sigma=self._fwhm_duration/(2.0*np.sqrt(2.0*np.log(2.0))) #fwhm to std of gaussian
         gauss = np.exp(-0.5*((t-self._t0)/sigma)**2.0)
-        cos = np.cos(carrier_freq*(t-self._t0)+self._CEP) #CEP is phase of cosine relative to gaussian
-        return self._amplitude*gauss*cos
+        #carrier = np.cos(carrier_freq*(t-self._t0)+self._CEP) #CEP is phase of cosine relative to gaussian
+        carrier=np.exp(1J*(carrier_freq*(t-self._t0)+self._CEP))
+        return self._amplitude*gauss*carrier
 
 class Synthesiser(Element):
     """
@@ -125,8 +126,9 @@ class Synthesiser(Element):
 
             sigma=fwhm_duration/(2.0*np.sqrt(2.0*np.log(2.0))) #fwhm to std of gaussian
             gauss = np.exp(-0.5*((t-self._pulse_list[0]._t0-delay)/sigma)**2.0)
-            cos = np.cos(freq*(t-self._pulse_list[0]._t0-delay)+CEP) #CEP is phase of cosine relative to gaussian
-            E_tot += amp*gauss*cos
+            #carrier = np.cos(freq*(t-self._pulse_list[0]._t0-delay)+CEP) #CEP is phase of cosine relative to gaussian
+            carrier = np.exp(1J*(freq*(t-self._pulse_list[0]._t0-delay)+CEP)) #CEP is phase of cosine relative to gaussian
+            E_tot += amp*gauss*carrier
         return E_tot
 
     def Update(self, channel_index, wavel=None, fwhm=None, amp=None, CEP=None, delay=None):

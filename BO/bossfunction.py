@@ -68,8 +68,8 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             #create array of total E field values over range t
             E_i=Synth.E_field_value(i)
 
-            E=np.append(E,[E_i])
-            I=np.append(I,[E_i**2])
+            E=np.append(E,[E_i.real])
+            I=np.append(I,[np.abs(E_i)**2])
         
         if window!=None:
             #if a window of interest is defined, only care about that section
@@ -85,7 +85,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             return function(t1,I,goal_field)    
         else: 
             #perhaps already pass the array of intensities in here?
-            return function(t1,E) #pass t and E to sub-target function
+            return function(t1,E,I) #pass t E and I to sub-target function
 
     # Make pbounds dictionary
     pbounds = {}
