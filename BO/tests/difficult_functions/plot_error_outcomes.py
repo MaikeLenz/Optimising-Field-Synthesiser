@@ -7,8 +7,8 @@ iters_ackley=np.array([52,52,37,40,10,25,28,41,32,9,32,15,22,8,7,9,6,10,7,8])
 iters_sphere=np.array([14,14,15,15,16,15,14,11,12,13,12,8,7,5,4,4,4,4,1,1])
 iters_matyas=np.array([34,34,34,36,47,29,54,63,30,32,47,17,15,10,5,4,11,39,2,2])
 
-def func(x,a,b,c):
-    return a*np.exp(-b*x)+c
+def func(x,a,b):
+    return a*np.exp(-b*x)
 def func2(x,a,b,c):
     return a*np.exp(-b*x)+inits
 
@@ -30,29 +30,33 @@ plt.plot(inits, iters_ackley, label="Ackley function",marker="+",ls="None")
 plt.plot(inits, iters_sphere, label="Sphere function",marker="+",ls="None")
 plt.plot(inits, iters_matyas, label="Matyas function",marker="+",ls="None")
 """
-plt.plot(inits,sum(inits,iters_booth),label="Booth function",marker="+",ls="None")
-plt.plot(inits, sum(inits,iters_ackley), label="Ackley function",marker="+",ls="None")
-plt.plot(inits, sum(inits,iters_sphere), label="Sphere function",marker="+",ls="None")
-plt.plot(inits, sum(inits,iters_matyas), label="Matyas function",marker="+",ls="None")
-
+plt.plot(inits,sum(0.77*inits,3.5*iters_booth),label="Booth function",marker="+",ls="None")
+plt.plot(inits, sum(0.77*inits,3.5*iters_ackley), label="Ackley function",marker="+",ls="None")
+plt.plot(inits, sum(0.77*inits,3.5*iters_sphere), label="Sphere function",marker="+",ls="None")
+plt.plot(inits, sum(0.77*inits,3.5*iters_matyas), label="Matyas function",marker="+",ls="None")
+"""
 plt.plot(inits,func2(inits,*popt_ackley),color=plt.cm.Set2(1))
 plt.plot(inits,func2(inits,*popt_booth),color=plt.cm.Set2(0))
 plt.plot(inits,func2(inits,*popt_sphere),color=plt.cm.Set2(2))
 plt.plot(inits,func2(inits,*popt_matyas),color=plt.cm.Set2(3))
+"""
+#1 init 0.77
+#1 iter 3.50
 
-"""
-plt.plot(inits,sum(inits,func(inits,*popt_ackley)),color=plt.cm.Set2(1))
-plt.plot(inits,sum(inits,func(inits,*popt_booth)),color=plt.cm.Set2(0))
-plt.plot(inits,sum(inits,func(inits,*popt_sphere)),color=plt.cm.Set2(2))
-plt.plot(inits,sum(inits,func(inits,*popt_matyas)),color=plt.cm.Set2(3))
-"""
+plt.plot(inits,sum(0.77*inits,3.5*func(inits,*popt_ackley)),color=plt.cm.Set2(1))
+plt.plot(inits,sum(0.77*inits,3.5*func(inits,*popt_booth)),color=plt.cm.Set2(0))
+plt.plot(inits,sum(0.77*inits,3.5*func(inits,*popt_sphere)),color=plt.cm.Set2(2))
+plt.plot(inits,sum(0.77*inits,3.5*func(inits,*popt_matyas)),color=plt.cm.Set2(3))
+
 
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
 plt.title("Penetrating within 0.1 of global optima of difficult functions", fontsize=20)
 plt.xlabel("Random Initial Points", fontsize=16)
-plt.ylabel("Total Number of Evaluations",fontsize=16)
+plt.ylabel("Time to evaluate Luna, s",fontsize=16)
 
 plt.legend(fontsize=14)
+
+print(inits[int((np.argmin(sum(0.77*inits,3.5*func(inits,*popt_ackley)))+np.argmin(sum(0.77*inits,3.5*func(inits,*popt_booth)))+np.argmin(sum(0.77*inits,3.5*func(inits,*popt_ackley))))/3)])
 
 plt.show()

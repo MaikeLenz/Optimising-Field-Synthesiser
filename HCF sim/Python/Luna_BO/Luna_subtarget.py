@@ -8,7 +8,7 @@ from rms_width import *
 
 import numpy as np 
 
-from scipy.integrate import simpson
+from scipy import integrate
 
 #julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
 #julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
@@ -30,9 +30,20 @@ def peak_power_window(t,Et,λ,Iλ):
     """
     return True
 
+def min_duration(t,Et,λ,Iλ):
+    """
+    return the negative of the time rms width
+    """
+    I=[]
+    for i in Et:
+        I.append(np.abs(i**2))
+    return -rms_width(t,I)
+
 
 def max_intens_integral(λ,Iλ,bounds):
-    λ_truncated = λ[bounds[0] <λ < bounds[1]]
-    Iλ_truncated = Iλ[bounds[0] <λ < bounds[1]]
-    return simpson(Iλ_truncated,λ_truncated)
+    λ_truncated1 = λ[bounds[0] <λ]
+    λ_truncated=λ_truncated1[λ_truncated1< bounds[1]]
+    Iλ_truncated1 = Iλ[bounds[0] <λ]
+    Iλ_truncated=Iλ_truncated1[λ_truncated1< bounds[1]]
+    return integrate.simps(Iλ_truncated,λ_truncated)
 

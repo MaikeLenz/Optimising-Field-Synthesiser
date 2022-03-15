@@ -1,2 +1,0 @@
-init_points,n_iter,peak power,"energy, J","pressure, bar","radius, m","flength, m","FWHM, s","wavel, m",gas
-10,10,0.0,0.0006838308065836037,0.5003431244520347,0.00018604965768432788,4.349914511308732,3e-14,8e-07,Ne

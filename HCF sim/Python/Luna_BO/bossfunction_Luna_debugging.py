@@ -181,9 +181,13 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
 
         λ = Main.λ
-        Iλ = Main.Iλ    
-            
-        return function(t, Et, λ, Iλ)*power_condition #pass t and E to sub-target function
+        Iλ = Main.Iλ
+        Iλ=Iλ.reshape(len(Iλ),)
+        print(Iλ.shape)    
+        if function==max_intens_integral:
+            return function(λ, Iλ,wavel_bounds)*power_condition
+        else:
+            return function(t, Et, λ, Iλ)*power_condition #pass t and E to sub-target function
         
         
     # Make pbounds dictionary
@@ -202,8 +206,8 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         elif 'pressure' in i:
             #pbounds[i] = (0,3)
             #pbounds[i] = (1,15)
-            #pbounds[i] = (1, 10)
-            pbounds[i] = (0.5, 3.5)
+            pbounds[i] = (1, 10)
+            #pbounds[i] = (0.5, 3.5)
         elif 'radius' in i:                
             #pbounds[i] = (125e-6,300e-6)
             pbounds[i] = (50e-6, 500e-6)
