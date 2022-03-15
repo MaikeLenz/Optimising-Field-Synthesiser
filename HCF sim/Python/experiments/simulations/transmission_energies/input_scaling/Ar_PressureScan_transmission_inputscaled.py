@@ -77,12 +77,7 @@ press1_4=np.array(columns2[7])
 
 pressure_spectra = [press0_2,press0_4,press0_6,press0_8,press1_0,press1_2,press1_4]
 pressures=[0.2,0.4,0.6,0.8,1.0,1.2,1.4]
-"""
-exp_energies_out_int=[]
-for i in pressure_spectra:
-    exp_energies_out_int.append(integrate.simps(i,outwavel_nm))
-exp_energies_out_int=np.array(exp_energies_out_int)
-"""
+
 #from powermeter readings
 exp_energies_out=np.array([625e-6,590e-6,540e-6,475e-6,450e-6,420e-6,400e-6])
 #transmission_exp=exp_energies_out_int/energy_in_int
@@ -126,18 +121,10 @@ for i in range(len(pressures)):
     #find simulated output 
     Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
     Main.eval("λ2, Iλ2 = Processing.getIω(duv, :λ, 0)")
-
-    #energy(grid, Eω; bandpass=nothing)
-    #Main.eval("ω, Eω = Processing.getEω(pulse)")
-    #Main.eval('energy=energy(duv,duv["Eω"])')
-    #Main.eval("transm=transmission(radius, λ0, flength; kind=:HE, n=1, m=1)")
     λ = Main.λ
     Iλ = Main.Iλ
     λ2 = Main.λ2
     Iλ2 = Main.Iλ2
-    
-    #energy_i=Main.energy
-    #energy_i=energies_in[i]*Main.transm
     sim_energies_out_int.append(integrate.simps(Iλ[:,0],λ))
     sim_energies_in_int.append(integrate.simps(Iλ2[:,0],λ2)/scaling)
 
@@ -163,12 +150,5 @@ ax1.set_xlabel("Pressure, Bar",fontsize=16)
 ax1.set_ylabel("Transmission",fontsize=16)
 ax1.set_title("Argon Pressure Scan, 1.1mJ",fontsize=20)
 plt.legend(fontsize=14)
-"""
-ax2 = ax1.twiny()
-ax2.set_xlabel("Input Intensity (I0), W/cm^2")
-ax2.set_xlim(0.9,3.7)
-ax2.set_xticks(list(energy_in))
-ax2.set_xticklabels(I0)
-"""
 plt.show()
 

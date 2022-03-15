@@ -1,7 +1,6 @@
 import sys
-from matplotlib.cbook import ls_mapper
 import matplotlib.pyplot as plt
-
+plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
 import julia
 import numpy as np
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
@@ -151,18 +150,10 @@ for i in range(len(energies_in)):
     #find simulated output 
     Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
     Main.eval("λ2, Iλ2 = Processing.getIω(duv, :λ, 0)")
-
-    #energy(grid, Eω; bandpass=nothing)
-    #Main.eval("ω, Eω = Processing.getEω(pulse)")
-    #Main.eval('energy=energy(duv,duv["Eω"])')
-    #Main.eval("transm=transmission(radius, λ0, flength; kind=:HE, n=1, m=1)")
     λ = Main.λ
     Iλ = Main.Iλ
     λ2 = Main.λ2
     Iλ2 = Main.Iλ2
-    
-    #energy_i=Main.energy
-    #energy_i=energies_in[i]*Main.transm
     sim_energies_out_int.append(integrate.simps(Iλ[:,0],λ))
     sim_energies_in_int.append(integrate.simps(Iλ2[:,0],λ2)/scaling)
 
@@ -177,22 +168,7 @@ I0=[]
 for i in range(len(energies_in)):
     I0.append(str(round(find_I0(intensities[i],wavel_nm*10**-9,delta_lambda*10**-9,energies_in[i],175e-6)*10**-13,1)))
 
-"""
-fig, ax_left = plt.subplots()
-ax_right = ax_left.twinx()
 
-ax_left.plot(transmission_actual, color='black',label="experimental")
-ax_right.plot(transmission_sim, color='red',label="simulation")
-"""
-"""
-plt.plot(energies_in,transmission_actual,label="experimental",marker="+",ls="None")
-plt.plot(energies_in,transmission_sim_scaled,label="simulation, scaled down to %s"%(round(scaling,2)),marker="+",ls="None")
-
-plt.legend()
-plt.xlabel("Input Energy, J")
-plt.ylabel("Transmission")
-#plt.ylim(top=1.,bottom=0.)
-"""
 fig = plt.figure()
 ax1 = fig.add_subplot(111)
 
@@ -214,5 +190,6 @@ plt.xticks(fontsize=14)
 ax2.set_xticks(list(energies_in*1000))
 ax2.set_title("Argon Power Scan, 0.8 bar",fontsize=20)
 ax2.set_xticklabels(I0)
+
 plt.show()
 
