@@ -168,7 +168,7 @@ fig=plt.figure()
 ax1 = fig.add_subplot(221)
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
-ax1.plot(energies_in*1000, transmission_actual,label="experimental",marker="+",ls="None")
+ax1.plot(energies_in*1000, transmission_actual,label="experiment",marker="+",ls="None")
 ax1.plot(energies_in*1000,transmission_sim,label="Luna, input energy times %s"%(round(scaling,2)),marker="+",ls="None")
 ax1.errorbar(energies_in*1000, transmission_actual, xerr = 0.1*energies_in*1000,yerr=0.2*transmission_actual, ls="None", color=plt.cm.Set2(0))
 plt.legend(fontsize=14)
@@ -308,7 +308,7 @@ I0=str(round(find_I0(intens1_1,wavel_nm*10**-9,delta_lambda*10**-9,energy_in,0.5
 ax1 = fig.add_subplot(223)
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
-ax1.plot(np.array(pressures), transmission_actual,label=r"experiment, I0="+I0+"e13W/$cm^2}$",marker="+",ls="None")
+ax1.plot(np.array(pressures), transmission_actual,label=r"experiment, I0="+I0+"e13W/$\mathrm{cm^2}$",marker="+",ls="None")
 ax1.plot(np.array(pressures),transmission_sim,label="Luna, input energy times %s"%(round(scaling,2)),marker="+",ls="None")
 ax1.errorbar(np.array(pressures), transmission_actual, xerr = 0.1*np.array(pressures),yerr=0.2*transmission_actual, ls="None", color=plt.cm.Set2(0))
 ax1.set_xlim(0.1,1.5)
@@ -462,7 +462,7 @@ for i in range(len(energies_in)):
 ax1 = fig.add_subplot(222)
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
-ax1.plot(energies_in*1000, transmission_actual,label="experimental",marker="+",ls="None")
+ax1.plot(energies_in*1000, transmission_actual,label="experiment",marker="+",ls="None")
 ax1.plot(energies_in*1000,transmission_sim,label="Luna, input energy times %s"%(round(scaling,2)),marker="+",ls="None")
 ax1.errorbar(energies_in*1000, transmission_actual, xerr = 0.1*energies_in*1000,yerr=0.2*transmission_actual, ls="None", color=plt.cm.Set2(0))
 
@@ -613,7 +613,6 @@ transmission_sim=sim_energies_out_int/sim_energies_in_int
 delta_lambda=rms_width(wavel_nm,intens1_1)
 I0=str(round(find_I0(intens1_1,wavel_nm*10**-9,delta_lambda*10**-9,energy_in,0.5*175e-6)*10**-13,1))
 
-fig = plt.figure()
 ax1 = fig.add_subplot(224)
 ax1.set_title("Neon Pressure Scan",fontsize=20)
 plt.yticks(fontsize=14)
@@ -627,7 +626,7 @@ ax1.set_xlim(0.9,3.7)
 ax1.set_ylim(0.,1.0)
 ax1.set_xlabel("Pressure, Bar",fontsize=16)
 ax1.set_ylabel("Transmission",fontsize=16)
-plt.legend(fontsize=14)
+plt.legend(fontsize=14,loc="lower right")
 
 
 plt.show()
