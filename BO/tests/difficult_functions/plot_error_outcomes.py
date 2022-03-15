@@ -17,6 +17,11 @@ popt_booth,_=curve_fit(func,inits,iters_booth)
 popt_sphere,_=curve_fit(func,inits,iters_sphere)
 popt_matyas,_=curve_fit(func,inits,iters_matyas)
 
+def sum(x,y):
+    s=[]
+    for i in range(len(x)):
+        i.append(i+y[i])
+    return np.array(s)
 
 plt.plot(inits,iters_booth,label="Booth function",marker="+",ls="None")
 plt.plot(inits, iters_ackley, label="Ackley function",marker="+",ls="None")
