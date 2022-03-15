@@ -311,7 +311,7 @@ I0=str(round(find_I0(intens1_1,wavel_nm*10**-9,delta_lambda*10**-9,energy_in,0.5
 ax1 = fig.add_subplot(224)
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
-ax1.plot(np.array(pressures), transmission_actual,label=r"experiment, I0="+I0+"e13W/cm^2}$",marker="+",ls="None")
+ax1.plot(np.array(pressures), transmission_actual,label=r"experiment, I0="+I0+"e13W/$\mathrm{cm^2}$",marker="+",ls="None")
 ax1.plot(np.array(pressures),transmission_sim,label="Luna, input energy times %s"%(round(scaling,2)),marker="+",ls="None")
 ax1.errorbar(np.array(pressures), transmission_actual, xerr = 0.1*np.array(pressures),yerr=0.2*transmission_actual, ls="None", color=plt.cm.Set2(0))
 ax1.set_xlim(0.1,1.5)
@@ -441,7 +441,7 @@ I0=str(round(find_I0(intens1_1,wavel_nm*10**-9,delta_lambda*10**-9,energy_in,0.5
 ax1 = fig.add_subplot(223)
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
-ax1.plot(np.array(pressures), transmission_actual,label=r"experiment, I0="+I0+"e13W/cm^2}$",marker="+",ls="None")
+ax1.plot(np.array(pressures), transmission_actual,label=r"experiment, I0="+I0+"e13W/$\mathrm{cm^2}$",marker="+",ls="None")
 ax1.plot(np.array(pressures),transmission_sim,label="Luna, input energy times %s"%(round(scaling,2)),marker="+",ls="None")
 ax1.errorbar(np.array(pressures), transmission_actual, xerr = 0.1*np.array(pressures),yerr=0.2*transmission_actual, ls="None", color=plt.cm.Set2(0))
 
