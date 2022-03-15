@@ -176,22 +176,6 @@ I0=[]
 for i in range(len(energies_in)):
     I0.append(str(round(find_I0(intensities[i],wavel_nm*10**-9,delta_lambda*10**-9,energies_in[i],0.5*175e-6)*10**-13,1)))
 
-"""
-fig, ax_left = plt.subplots()
-ax_right = ax_left.twinx()
-
-ax_left.plot(transmission_actual, color='black',label="experimental")
-ax_right.plot(transmission_sim, color='red',label="simulation")
-"""
-"""
-plt.plot(energies_in,transmission_actual,label="experimental",marker="+",ls="None")
-plt.plot(energies_in,transmission_sim_scaled,label="simulation, scaled down to %s"%(round(scaling,2)),marker="+",ls="None")
-
-plt.legend()
-plt.xlabel("Input Energy, J")
-plt.ylabel("Transmission")
-#plt.ylim(top=1.,bottom=0.)
-"""
 fig = plt.figure()
 ax1 = fig.add_subplot(111)
 
