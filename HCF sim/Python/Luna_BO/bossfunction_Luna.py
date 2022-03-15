@@ -165,7 +165,7 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, ImperialLab 
             Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
             if function == peak_power_window:
                 Main.wavel_bounds=wavel_bounds
-                Main.eval("peak_power=peakpower(duv['grid'], duv['Eω'], λlims=wavel_bounds; label=nothing)")
+                Main.eval("peak_power=Processing.peakpower(duv['grid'], duv['Eω'], λlims=wavel_bounds; label=nothing)")
                 peak_power=Main.peak_power
                 return peak_power*power_condition
             # Get values
