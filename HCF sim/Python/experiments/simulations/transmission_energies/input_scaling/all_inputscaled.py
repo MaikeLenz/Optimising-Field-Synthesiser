@@ -181,6 +181,7 @@ ax1.set_xticks(list(energies_in*1000))
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
 ax1.set_xlim(0.2,1.3)
+ax1.set_ylim(0.,1.0)
 ax1.set_xlabel("Input Energy, mJ",fontsize=16)
 ax1.set_ylabel("Transmission",fontsize=16)
 
@@ -315,6 +316,8 @@ ax1.plot(np.array(pressures), transmission_actual,label=r"experiment, I0="+I0+"e
 ax1.plot(np.array(pressures),transmission_sim,label="Luna, input energy times %s"%(round(scaling,2)),marker="+",ls="None")
 ax1.errorbar(np.array(pressures), transmission_actual, xerr = 0.1*np.array(pressures),yerr=0.2*transmission_actual, ls="None", color=plt.cm.Set2(0))
 ax1.set_xlim(0.1,1.5)
+ax1.set_ylim(0.,1.0)
+
 ax1.set_xticks(list(pressures))
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
@@ -446,6 +449,8 @@ ax1.plot(np.array(pressures),transmission_sim,label="Luna, input energy times %s
 ax1.errorbar(np.array(pressures), transmission_actual, xerr = 0.1*np.array(pressures),yerr=0.2*transmission_actual, ls="None", color=plt.cm.Set2(0))
 
 ax1.set_xlim(0.1,1.5)
+ax1.set_ylim(0.,1.0)
+
 ax1.set_xticks(list(pressures))
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
@@ -605,6 +610,8 @@ ax1.plot(energies_in*1000,transmission_sim,label="Luna, input energy times %s"%(
 ax1.errorbar(energies_in*1000, transmission_actual, xerr = 0.1*energies_in*1000,yerr=0.2*transmission_actual, ls="None", color=plt.cm.Set2(0))
 
 ax1.set_xlim(0.2,1.3)
+ax1.set_ylim(0.,1.0)
+
 ax1.set_xticks(list(energies_in*1000))
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
