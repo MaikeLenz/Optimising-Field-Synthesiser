@@ -34,5 +34,5 @@ def peak_power_window(t,Et,λ,Iλ):
 def max_intens_integral(λ,Iλ,bounds):
     λ_truncated = λ[bounds[0] <λ < bounds[1]]
     Iλ_truncated = Iλ[bounds[0] <λ < bounds[1]]
-    return simpson(Iλ,λ)
+    return simpson(Iλ_truncated,λ_truncated)
 
