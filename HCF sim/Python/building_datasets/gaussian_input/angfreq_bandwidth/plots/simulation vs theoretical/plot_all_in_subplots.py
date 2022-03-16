@@ -25,7 +25,7 @@ f_ax1.set_ylabel('Angular Frequency RMS Width, /s', fontsize=16)
 f_ax4.set_ylabel('Angular Frequency RMS Width, /s', fontsize=16)
 
 ymin = 0
-ymax = 3.5e16
+ymax = 2e16
 f_ax1.set_ylim([ymin, ymax])
 f_ax2.set_ylim([ymin, ymax])
 f_ax3.set_ylim([ymin, ymax])
@@ -47,8 +47,8 @@ f_ax6.xaxis.set_tick_params(labelsize=12)
 f_ax6.yaxis.set_tick_params(labelsize=12)
 
 
-f_ax1.plot(df_duration.iloc[:,0], df_duration.iloc[:,1], '+', label='Luna')
-f_ax1.plot(df_duration.iloc[:,0], df_duration.iloc[:,2], '+', label='Theoretical')
+f_ax1.plot(df_duration.iloc[:,0][4:], df_duration.iloc[:,1][4:], '+', label='Luna')
+f_ax1.plot(df_duration.iloc[:,0][4:], df_duration.iloc[:,2][4:], '+', label='Theoretical')
 f_ax1.set_xlabel('Pulse Duration, fs', fontsize=16)
 
 f_ax2.plot(df_energy.iloc[:,0], df_energy.iloc[:,1], '+', label='Luna')
@@ -69,7 +69,7 @@ f_ax5.set_xlabel('Fibre Radius, μm', fontsize=16)
 
 f_ax6.plot(df_wavelength.iloc[:,0], df_wavelength.iloc[:,1], '+', label='Luna Simulation')
 f_ax6.plot(df_wavelength.iloc[:,0], df_wavelength.iloc[:,2], '+', label='Theoretical')
-f_ax6.set_xlabel('Wavelength, nm', fontsize=16)
+f_ax6.set_xlabel('Central Wavelength, nm', fontsize=16)
 f_ax1.legend(fontsize=16)
 
 
