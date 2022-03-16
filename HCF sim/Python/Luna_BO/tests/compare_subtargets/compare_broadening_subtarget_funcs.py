@@ -30,4 +30,9 @@ initial_values_HCF=[175e-6, 1.05, gas, 0.66*3, 800e-9, 1.1e-3, 30e-15, 0]
 
 #############################################################################################################################################
 #max wavel bandwidth
-result,iterations=Luna_BO(params, initial_values_HCF, function=max_wavel_bandwidth, ImperialLab=True, init_points=50, n_iter=1000, wavel_bounds=(1300e-9, 1500e-9), save_path='C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\max_bandwidth_test\\')
+path_file='C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\compare_subtargets\\'
+#path_file='C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\compare_subtargets\\'
+
+result_wavel,iterations_wavel=Luna_BO_record_iters(params, initial_values_HCF, function=max_wavel_bandwidth, ImperialLab=True, init_points=50, n_iter=50, wavel_bounds=(1300e-9, 1500e-9), save_path=path_file)
+
+result_freq,iterations_freq=Luna_BO_record_iters(params, initial_values_HCF, function=max_freq_bandwidth, ImperialLab=True, init_points=50, n_iter=50, wavel_bounds=(1300e-9, 1500e-9), save_path=path_file)
