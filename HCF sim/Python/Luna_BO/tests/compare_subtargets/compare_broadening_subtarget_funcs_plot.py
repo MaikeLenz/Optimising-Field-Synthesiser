@@ -235,7 +235,7 @@ ax2.set_ylabel("Spectral Energy Density, a.u.",fontsize=16)
 plt.legend(fontsize=14,loc="lower right")
 
 ax3 = fig.add_subplot(313)
-ax3.set_title("Wavelength",fontsize=20)
+ax3.set_title("Time",fontsize=20)
 plt.yticks(fontsize=14)
 plt.xticks(fontsize=14)
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
