@@ -21,7 +21,7 @@ def max_bandwidth(t,Et,λ,Iλ):
 def max_peak_power(t,Et,λ,Iλ):
     I=[]
     for i in Et:
-        I.append(np.abs(i**2))
+        I.append(np.abs(i)**2)
     return max(I)
 
 def peak_power_window(t,Et,λ,Iλ):
@@ -36,7 +36,7 @@ def min_duration(t,Et,λ,Iλ):
     """
     I=[]
     for i in Et:
-        I.append(np.abs(i**2))
+        I.append(np.abs(i)**2)
     return -rms_width(t,I)
 
 

@@ -167,17 +167,17 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
     for i in range(len(t)):
         #create list of total electric field value at every t
         E_i= Synth.E_field_value(t[i])
-        E_tot=np.append(E_tot,[E_i])
-        I=np.append(I,[E_i**2])
+        E_tot=np.append(E_tot,[E_i.real])
+        I=np.append(I,[np.abs(E_i)**2])
         if i==0:
             gradient=np.append(gradient,[0])
         else:
             h=t[1]-t[0]
-            gradient=np.append(gradient,[(E_i**2-Synth.E_field_value(t[i-1])**2)/h])
+            gradient=np.append(gradient,[(np.abs(E_i)**2-np.abs(Synth.E_field_value(t[i-1]))**2)/h])
         for j in range(len(Synth._pulse_list)):
             #append individual channel electric fields
             E_individual[j][i]=Synth._pulse_list[j].E_field_value(t[i])
-            I_individual[j][i]=(Synth._pulse_list[j].E_field_value(t[i]))**2
+            I_individual[j][i]=np.abs(Synth._pulse_list[j].E_field_value(t[i]))**2
 
     
     #shift goal field to align with max intensity
