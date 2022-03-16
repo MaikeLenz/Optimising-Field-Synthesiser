@@ -242,7 +242,7 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
                     row.append(res["params"][key])
                 writer.writerow(row)
 
-        with open(save_path + save_filename +'_iters.csv', 'w', encoding='UTF8', newline='') as f:
+        with open(save_path + save_filename +'_optimums.csv', 'w', encoding='UTF8', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(columns)
     end_time_init = time.time()
@@ -256,13 +256,25 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
         result = optimizer.max
     
         if save_results == True:
-            with open(save_path + save_filename + '_iters.csv', 'a', encoding='UTF8', newline='') as f:
+            with open(save_path + save_filename + '_optimums.csv', 'a', encoding='UTF8', newline='') as f:
                 writer = csv.writer(f)
                 row = [i, result["target"]]
                 for key, value in args_BO.items():
                     row.append(result["params"][key])
                 writer.writerow(row)
     end_time_iter = time.time()
+
+    iterations = optimizer.res
+    if save_results == True:
+        with open(save_path + save_filename + '_points_probed.csv', 'w', encoding='UTF8', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(columns)
+            for i, res in enumerate(iterations):
+                row = [i, res["target"]]
+                for key, value in args_BO.items():
+                    row.append(res["params"][key])
+                writer.writerow(row)
+
         
 
     print(optimizer.max) #final parameters
