@@ -44,7 +44,7 @@ energy_init = 0.5e-3
 
 #values:  radius, flength, gas, pressure, wavelength, GDD, energy
 initial_values_HCF=[radius_init, flength_init, gas, pressure_init, wavel, energy_init,FWHM, 0]
-goal_wavel=1200e-9
+goal_wavel=200e-9
 wavel_bounds=(0.9*goal_wavel,1.1*goal_wavel)
 opt_dict,res = Luna_BO_debug(params, initial_values_HCF, function=max_intens_integral, wavel_bounds=wavel_bounds,init_points=init_points, n_iter=n_iter)
 max_intens_intergral = opt_dict['target']
