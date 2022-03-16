@@ -26,6 +26,7 @@ def errorCorrectionAdvanced_int(t, synth_field, goal_field):
     """
     # First scale both functions to amplitude of 1
     #need to check that the norm isn't zero to avoid errors
+    
     if np.linalg.norm(np.array(synth_field)) != 0:
         synth_field=np.array(synth_field)/(np.linalg.norm(np.array(synth_field))) #normalise arrays
     if np.linalg.norm(np.array(goal_field)) != 0:

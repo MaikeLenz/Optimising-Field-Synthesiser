@@ -16,12 +16,13 @@ from ErrorCorrectionFunction_integrate import *
 
 #this function carries out BO for N fields. First, it defines the relevant target function before varying the input parameters.
 
-def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np.linspace(-20,100,20000), window=None):     
+def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np.linspace(-20,100,20000), window=None, field_to_shape="I"):     
     """
     performs BO with params as specified as strings in params input (params is list of strings) on the synthesiser Synth.
     init_points: number of initial BO points
     n_iter: number of iterations
     plots output total and individual fields.
+    if pulse shaping: set goal_field to desired pulse shape of desired duration, and field_to_shape to "I" or "E"
     """ 
     params_dict = Synth.create_dict() #returns synthesiser parameters as dictionary
     args_BO = {} #this dictionary will contain only the parameters we want to vary here
@@ -38,6 +39,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         It will consist of one of the sub-target functions in the subtarget function file or one of the rms error functions in ErrorCorrection_integrate.
         """
         E=np.array([])
+        E_abs=np.array([])
         I=np.array([])
         # Update the synthesiser's dictionary with new parameters
         for i in range(len(params)):
@@ -69,6 +71,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
             E_i=Synth.E_field_value(i)
 
             E=np.append(E,[E_i.real])
+            E_abs=np.append(E_abs,[np.abs(E_i)])
             I=np.append(I,[np.abs(E_i)**2])
         
         if window!=None:
@@ -82,7 +85,10 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
 
         if function==errorCorrectionAdvanced_int or function==errorCorrection_int:
             #to minimise rms errors, the sub-target function contains another argument, the goal intensity field
-            return function(t1,I,goal_field)    
+            if field_to_shape=="I":
+                return function(t1,I,goal_field)   
+            elif field_to_shape=="E":
+                return function(t1,E_abs,goal_field)
         else: 
             #perhaps already pass the array of intensities in here?
             return function(t1,E,I) #pass t E and I to sub-target function
@@ -157,6 +163,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         print("after",Synth._pulse_list[i]._t0)
         
     #plt.figure()
+    E_abs=np.array([])
     E_tot = np.array([]) #total electric field
     I=np.array([]) #total intensity
     gradient=np.array([])
@@ -167,47 +174,66 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
     for i in range(len(t)):
         #create list of total electric field value at every t
         E_i= Synth.E_field_value(t[i])
-        E_tot=np.append(E_tot,[E_i])
-        I=np.append(I,[E_i**2])
+        E_tot=np.append(E_tot,[E_i.real])
+        E_abs=np.append(E_abs,[np.abs(E_i)])
+        I=np.append(I,[np.abs(E_i)**2])
         if i==0:
             gradient=np.append(gradient,[0])
         else:
             h=t[1]-t[0]
-            gradient=np.append(gradient,[(E_i**2-Synth.E_field_value(t[i-1])**2)/h])
+            gradient=np.append(gradient,[(np.abs(E_i)**2-np.abs(Synth.E_field_value(t[i-1]))**2)/h])
         for j in range(len(Synth._pulse_list)):
             #append individual channel electric fields
-            E_individual[j][i]=Synth._pulse_list[j].E_field_value(t[i])
-            I_individual[j][i]=(Synth._pulse_list[j].E_field_value(t[i]))**2
+            E_individual[j][i]=Synth._pulse_list[j].E_field_value(t[i]).real
+            I_individual[j][i]=np.abs(Synth._pulse_list[j].E_field_value(t[i]))**2
 
-    
+    print("Lengths:",len(E_abs),len(I))
     #shift goal field to align with max intensity
     if function==errorCorrectionAdvanced_int or function==errorCorrection_int:
+        if field_to_shape=="I":
         #rescale goal_field to match the intensity
-        if np.linalg.norm(np.array(I)) != 0 and np.linalg.norm(np.array(goal_field)) != 0:
-            goal_field=(np.array(goal_field)/(np.linalg.norm(np.array(goal_field))))*np.linalg.norm(np.array(I))
+            if np.linalg.norm(np.array(I)) != 0 and np.linalg.norm(np.array(goal_field)) != 0:
+                goal_field=(np.array(goal_field)/(np.linalg.norm(np.array(goal_field))))*np.linalg.norm(np.array(I))
 
-        #shift the left electric field to match in time
-        max_indices_synth = np.argwhere(I == np.amax(I)).flatten().tolist()
-        max_indices_goal = np.argwhere(goal_field == np.amax(goal_field)).flatten().tolist()
-        median_synth = statistics.median(max_indices_synth)
-        median_goal = statistics.median(max_indices_goal) 
+            #shift the left electric field to match in time
+            max_indices_synth = np.argwhere(I == np.amax(I)).flatten().tolist()
+            max_indices_goal = np.argwhere(goal_field == np.amax(goal_field)).flatten().tolist()
+            median_synth = statistics.median(max_indices_synth)
+            median_goal = statistics.median(max_indices_goal) 
 
-        offset = int(median_synth - median_goal)
-        print("offset:",offset)
-        if offset > 0: #I on the right of goal
-            goal_field = np.append(np.zeros(offset),goal_field)
-            goal_field=np.append(goal_field,np.zeros(len(I)-len(goal_field)))
-        elif offset < 0: #I on the left of goal
-            print("pre shift",len(goal_field))
-            goal_field = np.append(goal_field,np.zeros(len(I)-len(goal_field)))
-            print("post shift",len(goal_field))
+            offset = int(median_synth - median_goal)
+            print("offset:",offset)
+            if offset > 0: #I on the right of goal
+                goal_field = np.append(np.zeros(offset),goal_field)
+                goal_field=np.append(goal_field,np.zeros(len(I)-len(goal_field)))
+            elif offset < 0: #I on the left of goal
+                print("pre shift",len(goal_field))
+                goal_field = np.append(goal_field,np.zeros(len(I)-len(goal_field)))
+                print("post shift",len(goal_field))
+
+        elif field_to_shape=="E":
             """
-            I= np.append(np.zeros(abs(offset)),I)
-            I=I[:len(I)-abs(offset)]
-            E_tot= np.append(np.zeros(abs(offset)),E_tot)
-            E_tot=E_tot[:len(E_tot)-abs(offset)]
+            if np.linalg.norm(np.array(E_abs)) != 0 and np.linalg.norm(np.array(goal_field)) != 0:
+                goal_field=(np.array(goal_field)/(np.linalg.norm(np.array(goal_field))))*np.linalg.norm(np.array(E_abs))
             """
-    
+            goal_field=goal_field*max(E_abs)/max(goal_field)
+            #shift the left electric field to match in time
+            max_indices_synth = np.argwhere(E_abs == np.amax(E_abs)).flatten().tolist()
+            max_indices_goal = np.argwhere(goal_field == np.amax(goal_field)).flatten().tolist()
+            median_synth = statistics.median(max_indices_synth)
+            median_goal = statistics.median(max_indices_goal) 
+
+            offset = int(median_synth - median_goal)
+            print("offset:",offset)
+            if offset > 0: #I on the right of goal
+                print(len(goal_field),len(E_abs))
+                goal_field = np.append(np.zeros(offset),goal_field)
+                goal_field=np.append(goal_field,np.zeros(len(E_abs)-len(goal_field)))
+                print(len(goal_field),len(E_abs))
+            elif offset < 0: #I on the left of goal
+                print("pre shift",len(goal_field))
+                goal_field = np.append(goal_field,np.zeros(len(E_abs)-len(goal_field)))
+                print("post shift",len(goal_field))
     
     #plot results
     energies=Synth.Energy_distr(t) #energies in each channel
@@ -215,13 +241,19 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
     gs = f.add_gridspec(Synth.no_of_channels(), 2)
     f_ax_sim = f.add_subplot(gs[:, 0])
     #f_ax_sim.plot(t, E_tot, label="Electric field")
+
     f_ax_sim.set_title("Synthesised Field",fontsize=20)
     f_ax_sim.plot(t, I, label="Intensity",color="tab:orange")
     #f_ax_sim.plot(t, gradient, label="Intensity Gradient")
     if function==errorCorrectionAdvanced_int or function==errorCorrection_int:
         #need another curve which is the goal field
         #shift this to align with the max intensity?
-        f_ax_sim.plot(t, goal_field, label="Goal Intensity",color="tab:green")
+        if field_to_shape=="I":
+            f_ax_sim.plot(t, goal_field, label="Goal Intensity",color=plt.cm.Set2(3))
+        elif field_to_shape=="E":
+            f_ax_sim.plot(t, E_abs, label="Absolute Electric field")
+            f_ax_sim.plot(t, goal_field, label="Goal Intensity",color=plt.cm.Set2(3))
+
     f_ax_sim.set_xlabel('Time, fs',fontsize=22)
     #f_ax_sim.set_ylabel('Electric field / Intensity (a.u.)',fontsize=22)
     f_ax_sim.set_ylabel('Intensity (a.u.)',fontsize=22)
@@ -237,7 +269,7 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         #f_ax.plot(t, E_individual[i], label="Electric field %s" %j)
         #f_ax.plot(t, I_individual[i], label="Intensity %s" %j)
         if i==1:
-            f_ax.plot(t, E_individual[i], label="Electric fields")
+            f_ax.plot(t, E_individual[i], label="Real parts of electric fields")
             f_ax.plot(t, I_individual[i], label="Intensities")
             plt.legend(fontsize=16)
         else:
