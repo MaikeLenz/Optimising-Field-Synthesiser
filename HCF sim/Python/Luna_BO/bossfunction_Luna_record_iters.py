@@ -128,9 +128,9 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
                     Main.phase = ϕω 
                     # Pass data to Luna
                     Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
-                    Main.pressure = (0, Main.pressure)
+                    #Main.pressure = (0, Main.pressure)
                     Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
-                    Main.pressure = Main.pressure[1]
+                    #Main.pressure = Main.pressure[1]
                 else:
                     # Get experimental input spectrum, scale energy and apply phase
                     lines=[]
@@ -161,15 +161,15 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
                     Main.phase = phase
 
                     Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
-                    Main.pressure = (0, Main.pressure)
+                    #Main.pressure = (0, Main.pressure)
                     Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
-                    Main.pressure = Main.pressure[1]
+                    #Main.pressure = Main.pressure[1]
 
             else:
                 #default gaussian pulse passed to prop capillary
-                Main.pressure = (0, Main.pressure)
+                #Main.pressure = (0, Main.pressure)
                 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
-                Main.pressure = Main.pressure[1]
+                #Main.pressure = Main.pressure[1]
 
             Main.eval('t, Et = Processing.getEt(duv)')
             Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
