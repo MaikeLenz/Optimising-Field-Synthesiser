@@ -14,59 +14,57 @@ sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\
 sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 from pulse_with_GDD import *
 from compressor_grating_to_values import *
-from rms_width import *
 
 import julia
 #julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
 julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
 from julia import Main
 Main.using("Luna")
-
 """
-df_init = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\saved_optimum\\Optimal_Params_init.csv")
+df_init = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\saved_optimum_max_peak_power\\Optimal_Params_init.csv")
 iteration = df_init.iloc[:,0]
-target_width = df_init.iloc[:,1] # \m
+target = df_init.iloc[:,1]
 energy = df_init.iloc[:,2] # J
 pressure = df_init.iloc[:,3] # bar
 grating_pos = df_init.iloc[:,4] # m
 
-plt.plot(iteration, target_width, 'x')
+plt.plot(iteration, target, 'x')
 plt.xlabel('Evaluation Number')
-plt.ylabel('RMS Width, \m')
+plt.ylabel('Maximum Intensity')
 plt.title('Initial Random Search')
 
-best_init = max(target_width)
-mean_init = np.mean(target_width)
-print('Best initial random point = {} \m'.format(best_init))
-print('Mean initial random point = {} \m'.format(mean_init))
+best_init = max(target)
+mean_init = np.mean(target)
+print('Best initial random point = {}'.format(best_init))
+print('Mean initial random point = {}'.format(mean_init))
 
-df_iter = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\saved_optimum\\Optimal_Params_iters.csv")
+df_iter = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\saved_optimum_max_peak_power\\Optimal_Params_iters.csv")
 iteration = df_iter.iloc[:,0]
-target_width = df_iter.iloc[:,1] # \m
+target = df_iter.iloc[:,1]
 energy = df_iter.iloc[:,2] # J
 pressure = df_iter.iloc[:,3] # bar
 grating_pos = df_iter.iloc[:,4] # m
 
 plt.figure()
-plt.plot(iteration, target_width, 'x')
+plt.plot(iteration, target, 'x')
 plt.xlabel('Number of Iterations')
-plt.ylabel('RMS Width, \m')
+plt.ylabel('Maximum Intensity')
 plt.title('Optimum Found After a Given Number of Iterations')
 
-best_iter = max(target_width)
-print('Optimum after iterations = {} \m'.format(best_iter))
+best_iter = max(target)
+print('Optimum after iterations = {}'.format(best_iter))
 print('Increase from mean by factor {} %'.format((1 - best_iter/mean_init)*100))
 
 plt.show()
 """
 # Plot spectrum at each optimum
 filepath = 'C:\\Users\\iammo\\Documents\\'
-df_iter = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\saved_optimum_max_bandwidth\\Optimal_Params_iters.csv")
+df_iter = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\saved_optimum_max_peak_power\\Optimal_Params_iters.csv")
 energy = df_iter.iloc[:,2] # J
 pressure = df_iter.iloc[:,3] # bar
 grating_pos = df_iter.iloc[:,4]
 
-#optimum_iters = [0, 13, 100, 302]
+optimum_iters = [0, 4, 18, 100, 246, 293]
 optimum_iters = [0, 399]
 
 Main.radius = 175e-6
@@ -121,7 +119,7 @@ for i in optimum_iters:
     Et_allz = Main.Et # array of Et at all z 
     Et = Et_allz[:,-1] # last item in each element is pulse shape at the end
 
-    results.append(rms_width(λ, Iλ))
+    results.append(max(np.abs(Et)**2))
 
     plt.figure()
     plt.plot(λ*10**9,Iλ)
@@ -135,5 +133,6 @@ for i in optimum_iters:
     plt.title(i)
 print(results)
 print('Optimum is {} times larger than no iterations'.format(results[1]/results[0]))
+
 plt.show()
                 

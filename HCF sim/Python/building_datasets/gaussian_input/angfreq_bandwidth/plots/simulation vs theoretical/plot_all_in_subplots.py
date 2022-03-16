@@ -70,7 +70,7 @@ f_ax5.set_xlabel('Fibre Radius, μm', fontsize=16)
 f_ax6.plot(df_wavelength.iloc[:,0], df_wavelength.iloc[:,1], '+', label='Luna Simulation')
 f_ax6.plot(df_wavelength.iloc[:,0], df_wavelength.iloc[:,2], '+', label='Theoretical')
 f_ax6.set_xlabel('Wavelength, nm', fontsize=16)
-plt.legend(fontsize=16)
+f_ax1.legend(fontsize=16)
 
 
 plt.suptitle("Parameters vs Bandwidth for the Luna Simulation", fontsize=24)
