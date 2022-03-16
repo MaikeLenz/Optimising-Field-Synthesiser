@@ -198,9 +198,10 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
             #pbounds[i] = (0,1e-3)
             #pbounds[i] = (0.1e-3,2.0e-3)
             pbounds[i] = (0.1e-3, 1.5e-3)
-        elif 'τfwhm' in i:
+        elif 'FWHM' in i:
             #pbounds[i] = (20e-15,50e-15)
-            pbounds[i] = (4e-15, 30e-15)
+            #pbounds[i] = (4e-15, 30e-15)
+            pbounds[i] = (20e-15, 35e-15)
         elif 'λ0' in i:
             pbounds[i] = (700e-9,900e-9)
         elif 'pressure' in i:
