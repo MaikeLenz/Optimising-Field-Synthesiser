@@ -243,20 +243,23 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
     #f_ax_sim.plot(t, E_tot, label="Electric field")
 
     f_ax_sim.set_title("Synthesised Field",fontsize=20)
-    f_ax_sim.plot(t, I, label="Intensity",color="tab:orange")
+    #f_ax_sim.plot(t, I, label="Intensity")
+    
     #f_ax_sim.plot(t, gradient, label="Intensity Gradient")
     if function==errorCorrectionAdvanced_int or function==errorCorrection_int:
         #need another curve which is the goal field
         #shift this to align with the max intensity?
         if field_to_shape=="I":
-            f_ax_sim.plot(t, goal_field, label="Goal Intensity",color=plt.cm.Set2(3))
+            f_ax_sim.plot(t, goal_field, label="Goal Shape",color=plt.cm.Set2(3))
         elif field_to_shape=="E":
-            f_ax_sim.plot(t, E_abs, label="Absolute Electric field")
-            f_ax_sim.plot(t, goal_field, label="Goal Intensity",color=plt.cm.Set2(3))
+            f_ax_sim.plot(t, E_abs, label="Absolute Electric Field", color=plt.cm.Set2(3))
+            f_ax_sim.plot(t, goal_field, label="Goal Shape",color=plt.cm.Set2(2))
 
     f_ax_sim.set_xlabel('Time, fs',fontsize=22)
     #f_ax_sim.set_ylabel('Electric field / Intensity (a.u.)',fontsize=22)
-    f_ax_sim.set_ylabel('Intensity (a.u.)',fontsize=22)
+    #f_ax_sim.set_ylabel('Intensity (a.u.)',fontsize=22)
+    f_ax_sim.set_ylabel('Absolute Electric Field (a.u.)',fontsize=22)
+
 
     plt.xticks(fontsize=16)
     plt.yticks(fontsize=16)
@@ -268,10 +271,10 @@ def BO(params, Synth, function, init_points=50, n_iter=50, goal_field=None, t=np
         j=i+1
         #f_ax.plot(t, E_individual[i], label="Electric field %s" %j)
         #f_ax.plot(t, I_individual[i], label="Intensity %s" %j)
-        if i==1:
-            f_ax.plot(t, E_individual[i], label="Real parts of electric fields")
+        if i==0:
+            f_ax.plot(t, E_individual[i], label="Real Parts of Electric Fields")
             f_ax.plot(t, I_individual[i], label="Intensities")
-            plt.legend(fontsize=16)
+            plt.legend(fontsize=16,loc="lower right")
         else:
             f_ax.plot(t, E_individual[i])
             f_ax.plot(t, I_individual[i])
