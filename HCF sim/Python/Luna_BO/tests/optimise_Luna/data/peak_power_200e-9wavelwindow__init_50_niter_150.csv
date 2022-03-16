@@ -1,0 +1,2 @@
+init_points,n_iter,peak power,"energy, J","pressure, bar","radius, m","flength, m","FWHM, s","wavel, m",gas
+50,150,<function max_intens_integral at 0x0000021ABE045310>,0.0011762803191443405,8.997320801448911,0.0004968030900817708,3.155804173327737,3e-14,8e-07,Ne

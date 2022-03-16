@@ -206,8 +206,8 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         elif 'pressure' in i:
             #pbounds[i] = (0,3)
             #pbounds[i] = (1,15)
-            pbounds[i] = (1, 10)
-            #pbounds[i] = (0.5, 3.5)
+            #pbounds[i] = (1, 10)
+            pbounds[i] = (0.5, 3.5)
         elif 'radius' in i:                
             #pbounds[i] = (125e-6,300e-6)
             pbounds[i] = (50e-6, 500e-6)
