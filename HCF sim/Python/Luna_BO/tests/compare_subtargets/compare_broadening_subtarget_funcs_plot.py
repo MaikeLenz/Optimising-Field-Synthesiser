@@ -5,6 +5,8 @@ import julia
 julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
 #julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
 from julia import Main
+Main.using("Luna")
+
 import csv
 import sys
 import pandas as pd
@@ -25,33 +27,34 @@ from pulse_with_GDD import *
 from Luna_subtarget import *
 from compressor_grating_to_values import *
 
+c=299792458
 
-
-filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\compare_subtargets"
+filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\compare_subtargets\\"
 # Read optimal params
 df_0 = pd.read_csv(filepath+"vary_energy_pressure_grating.csv")
 
-target_wavel=df_0.iloc[1,0]
-energy_wavel=df_0.iloc[1,1]
-pressure_wavel=df_0.iloc[1,2]
-grating_pair_displacement_wavel=df_0.iloc[1,3]
-target_freq=df_0.iloc[1,4]
-energy_freq=df_0.iloc[1,5]
-pressure_freq=df_0.iloc[1,6]
-grating_pair_displacement_freq=df_0.iloc[1,7]
-target_Pt=df_0.iloc[1,8]
-energy_Pt=df_0.iloc[1,9]
-pressure_Pt=df_0.iloc[1,10]
-grating_pair_displacement_Pt=df_0.iloc[1,11]
-target_dt=df_0.iloc[1,12]
-energy_dt=df_0.iloc[1,13]
-pressure_dt=df_0.iloc[1,14]
-grating_pair_displacement_dt=df_0.iloc[1,15]
-radius=df_0.iloc[1,16]
-flength=df_0.iloc[1,17]
-duration=df_0.iloc[1,18]
-wavel=df_0.iloc[1,19]
-gas=df_0.iloc[1,20]
+target_wavel=df_0.iloc[0][0]
+print(target_wavel)
+energy_wavel=df_0.iloc[0][1]
+pressure_wavel=df_0.iloc[0][2]
+grating_pair_displacement_wavel=df_0.iloc[0][3]
+target_freq=df_0.iloc[0][4]
+energy_freq=df_0.iloc[0][5]
+pressure_freq=df_0.iloc[0][6]
+grating_pair_displacement_freq=df_0.iloc[0][7]
+target_Pt=df_0.iloc[0][8]
+energy_Pt=df_0.iloc[0][9]
+pressure_Pt=df_0.iloc[0][10]
+grating_pair_displacement_Pt=df_0.iloc[0][11]
+target_dt=df_0.iloc[0][12]
+energy_dt=df_0.iloc[0][13]
+pressure_dt=df_0.iloc[0][14]
+grating_pair_displacement_dt=df_0.iloc[0][15]
+radius=df_0.iloc[0][16]
+flength=df_0.iloc[0][17]
+duration=df_0.iloc[0][18]
+wavel=df_0.iloc[0][19]
+gas=df_0.iloc[0][20]
 
 
 #############################################################################################################################################
