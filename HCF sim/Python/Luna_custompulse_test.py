@@ -20,7 +20,7 @@ domega = 2e15
 omega = np.linspace(2*np.pi*c/wavel - domega/2, 2*np.pi*c/wavel + domega/2, 100)
 
 E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=domega, amp=1, CEP=0, GDD=0, TOD=0)
-Iω = np.abs(E**2)
+Iω = np.abs(E)**2
 
 Main.energy = energy
 Main.ω = omega
