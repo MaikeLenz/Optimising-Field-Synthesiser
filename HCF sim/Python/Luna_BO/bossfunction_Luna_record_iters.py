@@ -120,7 +120,7 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
                     GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=params_dict["grating_pair_displacement"]*1000)
 
                     E, ϕω = E_field_freq(omega, GD=0.0, wavel=params_dict["λ0"], domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
-                    Iω = np.abs(E**2)
+                    Iω = np.abs(E)**2
 
 
                     Main.ω = omega
