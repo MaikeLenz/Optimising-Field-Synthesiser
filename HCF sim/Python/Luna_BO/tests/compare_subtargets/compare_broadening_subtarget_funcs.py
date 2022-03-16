@@ -68,12 +68,96 @@ Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
 Main.eval("ω, Iω = Processing.getIω(duv, :ω, flength)")
 Main.eval('t, Et = Processing.getEt(duv)')
 
+λ_wavel = Main.λ
+Iλ_wavel = Main.Iλ
+t_wavel = Main.t
+omega_wavel=Main.ω
+Iomega_wavel=Main.Iω
+Iomega_wavel=Iomega_wavel.reshape((-1,))[0:500]
+omega_wavel=omega_wavel[0:500]
 
+Et_allz_wavel=Main.Et #array of Et at all z 
+Et_wavel=Et_allz_wavel[:,-1] #last item in each element is pulse shape at the end
+Et0_wavel=Et_allz_wavel[:,0]
 
 
 result_freq,iterations_freq=Luna_BO_record_iters(params, initial_values_HCF, function=max_freq_bandwidth, init_points=50, n_iter=50, save_path=path_file)
 
+energy_freq=result_freq["params"]["energy"]
+pressure_freq=result_freq["params"]["pressure"]
+grating_pair_displacement_freq=result_freq["params"]["grating_pair_displacement"]
+
+omega = np.linspace(2*np.pi*c/wavel - domega/2, 2*np.pi*c/wavel + domega/2, 100)
+GDD,TOD=compressor_grating_values(grating_pair_displacement_mm=1000*grating_pair_displacement_freq, wavel_m=wavel)
+E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
+Iω = np.abs(E)**2
+
+Main.energy = energy_freq
+Main.ω = omega
+Main.Iω = Iω  
+Main.phase = ϕω
+Main.pressure = pressure_freq
+
+# Pass data to Luna
+Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
+Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+
+#now extract datasets
+Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
+Main.eval("ω, Iω = Processing.getIω(duv, :ω, flength)")
+Main.eval('t, Et = Processing.getEt(duv)')
+
+λ_freq = Main.λ
+Iλ_freq = Main.Iλ
+t_freq = Main.t
+omega_freq=Main.ω
+Iomega_freq=Main.Iω
+Iomega_freq=Iomega_freq.reshape((-1,))[0:500]
+omega_freq=omega_freq[0:500]
+
+Et_allz_freq=Main.Et #array of Et at all z 
+Et_freq=Et_allz_freq[:,-1] #last item in each element is pulse shape at the end
+Et0_freq=Et_allz_freq[:,0]
+
+
 result_Pt,iterations_Pt=Luna_BO_record_iters(params, initial_values_HCF, function=max_peak_power, init_points=50, n_iter=50, save_path=path_file)
+
+energy_Pt=result_Pt["params"]["energy"]
+pressure_Pt=result_Pt["params"]["pressure"]
+grating_pair_displacement_Pt=result_Pt["params"]["grating_pair_displacement"]
+
+omega = np.linspace(2*np.pi*c/wavel - domega/2, 2*np.pi*c/wavel + domega/2, 100)
+GDD,TOD=compressor_grating_values(grating_pair_displacement_mm=1000*grating_pair_displacement_Pt, wavel_m=wavel)
+E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
+Iω = np.abs(E)**2
+
+Main.energy = energy_Pt
+Main.ω = omega
+Main.Iω = Iω  
+Main.phase = ϕω
+Main.λ0 = wavel
+Main.pressure = pressure_Pt
+
+# Pass data to Luna
+Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
+Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+
+#now extract datasets
+Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
+Main.eval("ω, Iω = Processing.getIω(duv, :ω, flength)")
+Main.eval('t, Et = Processing.getEt(duv)')
+
+λ_Pt = Main.λ
+Iλ_Pt = Main.Iλ
+t_Pt = Main.t
+omega_Pt=Main.ω
+Iomega_Pt=Main.Iω
+Iomega_Pt=Iomega_Pt.reshape((-1,))[0:500]
+omega_Pt=omega_Pt[0:500]
+
+Et_allz_Pt=Main.Et #array of Et at all z 
+Et_Pt=Et_allz_Pt[:,-1] #last item in each element is pulse shape at the end
+Et0_Pt=Et_allz_Pt[:,0]
 
 result_dt,iterations_dt=Luna_BO_record_iters(params, initial_values_HCF, function=min_duration, init_points=1, n_iter=1, save_path=path_file)
 
