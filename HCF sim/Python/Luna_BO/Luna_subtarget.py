@@ -7,7 +7,7 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 from rms_width import *
 
 import numpy as np 
-
+#from scipy.integrate import simps
 from scipy import integrate
 
 #julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
@@ -54,4 +54,30 @@ def max_intens_integral(λ,Iλ,bounds):
     Iλ_truncated1 = Iλ[bounds[0] <λ]
     Iλ_truncated=Iλ_truncated1[λ_truncated1< bounds[1]]
     return integrate.simps(Iλ_truncated,λ_truncated)
+
+def threshold(t,Et,x,y):
+    """
+    Find points where signal reaches certain level above noise and find the distance between them
+    """
+    thresh=0.1
+    rows = np.where(y > max(y)*thresh)[0]
+    if len(rows) <= 1:
+        print("Set a lower threshold")
+        min_index = rows[0]
+        max_index = min_index
+    else:
+        min_index = rows[0]
+        max_index = rows[-1]
+    return x[max_index]-x[min_index]
+
+def norm_and_int(t,Et,x, y):
+    """
+    Normalises the pulse so that the maximum is 1, and then integrates
+    """
+    maximum = max(y)
+    norm = []
+    for i in y:
+        norm.append(i/maximum)
+    return integrate.simps(norm, x)
+
 

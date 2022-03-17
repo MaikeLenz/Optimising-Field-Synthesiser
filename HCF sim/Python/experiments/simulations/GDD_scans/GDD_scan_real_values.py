@@ -65,7 +65,7 @@ for i in range(len(GDDs_and_TODs)):
     print(new_tau)
 
     E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0s[1], domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
-    Iω = np.abs(E**2)
+    Iω = np.abs(E)**2
     Main.ω = omega
     Main.Iω = Iω  
     Main.phase = ϕω

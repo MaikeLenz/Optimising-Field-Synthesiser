@@ -42,7 +42,7 @@ Main.pressure = pressure
 
 for i in range(len(energies)):
     E, ϕω = E_field_freq(omega, GD=0.0, wavel=λ0s[i], domega=domegas[i]/correction_to_tau, amp=1, CEP=0, GDD=0, TOD=0)
-    Iω = np.abs(E**2)
+    Iω = np.abs(E)**2
     Main.ω = omega
     Main.Iω = Iω  
     Main.phase = ϕω

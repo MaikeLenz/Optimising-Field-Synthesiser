@@ -25,17 +25,17 @@ from bossfunction_Luna_debugging import *
     # Pulse: input energy, τfwhm, central wavelength
     # Fibre: pressure, fibre core radius, fibre length
 
-params=["energy", "pressure", "radius", "flength","grating_pair_displacement"]
+params=["energy", "pressure", "grating_pair_displacement"]
 
-init_points = 50
+init_points = 0
 n_iter = 50
 wavel = 800e-9
-gas = 'He'
+gas = 'Ne'
 GDD = 0
 
-FWHM_init = 10e-15
+FWHM_init = 22e-15
 radius_init = 175e-6
-flength_init = 1
+flength_init = 1.05
 pressure_init = 3*0.66
 energy_init = 0.5e-3
 #radius_init = randint(50, 500)*(10**-6)
@@ -46,48 +46,25 @@ energy_init = 0.5e-3
 # This part is optional - run first with just initial points for comparison
 #values:  radius, flength, gas, pressure, wavelength, GDD, energy
 initial_values_HCF=[radius_init, flength_init, gas, pressure_init, wavel, energy_init,FWHM_init, 0]
-goal_wavel=1400e-9
-wavel_bounds=(0.9*goal_wavel,1.1*goal_wavel)
-opt_dict,res = Luna_BO_debug(params, initial_values_HCF, function=max_intens_integral, wavel_bounds=wavel_bounds,init_points=init_points, n_iter=1)
-max_intens_intergral = opt_dict['target']
-energy = opt_dict['params']['energy']
-pressure = opt_dict['params']['pressure']
-radius = opt_dict['params']['radius']
-flength = opt_dict['params']['flength']
-grating_pair_displacement = opt_dict['params']['grating_pair_displacement']
-#τfwhm = opt_dict['params']['FWHM']
-
-# Save the data
-header = ['init_points', 'n_iter', 'peak power', 'energy, J', 'pressure, bar', 'radius, m', 'flength, m', 'FWHM, s', 'wavel, m', 'gas', 'grating_pair_displacement, m']
-#with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\peak_power_1200e-9wavelwindow_varyfwhm__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'w', encoding='UTF8', newline='') as f:
-with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\peak_power_1400e-9wavelwindow__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'w', encoding='UTF8', newline='') as f:
-    writer = csv.writer(f)
-    # write the header
-    writer.writerow(header)
-
-    # write the dataS
-    writer.writerow([init_points, 0, max_intens_integral, energy, pressure, radius, flength, FWHM_init, wavel, gas, grating_pair_displacement])
 
 # Run optimisation
-opt_dict,res = Luna_BO_debug(params, initial_values_HCF, function=max_intens_integral, wavel_bounds=wavel_bounds,init_points=init_points, n_iter=n_iter)
-max_intens_intergral = opt_dict['target']
+opt_dict,res = Luna_BO_debug(params, initial_values_HCF, function=max_wavel_bandwidth,init_points=0, n_iter=n_iter)
+max_width_sum = opt_dict['target']
 energy = opt_dict['params']['energy']
 pressure = opt_dict['params']['pressure']
-radius = opt_dict['params']['radius']
-flength = opt_dict['params']['flength']
 grating_pair_displacement = opt_dict['params']['grating_pair_displacement']
 #τfwhm = opt_dict['params']['FWHM']
 
 # Save the data
 header = ['init_points', 'n_iter', 'peak power', 'energy, J', 'pressure, bar', 'radius, m', 'flength, m', 'FWHM, s', 'wavel, m', 'gas', 'grating_pair_displacement, m']
 #with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\peak_power_1200e-9wavelwindow_varyfwhm__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'a', encoding='UTF8', newline='') as f:
-with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\peak_power_1400e-9wavelwindow__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\max_bandwidth__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f) # peak_power_1000e-9wavelwindow__init_50_niter_100
     # write the header
     #writer.writerow(header)
 
     # write the dataS
-    writer.writerow([init_points, n_iter, max_intens_integral, energy, pressure, radius, flength, FWHM_init, wavel, gas, grating_pair_displacement])
+    writer.writerow([init_points, n_iter, max_width_sum, energy, pressure, radius_init, flength_init, FWHM_init, wavel, gas, grating_pair_displacement])
 
 
 #final values for 1200nm (both 50 inits)

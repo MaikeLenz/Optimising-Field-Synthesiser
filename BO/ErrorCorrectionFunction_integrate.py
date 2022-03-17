@@ -60,6 +60,9 @@ def errorCorrectionAdvanced_int(t, synth_field, goal_field):
             synth_field= np.append(np.zeros(abs(offset)),synth_field)
             synth_field=synth_field[:len(goal_field)]
             t=t[:len(goal_field)]
+        else:
+            synth_field=synth_field[:len(goal_field)]
+            t=t[:len(goal_field)]
     else:
         if offset < 0: #goal_field on the right of synth_field
             synth_field = synth_field[:len(goal_field)-abs(offset)]
@@ -67,6 +70,9 @@ def errorCorrectionAdvanced_int(t, synth_field, goal_field):
         elif offset > 0: #goal_field on the left of synth_field
             synth_field = synth_field[offset:]
             synth_field=np.append(synth_field,np.zeros(offset))
+        else:
+            synth_field = synth_field[:len(goal_field)]
+
 
 
     #determine point that falls below 10% of max which is the limit for being cut off?
