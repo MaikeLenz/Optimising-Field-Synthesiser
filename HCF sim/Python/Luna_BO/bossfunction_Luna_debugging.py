@@ -236,7 +236,6 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         #maximises the target function output. In the case of the rms error functions, this is a minimisation because the errors are multiuplied by -1
         init_points=init_points,
         n_iter=n_iter,
-        kappa=10
         )
 
     print(optimizer.max) #final parameters
