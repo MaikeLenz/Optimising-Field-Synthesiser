@@ -84,7 +84,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
             elif 'λ0' in key:
                 Main.λ0 = value
             elif 'pressure' in key:
-                Main.pressure = value
+                Main.pressure = 0.66*value
             elif 'radius' in key:
                 Main.radius = value
             elif 'flength' in key:
@@ -197,7 +197,9 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         if 'energy' in i:
             #pbounds[i] = (0,1e-3)
             #pbounds[i] = (0.1e-3,2.0e-3)
-            pbounds[i] = (0.1e-3, 1.5e-3)
+            #pbounds[i] = (0.1e-3, 1.5e-3)
+            pbounds[i] = (1.1e-3, 1.5e-3)
+
         elif 'FWHM' in i:
             #pbounds[i] = (20e-15,50e-15)
             #pbounds[i] = (4e-15, 30e-15)
@@ -208,7 +210,9 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
             #pbounds[i] = (0,3)
             #pbounds[i] = (1,15)
             #pbounds[i] = (1, 10)
-            pbounds[i] = (0.5, 3.5)
+            #pbounds[i] = (0.5, 3.5)
+            pbounds[i] = (3.0, 3.5)
+
         elif 'radius' in i:                
             #pbounds[i] = (125e-6,300e-6)
             pbounds[i] = (50e-6, 500e-6)
