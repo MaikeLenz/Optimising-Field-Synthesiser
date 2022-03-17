@@ -28,7 +28,7 @@ from bossfunction_Luna_debugging import *
 params=["energy", "pressure", "grating_pair_displacement"]
 
 init_points = 0
-n_iter = 50
+n_iter = 5
 func=threshold
 wavel = 800e-9
 gas = 'Ar'
