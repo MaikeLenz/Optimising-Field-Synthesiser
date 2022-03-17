@@ -80,4 +80,7 @@ def norm_and_int(t,Et,x, y):
         norm.append(i/maximum)
     return integrate.simps(norm, x)
 
+def combo(t,Et,λ,Iλ):
+    return -min_duration(t,Et,λ,Iλ)+max_freq_bandwidth(t,Et,λ,Iλ)+max_peak_power(t,Et,λ,Iλ)+max_wavel_bandwidth(t,Et,λ,Iλ)
+
 

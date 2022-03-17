@@ -75,7 +75,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         It will consist of one of the sub-target functions in the subtarget function file or one of the rms error functions in ErrorCorrection_integrate.
         """
         for i in range(len(params)):
-            params_dict[params[i]] = params_dict[params[i]]
+            params_dict[params[i]] = args[params[i]]
             
         # Update the simulation's variables with new parameters
         for key, value in args_BO.items():
@@ -113,7 +113,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
                 c=299792458
                 omega = np.linspace(2*np.pi*c/params_dict["λ0"] - domega/2, 2*np.pi*c/params_dict["λ0"] + domega/2, 1000)
 
-                GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=params_dict["grating_pair_displacement"]*1000)
+                GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=grating_pair_displacement*1000)
 
                 E, ϕω = E_field_freq(omega, GD=0.0, wavel=params_dict["λ0"], domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
                 Iω = np.abs(E)**2
@@ -321,7 +321,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
 
         plt.figure()
         plt.plot(t,Et,label="z=1m")
-        plt.plot(t,Et0,label="z=0")
+        plt.plot(t,Et0,label="z=0m")
         plt.xlabel("time,s")
         plt.ylabel("Electric field, a.u.")
         plt.legend()

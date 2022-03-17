@@ -13,6 +13,7 @@ from julia import Main
 
 Main.using("Luna")
 
+plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
 
 # Arguments
 radius = 175e-6 # HCF core radius
@@ -80,6 +81,8 @@ for w in range(len(Iomega)):
 
 file.close()
 """
+print(rms_width(λ,Iλ))
+
 #plotting
 plt.figure()
 plt.plot(λ,Iλ)
