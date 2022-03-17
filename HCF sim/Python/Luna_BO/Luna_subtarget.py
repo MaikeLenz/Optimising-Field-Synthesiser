@@ -7,7 +7,7 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 from rms_width import *
 
 import numpy as np 
-
+#from scipy.integrate import simps
 from scipy import integrate
 
 #julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
@@ -69,4 +69,15 @@ def threshold(t,Et,x,y):
         min_index = rows[0]
         max_index = rows[-1]
     return x[max_index]-x[min_index]
+
+def norm_and_int(t,Et,x, y):
+    """
+    Normalises the pulse so that the maximum is 1, and then integrates
+    """
+    maximum = max(y)
+    norm = []
+    for i in y:
+        norm.append(i/maximum)
+    return integrate.simps(norm, x)
+
 
