@@ -55,7 +55,7 @@ def max_intens_integral(λ,Iλ,bounds):
     Iλ_truncated=Iλ_truncated1[λ_truncated1< bounds[1]]
     return integrate.simps(Iλ_truncated,λ_truncated)
 
-def threshold(x,y):
+def threshold(t,Et,x,y):
     """
     Find points where signal reaches certain level above noise and find the distance between them
     """
