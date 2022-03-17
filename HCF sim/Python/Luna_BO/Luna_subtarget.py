@@ -66,7 +66,7 @@ def threshold(x,y):
         min_index = rows[0]
         max_index = min_index
     else:
-            min_index = rows[0]
+        min_index = rows[0]
         max_index = rows[-1]
     return x[max_index]-x[min_index]
 
