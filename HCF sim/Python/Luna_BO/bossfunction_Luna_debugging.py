@@ -227,6 +227,11 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         random_state=1,
         )
 
+    #probe spm optimum
+    optimizer.probe(params={"energy": 1.5, "pressure": 3.5, "grating_pair_displacement":0.0},lazy=True,)
+    #optimizer.probe([1.5, 0.0, 3.5],lazy=True,)
+
+
     optimizer.maximize(
         #maximises the target function output. In the case of the rms error functions, this is a minimisation because the errors are multiuplied by -1
         init_points=init_points,
