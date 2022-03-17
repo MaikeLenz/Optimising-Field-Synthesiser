@@ -95,7 +95,7 @@ def line(x,a):
 popt,_=curve_fit(line,r_3,decay_coeff)
 
 ax2.plot(r_3, decay_coeff,ls="None",marker="+", markersize=20)
-ax2.plot(r_3,line(r_3,*popt),label=r"$\mathrm{\alpha}$=%sr$\mathrm{^{-3}}$"%(int(popt[0])))
+ax2.plot(r_3,line(r_3,*popt),label=r"$\mathrm{\alpha}$=%s$\mathrm{\pm}$23$\mathrm{\mu m^{-3}}$"%(int(popt[0])))
 plt.ylabel("Decay Coefficient, $\mathrm{m^{-1}}$",fontsize=16)
 plt.xlabel("Inverse of Fibre Radius Cubed, $\mathrm{\mu m^{-3}}$",fontsize=16)
 plt.title("Argon Low Energy Transmission Decay Coefficient",fontsize=20)
