@@ -113,7 +113,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
                 c=299792458
                 omega = np.linspace(2*np.pi*c/params_dict["λ0"] - domega/2, 2*np.pi*c/params_dict["λ0"] + domega/2, 1000)
 
-                GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=grating_pair_displacement*1000)
+                GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=params_dict["grating_pair_displacement"]*1000)
 
                 E, ϕω = E_field_freq(omega, GD=0.0, wavel=params_dict["λ0"], domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
                 Iω = np.abs(E)**2
@@ -228,7 +228,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         )
 
     #probe spm optimum
-    optimizer.probe(params={"energy": 1.5, "pressure": 3.5, "grating_pair_displacement":0.0},lazy=True,)
+    optimizer.probe(params={"energy": 1.5e-3, "pressure": 3.5, "grating_pair_displacement":0.0},lazy=True,)
     #optimizer.probe([1.5, 0.0, 3.5],lazy=True,)
 
 
