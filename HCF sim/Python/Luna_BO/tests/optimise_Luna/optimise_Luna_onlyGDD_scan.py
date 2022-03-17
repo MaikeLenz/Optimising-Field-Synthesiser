@@ -39,8 +39,8 @@ gas = 'Ne'
 FWHM = 22e-15
 radius = 175e-6
 flength = 1.05
-pressure = 0.8*0.66
-energy = 1.5e-3
+pressure = 3*0.66
+energy = 1.0e-3
 #radius_init = randint(50, 500)*(10**-6)
 #flength_init = randint(1, 30)*0.1
 #pressure_init = randint(1, 10)
@@ -71,8 +71,8 @@ widths_thresh=[]
 
 for i in range(len(displacements)):
     GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=displacements[i]*1000)
-
-    E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=domega, amp=1, CEP=0, GDD=0, TOD=0)
+    print(GDD,TOD)
+    E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
     Iω = np.abs(E)**2
 
     Main.Iω = Iω  
@@ -106,6 +106,7 @@ for i in range(len(displacements)):
     #note Et is complex
 
     #creating indicative bar to show rms width
+    print(rms_width(omega,Iomega),threshold(omega,Iomega,omega,Iomega))
     widths_rms.append(rms_width(omega,Iomega))
     widths_thresh.append(threshold(omega,Iomega,omega,Iomega))
 
