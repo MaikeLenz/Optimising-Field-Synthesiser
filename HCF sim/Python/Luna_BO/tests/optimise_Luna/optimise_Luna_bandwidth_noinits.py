@@ -27,7 +27,7 @@ from bossfunction_Luna_debugging import *
 
 params=["energy", "pressure", "grating_pair_displacement"]
 
-init_points = 10
+init_points = 5
 n_iter = 50
 wavel = 800e-9
 gas = 'Ne'
