@@ -40,7 +40,7 @@ mean_init = np.mean(target_width)
 print('Best initial random point = {} \m'.format(best_init))
 print('Mean initial random point = {} \m'.format(mean_init))
 """
-df_iter = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\max_freq_bandwidth_test\\Optimal_Params_points_probed.csv")
+df_iter = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\tests\\max_freq_bandwidth_test\\Optimal_Params_points_probed.csv")
 iteration = df_iter.iloc[:,0]
 target_width_iter = df_iter.iloc[:,1] # \m
 energy = df_iter.iloc[:,2] # J
@@ -53,7 +53,7 @@ plt.xlabel('Number of Iterations')
 plt.ylabel('RMS Width, \m')
 plt.title('Optimum Found After a Given Number of Iterations')
 
-df_optimum = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\max_freq_bandwidth_test\\Optimal_Params_optimums.csv")
+df_optimum = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\tests\\max_freq_bandwidth_test\\Optimal_Params_optimums.csv")
 optimum = df_optimum.iloc[:,0]
 target_width_opt = df_optimum.iloc[:,1] # \m
 energy = df_optimum.iloc[:,2] # J
@@ -66,7 +66,7 @@ plt.show()
 
 # Plot spectrum at each optimum
 filepath = 'C:\\Users\\iammo\\Documents\\'
-df_iter = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\max_freq_bandwidth_test\\Optimal_Params_optimums.csv")
+df_iter = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\tests\\max_freq_bandwidth_test\\Optimal_Params_optimums.csv")
 energy = df_iter.iloc[:,2] # J
 pressure = df_iter.iloc[:,3] # bar
 grating_pos = df_iter.iloc[:,4]
