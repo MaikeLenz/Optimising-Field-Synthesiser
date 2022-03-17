@@ -220,7 +220,9 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
             #pbounds[i] = (1,2)
             pbounds[i] = (0.1, 6)
         elif 'grating_pair_displacement' in i:
-            pbounds[i] = (-0.5e-3, 0.5e-3)
+            #pbounds[i] = (-0.5e-3, 0.5e-3)
+            pbounds[i] = (-0.05e-3, 0.05e-3)
+
     print(pbounds)
 
     optimizer = BayesianOptimization(
@@ -232,7 +234,8 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         )
 
     #probe spm optimum
-    optimizer.probe(params={"energy": 1.5e-3, "pressure": 3.5, "grating_pair_displacement":0.0},lazy=True,)
+    #optimizer.probe(params={"energy": 1.5e-3, "pressure": 3.5, "grating_pair_displacement":0.0},lazy=True,)
+    optimizer.probe(params={"grating_pair_displacement":0.0},lazy=True,)
     #optimizer.probe([1.5, 0.0, 3.5],lazy=True,)
 
 
