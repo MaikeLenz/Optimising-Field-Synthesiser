@@ -75,7 +75,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         It will consist of one of the sub-target functions in the subtarget function file or one of the rms error functions in ErrorCorrection_integrate.
         """
         for i in range(len(params)):
-            params_dict[params[i]] = params_dict[params[i]]
+            params_dict[params[i]] = args[params[i]]
             
         # Update the simulation's variables with new parameters
         for key, value in args_BO.items():
@@ -84,7 +84,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
             elif 'λ0' in key:
                 Main.λ0 = value
             elif 'pressure' in key:
-                Main.pressure = value
+                Main.pressure = 0.66*value
             elif 'radius' in key:
                 Main.radius = value
             elif 'flength' in key:
@@ -197,7 +197,9 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         if 'energy' in i:
             #pbounds[i] = (0,1e-3)
             #pbounds[i] = (0.1e-3,2.0e-3)
-            pbounds[i] = (0.1e-3, 1.5e-3)
+            #pbounds[i] = (0.1e-3, 1.5e-3)
+            pbounds[i] = (1.1e-3, 1.5e-3)
+
         elif 'FWHM' in i:
             #pbounds[i] = (20e-15,50e-15)
             #pbounds[i] = (4e-15, 30e-15)
@@ -208,7 +210,9 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
             #pbounds[i] = (0,3)
             #pbounds[i] = (1,15)
             #pbounds[i] = (1, 10)
-            pbounds[i] = (0.5, 3.5)
+            #pbounds[i] = (0.5, 3.5)
+            pbounds[i] = (3.0, 3.5)
+
         elif 'radius' in i:                
             #pbounds[i] = (125e-6,300e-6)
             pbounds[i] = (50e-6, 500e-6)
@@ -227,10 +231,17 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         random_state=1,
         )
 
+    #probe spm optimum
+    optimizer.probe(params={"energy": 1.5e-3, "pressure": 3.5, "grating_pair_displacement":0.0},lazy=True,)
+    #optimizer.probe([1.5, 0.0, 3.5],lazy=True,)
+
+
     optimizer.maximize(
         #maximises the target function output. In the case of the rms error functions, this is a minimisation because the errors are multiuplied by -1
         init_points=init_points,
         n_iter=n_iter,
+        acq="ucb", 
+        kappa=0.1
         )
 
     print(optimizer.max) #final parameters
@@ -321,7 +332,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
 
         plt.figure()
         plt.plot(t,Et,label="z=1m")
-        plt.plot(t,Et0,label="z=0")
+        plt.plot(t,Et0,label="z=0m")
         plt.xlabel("time,s")
         plt.ylabel("Electric field, a.u.")
         plt.legend()
