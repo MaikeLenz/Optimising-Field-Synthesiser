@@ -64,7 +64,7 @@ Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
 
 #creating indicative bar to show rms width
 width=rms_width(omega,Iomega)
-print(width)
+print(width/(2*np.pi))
 centre=moment(omega,Iomega,1)/moment(omega,Iomega,0)
 height=moment(Iomega,omega,1)/moment(Iomega,omega,0)
 width_plot=np.array([centre-0.5*width,centre+0.5*width])
