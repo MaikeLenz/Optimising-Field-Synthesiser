@@ -75,7 +75,7 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, ImperialLab 
         It will consist of one of the sub-target functions in the subtarget function file or one of the rms error functions in ErrorCorrection_integrate.
         """
         for i in range(len(params)):
-            params_dict[params[i]] = params_dict[params[i]]
+            params_dict[params[i]] = args[params[i]]
             
         # Update the simulation's variables with new parameters
         for key, value in args_BO.items():
@@ -189,7 +189,7 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, ImperialLab 
         if 'energy' in i:
             #pbounds[i] = (0,1e-3)
             #pbounds[i] = (0.1e-3,2.0e-3)
-            pbounds[i] = (0.1e-3, 1.5e-3)
+            pbounds[i] = (0.5e-3, 1.5e-3)
         elif 'τfwhm' in i:
             #pbounds[i] = (20e-15,50e-15)
             pbounds[i] = (4e-15, 30e-15)
