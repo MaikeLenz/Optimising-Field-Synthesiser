@@ -31,12 +31,12 @@ init_points = 50
 n_iter = 500
 FWHM = (22e-15)*1.25
 wavel = 800e-9
-gas = 'Ne'
+gas = 'Ar'
 
 
 radius_init = 175e-6
 flength_init = 1.05
-pressure_init = 0.66*3.5
+pressure_init = 0.66*1.0
 energy_init = 1.1e-3
 #radius_init = randint(50, 500)*(10**-6)
 #flength_init = randint(1, 30)*0.1
