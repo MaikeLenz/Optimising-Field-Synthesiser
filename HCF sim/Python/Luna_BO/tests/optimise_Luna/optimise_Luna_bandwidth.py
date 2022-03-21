@@ -27,8 +27,8 @@ from bossfunction_Luna_debugging import *
 
 params=["grating_pair_displacement","pressure","energy"]
 
-init_points = 10
-n_iter = 10
+init_points = 50
+n_iter = 100
 FWHM = (22e-15)*1.25
 wavel = 800e-9
 gas = 'Ne'
