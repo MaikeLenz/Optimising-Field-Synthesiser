@@ -53,7 +53,7 @@ Main.λ0 = wavel
 Main.τfwhm = FWHM
 Main.energy = energy
 
-
+print(pressure,energy,grating_pair_displacement)
 domega = 2*np.pi*0.44/FWHM
 c=299792458
 omega = np.linspace(2*np.pi*c/wavel - domega/2, 2*np.pi*c/wavel + domega/2, 1000)
@@ -93,7 +93,7 @@ omega_opt=omega_opt[0:500]
 
 Main.energy=1.1e-3
 Main.pressure=3.5*0.66
-
+"""
 # Calculations
 # setting pressure to (0,pressure) means a gradient from zero up until given value
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
@@ -120,29 +120,10 @@ Et=Et_allz[:,-1] #last item in each element is pulse shape at the end
 Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
 #note Et is complex
 
-#creating indicative bar to show rms width
-"""
-width=rms_width(omega,Iomega)
-
-centre=moment(omega,Iomega,1)/moment(omega,Iomega,0)
-height=moment(Iomega,omega,1)/moment(Iomega,omega,0)
-width_plot=np.array([centre-0.5*width,centre+0.5*width])
-bar_height=np.array([height,height])
-"""
-"""
-#save I vs omega to csv
-file = open("HCF_I_omega.csv", "w",newline="")
-writer = csv.writer(file)
-header=[ "angular frequency","Intensity"]
-writer.writerow(header)
-for w in range(len(Iomega)):
-  writer.writerow([omega[w], Iomega[w][0]])
-
-file.close()
 """
 #print(rms_width(λ,Iλ))
-
-
+domega = 2*np.pi*0.44/FWHM
+omega = np.linspace(2*np.pi*c/wavel - domega/2, 2*np.pi*c/wavel + domega/2, 1000)
 GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=0*1000)
 
 E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
@@ -173,7 +154,7 @@ Et02=Et_allz2[:,0]
 
 #plotting
 plt.figure()
-plt.plot(λ,Iλ,label="SPM Prediction")
+#plt.plot(λ,Iλ,label="SPM Prediction")
 plt.plot(λ2,Iλ2,label="SPM Prediction 2")
 
 plt.plot(λ_opt,Iλ_opt,label="Optimised")
@@ -181,7 +162,7 @@ plt.xlabel("Wavelength (m)")
 plt.ylabel("Spectral energy density (J/m)")
 
 plt.figure()
-plt.plot(omega,Iomega,label="SPM Prediction")
+#plt.plot(omega,Iomega,label="SPM Prediction")
 plt.plot(omega2,Iomega2,label="SPM Prediction 2")
 
 #plt.plot(width_plot,bar_height, label="rms width")
@@ -191,7 +172,7 @@ plt.xlabel("Angular frequency,/s")
 plt.ylabel("Intensity, a.u.")
 
 plt.figure()
-plt.plot(t,Et,label="SPM Prediction")
+#plt.plot(t,Et,label="SPM Prediction")
 plt.plot(t2,Et2,label="SPM Prediction 2")
 
 plt.plot(t_opt,Et_opt,label="Optimised")
