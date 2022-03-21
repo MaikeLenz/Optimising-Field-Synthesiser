@@ -46,7 +46,7 @@ energy_init = 1.1e-3
 #values: radius,flength,gas_str,pressure,λ0,energy,FWHM,grating_pair_displacement
 initial_values_HCF=[radius_init, flength_init, gas, pressure_init, wavel, energy_init,FWHM,0]
 
-opt_dict, res = Luna_BO_debug(params, initial_values_HCF, function=threshold, init_points=init_points, n_iter=n_iter)
+opt_dict, res = Luna_BO_debug(params, initial_values_HCF, function=max_wavel_bandwidth, init_points=init_points, n_iter=n_iter)
 width = opt_dict['target']
 #energy = opt_dict['params']['energy']
 #pressure = opt_dict['params']['pressure']
@@ -55,7 +55,7 @@ grating = opt_dict['params']['grating_pair_displacement']
 # Save the data
 header = ['init_points', 'n_iter', 'width, nm', 'energy, J', 'pressure, bar', 'radius, m', 'flength, m', 'FWHM, s', 'wavel, m', 'gas', 'grating pair displacement, m']
 #with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna_data\\optimise_lab__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'w', encoding='UTF8', newline='') as f:
-with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\vary_only_grating\\Ar_thresh_optimise_lab__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\vary_only_grating\\Ar_rms_optimise_lab__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     # write the header
     writer.writerow(header)
