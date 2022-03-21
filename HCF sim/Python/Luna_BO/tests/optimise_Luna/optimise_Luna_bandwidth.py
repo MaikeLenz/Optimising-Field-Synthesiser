@@ -25,18 +25,18 @@ from bossfunction_Luna_debugging import *
     # Pulse: input energy, τfwhm, central wavelength
     # Fibre: pressure, fibre core radius, fibre length
 
-params=["grating_pair_displacement","pressure","energy"]
+params=["grating_pair_displacement"]
 
-init_points = 50
-n_iter = 150
+init_points = 10
+n_iter = 10
 FWHM = (22e-15)*1.25
 wavel = 800e-9
-gas = 'Ar'
+gas = 'Ne'
 
 
 radius_init = 175e-6
 flength_init = 1.05
-pressure_init = 0.66*1.0
+pressure_init = 0.66*3.5
 energy_init = 1.1e-3
 #radius_init = randint(50, 500)*(10**-6)
 #flength_init = randint(1, 30)*0.1
@@ -48,8 +48,8 @@ initial_values_HCF=[radius_init, flength_init, gas, pressure_init, wavel, energy
 
 opt_dict, res = Luna_BO_debug(params, initial_values_HCF, function=max_wavel_bandwidth, init_points=init_points, n_iter=n_iter)
 width = opt_dict['target']
-energy = opt_dict['params']['energy']
-pressure = opt_dict['params']['pressure']
+#energy = opt_dict['params']['energy']
+#pressure = opt_dict['params']['pressure']
 grating = opt_dict['params']['grating_pair_displacement']
 
 # Save the data
@@ -61,4 +61,4 @@ with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code
     writer.writerow(header)
 
     # write the dataS
-    writer.writerow([init_points, n_iter, width, energy, pressure, radius_init, flength_init, FWHM, wavel, gas,grating])
+    writer.writerow([init_points, n_iter, width, energy_init, pressure_init, radius_init, flength_init, FWHM, wavel, gas,grating])
