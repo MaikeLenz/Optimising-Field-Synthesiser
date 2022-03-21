@@ -46,7 +46,7 @@ energy_init = 1.1e-3
 #values: radius,flength,gas_str,pressure,λ0,energy,FWHM,grating_pair_displacement
 initial_values_HCF=[radius_init, flength_init, gas, pressure_init, wavel, energy_init,FWHM,0]
 
-opt_dict, res = Luna_BO_debug(params, initial_values_HCF, function=thresh_and_rms, init_points=init_points, n_iter=n_iter)
+opt_dict, res = Luna_BO_debug(params, initial_values_HCF, function=max_wavel_bandwidth, init_points=init_points, n_iter=n_iter)
 width = opt_dict['target']
 energy = opt_dict['params']['energy']
 pressure = opt_dict['params']['pressure']
