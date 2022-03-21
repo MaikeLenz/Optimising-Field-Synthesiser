@@ -28,7 +28,7 @@ filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\
 #filepath="C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\"
 
 # Read optimal params
-df_0 = pd.read_csv(filepath+"optimise_lab__init_50_niter_1.csv")
+df_0 = pd.read_csv(filepath+"optimise_lab__init_100_niter_200.csv")
 
 energy=df_0.iloc[0][3]
 pressure=0.66*df_0.iloc[0][4]
@@ -142,15 +142,48 @@ file.close()
 """
 #print(rms_width(λ,Iλ))
 
+
+GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=0*1000)
+
+E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
+Iω = np.abs(E)**2
+
+
+Main.ω = omega
+Main.Iω = Iω  
+Main.phase = ϕω 
+# Pass data to Luna
+Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
+Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+Main.eval("ω, Iω = Processing.getIω(duv, :ω, flength)")
+Main.eval('t, Et = Processing.getEt(duv)')
+Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
+
+λ2 = Main.λ
+Iλ2 = Main.Iλ
+t2 = Main.t
+omega2=Main.ω
+Iomega2=Main.Iω
+Iomega2=Iomega2.reshape((-1,))[0:500]
+omega2=omega2[0:500]
+
+Et_allz2=Main.Et #array of Et at all z 
+Et2=Et_allz2[:,-1] #last item in each element is pulse shape at the end
+Et02=Et_allz2[:,0]
+
 #plotting
 plt.figure()
 plt.plot(λ,Iλ,label="SPM Prediction")
+plt.plot(λ2,Iλ2,label="SPM Prediction 2")
+
 plt.plot(λ_opt,Iλ_opt,label="Optimised")
 plt.xlabel("Wavelength (m)")
 plt.ylabel("Spectral energy density (J/m)")
 
 plt.figure()
 plt.plot(omega,Iomega,label="SPM Prediction")
+plt.plot(omega2,Iomega2,label="SPM Prediction 2")
+
 #plt.plot(width_plot,bar_height, label="rms width")
 plt.plot(omega_opt,Iomega_opt,label="Optimised")
 plt.legend()
@@ -159,6 +192,8 @@ plt.ylabel("Intensity, a.u.")
 
 plt.figure()
 plt.plot(t,Et,label="SPM Prediction")
+plt.plot(t2,Et2,label="SPM Prediction 2")
+
 plt.plot(t_opt,Et_opt,label="Optimised")
 #plt.plot(t,Et0,label="z=0m")
 plt.xlabel("time,s")

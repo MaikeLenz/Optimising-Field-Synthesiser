@@ -85,3 +85,6 @@ def combo(t,Et,λ,Iλ):
 
 def combo2(t,Et,λ,Iλ):
     return max_freq_bandwidth(t,Et,λ,Iλ)+max_wavel_bandwidth(t,Et,λ,Iλ)+threshold(t,Et,λ,Iλ)
+
+def thresh_and_rms(t,Et,λ,Iλ):
+    return max_wavel_bandwidth(t,Et,λ,Iλ)+threshold(t,Et,λ,Iλ)

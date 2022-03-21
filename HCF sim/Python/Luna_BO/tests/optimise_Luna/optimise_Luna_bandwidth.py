@@ -27,8 +27,8 @@ from bossfunction_Luna_debugging import *
 
 params=["energy", "pressure", "grating_pair_displacement"]
 
-init_points = 50
-n_iter = 1000
+init_points = 100
+n_iter = 200
 FWHM = (22e-15)*1.25
 wavel = 800e-9
 gas = 'Ne'
@@ -46,7 +46,7 @@ energy_init = 1.0e-3
 #values: radius,flength,gas_str,pressure,λ0,energy,FWHM,grating_pair_displacement
 initial_values_HCF=[radius_init, flength_init, gas, pressure_init, wavel, energy_init,FWHM,0]
 
-opt_dict, res = Luna_BO_debug(params, initial_values_HCF, function=threshold, init_points=init_points, n_iter=n_iter)
+opt_dict, res = Luna_BO_debug(params, initial_values_HCF, function=thresh_and_rms, init_points=init_points, n_iter=n_iter)
 width = opt_dict['target']
 energy = opt_dict['params']['energy']
 pressure = opt_dict['params']['pressure']
