@@ -235,8 +235,8 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         )
 
     #probe spm optimum
-    #optimizer.probe(params={"energy": 1.1e-3, "pressure": 3.5, "grating_pair_displacement":0.0},lazy=True,)
-    optimizer.probe(params={"grating_pair_displacement":0.0},lazy=True,)
+    optimizer.probe(params={"energy": 1.1e-3, "pressure": 3.5, "grating_pair_displacement":0.0},lazy=True,)
+    #optimizer.probe(params={"grating_pair_displacement":0.0},lazy=True,)
     #optimizer.probe([1.5, 0.0, 3.5],lazy=True,)
 
 
