@@ -28,7 +28,7 @@ filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\
 #filepath="C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\"
 
 # Read optimal params
-df_0 = pd.read_csv(filepath+"failed_optimise_lab__init_10_niter_10.csv")
+df_0 = pd.read_csv(filepath+"Ne_rms_optimise_lab__init_10_niter_10.csv")
 
 energy=df_0.iloc[0][3]
 pressure=0.66*df_0.iloc[0][4]
