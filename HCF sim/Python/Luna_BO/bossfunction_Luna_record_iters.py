@@ -80,7 +80,8 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
         It will consist of one of the sub-target functions in the subtarget function file or one of the rms error functions in ErrorCorrection_integrate.
         """
         for i in range(len(params)):
-            params_dict[params[i]] = params_dict[params[i]]
+            params_dict[params[i]] = args[params[i]]
+            args_BO[params[i]] = args[params[i]]
             
         # Update the simulation's variables with new parameters
         for key, value in args_BO.items():
