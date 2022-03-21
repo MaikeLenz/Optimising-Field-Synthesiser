@@ -36,7 +36,7 @@ gas = 'Ne'
 
 radius_init = 175e-6
 flength_init = 1.05
-pressure_init = 3.5
+pressure_init = 0.66*3.5
 energy_init = 1.1e-3
 #radius_init = randint(50, 500)*(10**-6)
 #flength_init = randint(1, 30)*0.1
