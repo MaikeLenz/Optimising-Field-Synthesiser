@@ -33,10 +33,10 @@ wavel = 800e-9
 gas = 'He'
 
 FWHM_init = 20e-15
-radius_init = 175e-6
-flength_init = 1
-pressure_init = 1.8*0.66
-energy_init = 0.075e-3
+radius_init = 96e-6
+flength_init = 4.5
+pressure_init = 4.3
+energy_init = 0.149e-3
 #radius_init = randint(50, 500)*(10**-6)
 #flength_init = randint(1, 30)*0.1
 #pressure_init = randint(1, 10)
@@ -45,7 +45,7 @@ energy_init = 0.075e-3
 # This part is optional - run first with just initial points for comparison
 #values:  radius, flength, gas, pressure, wavelength, GDD, energy
 initial_values_HCF=[radius_init, flength_init, gas, pressure_init, wavel, energy_init,FWHM_init, 0]
-goal_wavel=900e-9
+goal_wavel=1300e-9
 wavel_bounds=(0.8*goal_wavel,1.2*goal_wavel)
 opt_dict,res = Luna_BO_debug(params, initial_values_HCF, function=max_intens_integral, wavel_bounds=wavel_bounds,init_points=init_points, n_iter=n_iter)
 
