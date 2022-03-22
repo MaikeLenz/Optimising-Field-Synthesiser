@@ -1,0 +1,2 @@
+init_points,n_iter,peak power,"energy, J","pressure, bar","radius, m","flength, m","FWHM, s","wavel, m",gas,"grating_pair_displacement, m"
+50,1000,2.584115062864336e-05,0.0004941227166142806,1.7649201330750626,0.00014657708582230686,9.944842916006264,2e-14,8e-07,He,-3.1886965904741104e-05
