@@ -75,7 +75,8 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         It will consist of one of the sub-target functions in the subtarget function file or one of the rms error functions in ErrorCorrection_integrate.
         """
         for i in range(len(params)):
-            params_dict[params[i]] = args[params[i]]
+            args_BO[params[i]] = args[params[i]]
+            params_dict[params[i]]=args[params[i]]
             
         # Update the simulation's variables with new parameters
         for key, value in args_BO.items():
@@ -84,7 +85,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
             elif 'λ0' in key:
                 Main.λ0 = value
             elif 'pressure' in key:
-                Main.pressure = 0.66*value
+                Main.pressure = value
             elif 'radius' in key:
                 Main.radius = value
             elif 'flength' in key:
@@ -211,7 +212,12 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
             #pbounds[i] = (1,15)
             #pbounds[i] = (1, 10)
             #pbounds[i] = (0.5, 3.5)
-            pbounds[i] = (3.0, 3.5)
+            if params_dict['gas_str']=="Ar":
+                pbounds[i] = (0.66*0.6, 0.66*1.0)
+    
+            elif params_dict['gas_str']=="Ne":
+                pbounds[i] = (0.66*3.0, 0.66*3.5)
+
 
         elif 'radius' in i:                
             #pbounds[i] = (125e-6,300e-6)
@@ -234,9 +240,14 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         )
 
     #probe spm optimum
-    optimizer.probe(params={"energy": 1.1e-3, "pressure": 3.5, "grating_pair_displacement":0.0},lazy=True,)
-    #optimizer.probe(params={"grating_pair_displacement":0.0},lazy=True,)
-    #optimizer.probe([1.5, 0.0, 3.5],lazy=True,)
+    if params_dict['gas_str']=="Ar":
+        optimizer.probe(params={"energy": 1.1e-3, "pressure": 0.66*1.0, "grating_pair_displacement":0.0},lazy=True,)
+        #optimizer.probe(params={"grating_pair_displacement":0.0},lazy=True,)
+
+
+    elif params_dict['gas_str']=="Ne":
+        #optimizer.probe(params={"energy": 1.1e-3, "pressure": 0.66*3.5, "grating_pair_displacement":0.0},lazy=True,)
+        optimizer.probe(params={"grating_pair_displacement":0.0},lazy=True,)
 
 
     optimizer.maximize(
