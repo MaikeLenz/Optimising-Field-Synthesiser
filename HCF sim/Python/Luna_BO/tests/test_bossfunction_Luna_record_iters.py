@@ -21,7 +21,7 @@ from bossfunction_Luna_record_iters import *
 #params to be varied: 
     # Pulse: input energy, τfwhm, central wavelength
     # Fibre: pressure, fibre core radius, fibre length
-
+"""
 params=["energy", "pressure", "grating_pair_displacement"]
 
 #values:  radius, flength, gas, pressure, wavelength, energy, τfwhm, grating_pair_separation
@@ -29,3 +29,13 @@ gas="Ne"
 initial_values_HCF=[175e-6, 1.05, gas, 3, 800e-9, 1e-3, 30e-15, 0]
 
 result,iterations=Luna_BO_record_iters(params, initial_values_HCF, function=max_freq_bandwidth, ImperialLab=True, init_points=50, n_iter=1500, save_path='C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\many_iters2\\')
+"""
+
+params = ["energy", "pressure", "radius", "flength", "grating_pair_displacement"]
+wavel_bounds = (300e-9 - (300e-9)*0.1, 300e-9 + (300e-9)*0.1)
+
+#values:  radius, flength, gas, pressure, wavelength, energy, τfwhm, grating_pair_separation
+gas = "He"
+initial_values_HCF=[175e-6, 1, gas, 1.8*0.66, 800e-9, 0.075e-3, 25e-15, 0]
+
+result,iterations=Luna_BO_record_iters(params, initial_values_HCF, function=max_intens_integral, wavel_bounds=wavel_bounds, init_points=50, n_iter=50, save_path='C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Luna\\300nm_25fs\\', plotting=True)
