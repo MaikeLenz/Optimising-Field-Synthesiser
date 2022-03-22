@@ -26,7 +26,7 @@ params=["pressure"]
 
 #values:  radius, flength, gas, pressure, wavelength, energy, τfwhm, grating_pair_separation
 gas="Ne"
-pressure=(0,3)
+pressure=(0,2,3)
 initial_values_HCF=[175e-6, 1.05, gas, pressure, 800e-9, 0.5e-3, 30e-15, 0]
 
 result,iterations=Luna_BO_press(params, initial_values_HCF, function=max_wavel_bandwidth, init_points=1, n_iter=1)

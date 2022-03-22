@@ -23,6 +23,10 @@ from pulse_with_GDD import *
 from Luna_subtarget import *
 from compressor_grating_to_values import *
 
+sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\tests\\test_pressure_gradients\\')
+#sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\tests\\test_pressure_gradients\\')
+from compare_pressures import *
+
 #filepath = 'C:\\Users\\iammo\\Documents\\'
 
 #this function carries out BO for hollow core fibre
@@ -119,7 +123,7 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         #we need to recreate the tuple of tuples to pass to Luna (Z,P) as before
         for key, value in args_BO.items():
             if 'pressure' in key:
-                pressure_array=np.zeros((len(pressure_points),2)) #start with array with correct dimensions
+                pressure_array=np.zeros((2,len(pressure_points))) #start with array with correct dimensions
         print(pressure_array)
         #now iterate through args_BO and update params in Luna
         for key, value in args_BO.items():
@@ -149,8 +153,9 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         Main.pressure = pressure_tuple
 
         # Check if the point to be probed is under the critical power condition to avoid unphysical outputs.
+        Main.avg_pressure=P_average(pressure_tuple[0],pressure_tuple[1])
         Main.eval('ω = PhysData.wlfreq(λ0)')
-        Main.eval('_, n0, n2  = Tools.getN0n0n2(ω, gas; P=pressure)')
+        Main.eval('_, n0, n2  = Tools.getN0n0n2(ω, gas; P=avg_pressure)')
         Main.eval('Pcrit = Tools.Pcr(ω, n0, n2)')
         Pcrit = Main.Pcrit
         Pmin = 0
