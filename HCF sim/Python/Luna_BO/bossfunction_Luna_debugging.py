@@ -199,7 +199,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
             #pbounds[i] = (0,1e-3)
             #pbounds[i] = (0.1e-3,2.0e-3)
             #pbounds[i] = (0.1e-3, 1.5e-3)
-            pbounds[i] = (0.05e-3, 0.300e-3)
+            pbounds[i] = (0.05e-3, 0.500e-3)
 
         elif 'FWHM' in i:
             #pbounds[i] = (20e-15,50e-15)
