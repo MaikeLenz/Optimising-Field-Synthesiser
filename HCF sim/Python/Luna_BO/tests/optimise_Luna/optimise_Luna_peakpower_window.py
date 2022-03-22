@@ -45,7 +45,7 @@ energy_init = 0.075e-3
 # This part is optional - run first with just initial points for comparison
 #values:  radius, flength, gas, pressure, wavelength, GDD, energy
 initial_values_HCF=[radius_init, flength_init, gas, pressure_init, wavel, energy_init,FWHM_init, 0]
-goal_wavel=1400e-9
+goal_wavel=1300e-9
 wavel_bounds=(0.8*goal_wavel,1.2*goal_wavel)
 opt_dict,res = Luna_BO_debug(params, initial_values_HCF, function=max_intens_integral, wavel_bounds=wavel_bounds,init_points=init_points, n_iter=n_iter)
 
@@ -60,7 +60,7 @@ grating_pair_displacement = opt_dict['params']['grating_pair_displacement']
 # Save the data
 header = ['init_points', 'n_iter', 'peak power', 'energy, J', 'pressure, bar', 'radius, m', 'flength, m', 'FWHM, s', 'wavel, m', 'gas', 'grating_pair_displacement, m']
 #with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\peak_power_1200e-9wavelwindow_varyfwhm__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'w', encoding='UTF8', newline='') as f:
-with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\He_longwavel\\peak_power_1400e-9wavelwindow__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\He_longwavel\\peak_power_'+str(goal_wavel)+'_wavelwindow__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     # write the header
     writer.writerow(header)
