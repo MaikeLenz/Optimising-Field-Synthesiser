@@ -227,7 +227,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
             pbounds[i] = (50e-6, 500e-6)
         elif 'flength' in i:
             #pbounds[i] = (1,2)
-            pbounds[i] = (0.1, 6)
+            pbounds[i] = (0.1, 10)
         elif 'grating_pair_displacement' in i:
             #pbounds[i] = (-0.5e-3, 0.5e-3)
             #pbounds[i] = (-0.5e-3, 0.5e-3)
