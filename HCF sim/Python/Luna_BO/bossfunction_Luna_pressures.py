@@ -32,7 +32,7 @@ from compressor_grating_to_values import *
 c = 299792458 # m/s
 
 
-def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, ImperialLab = False, init_points=50, n_iter=50, t=np.linspace(-20,100,20000), plotting=True, wavel_bounds=None):     
+def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, ImperialLab = False, init_points=50, n_iter=50, t=np.linspace(-20,100,20000), plotting=True, wavel_bounds=None):     
     """
     performs BO with params as specified as strings in params input (params is list of strings) on the HCF.
     init_points: number of initial BO points
