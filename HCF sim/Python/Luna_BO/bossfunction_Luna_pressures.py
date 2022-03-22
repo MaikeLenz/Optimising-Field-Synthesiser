@@ -147,6 +147,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         τfwhm = Main.τfwhm
         tau = τfwhm/(2*np.sqrt(np.log(2)))
         P = Main.energy/(np.sqrt(np.pi)*tau)
+        #power condition is 1 if we are in range and 0 if we are out of the physical range
         power_condition = int(Pmin <= P <= Pcrit)
 
     
@@ -208,16 +209,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
 
         Main.eval('t, Et = Processing.getEt(duv)')
         Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
-        """
-        if function == peak_power_window:
-            print("Evaluating peak power in wavelength bounds")
-            Main.wavel_bounds=wavel_bounds
-            #can also have Processing.peakpower
-            Main.eval("peak_power=Stats.peakpower(duv, λlims=wavel_bounds)")
-            peak_power=Main.peak_power
-            print(peak_power)
-            return peak_power*power_condition
-        """
+        
         # Get values
         t = Main.t
         Et_allz = Main.Et # array of Et at all z 
