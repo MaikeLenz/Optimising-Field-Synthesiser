@@ -28,7 +28,7 @@ filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\
 #filepath="C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\"
 
 # Read optimal params
-df_0 = pd.read_csv(filepath+"optimise_lab__init_10_niter_10.csv")
+df_0 = pd.read_csv(filepath+"\\vary_only_grating\\Ne_rms_optimise_lab__init_50_niter_150.csv")
 
 energy=df_0.iloc[0][3]
 pressure=df_0.iloc[0][4]
@@ -155,27 +155,27 @@ Et02=Et_allz2[:,0]
 #plotting
 plt.figure()
 #plt.plot(λ,Iλ,label="SPM Prediction")
-plt.plot(λ2,Iλ2,label="SPM Prediction 2")
+plt.plot(λ2,Iλ2,label="SPM Prediction, width %s"%(rms_width(λ2,Iλ2)))
 
-plt.plot(λ_opt,Iλ_opt,label="Optimised")
+plt.plot(λ_opt,Iλ_opt,label="Optimised, width %s"%(rms_width(λ_opt,Iλ_opt)))
 plt.xlabel("Wavelength (m)")
 plt.ylabel("Spectral energy density (J/m)")
-
+plt.legend()
 plt.figure()
 #plt.plot(omega,Iomega,label="SPM Prediction")
-plt.plot(omega2,Iomega2,label="SPM Prediction 2")
+plt.plot(omega2,Iomega2,label="SPM Prediction, width %s"%(rms_width(omega2,Iomega2)))
 
 #plt.plot(width_plot,bar_height, label="rms width")
-plt.plot(omega_opt,Iomega_opt,label="Optimised")
+plt.plot(omega_opt,Iomega_opt,label="Optimised, width %s"%(rms_width(omega_opt,Iomega_opt)))
 plt.legend()
 plt.xlabel("Angular frequency,/s")
 plt.ylabel("Intensity, a.u.")
 
 plt.figure()
 #plt.plot(t,Et,label="SPM Prediction")
-plt.plot(t2,Et2,label="SPM Prediction 2")
+plt.plot(t2,Et2,label="SPM Prediction, width %s"%(rms_width(t2,Et2)))
 
-plt.plot(t_opt,Et_opt,label="Optimised")
+plt.plot(t_opt,Et_opt,label="Optimised, width %s"%(rms_width(t_opt,Et_opt)))
 #plt.plot(t,Et0,label="z=0m")
 plt.xlabel("time,s")
 plt.ylabel("Electric field, a.u.")

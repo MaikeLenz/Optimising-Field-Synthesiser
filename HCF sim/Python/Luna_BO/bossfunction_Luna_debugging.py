@@ -186,7 +186,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         Iλ=Iλ.reshape(len(Iλ),)
         print(Iλ.shape)    
         if function==max_intens_integral:
-            return function(λ, Iλ,wavel_bounds)*power_condition
+            return function(λ, Iλ, wavel_bounds)*power_condition
         else:
             return function(t, Et, λ, Iλ)*power_condition #pass t and E to sub-target function
         
@@ -199,7 +199,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
             #pbounds[i] = (0,1e-3)
             #pbounds[i] = (0.1e-3,2.0e-3)
             #pbounds[i] = (0.1e-3, 1.5e-3)
-            pbounds[i] = (1.0e-3, 1.1e-3)
+            pbounds[i] = (0.05e-3, 0.500e-3)
 
         elif 'FWHM' in i:
             #pbounds[i] = (20e-15,50e-15)
@@ -212,6 +212,9 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
             #pbounds[i] = (1,15)
             #pbounds[i] = (1, 10)
             #pbounds[i] = (0.5, 3.5)
+            if params_dict["gas_str"]=="He":
+                pbounds[i]=(0.66*1.0,8.0*0.66)
+
             if params_dict['gas_str']=="Ar":
                 pbounds[i] = (0.66*0.6, 0.66*1.0)
     
@@ -227,7 +230,8 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
             pbounds[i] = (0.1, 6)
         elif 'grating_pair_displacement' in i:
             #pbounds[i] = (-0.5e-3, 0.5e-3)
-            pbounds[i] = (-0.5e-3, 0.5e-3)
+            #pbounds[i] = (-0.5e-3, 0.5e-3)
+            pbounds[i] = (-0.25e-3, 0.25e-3)
 
     print(pbounds)
 
@@ -254,8 +258,8 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         #maximises the target function output. In the case of the rms error functions, this is a minimisation because the errors are multiuplied by -1
         init_points=init_points,
         n_iter=n_iter,
-        acq="ucb", 
-        kappa=0.1
+        #acq="ucb", 
+        #kappa=0.1
         )
 
     print(optimizer.max) #final parameters
