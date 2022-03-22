@@ -28,4 +28,4 @@ params=["energy", "pressure", "grating_pair_displacement"]
 gas="Ne"
 initial_values_HCF=[175e-6, 1.05, gas, 3, 800e-9, 1e-3, 30e-15, 0]
 
-result,iterations=Luna_BO_record_iters(params, initial_values_HCF, function=max_freq_bandwidth, ImperialLab=True, init_points=50, n_iter=1500, save_path='C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\many_iters\\')
+result,iterations=Luna_BO_record_iters(params, initial_values_HCF, function=max_freq_bandwidth, ImperialLab=True, init_points=50, n_iter=1500, save_path='C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Lab\\many_iters2\\')
