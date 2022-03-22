@@ -67,7 +67,7 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         #p:
         pressure_list[1].append(initial_values_HCF[3][i])
     #create tuple of tuples
-    pressure_tuple=tuple(tuple(pressure_list[0]),tuple(pressure_list[1]))
+    pressure_tuple = tuple(tuple(sub) for sub in pressure_list)
     Main.pressure = pressure_tuple
     
 
@@ -85,7 +85,7 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
     for i in range(len(pressure_points)):
         params_dict['pressure%s'%i] = pressure_points[i]
 
-    #nor filter out parameters we are varying
+    #now filter out parameters we are varying
     for i in params:
         if i in params_dict:
             if i=="pressure":
@@ -93,7 +93,7 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
                 for j in range(len(pressure_points)):
                     args_BO["pressure%s"%j]=params_dict["pressure%s"%j]
             else:
-                #otherwise just add teh parameter to be varied
+                #otherwise just add the parameter to be varied
                 args_BO[i] = params_dict[i]
 
     def target_func(**args):
@@ -101,10 +101,17 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         this is the target function of the optimiser. It is created as a nested function to take only the desired variables as inputs.
         """
         #first update both args_BO and params_dict with variables to be probed next
-        for i in range(len(params)):
-            args_BO[params[i]] = args[params[i]]
-            params_dict[params[i]]=args[params[i]]
-            
+       
+        for i in params:
+            if i=="pressure":
+                #each pressure point needs to be its own parameter
+                for j in range(len(pressure_points)):
+                    args_BO["pressure%s"%j]=args["pressure%s"%j]
+                    params_dict["pressure%s"%j]=args["pressure%s"%j]
+            else:
+                args_BO[params[i]] = args[params[i]]
+                params_dict[params[i]]=args[params[i]]
+
         # Update the simulation's variables with new parameters
         #we use args_BO for this to prevent reloading unchanged parameters into Luna since this takes a lot of time.
 
@@ -113,7 +120,7 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         for key, value in args_BO.items():
             if 'pressure' in key:
                 pressure_array=np.zeros((len(pressure_points),2)) #start with array with correct dimensions
-
+        print(pressure_array)
         #now iterate through args_BO and update params in Luna
         for key, value in args_BO.items():
             if 'energy' in key:
@@ -133,9 +140,12 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
                         #z:
                         pressure_array[0][i]=i*params_dict['flength']/(len(pressure_points)-1)
                         #p:
-                        pressure_list[1][i]=value
+                        pressure_array[1][i]=value
         #turn 2d array into tuple and pass to Luna
-        pressure_tuple=tuple(tuple(pressure_array[0]),tuple(pressure_array[1]))
+        print(pressure_array)
+
+        pressure_tuple = tuple(tuple(sub) for sub in pressure_array)
+        print(pressure_tuple)
         Main.pressure = pressure_tuple
 
         # Check if the point to be probed is under the critical power condition to avoid unphysical outputs.
@@ -246,20 +256,6 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
             pbounds[i] = (20e-15, 35e-15)
         elif 'λ0' in i:
             pbounds[i] = (700e-9,900e-9)
-        elif 'pressure' in i:
-            #pbounds[i] = (0,3)
-            #pbounds[i] = (1,15)
-            #pbounds[i] = (1, 10)
-            #pbounds[i] = (0.5, 3.5)
-            if params_dict["gas_str"]=="He":
-                pbounds[i]=(0.66*1.0,8.0*0.66)
-
-            if params_dict['gas_str']=="Ar":
-                pbounds[i] = (0.66*0.6, 0.66*1.0)
-    
-            elif params_dict['gas_str']=="Ne":
-                pbounds[i] = (0.66*3.0, 0.66*3.5)
-
 
         elif 'radius' in i:                
             #pbounds[i] = (125e-6,300e-6)
