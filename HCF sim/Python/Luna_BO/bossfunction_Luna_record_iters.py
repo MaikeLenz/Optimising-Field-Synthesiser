@@ -35,7 +35,7 @@ filepath = 'C:\\Users\\iammo\\Documents\\'
 c = 299792458 # m/s
 
 
-def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False, ImperialLab = False, init_points=50, n_iter=50, t=np.linspace(-20,100,20000), save_results=True, save_path='', save_filename="Optimal_Params", wavel_bounds=None):     
+def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False, ImperialLab = False, init_points=50, n_iter=50, t=np.linspace(-20,100,20000), save_results=True, save_path='', save_filename="Optimal_Params", wavel_bounds=None, plotting=False):     
     """
     performs BO with params as specified as strings in params input (params is list of strings) on the HCF.
     init_points: number of initial BO points
@@ -116,6 +116,7 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
                 if ImperialLab == False:
                     #Custom data pulse is defined and passed to prop capillary
                     domega = 2*np.pi*0.44/τfwhm
+                    c = 299792458
                     omega = np.linspace(2*np.pi*c/params_dict["λ0"] - domega/2, 2*np.pi*c/params_dict["λ0"] + domega/2, 100)
 
                     GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=params_dict["grating_pair_displacement"]*1000)
@@ -174,11 +175,13 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
 
             Main.eval('t, Et = Processing.getEt(duv)')
             Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
+            """
             if function == peak_power_window:
                 Main.wavel_bounds=wavel_bounds
                 Main.eval("peak_power=peakpower(duv['grid'], duv['Eω'], λlims=wavel_bounds; label=nothing)")
                 peak_power=Main.peak_power
                 return peak_power*power_condition
+            """
             # Get values
             t = Main.t
             Et_allz = Main.Et # array of Et at all z 
@@ -186,9 +189,13 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
             Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
 
             λ = Main.λ
-            Iλ = Main.Iλ    
-                
-            return function(t, Et, λ, Iλ)*power_condition #pass t and E to sub-target function
+            Iλ = Main.Iλ
+            Iλ=Iλ.reshape(len(Iλ),)
+            print(Iλ.shape)    
+            if function==max_intens_integral:
+                return function(λ, Iλ,wavel_bounds)*power_condition   
+            else:    
+                return function(t, Et, λ, Iλ)*power_condition #pass t and E to sub-target function`
         except:
             return 0
         
@@ -199,7 +206,8 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
         if 'energy' in i:
             #pbounds[i] = (0,1e-3)
             #pbounds[i] = (0.1e-3,2.0e-3)
-            pbounds[i] = (0.8e-3, 1.5e-3)
+            #pbounds[i] = (0.8e-3, 1.5e-3) # Our system
+            pbounds[i] = (50e-6, 150e-6) # Heriot-Watt
         elif 'τfwhm' in i:
             #pbounds[i] = (20e-15,50e-15)
             pbounds[i] = (4e-15, 30e-15)
@@ -209,15 +217,18 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
             #pbounds[i] = (0,3)
             #pbounds[i] = (1,15)
             #pbounds[i] = (1, 10)
-            pbounds[i] = (1, 3.5)
+            #pbounds[i] = (1, 3.5) # Our system
+            pbounds[i] = (0.1, 8) # Heriot-Watt
         elif 'radius' in i:                
             #pbounds[i] = (125e-6,300e-6)
-            pbounds[i] = (50e-6, 500e-6)
+            pbounds[i] = (50e-6, 500e-6) # Our system + Heriot-Waat
         elif 'flength' in i:
             #pbounds[i] = (1,2)
-            pbounds[i] = (0.1, 6)
+            pbounds[i] = (0.1, 6) # Our system
+            pbounds[i] = (0.1, 10) # Heriot-Watt
         elif 'grating_pair_displacement' in i:
-            pbounds[i] = (-0.5e-3, 0.5e-3)
+            #pbounds[i] = (-0.5e-3, 0.5e-3) # Our system
+            pbounds[i] = (-0.25e-3, 0.25e-3) # Heriot-Watt
     print(pbounds)
 
     optimizer = BayesianOptimization(
@@ -300,8 +311,7 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
             Main.τfwhm = results[key]   
         elif 'grating_pair_separation' in key:
             grating_pair_displacement = results[key]
-
-    """
+    
     if plotting == True:
         try:
             if Gaussian == False:
@@ -309,6 +319,7 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
                     λ0 = Main.λ0
                     τfwhm = Main.τfwhm
                     domega = 2*np.pi*0.44/τfwhm
+                    c = 299792458
                     omega = np.linspace(2*np.pi*c/λ0 - domega/2, 2*np.pi*c/λ0 + domega/2, 100)
 
                     GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=grating_pair_displacement*1000)
@@ -379,7 +390,7 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
             plt.show()
         except:
             print('No optimal parameters found below the critical power threshold')
-        """
+        
     print('Time taken before starting initial points = {}s'.format(start_time_init - start_time))
     print('Time taken for initial points = {}s'.format(end_time_init - start_time_init))
     print('Time taken for iterations = {}s'.format(end_time_iter - end_time_init))
