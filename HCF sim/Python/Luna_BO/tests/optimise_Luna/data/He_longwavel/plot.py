@@ -109,7 +109,7 @@ plt.ylabel("Intensity, a.u.")
 plt.figure()
 #plt.plot(t,Et,label="SPM Prediction")
 
-plt.plot(t_opt,Et_opt,label="Optimised, width %s"%(rms_width(t_opt,Et_opt)))
+plt.plot(t_opt,Et_opt,label="Optimised")
 #plt.plot(t,Et0,label="z=0m")
 plt.xlabel("time,s")
 plt.ylabel("Electric field, a.u.")
