@@ -125,7 +125,7 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         for key, value in args_BO.items():
             if 'pressure' in key:
                 pressure_array=np.zeros((2,len(pressure_points))) #start with array with correct dimensions
-        print(pressure_array)
+       
         #now iterate through args_BO and update params in Luna
         for key, value in args_BO.items():
             if 'energy' in key:
@@ -147,10 +147,7 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
                         #p:
                         pressure_array[1][i]=value
         #turn 2d array into tuple and pass to Luna
-        print(pressure_array)
-
         pressure_tuple = tuple(tuple(sub) for sub in pressure_array)
-        print(pressure_tuple)
         Main.pressure = pressure_tuple
 
         # Check if the point to be probed is under the critical power condition to avoid unphysical outputs.
@@ -235,7 +232,7 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         λ = Main.λ
         Iλ = Main.Iλ
         Iλ=Iλ.reshape(len(Iλ),)
-        print(Iλ.shape)    
+          
         if function==max_intens_integral:
             return function(λ, Iλ, wavel_bounds)*power_condition
         else:
