@@ -90,7 +90,7 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         params_dict['pressure%s'%i] = pressure_points[i]
 
     #now filter out parameters we are varying
-    for i in params:
+    for i in range(len(params)):
         if i in params_dict:
             if i=="pressure":
                 #each pressure point needs to be its own parameter
@@ -106,13 +106,14 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         """
         #first update both args_BO and params_dict with variables to be probed next
        
-        for i in params:
-            if i=="pressure":
+        for i in range(len(params)):
+            if params[i]=="pressure":
                 #each pressure point needs to be its own parameter
                 for j in range(len(pressure_points)):
                     args_BO["pressure%s"%j]=args["pressure%s"%j]
                     params_dict["pressure%s"%j]=args["pressure%s"%j]
             else:
+                print(i)
                 args_BO[params[i]] = args[params[i]]
                 params_dict[params[i]]=args[params[i]]
 

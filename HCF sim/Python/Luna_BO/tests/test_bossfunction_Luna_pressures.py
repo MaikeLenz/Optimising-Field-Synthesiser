@@ -22,7 +22,7 @@ from bossfunction_Luna_pressures import *
     # Pulse: input energy, τfwhm, central wavelength
     # Fibre: pressure, fibre core radius, fibre length
 
-params=["pressure","energy","grating_pair_separation"]
+params=["pressure","energy","grating_pair_displacement"]
 
 #values:  radius, flength, gas, pressure, wavelength, energy, τfwhm, grating_pair_separation
 gas="Ne"
@@ -55,5 +55,5 @@ with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code
     #writer.writerow(header)
 
     # write the dataS
-    writer.writerow([inits, iters, max_width, energy, pressure, radius_init, flength_init, fwhm, wavel, gas, grating_pair_displacement])
+    writer.writerow([inits, iters, max_width, energy, pressure, radius_init, flength_init, fwhm_init, wavel, gas, grating_pair_displacement])
    
