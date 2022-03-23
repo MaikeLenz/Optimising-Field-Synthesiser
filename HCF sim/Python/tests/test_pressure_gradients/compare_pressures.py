@@ -32,6 +32,25 @@ def P_average(Z, P):
         P_integrated.append(integrate.simps(Pz, z))
     P_av = (np.sum(P_integrated)/norm_len)/(len(Z)-1)
     return P_av
+
+def P_avg(Z,P):
+    """
+    integrate over whole fibre to find average pressure
+    """
+    norm_len = Z[-1] - Z[0]
+    P_integrand=np.array([])
+    for i in range(len(Z)-1):
+        P0 = P[i]
+        PL = P[i+1]
+        L = Z[i+1] - Z[i]
+        z = np.arange(Z[i], Z[i+1], L/100)
+        Pz = P_gradient(z, P0, PL, L)
+        P_integrand=np.append(P_integrand,Pz)
+    z=np.linspace(Z[0],Z[-1],len(P_integrand))
+    P_integrated = integrate.simps(P_integrand, z)
+    return P_integrated/norm_len
+
+
 def P_average_manual(Z, P):
     P_integrated = []
     for i in range(len(Z)-1):
@@ -62,13 +81,15 @@ print(P_average((0,flength/2,flength),(P1,P2,P3)))
 #print(np.mean([P1,P2,P3]))
 print(P_average_manual((0,flength/2,flength),(P1,P2,P3)))
 print(P_average_manual((0,flength/2,flength),(P1,P2,P3)))
-
+print(P_avg((0,flength/2,flength),(P1,P2,P3)))
 P1=0
 P2=3
 print(P_average((0,flength),(P1,P2)))
 print(0.66*P2)
 print(P_average_manual((0,flength),(P1,P2)))
 print(P_average_manual((0,flength),(P1,P2)))
+print(P_avg((0,flength),(P1,P2)))
+
 """
 radius = 175e-6
 flength = 1.05
