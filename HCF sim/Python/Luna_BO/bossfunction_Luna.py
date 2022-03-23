@@ -40,21 +40,23 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, ImperialLab 
     plots input&output spectrum
     initial_values_HCF = [radius, flength, gas, pressure, λ0, τfwhm, energy] # array of initial values for Luna simulation, could change this to input actual Luna simulation
     """ 
-    # Start by assigning values to Luna simulation
+    #Load Luna simulation
     Main.using("Luna")
-    
-    Main.radius = initial_values_HCF[0]
-    Main.flength = initial_values_HCF[1]
-    Main.gas_str = initial_values_HCF[2]
+
+    #assign initial values to simulation
+    Main.radius = initial_values_HCF[0] #fibre core radius, m
+    Main.flength = initial_values_HCF[1] #fibre length, m
+    Main.gas_str = initial_values_HCF[2] #gas in fibre
     Main.eval("gas = Symbol(gas_str)")
-    Main.pressure = initial_values_HCF[3]
-    Main.λ0 = initial_values_HCF[4]
-    Main.energy = initial_values_HCF[5]
-    Main.τfwhm = initial_values_HCF[6]
-    grating_pair_displacement = initial_values_HCF[7]
+    Main.pressure=initial_values_HCF[3]
+    Main.λ0 = initial_values_HCF[4] #central wavelength, m
+    Main.energy = initial_values_HCF[5] #input energy, J
+    Main.τfwhm = initial_values_HCF[6] #FWHM duration of input pulse, s
+    grating_pair_displacement = initial_values_HCF[7] #displacement of compressor grating, m
 
     args_BO = {} #this dictionary will contain only the parameters we want to vary here
-    params_dict={}
+    params_dict={} #this dictionary contains all the parameter values associated with the system
+    #load in initial values
     params_dict['radius'] = initial_values_HCF[0]
     params_dict['flength'] = initial_values_HCF[1]
     params_dict['gas_str'] = initial_values_HCF[2]
@@ -64,6 +66,7 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, ImperialLab 
     params_dict['FWHM'] = initial_values_HCF[6]
     params_dict['grating_pair_displacement'] = initial_values_HCF[7]
 
+    #now filter out parameters we are varying
     for i in params:
         if i in params_dict:
             args_BO[i] = params_dict[i] #append parameters to be varied to dictionary
@@ -72,12 +75,13 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, ImperialLab 
     def target_func(**args):
         """
         this is the target function of the optimiser. It is created as a nested function to take only the desired variables as inputs.
-        It will consist of one of the sub-target functions in the subtarget function file or one of the rms error functions in ErrorCorrection_integrate.
         """
+        #first update both args_BO and params_dict with variables to be probed next
         for i in range(len(params)):
             params_dict[params[i]] = args[params[i]]
             
         # Update the simulation's variables with new parameters
+        #we use args_BO for this to prevent reloading unchanged parameters into Luna since this takes a lot of time.
         for key, value in args_BO.items():
             if 'energy' in key:
                 Main.energy = value
@@ -93,16 +97,18 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, ImperialLab 
                 Main.τfwhm = value
             elif 'grating_pair_displacement' in key:
                 grating_pair_displacement = value
-
+        
+        # Check if the point to be probed is under the critical power condition to avoid unphysical outputs.
         # Critical power condition
         Main.eval('ω = PhysData.wlfreq(λ0)')
         Main.eval('_, n0, n2  = Tools.getN0n0n2(ω, gas; P=pressure)')
         Main.eval('Pcrit = Tools.Pcr(ω, n0, n2)')
-        Pcrit = Main.Pcrit
-        Pmin = 0
+        Pcrit = Main.Pcrit #cant be above this
+        Pmin = 0 #cant be below zero
         τfwhm = Main.τfwhm
         tau = τfwhm/(2*np.sqrt(np.log(2)))
         P = Main.energy/(np.sqrt(np.pi)*tau)
+        #power condition is 1 if we are in range and 0 if we are out of the physical range
         power_condition = int(Pmin <= P <= Pcrit)
 
         try:
@@ -225,6 +231,8 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, ImperialLab 
         )
 
     print(optimizer.max) #final parameters
+
+    #now load the final BO result parameters into Luna to plot them
     results=optimizer.max["params"]
     for key, value in args_BO.items():
         if 'energy' in key:
