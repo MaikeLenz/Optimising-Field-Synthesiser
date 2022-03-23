@@ -90,7 +90,7 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         params_dict['pressure%s'%i] = pressure_points[i]
 
     #now filter out parameters we are varying
-    for i in range(len(params)):
+    for i in params:
         if i in params_dict:
             if i=="pressure":
                 #each pressure point needs to be its own parameter
@@ -295,6 +295,8 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         )
 
     print(optimizer.max) #final parameters
+
+    #now load the final BO result parameters into Luna to plot them
     results=optimizer.max["params"]
     for key, value in args_BO.items():
         if 'energy' in key:
