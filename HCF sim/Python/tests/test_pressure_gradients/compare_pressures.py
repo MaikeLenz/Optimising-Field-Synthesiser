@@ -107,3 +107,11 @@ plt.ylabel('Intensity (a.u.)')
 plt.legend(fontsize=16)
 plt.show()
 """
+
+z=np.linspace(0,10,100)
+P1=P_gradient(z,1,2,10)
+P2=P_gradient(z,0,1,10)+1
+plt.plot(z,P1,label="P1")
+plt.plot(z,P2,label="P2")
+plt.legend()
+plt.show()
