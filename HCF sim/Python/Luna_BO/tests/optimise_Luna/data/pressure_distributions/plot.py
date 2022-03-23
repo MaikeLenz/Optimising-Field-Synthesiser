@@ -23,21 +23,36 @@ from pulse_with_GDD import *
 from Luna_subtarget import *
 from compressor_grating_to_values import *
 
+sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\tests\\test_pressure_gradients\\')
+#sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\tests\\test_pressure_gradients\\')
+from compare_pressures import *
+
 Main.using("Luna")
 filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\pressure_distributions\\"
 #filepath="C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\"
 
 # Read optimal params
-df_0 = pd.read_csv(filepath+"Ar3pressure_points__init_50_niter_150.csv")
+df_0 = pd.read_csv(filepath+"Ne3pressure_points__init_50_niter_150.csv")
 
 energy=df_0.iloc[0][3]
-pressure=df_0.iloc[0][4]
 radius=df_0.iloc[0][5]
 flength=df_0.iloc[0][6]
 FWHM=df_0.iloc[0][7]
 wavel=df_0.iloc[0][8]
 gas=df_0.iloc[0][9]
 grating_pair_displacement=df_0.iloc[0][10]
+pressures_str=df_0.iloc[0][4]
+
+pressures=pressures_str.strip('][').split(', ')
+print(pressures)
+pressure_list=[[],[]]
+for i in range(len(pressures)):
+        #iterate through and append the corresponding z and p value
+        #z:
+        pressure_list[0].append(i*flength/(len(pressures)-1))
+        #p:
+        pressure_list[1].append(float(pressures[i]))
+pressure=tuple(tuple(sub) for sub in pressure_list)
 
 #plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
 
@@ -53,7 +68,6 @@ Main.λ0 = wavel
 Main.τfwhm = FWHM
 Main.energy = energy
 
-print(pressure,energy,grating_pair_displacement)
 domega = 2*np.pi*0.44/FWHM
 c=299792458
 omega = np.linspace(2*np.pi*c/wavel - domega/2, 2*np.pi*c/wavel + domega/2, 1000)
@@ -96,7 +110,7 @@ Main.flength = flength
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
 Pmax=1.5
-Main.pressure = 0.66*Pmax
+Main.pressure = P_average(pressure[0],pressure[1])
 Main.λ0 = wavel
 Main.τfwhm = FWHM
 Main.energy = energy
@@ -144,8 +158,11 @@ Main.flength = flength
 
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
-
-Main.pressure = 0.66*Pmax
+if gas=="Ne":
+    Main.pressure = 0.66*3
+elif gas=="Ar":
+    Main.pressure = 0.66*1.5
+    
 Main.λ0 = wavel
 Main.τfwhm = FWHM
 Main.energy = 1.2e-3
