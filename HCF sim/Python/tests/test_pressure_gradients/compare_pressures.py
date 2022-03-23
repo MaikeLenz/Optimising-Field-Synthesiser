@@ -32,6 +32,25 @@ def P_average(Z, P):
         P_integrated.append(integrate.simps(Pz, z))
     P_av = np.sum(P_integrated)/norm_len
     return P_av
+def P_average_manual(Z, P):
+    P_integrated = []
+    for i in range(len(Z)-1):
+        P0 = P[i]
+        PL = P[i+1]
+        #L = Z[i+1] - Z[i]
+        P_integrated.append((2/3)*(((PL**2) + 2*(P0**2))**(3/2) - (P0**3))/((PL**2) + (P0**2)))
+    P_av = np.sum(P_integrated)
+    return P_av
+
+P1 = 1
+P2 = 6
+P3 = 3
+flength = 1.05
+#print(P_average((0,flength/2,flength),(P1,P2,P3)))
+#print(np.mean([P1,P2,P3]))
+print(P_average((0,flength/2,flength),(P1,P2,P3)))
+print(np.mean([P1,P2,P3]))
+print(P_average_manual((0,flength/2,flength),(P1,P2,P3)))
 
 """
 radius = 175e-6
