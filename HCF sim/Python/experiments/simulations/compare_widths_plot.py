@@ -6,7 +6,8 @@ sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF 
 from rms_width import *
 from theoretical_width import *
 
-plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
+#plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.tableau-colorblind10.colors)
+plt.style.use('tableau-colorblind10')
 plt.rcParams['xtick.labelsize'] = 12
 plt.rcParams['ytick.labelsize'] = 12
 plt.rcParams['axes.labelsize'] = 16
@@ -572,35 +573,35 @@ axs[0,1].fill_between(powers, Ne_power_theor_widths - Ne_pow_errs, Ne_power_theo
 axs[1,1].plot(Ne_pressures, Ne_pressure_theor_widths)
 axs[1,1].fill_between(Ne_pressures, Ne_pressure_theor_widths - Ne_press_errs, Ne_pressure_theor_widths + Ne_press_errs, alpha=0.2)
 
-axs[0,0].plot(Ar_powers, Ar_PowerScan_widths,'+', color='black', label='Experimental Data')
+axs[0,0].plot(Ar_sim_powers, Ar_sim_gauss_PowerScan_widths,'^', label='Luna with Gaussian Input')
+axs[1,0].plot(Ar_sim_pressures, Ar_sim_gauss_PressureScan_widths,'^')
+axs[0,1].plot(Ne_sim_powers, Ne_sim_gauss_PowerScan_widths,'^')
+axs[1,1].plot(Ne_sim_pressures, Ne_sim_gauss_PressureScan_widths,'^')
+
+axs[0,0].plot(Ar_sim_powers, Ar_sim_pulse_PowerScan_widths,'o', label='Luna with Experimental Input')
+axs[1,0].plot(Ar_sim_pressures, Ar_sim_pulse_PressureScan_widths,'o')
+axs[0,1].plot(Ne_sim_powers, Ne_sim_pulse_PowerScan_widths,'o')
+axs[1,1].plot(Ne_sim_pressures, Ne_sim_pulse_PressureScan_widths,'o')
+
+axs[0,0].plot(Ar_powers, Ar_PowerScan_widths,'*', label='Experimental Data')
 axs[0,0].set_xlabel('Power, W')
 axs[0,0].set_ylabel('RMS Width, nm')
-axs[1,0].plot(Ar_pressures, Ar_PressureScan_widths,'+', color='black')
+axs[1,0].plot(Ar_pressures, Ar_PressureScan_widths,'*')
 axs[1,0].set_xlabel('Pressure, bar')
 axs[1,0].set_ylabel('RMS Width, nm')
-axs[0,1].plot(Ne_powers, Ne_PowerScan_widths,'+', color='black')
+axs[0,1].plot(Ne_powers, Ne_PowerScan_widths,'*')
 axs[0,1].set_xlabel('Power, W')
 axs[0,1].set_ylabel('RMS Width, nm')
-axs[1,1].plot(Ne_pressures, Ne_PressureScan_widths,'+', color='black')
+axs[1,1].plot(Ne_pressures, Ne_PressureScan_widths,'*')
 axs[1,1].set_xlabel('Pressure, bar')
 axs[1,1].set_ylabel('RMS Width, nm')
-
-axs[0,0].plot(Ar_sim_powers, Ar_sim_gauss_PowerScan_widths,'+', label='Luna with Gaussian Input')
-axs[1,0].plot(Ar_sim_pressures, Ar_sim_gauss_PressureScan_widths,'+')
-axs[0,1].plot(Ne_sim_powers, Ne_sim_gauss_PowerScan_widths,'+')
-axs[1,1].plot(Ne_sim_pressures, Ne_sim_gauss_PressureScan_widths,'+')
-
-axs[0,0].plot(Ar_sim_powers, Ar_sim_pulse_PowerScan_widths,'+', label='Luna with Experimental Input')
-axs[1,0].plot(Ar_sim_pressures, Ar_sim_pulse_PressureScan_widths,'+')
-axs[0,1].plot(Ne_sim_powers, Ne_sim_pulse_PowerScan_widths,'+')
-axs[1,1].plot(Ne_sim_pressures, Ne_sim_pulse_PressureScan_widths,'+')
 
 axs[0,0].set_title('Argon Power Scan', fontsize=18)
 axs[1,0].set_title('Argon Pressure Scan', fontsize=18)
 axs[0,1].set_title('Neon Power Scan', fontsize=18)
 axs[1,1].set_title('Neon Pressure Scan', fontsize=18)
 
-axs[0,0].legend(loc='upper left')
+axs[0,0].legend(loc='upper left', fontsize=14)
 plt.suptitle('Comparing Experimental, Simulated and Theoretical RMS Width', fontsize=24)
 
 plt.figure()
