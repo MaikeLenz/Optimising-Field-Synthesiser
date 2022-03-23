@@ -6,12 +6,12 @@ from scipy import integrate
 plt.rcParams['xtick.labelsize'] = 12
 plt.rcParams['ytick.labelsize'] = 12
 plt.rcParams['axes.labelsize'] = 16
-
-#julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
-julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
+"""
+julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
+#julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
 from julia import Main
 Main.using("Luna")
-
+"""
 def P_gradient(z, P0, PL, L):
     """
     Defines pressure gradient for incompressible viscous fluid
@@ -33,7 +33,7 @@ def P_average(Z, P):
     P_av = np.sum(P_integrated)/norm_len
     return P_av
 
-
+"""
 radius = 175e-6
 flength = 1.05
 gas = "Ne"
@@ -55,6 +55,7 @@ pressure1 = ((0,flength), (0,P))
 pressure2 = ((0,flength), (0.66*P,0.66*P))
 pressure3 = ((0,flength), (P,0))
 """
+"""
 pressure4_unnormalised = ((0,flength/2,flength), (0,3/2,3))
 pressure4_array = []
 for i in range(len(pressure4_unnormalised[1])):
@@ -62,7 +63,7 @@ for i in range(len(pressure4_unnormalised[1])):
 pressure4 = ((0,flength/2,flength), (pressure4_array[0],pressure4_array[1],pressure4_array[2]))
 print(P_average(pressure4[0], pressure4[1]))
 """
-
+"""
 Main.pressure = pressure1
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
 Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
@@ -89,7 +90,7 @@ Main.eval('t, Et = Processing.getEt(duv)')
 λ = Main.λ
 Iλ = Main.Iλ
 plt.plot(λ*(10**9), Iλ, label='(P,0)')
-
+"""
 """
 Main.pressure = pressure4
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
@@ -100,7 +101,9 @@ Main.eval('t, Et = Processing.getEt(duv)')
 Iλ = Main.Iλ
 plt.plot(λ, Iλ, label='(0,P/2,P)')
 """
+"""
 plt.xlabel('Wavelength (nm)')
 plt.ylabel('Intensity (a.u.)')
 plt.legend(fontsize=16)
 plt.show()
+"""

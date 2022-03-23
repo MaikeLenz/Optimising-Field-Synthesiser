@@ -23,6 +23,10 @@ from pulse_with_GDD import *
 from Luna_subtarget import *
 from compressor_grating_to_values import *
 
+sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\tests\\test_pressure_gradients\\')
+#sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\tests\\test_pressure_gradients\\')
+from compare_pressures import *
+
 #filepath = 'C:\\Users\\iammo\\Documents\\'
 
 #this function carries out BO for hollow core fibre
@@ -32,7 +36,7 @@ from compressor_grating_to_values import *
 c = 299792458 # m/s
 
 
-def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, ImperialLab = False, init_points=50, n_iter=50, t=np.linspace(-20,100,20000), plotting=True, wavel_bounds=None):     
+def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, ImperialLab = False, init_points=50, n_iter=50, t=np.linspace(-20,100,20000), plotting=True, wavel_bounds=None):     
     """
     performs BO with params as specified as strings in params input (params is list of strings) on the HCF.
     init_points: number of initial BO points
@@ -40,70 +44,126 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
     plots input&output spectrum
     initial_values_HCF = [radius, flength, gas, pressure, λ0, τfwhm, energy] # array of initial values for Luna simulation, could change this to input actual Luna simulation
     """ 
-    # Start by assigning values to Luna simulation
+    #Load Luna simulation
     Main.using("Luna")
-    
-    Main.radius = initial_values_HCF[0]
-    Main.flength = initial_values_HCF[1]
-    Main.gas_str = initial_values_HCF[2]
+
+    #assign initial values to simulation
+    Main.radius = initial_values_HCF[0] #fibre core radius, m
+    Main.flength = initial_values_HCF[1] #fibre length, m
+    Main.gas_str = initial_values_HCF[2] #gas in fibre
     Main.eval("gas = Symbol(gas_str)")
-    Main.pressure = initial_values_HCF[3]
-    Main.λ0 = initial_values_HCF[4]
-    Main.energy = initial_values_HCF[5]
-    Main.τfwhm = initial_values_HCF[6]
-    grating_pair_displacement = initial_values_HCF[7]
+    Main.λ0 = initial_values_HCF[4] #central wavelength, m
+    Main.energy = initial_values_HCF[5] #input energy, J
+    Main.τfwhm = initial_values_HCF[6] #FWHM duration of input pulse, s
+    grating_pair_displacement = initial_values_HCF[7] #displacement of compressor grating, m
+
+    #pressure needs to be given as a tuple (Z,P) where:
+    #Z is another tuple containing the positions along the fibre
+    #P is a tuple with the corresponding pressures
+
+    #we create this as a list of lists for convenience before converting to tuple of tuples
+    pressure_points=initial_values_HCF[3] #tuple containing initial pressure values at the points
+    pressure_list=[[],[]]#going to contain Z values and P values
+    for i in range(len(pressure_points)):
+        #iterate through and append the corresponding z and p value
+        #z:
+        pressure_list[0].append(i*initial_values_HCF[1]/(len(pressure_points)-1))
+        #p:
+        pressure_list[1].append(initial_values_HCF[3][i])
+    #create tuple of tuples
+    pressure_tuple = tuple(tuple(sub) for sub in pressure_list)
+    Main.pressure = pressure_tuple
+    
 
     args_BO = {} #this dictionary will contain only the parameters we want to vary here
-    params_dict={}
+    params_dict={} #this dictionary contains all the parameter values associated with the system
+    #load in initial values
     params_dict['radius'] = initial_values_HCF[0]
     params_dict['flength'] = initial_values_HCF[1]
     params_dict['gas_str'] = initial_values_HCF[2]
-    params_dict['pressure'] = initial_values_HCF[3]
     params_dict['λ0'] = initial_values_HCF[4]
     params_dict['energy'] = initial_values_HCF[5]
     params_dict['FWHM'] = initial_values_HCF[6]
     params_dict['grating_pair_displacement'] = initial_values_HCF[7]
+    #append each pressure point as an individual entry into the params_dict dictionary
+    for i in range(len(pressure_points)):
+        params_dict['pressure%s'%i] = pressure_points[i]
 
-    for i in params:
+    #now filter out parameters we are varying
+    for i in range(len(params)):
         if i in params_dict:
-            args_BO[i] = params_dict[i] #append parameters to be varied to dictionary
-    print(args_BO)
+            if i=="pressure":
+                #each pressure point needs to be its own parameter
+                for j in range(len(pressure_points)):
+                    args_BO["pressure%s"%j]=params_dict["pressure%s"%j]
+            else:
+                #otherwise just add the parameter to be varied
+                args_BO[i] = params_dict[i]
 
     def target_func(**args):
         """
         this is the target function of the optimiser. It is created as a nested function to take only the desired variables as inputs.
-        It will consist of one of the sub-target functions in the subtarget function file or one of the rms error functions in ErrorCorrection_integrate.
         """
+        #first update both args_BO and params_dict with variables to be probed next
+       
         for i in range(len(params)):
-            args_BO[params[i]] = args[params[i]]
-            params_dict[params[i]]=args[params[i]]
-            
+            if params[i]=="pressure":
+                #each pressure point needs to be its own parameter
+                for j in range(len(pressure_points)):
+                    args_BO["pressure%s"%j]=args["pressure%s"%j]
+                    params_dict["pressure%s"%j]=args["pressure%s"%j]
+            else:
+                print(i)
+                args_BO[params[i]] = args[params[i]]
+                params_dict[params[i]]=args[params[i]]
+
         # Update the simulation's variables with new parameters
+        #we use args_BO for this to prevent reloading unchanged parameters into Luna since this takes a lot of time.
+
+        #if we are varying the pressure, this is a bit more complicated
+        #we need to recreate the tuple of tuples to pass to Luna (Z,P) as before
+        for key, value in args_BO.items():
+            if 'pressure' in key:
+                pressure_array=np.zeros((2,len(pressure_points))) #start with array with correct dimensions
+        print(pressure_array)
+        #now iterate through args_BO and update params in Luna
         for key, value in args_BO.items():
             if 'energy' in key:
                 Main.energy = value
             elif 'λ0' in key:
                 Main.λ0 = value
-            elif 'pressure' in key:
-                Main.pressure = value
             elif 'radius' in key:
                 Main.radius = value
             elif 'flength' in key:
                 Main.flength = value
             elif 'FWHM' in key:
                 Main.τfwhm = value
-            elif 'grating_pair_displacement' in key:
-                grating_pair_displacement = value
+            elif 'pressure' in key:
+                #append each pressure to the pressure_array before turning into a tuple
+                for i in range(len(pressure_points)):
+                    if str(i) in key:
+                        #z:
+                        pressure_array[0][i]=i*params_dict['flength']/(len(pressure_points)-1)
+                        #p:
+                        pressure_array[1][i]=value
+        #turn 2d array into tuple and pass to Luna
+        print(pressure_array)
 
-        # Critical power condition
+        pressure_tuple = tuple(tuple(sub) for sub in pressure_array)
+        print(pressure_tuple)
+        Main.pressure = pressure_tuple
+
+        # Check if the point to be probed is under the critical power condition to avoid unphysical outputs.
+        Main.avg_pressure=P_average(pressure_tuple[0],pressure_tuple[1])
         Main.eval('ω = PhysData.wlfreq(λ0)')
-        Main.eval('_, n0, n2  = Tools.getN0n0n2(ω, gas; P=pressure)')
+        Main.eval('_, n0, n2  = Tools.getN0n0n2(ω, gas; P=avg_pressure)')
         Main.eval('Pcrit = Tools.Pcr(ω, n0, n2)')
         Pcrit = Main.Pcrit
         Pmin = 0
         τfwhm = Main.τfwhm
         tau = τfwhm/(2*np.sqrt(np.log(2)))
         P = Main.energy/(np.sqrt(np.pi)*tau)
+        #power condition is 1 if we are in range and 0 if we are out of the physical range
         power_condition = int(Pmin <= P <= Pcrit)
 
     
@@ -165,16 +225,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
 
         Main.eval('t, Et = Processing.getEt(duv)')
         Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
-        """
-        if function == peak_power_window:
-            print("Evaluating peak power in wavelength bounds")
-            Main.wavel_bounds=wavel_bounds
-            #can also have Processing.peakpower
-            Main.eval("peak_power=Stats.peakpower(duv, λlims=wavel_bounds)")
-            peak_power=Main.peak_power
-            print(peak_power)
-            return peak_power*power_condition
-        """
+        
         # Get values
         t = Main.t
         Et_allz = Main.Et # array of Et at all z 
@@ -193,13 +244,17 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         
     # Make pbounds dictionary
     pbounds = {}
+
+    for i in range(len(pressure_points)):
+        pbounds["pressure%s"%i]=(0.,3.0)
+
     for i in params:
         #assume standard bounds
         if 'energy' in i:
             #pbounds[i] = (0,1e-3)
             #pbounds[i] = (0.1e-3,2.0e-3)
-            #pbounds[i] = (0.1e-3, 1.5e-3)
-            pbounds[i] = (0.05e-3, 0.500e-3)
+            pbounds[i] = (1.e-3, 1.2e-3)
+            #pbounds[i] = (0.05e-3, 0.500e-3)
 
         elif 'FWHM' in i:
             #pbounds[i] = (20e-15,50e-15)
@@ -207,27 +262,13 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
             pbounds[i] = (20e-15, 35e-15)
         elif 'λ0' in i:
             pbounds[i] = (700e-9,900e-9)
-        elif 'pressure' in i:
-            #pbounds[i] = (0,3)
-            #pbounds[i] = (1,15)
-            #pbounds[i] = (1, 10)
-            #pbounds[i] = (0.5, 3.5)
-            if params_dict["gas_str"]=="He":
-                pbounds[i]=(0.66*1.0,8.0*0.66)
-
-            if params_dict['gas_str']=="Ar":
-                pbounds[i] = (0.66*0.6, 0.66*1.0)
-    
-            elif params_dict['gas_str']=="Ne":
-                pbounds[i] = (0.66*3.0, 0.66*3.5)
-
 
         elif 'radius' in i:                
             #pbounds[i] = (125e-6,300e-6)
             pbounds[i] = (50e-6, 500e-6)
         elif 'flength' in i:
             #pbounds[i] = (1,2)
-            pbounds[i] = (0.1, 10)
+            pbounds[i] = (0.1, 6)
         elif 'grating_pair_displacement' in i:
             #pbounds[i] = (-0.5e-3, 0.5e-3)
             #pbounds[i] = (-0.5e-3, 0.5e-3)
@@ -242,17 +283,6 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         verbose=2, # verbose = 1 prints only when a maximum is observed, verbose = 0 is silent
         random_state=1,
         )
-
-    #probe spm optimum
-    if params_dict['gas_str']=="Ar":
-        optimizer.probe(params={"energy": 1.1e-3, "pressure": 0.66*1.0, "grating_pair_displacement":0.0},lazy=True,)
-        #optimizer.probe(params={"grating_pair_displacement":0.0},lazy=True,)
-
-
-    elif params_dict['gas_str']=="Ne":
-        #optimizer.probe(params={"energy": 1.1e-3, "pressure": 0.66*3.5, "grating_pair_displacement":0.0},lazy=True,)
-        optimizer.probe(params={"grating_pair_displacement":0.0},lazy=True,)
-
 
     optimizer.maximize(
         #maximises the target function output. In the case of the rms error functions, this is a minimisation because the errors are multiuplied by -1
