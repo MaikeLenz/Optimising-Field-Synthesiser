@@ -16,7 +16,7 @@ def P_gradient(z, P0, PL, L):
     """
     Defines pressure gradient for incompressible viscous fluid
     """
-    return np.sqrt((P0**2) + (z/L)*((PL**2) + (P0**2)))
+    return np.sqrt((P0**2) + (z/L)*((PL**2) - (P0**2)))
 def P_average(Z, P):
     """
     Finds average pressure from a pressure gradient
@@ -27,7 +27,7 @@ def P_average(Z, P):
         P0 = P[i]
         PL = P[i+1]
         L = Z[i+1] - Z[i]
-        z = np.arange(Z[i], Z[i+1], L/100)
+        z = np.arange(0,-Z[i] +Z[i+1], L/100)
         Pz = P_gradient(z, P0, PL, L)
         P_integrated.append(integrate.simps(Pz, z))
     P_av = (np.sum(P_integrated)/norm_len)/(len(Z)-1)
@@ -43,8 +43,11 @@ def P_avg(Z,P):
         P0 = P[i]
         PL = P[i+1]
         L = Z[i+1] - Z[i]
-        z = np.arange(Z[i], Z[i+1], L/100)
-        Pz = P_gradient(z, P0, PL, L)
+        z = np.arange(0,-Z[i] +Z[i+1], L/100)
+        if PL<P0:
+            Pz = P_gradient(z, PL, P0, L)[::-1]
+        else:
+            Pz = P_gradient(z, P0, PL, L)
         P_integrand=np.append(P_integrand,Pz)
     z=np.linspace(Z[0],Z[-1],len(P_integrand))
     P_integrated = integrate.simps(P_integrand, z)
@@ -57,10 +60,10 @@ def P_average_manual(Z, P):
         P0 = P[i]
         PL = P[i+1]
         #L = Z[i+1] - Z[i]
-        P_integrated.append((2/3)*(((PL**2) + 2*(P0**2))**(3/2) - (P0**3))/((PL**2) + (P0**2)))
+        P_integrated.append((2/3)*((PL**2)**(3/2) - (P0**3))/((PL**2) - (P0**2)))
     P_av = np.sum(P_integrated)/(len(Z)-1)
     return P_av
-
+"""
 def P_average_manual2(Z,P):
     P_integrated = []
     for i in range(len(Z)-1):
@@ -70,26 +73,28 @@ def P_average_manual2(Z,P):
         P_integrated.append((P0/(1+PL**2/P0**2))*((2/3)*((2+PL**2/P0**2)**(3/2)-1)))
     P_av = np.sum(P_integrated)/(len(Z)-1)
     return P_av
-
-P1 = 1
-P2 = 6
-P3 = 3
+"""
+"""
+P1 = 10
+P2 = 5
+P3 = 50
 flength = 1.05
 #print(P_average((0,flength/2,flength),(P1,P2,P3)))
 #print(np.mean([P1,P2,P3]))
 print(P_average((0,flength/2,flength),(P1,P2,P3)))
 #print(np.mean([P1,P2,P3]))
 print(P_average_manual((0,flength/2,flength),(P1,P2,P3)))
-print(P_average_manual((0,flength/2,flength),(P1,P2,P3)))
+#print(P_average_manual2((0,flength/2,flength),(P1,P2,P3)))
 print(P_avg((0,flength/2,flength),(P1,P2,P3)))
+
 P1=0
 P2=3
 print(P_average((0,flength),(P1,P2)))
 print(0.66*P2)
 print(P_average_manual((0,flength),(P1,P2)))
-print(P_average_manual((0,flength),(P1,P2)))
+#print(P_average_manual2((0,flength),(P1,P2)))
 print(P_avg((0,flength),(P1,P2)))
-
+"""
 """
 radius = 175e-6
 flength = 1.05
@@ -164,7 +169,7 @@ plt.ylabel('Intensity (a.u.)')
 plt.legend(fontsize=16)
 plt.show()
 """
-
+"""
 z=np.linspace(0,10,100)
 P1=P_gradient(z,1,2,10)
 P2=P_gradient(z,0,1,10)+1
@@ -172,3 +177,4 @@ plt.plot(z,P1,label="P1")
 plt.plot(z,P2,label="P2")
 plt.legend()
 plt.show()
+"""

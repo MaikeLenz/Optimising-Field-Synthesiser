@@ -110,7 +110,7 @@ Main.flength = flength
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
 Pmax=1.5
-Main.pressure = P_average(pressure[0],pressure[1])
+Main.pressure = P_avg(pressure[0],pressure[1])
 Main.λ0 = wavel
 Main.τfwhm = FWHM
 Main.energy = energy
@@ -162,7 +162,7 @@ if gas=="Ne":
     Main.pressure = 0.66*3
 elif gas=="Ar":
     Main.pressure = 0.66*1.5
-    
+
 Main.λ0 = wavel
 Main.τfwhm = FWHM
 Main.energy = 1.2e-3
