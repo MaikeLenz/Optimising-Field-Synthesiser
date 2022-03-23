@@ -252,8 +252,8 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         if 'energy' in i:
             #pbounds[i] = (0,1e-3)
             #pbounds[i] = (0.1e-3,2.0e-3)
-            #pbounds[i] = (0.1e-3, 1.5e-3)
-            pbounds[i] = (0.05e-3, 0.500e-3)
+            pbounds[i] = (1.e-3, 1.2e-3)
+            #pbounds[i] = (0.05e-3, 0.500e-3)
 
         elif 'FWHM' in i:
             #pbounds[i] = (20e-15,50e-15)
