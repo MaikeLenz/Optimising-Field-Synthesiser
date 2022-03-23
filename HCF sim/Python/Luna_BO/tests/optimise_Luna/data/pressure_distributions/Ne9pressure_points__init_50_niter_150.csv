@@ -1,0 +1,2 @@
+inits,iters,target,energy,list of pressures,radius,flength,fwhm duration,wavel,gas,grating_pair_displacement
+50,150,4.692813532198264e-07,0.002,"[9.185292069313197, 8.256531234536201, 8.51313736560692]",0.000175,1.05,2e-14,8e-07,Ne,0
