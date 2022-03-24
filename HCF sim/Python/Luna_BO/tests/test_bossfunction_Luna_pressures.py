@@ -44,7 +44,7 @@ result,iterations=Luna_BO_press(params, initial_values_HCF, function=max_wavel_b
 max_width = result['target']
 #energy = result['params']['energy']
 pressure = []
-for i in range(3):
+for i in range(len(pressure_init)):
     pressure.append(result['params']['pressure%s'%i])
 #grating_pair_displacement = result['params']['grating_pair_displacement']
 # Save the data

@@ -33,6 +33,23 @@ def P_average(Z, P):
     P_av = (np.sum(P_integrated)/norm_len)/(len(Z)-1)
     return P_av
 
+
+def P_distribution(Z,P):
+    P_integrand=np.array([])
+    for i in range(len(Z)-1):
+        P0 = P[i]
+        PL = P[i+1]
+        L = Z[i+1] - Z[i]
+        z = np.arange(0,-Z[i] +Z[i+1], L/100)
+        if PL<P0:
+            Pz = P_gradient(z, PL, P0, L)[::-1]
+        else:
+            Pz = P_gradient(z, P0, PL, L)
+        P_integrand=np.append(P_integrand,Pz)
+    z=np.linspace(Z[0],Z[-1],len(P_integrand))
+    return z,P_integrand
+
+
 def P_avg(Z,P):
     """
     integrate over whole fibre to find average pressure
