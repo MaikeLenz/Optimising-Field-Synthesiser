@@ -168,7 +168,7 @@ Main.pressure=max(pressure[1])
 print(max(pressure[1]))
 Main.λ0 = wavel
 Main.τfwhm = FWHM
-Main.energy = 1.2e-3
+Main.energy = energy
 
 print(pressure,energy,grating_pair_displacement)
 domega = 2*np.pi*0.44/FWHM
