@@ -32,7 +32,7 @@ filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\
 #filepath="C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\"
 
 # Read optimal params
-df_0 = pd.read_csv(filepath+"Ne3pressure_points__init_50_niter_150.csv")
+df_0 = pd.read_csv(filepath+"Ne9pressure_points__init_50_niter_150.csv")
 
 energy=df_0.iloc[0][3]
 radius=df_0.iloc[0][5]
@@ -158,14 +158,17 @@ Main.flength = flength
 
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
+"""
 if gas=="Ne":
     Main.pressure = 0.66*3
 elif gas=="Ar":
     Main.pressure = 0.66*1.5
-
+"""
+Main.pressure=max(pressure[1])
+print(max(pressure[1]))
 Main.λ0 = wavel
 Main.τfwhm = FWHM
-Main.energy = 1.2e-3
+Main.energy = energy
 
 print(pressure,energy,grating_pair_displacement)
 domega = 2*np.pi*0.44/FWHM
@@ -208,8 +211,9 @@ plt.figure()
 #plt.plot(λ,Iλ,label="SPM Prediction")
 
 plt.plot(λ_opt,Iλ_opt,label="Optimised")
-plt.plot(λ_opt2,Iλ_opt2,label="Constant Pressure")
-plt.plot(λ_opt3,Iλ_opt3,label="SPM Prediction")
+#plt.plot(λ_opt2,Iλ_opt2,label="Constant Pressure")
+#plt.plot(λ_opt3,Iλ_opt3,label="SPM Prediction")
+plt.plot(λ_opt3,Iλ_opt3,label="Max Pressure Throughout")
 
 plt.xlabel("Wavelength (m)")
 plt.ylabel("Spectral energy density (J/m)")
@@ -219,8 +223,9 @@ plt.figure()
 
 #plt.plot(width_plot,bar_height, label="rms width")
 plt.plot(omega_opt,Iomega_opt,label="Optimised")
-plt.plot(omega_opt2,Iomega_opt2,label="Constant Pressure")
-plt.plot(omega_opt3,Iomega_opt3,label="SPM Prediction")
+#plt.plot(omega_opt2,Iomega_opt2,label="Constant Pressure")
+#plt.plot(omega_opt3,Iomega_opt3,label="SPM Prediction")
+plt.plot(omega_opt3,Iomega_opt3,label="Max Pressure Throughout")
 
 plt.legend()
 plt.xlabel("Angular frequency,/s")
@@ -230,11 +235,24 @@ plt.figure()
 #plt.plot(t,Et,label="SPM Prediction")
 
 plt.plot(t_opt,Et_opt,label="Optimised")
-plt.plot(t_opt2,Et_opt2,label="Constant Pressure")
-plt.plot(t_opt3,Et_opt3,label="SPM Prediction")
+#plt.plot(t_opt2,Et_opt2,label="Constant Pressure")
+#plt.plot(t_opt3,Et_opt3,label="SPM Prediction")
+plt.plot(t_opt3,Et_opt3,label="Max Pressure Throughout")
 
 #plt.plot(t,Et0,label="z=0m")
 plt.xlabel("time,s")
 plt.ylabel("Electric field, a.u.")
 plt.legend()
+
+##########################################################################################
+#plot pressure distribution
+
+plt.figure()
+z,Pz=P_distribution(pressure[0],pressure[1])
+plt.scatter(pressure[0],pressure[1])
+plt.plot(z,Pz)
+plt.xlabel("Position along the Fibre, m")
+plt.ylabel("Pressure, bar")
+
+
 plt.show()
