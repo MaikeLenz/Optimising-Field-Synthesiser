@@ -207,7 +207,8 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
             #pbounds[i] = (0,1e-3)
             #pbounds[i] = (0.1e-3,2.0e-3)
             #pbounds[i] = (0.8e-3, 1.5e-3) # Our system
-            pbounds[i] = (0.05e-3,0.5e-3) # Heriot-Watt
+            #pbounds[i] = (0.05e-3,0.5e-3) # Heriot-Watt
+            pbounds[i] = (0.5e-3, 1e-3) # Heriot-Watt with bigger bounds
         elif 'τfwhm' in i:
             #pbounds[i] = (20e-15,50e-15)
             pbounds[i] = (4e-15, 30e-15)
