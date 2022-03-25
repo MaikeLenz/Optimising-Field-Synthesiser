@@ -33,9 +33,10 @@ result,iterations=Luna_BO_record_iters(params, initial_values_HCF, function=max_
 
 params = ["energy", "pressure", "radius", "flength", "grating_pair_displacement"]
 wavel_bounds = (300e-9 - (300e-9)*0.1, 300e-9 + (300e-9)*0.1)
+#wavel_bounds = (1300e-9 - (1300e-9)*0.2, 1300e-9 + (1300e-9)*0.2)
 
 #values:  radius, flength, gas, pressure, wavelength, energy, τfwhm, grating_pair_separation
 gas = "He"
-initial_values_HCF=[175e-6, 1, gas, 1.8*0.66, 800e-9, 0.075e-3, 20e-15, 0]
+initial_values_HCF=[175e-6, 1, gas, 1.8*0.66, 800e-9, 0.075e-3, 40e-15, 0]
 
-result,iterations=Luna_BO_record_iters(params, initial_values_HCF, function=max_intens_integral, wavel_bounds=wavel_bounds, init_points=50, n_iter=1000, save_path='C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\Optimise_Luna\\300nm_many_iters\\', plotting=True)
+result,iterations=Luna_BO_record_iters(params, initial_values_HCF, function=max_intens_integral, wavel_bounds=wavel_bounds, init_points=50, n_iter=50, save_path='C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\He_40fs_300nm_1mJmax\\', plotting=True)
