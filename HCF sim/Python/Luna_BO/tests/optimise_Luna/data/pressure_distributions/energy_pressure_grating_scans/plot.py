@@ -32,7 +32,7 @@ filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\
 #filepath="C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\"
 
 # Read optimal params
-df_0 = pd.read_csv(filepath+"Ne9pressure_points__init_50_niter_150.csv")
+df_0 = pd.read_csv(filepath+"peak_powerNe9pressure_points__init_50_niter_1000.csv")
 
 energy=df_0.iloc[0][3]
 radius=df_0.iloc[0][5]
@@ -204,6 +204,12 @@ omega_opt3=Main.ω
 Iomega_opt3=Main.Iω
 Iomega_opt3=Iomega_opt3.reshape((-1,))[0:500]
 omega_opt3=omega_opt3[0:500]
+
+
+print("Optimised")
+print(rms_width(λ_opt,Iλ_opt),max(abs(Et_opt)))
+print("Max pressure")
+print(rms_width(λ_opt3,Iλ_opt3),max(abs(Et_opt3)))
 
 
 #plotting
