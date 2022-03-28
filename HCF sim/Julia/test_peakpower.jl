@@ -22,5 +22,6 @@ duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy,
 
 grid = duv["grid"]
 Eω = duv["Eω"]
-peakpower(grid, Eω, λlims=(700e-9,800e-9))
+Processing.peakpower(grid, Eω, bandpass=(700e-9,800e-9))
+#Stats.peakpower(grid, Eω, λlims=(700e-9,800e-9))
 #collect_stats(grid, Eω, peakpower)
