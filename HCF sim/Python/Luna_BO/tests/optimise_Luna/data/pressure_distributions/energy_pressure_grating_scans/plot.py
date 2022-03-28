@@ -240,6 +240,12 @@ plt.ylabel("Intensity, a.u.")
 plt.figure()
 #plt.plot(t,Et,label="SPM Prediction")
 
+
+from scipy.integrate import simps
+integral_opt=simps(np.abs(Et_opt),t_opt)
+integral_max=simps(np.abs(Et_opt3),t_opt3)
+print("optimised integral %s"%integral_opt)
+print("max pressure integral %s"%integral_max)
 plt.plot(t_opt,Et_opt,label="Optimised")
 #plt.plot(t_opt2,Et_opt2,label="Constant Pressure")
 #plt.plot(t_opt3,Et_opt3,label="SPM Prediction")
