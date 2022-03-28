@@ -36,7 +36,7 @@ grating_pair_displacement_init=0
 initial_values_HCF=[radius_init, flength_init, gas, pressure_init, wavel, energy_init, fwhm_init, grating_pair_displacement_init]
 inits=50
 iters=1000
-result,iterations=Luna_BO_press(params, initial_values_HCF, function=max_wavel_bandwidth, init_points=inits, n_iter=iters)
+result,iterations=Luna_BO_press(params, initial_values_HCF, function=threshold, init_points=inits, n_iter=iters)
 
 #for i, res in enumerate(iterations):
 #    print("Iteration {}: \n\t{}".format(i, res))
