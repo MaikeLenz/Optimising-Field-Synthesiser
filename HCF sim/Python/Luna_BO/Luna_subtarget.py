@@ -2,9 +2,12 @@ import julia
 #from julia.api import Julia
 import matplotlib.pyplot as plt
 import sys
-sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
-#sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
+#sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
+sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 from rms_width import *
+#sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
+sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
+from angfreq_to_time import *
 
 import numpy as np 
 #from scipy.integrate import simps
@@ -88,3 +91,43 @@ def combo2(t,Et,λ,Iλ):
 
 def thresh_and_rms(t,Et,λ,Iλ):
     return max_wavel_bandwidth(t,Et,λ,Iλ)+threshold(t,Et,λ,Iλ)
+
+def max_peak_power_300nm(t,Et,λ,Iλ):
+    # First smooth using super Gaussian filter
+    def superGauss(x,x0,sigma):
+        return np.exp(-((x-x0)/sigma)**4)
+    filter = superGauss(λ, 300e-9, 300e-9*0.1)
+
+    Iλ_smooth = []
+    for i in range(len(Iλ)):
+        Iλ_smooth.append(Iλ[i]*filter[i])
+
+    # Now Fourier transform
+    c = 299792458
+    f = []
+    for i in range(len(λ)):
+        f.append(c/λ[i])
+    t_filtered, I_filtered = f_to_t(f[::-1], Iλ_smooth[::-1])
+    
+    # Now find peak power in time-domain
+    return max(I_filtered)
+
+def max_peak_power_1300nm(t,Et,λ,Iλ):
+    # First smooth using super Gaussian filter
+    def superGauss(x,x0,sigma):
+        return np.exp(-((x-x0)/sigma)**4)
+    filter = superGauss(λ, 1300e-9, 1300e-9*0.2)
+
+    Iλ_smooth = []
+    for i in range(len(Iλ)):
+        Iλ_smooth.append(Iλ[i]*filter[i])
+
+    # Now Fourier transform
+    c = 299792458
+    f = []
+    for i in range(len(λ)):
+        f.append(c/λ[i])
+    t_filtered, I_filtered = f_to_t(f[::-1], Iλ_smooth[::-1])
+    
+    # Now find peak power in time-domain
+    return max(I_filtered)
