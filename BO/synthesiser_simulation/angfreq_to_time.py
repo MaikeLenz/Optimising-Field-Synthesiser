@@ -64,13 +64,11 @@ def f_to_t(f, Ef):
     n = np.arange(N)
     T = N/sr
     t = n/T
-    print(len(Et))
-    Et_oneside = Et[:N//2]
-    Et_otherside=Et[N//2:]
-    Et_new=Et_oneside+Et_otherside
+    
+    Et_oneside = list(Et[:N//2])
+    Et_otherside=list(Et[N//2:])
+    Et_new=np.array(Et_otherside+Et_oneside)
     #t_oneside = t[:N//2]
-    #return t_return, Et_return
-    print(len(Et_new))
     return t,Et_new
 """
 t = np.linspace(0,1,100)
