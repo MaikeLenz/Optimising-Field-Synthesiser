@@ -89,7 +89,8 @@ Main.phase = ϕω
 Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
 Main.eval("ω, Iω = Processing.getIω(duv, :ω, flength)")
-Main.eval("ω1, Eω = Processing.getEω(duv, :ω, flength)")
+#Main.eval("ω1, Eω = Processing.getEω(duv, :ω, flength)")
+#Main.eval("ω=duv['ω']")
 Main.eval('t, Et = Processing.getEt(duv)')
 Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
     
@@ -106,8 +107,10 @@ omega_opt=Main.ω
 Iomega_opt=Main.Iω
 Iomega_opt=Iomega_opt.reshape((-1,))[0:500]
 omega_opt=omega_opt[0:500]
-omegaE_opt=Main.ω1
-Eomega_opt=Main.Eω
+omegaE_opt=Main.duv['ω']
+
+Eomega_opt=Main.duv['Eω']
+Eomega_opt=Eomega_opt.reshape((-1,))
 ###########################################################################################################################################################################
 # Assign arguments to Main namespace
 Main.radius = radius
