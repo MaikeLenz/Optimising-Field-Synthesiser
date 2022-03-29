@@ -108,63 +108,25 @@ Iomega_opt=Main.Iω
 Iomega_opt=Iomega_opt.reshape((-1,))[0:500]
 omega_opt=omega_opt[0:500]
 omegaE_opt=Main.ω1
-print(omegaE_opt.shape)
 Eomega_opt=Main.Eω
-print(Eomega_opt.shape)
 
 Eomega_opt=Eomega_opt[:,-1]
-print(Eomega_opt.shape)
 
-###########################################################################################################################################################################
-# Assign arguments to Main namespace
-Main.radius = radius
-Main.flength = flength
-
-Main.gas_str = gas
-Main.eval("gas = Symbol(gas_str)")
-Pmax=1.5
-Main.pressure = P_avg(pressure[0],pressure[1])
-Main.λ0 = wavel
-Main.τfwhm = FWHM
-Main.energy = energy
-
-print(pressure,energy,grating_pair_displacement)
-domega = 2*np.pi*0.44/FWHM
-c=299792458
-omega = np.linspace(2*np.pi*c/wavel - domega/2, 2*np.pi*c/wavel + domega/2, 1000)
-
-GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=grating_pair_displacement*1000)
-
-E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
-Iω = np.abs(E)**2
+#find output intensity distributions with time
+I_t_opt=[]
+for i in range(len(t_opt)):
+    I_t_opt.append(np.abs(Et_opt[i])**2)
 
 
-Main.ω = omega
-Main.Iω = Iω  
-Main.phase = ϕω 
-# Pass data to Luna
-Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
-Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
-Main.eval("ω, Iω = Processing.getIω(duv, :ω, flength)")
-Main.eval('t, Et = Processing.getEt(duv)')
-Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
-    
-# Get values
-t_opt2 = Main.t
-Et_allz_opt2 = Main.Et # array of Et at all z 
-Et_opt2 = Et_allz_opt2[:,-1] # last item in each element is pulse shape at the end
-Et02=Et_allz_opt2[:,0] #first item in each element is pulse shape at the start
+#Fourier transform output spectra
+t_FT,E_FT= f_to_t(omegaE_opt/(2*np.pi), Eomega_opt)
+#Fourier transformed intensity envelopes
+IFT_t_opt=[]
+for i in range(len(t_FT)):
+    IFT_t_opt.append(np.abs(E_FT[i])**2)
 
-λ_opt2 = Main.λ
-Iλ_opt2 = Main.Iλ
-Iλ_opt2=Iλ_opt2.reshape(len(Iλ_opt2),)
-omega_opt2=Main.ω
-Iomega_opt2=Main.Iω
-Iomega_opt2=Iomega_opt2.reshape((-1,))[0:500]
-omega_opt2=omega_opt2[0:500]
 
-####################################################################################################################################################
-
+##############################################################################################################################
 # Assign arguments to Main namespace
 Main.radius = radius
 Main.flength = flength
@@ -221,23 +183,15 @@ omega_opt3=omega_opt3[0:500]
 omegaE_opt3=Main.ω1
 Eomega_opt3=Main.Eω
 Eomega_opt3=Eomega_opt3[:,-1]
-#find output intensity distributions with time
-I_t_opt=[]
-for i in range(len(t_opt)):
-    I_t_opt.append(np.abs(Et_opt[i])**2)
+
 
 I_t_opt3=[]
 for i in range(len(t_opt3)):
     I_t_opt3.append(np.abs(Et_opt3[i])**2)
     
-#Fourier transform output spectra
-t_FT,E_FT= f_to_t(omegaE_opt/(2*np.pi), Eomega_opt)
+
 t_FT3,E_FT3=f_to_t(omegaE_opt3/(2*np.pi), Eomega_opt3)
 
-#Fourier transformed intensity envelopes
-IFT_t_opt=[]
-for i in range(len(t_FT)):
-    IFT_t_opt.append(np.abs(E_FT[i])**2)
 
 IFT_t_opt3=[]
 for i in range(len(t_FT3)):
@@ -300,8 +254,10 @@ plt.legend()
 
 plt.figure()
 z,Pz=P_distribution(pressure[0],pressure[1])
+Pm=np.ones(len(z))*max(pressure[1])
 plt.scatter(pressure[0],pressure[1])
 plt.plot(z,Pz)
+plt.plot(z,Pm)
 plt.xlabel("Position along the Fibre, m")
 plt.ylabel("Pressure, bar")
 

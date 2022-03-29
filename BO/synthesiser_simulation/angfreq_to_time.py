@@ -58,13 +58,18 @@ def f_to_t(f, Ef):
     Et = ifft(Ef)
     N = len(Ef) # Number of points
     #t = 1/f
+    """
     fs = np.abs(f[1]-f[0])
     sr = 1/fs
     N = len(Et)
     n = np.arange(N)
     T = N/sr
     t = n/T
-    
+    """
+    #sampling frequency is Fs
+    Fs=max(f)
+    t = np.arange(0, (N-1)/Fs, 1/Fs)
+
     Et_oneside = list(Et[:N//2])
     Et_otherside=list(Et[N//2:])
     Et_new=np.array(Et_otherside+Et_oneside)
