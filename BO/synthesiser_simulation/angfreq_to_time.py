@@ -66,10 +66,15 @@ def f_to_t(f, Ef):
     T = N/sr
     t = n/T
     """
+    """
     #sampling frequency is Fs
-    Fs=max(f)
+    Fs=2*max(f)
     t = np.arange(0, (N-1)/Fs, 1/Fs)
-
+    """
+    df=f[1]-f[0]
+    T=1/df
+    dt=T/len(Et)
+    t=np.arange(0,T,dt)
     Et_oneside = list(Et[:N//2])
     Et_otherside=list(Et[N//2:])
     Et_new=np.array(Et_otherside+Et_oneside)
