@@ -50,10 +50,14 @@ for i in range(len(pressures)):
         #iterate through and append the corresponding z and p value
         #z:
         pressure_list[0].append(i*flength/(len(pressures)-1))
+        
         #p:
         pressure_list[1].append(float(pressures[i]))
+pressure_list_rev=pressure_list.copy()
+pressure_list_rev[1]=pressure_list_rev[1][::-1]
 pressure=tuple(tuple(sub) for sub in pressure_list)
-
+pressure_rev=tuple(tuple(sub) for sub in pressure_list_rev)
+print(pressure,pressure_rev)
 #plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
 
 # Assign arguments to Main namespace
@@ -115,7 +119,7 @@ Main.λ0 = wavel
 Main.τfwhm = FWHM
 Main.energy = energy
 
-print(pressure,energy,grating_pair_displacement)
+#print(pressure,energy,grating_pair_displacement)
 domega = 2*np.pi*0.44/FWHM
 c=299792458
 omega = np.linspace(2*np.pi*c/wavel - domega/2, 2*np.pi*c/wavel + domega/2, 1000)
@@ -164,13 +168,14 @@ if gas=="Ne":
 elif gas=="Ar":
     Main.pressure = 0.66*1.5
 """
-Main.pressure=max(pressure[1])
-print(max(pressure[1]))
+#Main.pressure=max(pressure[1])
+#print(max(pressure[1]))
+Main.pressure=pressure_rev
 Main.λ0 = wavel
 Main.τfwhm = FWHM
 Main.energy = energy
 
-print(pressure,energy,grating_pair_displacement)
+#print(pressure_rev,energy,grating_pair_displacement)
 domega = 2*np.pi*0.44/FWHM
 c=299792458
 omega = np.linspace(2*np.pi*c/wavel - domega/2, 2*np.pi*c/wavel + domega/2, 1000)
@@ -219,7 +224,7 @@ plt.figure()
 plt.plot(λ_opt,Iλ_opt,label="Optimised")
 #plt.plot(λ_opt2,Iλ_opt2,label="Constant Pressure")
 #plt.plot(λ_opt3,Iλ_opt3,label="SPM Prediction")
-plt.plot(λ_opt3,Iλ_opt3,label="Max Pressure Throughout")
+plt.plot(λ_opt3,Iλ_opt3,label="Reverse Pressure Distribution")
 
 plt.xlabel("Wavelength (m)")
 plt.ylabel("Spectral energy density (J/m)")
@@ -231,7 +236,7 @@ plt.figure()
 plt.plot(omega_opt,Iomega_opt,label="Optimised")
 #plt.plot(omega_opt2,Iomega_opt2,label="Constant Pressure")
 #plt.plot(omega_opt3,Iomega_opt3,label="SPM Prediction")
-plt.plot(omega_opt3,Iomega_opt3,label="Max Pressure Throughout")
+plt.plot(omega_opt3,Iomega_opt3,label="Reverse Pressure Distribution")
 
 plt.legend()
 plt.xlabel("Angular frequency,/s")
@@ -249,7 +254,7 @@ print("max pressure integral %s"%integral_max)
 plt.plot(t_opt,Et_opt,label="Optimised")
 #plt.plot(t_opt2,Et_opt2,label="Constant Pressure")
 #plt.plot(t_opt3,Et_opt3,label="SPM Prediction")
-plt.plot(t_opt3,Et_opt3,label="Max Pressure Throughout")
+plt.plot(t_opt3,Et_opt3,label="Reverse Pressure Distribution")
 
 #plt.plot(t,Et0,label="z=0m")
 plt.xlabel("time,s")
