@@ -108,8 +108,13 @@ Iomega_opt=Main.Iω
 Iomega_opt=Iomega_opt.reshape((-1,))[0:500]
 omega_opt=omega_opt[0:500]
 omegaE_opt=Main.ω1
+print(omegaE_opt.shape)
 Eomega_opt=Main.Eω
-Eomega_opt=Eomega_opt.reshape((-1,))
+print(Eomega_opt.shape)
+
+Eomega_opt=Eomega_opt[:,-1]
+print(Eomega_opt.shape)
+
 ###########################################################################################################################################################################
 # Assign arguments to Main namespace
 Main.radius = radius
@@ -215,7 +220,7 @@ Iomega_opt3=Iomega_opt3.reshape((-1,))[0:500]
 omega_opt3=omega_opt3[0:500]
 omegaE_opt3=Main.ω1
 Eomega_opt3=Main.Eω
-Eomega_opt3=Eomega_opt3.reshape((-1,))
+Eomega_opt3=Eomega_opt3[:,-1]
 #find output intensity distributions with time
 I_t_opt=[]
 for i in range(len(t_opt)):
@@ -228,6 +233,15 @@ for i in range(len(t_opt3)):
 #Fourier transform output spectra
 t_FT,E_FT= f_to_t(omegaE_opt/(2*np.pi), Eomega_opt)
 t_FT3,E_FT3=f_to_t(omegaE_opt3/(2*np.pi), Eomega_opt3)
+
+#Fourier transformed intensity envelopes
+IFT_t_opt=[]
+for i in range(len(t_FT)):
+    IFT_t_opt.append(np.abs(E_FT[i])**2)
+
+IFT_t_opt3=[]
+for i in range(len(t_FT3)):
+    IFT_t_opt3.append(np.abs(E_FT3[i])**2)
 
 print("Optimised")
 print("wavel width ",rms_width(λ_opt,Iλ_opt))
@@ -292,11 +306,32 @@ plt.xlabel("Position along the Fibre, m")
 plt.ylabel("Pressure, bar")
 
 ########################################################################################
+#plot Eomega
+plt.figure()
+plt.plot(omegaE_opt,Eomega_opt,label="Optimised")
+plt.plot(omegaE_opt3,Eomega_opt3,label="Max Pressure Throughout")
+plt.xlabel("Angular Frequency, /s")
+plt.ylabel("Electric Field, a.u.")
+plt.legend()
+
+
+########################################################################################
 #plot fourier transformed output electric fields
 plt.figure()
 plt.plot(t_FT,E_FT,label="Optimised")
 plt.plot(t_FT3,E_FT3,label="Max Pressure Throughout")
 plt.xlabel("Time, s")
 plt.ylabel("Electric Field, a.u.")
+plt.legend()
+
+
+########################################################################################
+#plot intensity time envelope
+
+plt.figure()
+plt.plot(t_FT,IFT_t_opt,label="Optimised")
+plt.plot(t_FT3,IFT_t_opt3,label="Max Pressure Throughout")
+plt.xlabel("Time, s")
+plt.ylabel("Intensity, a.u.")
 plt.legend()
 plt.show()
