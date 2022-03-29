@@ -64,11 +64,14 @@ def f_to_t(f, Ef):
     n = np.arange(N)
     T = N/sr
     t = n/T
-
+    print(len(Et))
     Et_oneside = Et[:N//2]
-    t_oneside = t[:N//2]
-    return t_oneside, Et_oneside
-
+    Et_otherside=Et[N//2:]
+    Et_new=Et_oneside+Et_otherside
+    #t_oneside = t[:N//2]
+    #return t_return, Et_return
+    print(len(Et_new))
+    return t,Et_new
 """
 t = np.linspace(0,1,100)
 freq = 2
@@ -86,4 +89,32 @@ plt.figure()
 plt.plot(t2, Et2, label='After IFFT')
 plt.legend()
 plt.show()
+"""
+"""
+from scipy.fft import fft, fftfreq, fftshift
+def get_intensity_spectrum(t, Et):
+
+#    Uses scipy.fft to calculate the intensity spectrum of a laser pulse E(t). 
+#    `t` is time axis, `Et` is (complex) laser electric field sampled on t
+#    returns tuple (`omega`, `I`), where `omega` is angular frequency and `I` is spectral intensity.
+    
+#    Tip: use 1024 or 2048 time points
+
+    assert len(t) == len(Et)
+ 
+    t = np.array(t)
+    Et = np.array(Et)
+    
+    N = len(t) # num points
+    dt = t[1]-t[0] # time step
+    f = fftfreq(N, dt) # frequency axis
+    f = fftshift(f) # shift zero-frequency component to center of spectrum
+    omega = 2 * np.pi * f # angular frequency axis
+
+    Ef = fft(Et) # the fft
+    Ef = fftshift(Ef) # shift zero-frequency component to center of spectrum
+    I = np.abs(Ef)**2
+    I /= max(I)
+   
+    return omega, I
 """
