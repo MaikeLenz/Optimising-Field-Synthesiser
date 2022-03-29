@@ -27,6 +27,10 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\tests\\test_pressure_gradients\\')
 from compare_pressures import *
 
+sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
+#sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
+from angfreq_to_time import *
+
 Main.using("Luna")
 filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\pressure_distributions\\"
 #filepath="C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\"
@@ -85,6 +89,7 @@ Main.phase = ϕω
 Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
 Main.eval("ω, Iω = Processing.getIω(duv, :ω, flength)")
+Main.eval("ω1, Eω = Processing.getEω(duv, :ω, flength)")
 Main.eval('t, Et = Processing.getEt(duv)')
 Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
     
@@ -101,7 +106,8 @@ omega_opt=Main.ω
 Iomega_opt=Main.Iω
 Iomega_opt=Iomega_opt.reshape((-1,))[0:500]
 omega_opt=omega_opt[0:500]
-
+omegaE_opt=Main.ω1
+Eomega_opt=Main.Eω
 ###########################################################################################################################################################################
 # Assign arguments to Main namespace
 Main.radius = radius
@@ -188,6 +194,7 @@ Main.phase = ϕω
 Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
 Main.eval("ω, Iω = Processing.getIω(duv, :ω, flength)")
+Main.eval("ω1, Eω = Processing.getEω(duv, :ω, flength)")
 Main.eval('t, Et = Processing.getEt(duv)')
 Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
     
@@ -204,8 +211,9 @@ omega_opt3=Main.ω
 Iomega_opt3=Main.Iω
 Iomega_opt3=Iomega_opt3.reshape((-1,))[0:500]
 omega_opt3=omega_opt3[0:500]
-
-
+omegaE_opt3=Main.ω1
+Eomega_opt3=Main.Eω
+#find output intensity distributions with time
 I_t_opt=[]
 for i in range(len(t_opt)):
     I_t_opt.append(np.abs(Et_opt[i])**2)
@@ -214,6 +222,9 @@ I_t_opt3=[]
 for i in range(len(t_opt3)):
     I_t_opt3.append(np.abs(Et_opt3[i])**2)
     
+#Fourier transform output spectra
+t_FT,E_FT= f_to_t(omegaE_opt/(2*np.pi), Eomega_opt)
+t_FT3,E_FT3=f_to_t(omegaE_opt3/(2*np.pi), Eomega_opt3)
 
 print("Optimised")
 print("wavel width ",rms_width(λ_opt,Iλ_opt))
@@ -277,6 +288,11 @@ plt.plot(z,Pz)
 plt.xlabel("Position along the Fibre, m")
 plt.ylabel("Pressure, bar")
 
-
-
+########################################################################################
+#plot fourier transformed output electric fields
+plt.figure()
+plt.plot(t_FT,E_FT,label="Optimised")
+plt.plot(t_FT3,E_FT3,label="Max Pressure Throughout")
+plt.xlabel("Time, s")
+plt.ylabel("Electric Field, a.u.")
 plt.show()
