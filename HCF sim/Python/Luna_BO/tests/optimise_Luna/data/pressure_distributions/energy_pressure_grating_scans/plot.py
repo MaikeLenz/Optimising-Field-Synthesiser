@@ -32,7 +32,7 @@ filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\
 #filepath="C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\"
 
 # Read optimal params
-df_0 = pd.read_csv(filepath+"Ar9pressure_points__init_50_niter_100.csv")
+df_0 = pd.read_csv(filepath+"Ar9pressure_points__init_50_niter_1000.csv")
 
 energy=df_0.iloc[0][3]
 radius=df_0.iloc[0][5]
@@ -206,10 +206,21 @@ Iomega_opt3=Iomega_opt3.reshape((-1,))[0:500]
 omega_opt3=omega_opt3[0:500]
 
 
+I_t_opt=[]
+for i in range(len(t_opt)):
+    I_t_opt.append(np.abs(Et_opt[i])**2)
+
+I_t_opt3=[]
+for i in range(len(t_opt3)):
+    I_t_opt3.append(np.abs(Et_opt3[i])**2)
+    
+
 print("Optimised")
-print(rms_width(λ_opt,Iλ_opt),max(abs(Et_opt)))
+print("wavel width ",rms_width(λ_opt,Iλ_opt))
+print("I(t) width ",rms_width(t_opt,I_t_opt))
 print("Max pressure")
-print(rms_width(λ_opt3,Iλ_opt3),max(abs(Et_opt3)))
+print("wavel width",rms_width(λ_opt3,Iλ_opt3))
+print("I(t) width ",rms_width(t_opt3,I_t_opt3))
 
 
 #plotting
@@ -265,6 +276,7 @@ plt.scatter(pressure[0],pressure[1])
 plt.plot(z,Pz)
 plt.xlabel("Position along the Fibre, m")
 plt.ylabel("Pressure, bar")
+
 
 
 plt.show()
