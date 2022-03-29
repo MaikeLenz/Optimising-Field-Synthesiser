@@ -56,6 +56,7 @@ def f_to_t(f, Ef):
     Returns t, Et
     """
     Et = ifft(Ef)
+    #Et=fft(Ef)
     N = len(Ef) # Number of points
     #t = 1/f
     """
