@@ -248,7 +248,7 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
             pbounds["pressure%s"%i]=(1.,10.0)
 
         elif params_dict["gas_str"]=="Ar":
-            pbounds["pressure%s"%i]=(0.5,1.3)
+            pbounds["pressure%s"%i]=(0.5,1.1)
     for i in params:
         #assume standard bounds
         if 'energy' in i:
