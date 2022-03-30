@@ -27,13 +27,20 @@ Main.radius = radius
 Main.flength = flength
 Main.λ0 = wavel
 
-omega = np.linspace(2*np.pi*c/wavel - domega/2, 2*np.pi*c/wavel + domega/2, 100)
+omega = np.linspace(2*np.pi*c/wavel - 4*domega/2, 2*np.pi*c/wavel + 4*domega/2, 100)
 E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=domega, amp=1, CEP=0, GDD=0, TOD=0)
 Iω = np.abs(E)**2
 Main.ω = omega
 Main.Iω = Iω  
 Main.phase = ϕω
 
+lam = 2*np.pi*c/omega
+plt.plot(lam*(10**9), Iω)
+plt.title('Input Pulse', size=24)
+plt.xlabel("Wavelength (nm)")
+plt.ylabel("Intensity (a.u.)")
+plt.show()
+"""
 # Neon test
 gas = "Ne"
 energy = 1.5e-3
@@ -92,3 +99,4 @@ Iλ = Main.Iλ
 plt.plot(λ*(10**9), Iλ, label='Without ionisation')
 plt.legend(fontsize=16)
 plt.show()
+"""
