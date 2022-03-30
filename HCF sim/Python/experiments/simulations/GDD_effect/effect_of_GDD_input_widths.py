@@ -75,7 +75,7 @@ Et_in=[]
 #t_out=[]
 dom=2*np.pi*0.441/fwhm_duration
 
-omega=np.linspace(2*np.pi*c/wavel - dom/2, 2*np.pi*c/wavel + dom/2, 1000)
+omega=np.linspace(2*np.pi*c/wavel - 5*dom/2, 2*np.pi*c/wavel + 5*dom/2, 1000)
 
 #Et_in[2][0]=zero_GDD_shape
 #print(Et_in)

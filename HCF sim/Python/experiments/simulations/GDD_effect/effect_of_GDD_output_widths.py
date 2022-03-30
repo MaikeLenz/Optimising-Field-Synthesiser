@@ -37,7 +37,7 @@ n=5
 gdd_step=500e-30 #in fs^2
 gdd_mid=0
 #GDDs=[gdd_mid-4*gdd_step,gdd_mid-3*gdd_step,gdd_mid-2*gdd_step,gdd_mid-gdd_step,gdd_mid,gdd_mid+gdd_step,gdd_mid+2*gdd_step,gdd_mid+3*gdd_step,gdd_mid+4*gdd_step]
-GDDs=np.linspace(-10000e-30,10000e-30,100)
+GDDs=np.linspace(-2500e-30,2500e-30,100)
 
 
 # Define fixed params
@@ -75,7 +75,7 @@ Et_out=[]
 t_out=[]
 dom=2*np.pi*0.441/fwhm_duration
 
-omega=np.linspace(2*np.pi*c/wavel - dom/2, 2*np.pi*c/wavel + dom/2, 1000)
+omega=np.linspace(2*np.pi*c/wavel -5* dom/2, 2*np.pi*c/wavel + 5*dom/2, 1000)
 
 #Et_in[2][0]=zero_GDD_shape
 #print(Et_in)
