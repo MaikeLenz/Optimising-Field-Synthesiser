@@ -2,6 +2,7 @@
 import julia
 import matplotlib.pyplot as plt
 import numpy as np
+import random
 import csv
 import sys
 sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
@@ -26,7 +27,7 @@ energy = 0.5e-3 # energy in the pump pulse, 0.5mJ
 pressures=[]
 positions=[]
 for i in range(100):
-      pressures.append(3)
+      pressures.append(random.uniform(1.5, 3))
       positions.append(i*flength/100)
 pressure_list=[positions,pressures]
 pressure=tuple(tuple(sub) for sub in pressure_list)
@@ -106,5 +107,6 @@ plt.xlabel("time,s")
 plt.ylabel("Electric field, a.u.")
 plt.legend()
 plt.figure()
-plt.scatter(pressure[0],P_distribution(pressure[0],pressure[1]))
+Z,P=P_distribution(pressure[0],pressure[1])
+plt.scatter(Z,P)
 plt.show()
