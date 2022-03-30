@@ -10,6 +10,8 @@ from rms_width import *
 from angfreq_to_time import *
 import numpy as np
 import matplotlib.pyplot as plt
+from mpmath import *
+
 """
 def E_om(om):
     return np.exp(-(om-100)**2/(10)**2)
@@ -36,6 +38,24 @@ plt.plot(x,y)
 plt.plot(x_,np.abs(y_))
 plt.figure()
 plt.plot(X,Y)
+
+#test with sech**2 pulse
+y=[]
+for i in x:
+    y.append((1/cosh(i))**2)
+y=np.array(y)
+X,Y=f_to_t(x,y)
+Y=np.abs(Y)
+width1=FWHM(x,y)
+width2=FWHM(X,Y)
+print(width1*width2)
+x_,y_=t_to_f(X,Y)
+plt.figure()
+plt.plot(x,y)
+plt.plot(x_,np.abs(y_))
+plt.figure()
+plt.plot(X,Y)
+
 
 plt.show()
 
