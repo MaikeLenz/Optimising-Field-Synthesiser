@@ -40,7 +40,7 @@ plt.title('Input Pulse', size=24)
 plt.xlabel("Wavelength (nm)")
 plt.ylabel("Intensity (a.u.)")
 plt.show()
-"""
+
 # Neon test
 gas = "Ne"
 energy = 1.5e-3
@@ -99,4 +99,3 @@ Iλ = Main.Iλ
 plt.plot(λ*(10**9), Iλ, label='Without ionisation')
 plt.legend(fontsize=16)
 plt.show()
-"""
