@@ -52,13 +52,18 @@ def t_to_f(t, Et):
     return f_oneside, Ef_oneside
     """
     Ef = fft(Et)
+    Ef = fftshift(Ef) # shift zero-frequency component to center of spectrum
+
     N = len(Et) # Number of points
 
    
     dt=t[1]-t[0]
-    F=1/dt
-    df=F/len(Et)
-    f=np.arange(0,F,df)
+    #F=1/dt
+    #df=F/len(Et)
+    #f=np.arange(0,F,df)
+    f = fftfreq(N, dt)
+    f = fftshift(f) # shift zero-frequency component to center of spectrum
+
     Ef_oneside = list(Ef[:N//2])
     Ef_otherside=list(Ef[N//2:])
     Ef_new=np.array(Ef_otherside+Ef_oneside)

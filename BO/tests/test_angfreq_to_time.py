@@ -20,13 +20,17 @@ plt.plot(t,Et)
 plt.show()
 """
 
-x=np.linspace(0,50,10000)
-y=np.exp(-(x-25)**2/0.10)
-width_1=rms_width(x,y)
+def FWHM(X,Y,frac=2):
+    d = Y - (max(Y) / frac) 
+    indexes = np.where(d > 0)[0] 
+    return abs(X[indexes[-1]] - X[indexes[0]])
+x=np.linspace(0,100,10000)
+y=np.exp(-(x-50)**2/1)
 X,Y=f_to_t(x,y)
 Y=np.abs(Y)
-width_2=rms_width(X,Y)
-print(width_1,width_2,1/(np.sqrt(2)*width_1), width_1/width_2)
+width1=FWHM(x,y)
+width2=FWHM(X,Y)
+print(width1*width2)
 x_,y_=t_to_f(X,Y)
 plt.plot(x,y)
 plt.plot(x_,np.abs(y_))
