@@ -38,6 +38,7 @@ def t_to_f(t, Et):
     Input of t and Et
     Returns f, Ef
     """
+    """
     ts = t[1]-t[0] # Sampling interval
     sr = 1/ts # Sampling rate
     Ef = fft(Et)
@@ -49,6 +50,20 @@ def t_to_f(t, Et):
     Ef_oneside = Ef[:N//2]
     f_oneside = f[:N//2]
     return f_oneside, Ef_oneside
+    """
+    Ef = fft(Et)
+    N = len(Et) # Number of points
+
+   
+    dt=t[1]-t[0]
+    F=1/dt
+    df=F/len(Et)
+    f=np.arange(0,F,df)
+    Ef_oneside = list(Ef[:N//2])
+    Ef_otherside=list(Ef[N//2:])
+    Ef_new=np.array(Ef_otherside+Ef_oneside)
+    #t_oneside = t[:N//2]
+    return f,Ef_new
 
 def f_to_t(f, Ef):
     """
@@ -80,7 +95,7 @@ def f_to_t(f, Ef):
     Et_otherside=list(Et[N//2:])
     Et_new=np.array(Et_otherside+Et_oneside)
     #t_oneside = t[:N//2]
-    return t,Et
+    return t,Et_new
 """
 t = np.linspace(0,1,100)
 freq = 2
