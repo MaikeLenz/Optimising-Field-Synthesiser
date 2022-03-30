@@ -36,7 +36,7 @@ Main.phase = ϕω
 
 # Neon test
 gas = "Ne"
-energy = 1.5e-3
+energy = 3e-3
 pressure = (0, 3.5)
 Main.energy = energy
 Main.gas_str = gas
@@ -53,7 +53,7 @@ plt.figure()
 plt.plot(λ*(10**9), Iλ, label='With all')
 plt.xlabel("Wavelength (nm)")
 plt.ylabel("Spectral energy density (J/m)")
-plt.title('Neon, 1.5mJ, (0,3.5)bar', size=24)
+plt.title('Neon, 3mJ, (0,3.5)bar', size=24)
 
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6), plasma=false)')
 Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
