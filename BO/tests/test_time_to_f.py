@@ -7,7 +7,8 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 from rms_width import *
 
-from angfreq_to_time import *
+#from angfreq_to_time import *
+from FourierTransforms import *
 import numpy as np
 import matplotlib.pyplot as plt
 from mpmath import *
