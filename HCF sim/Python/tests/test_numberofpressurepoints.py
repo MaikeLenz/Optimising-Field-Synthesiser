@@ -18,11 +18,16 @@ Main.using("Luna")
 radius = 125e-6 # HCF core radius
 flength = 1 # HCF length
 gas = "Ne"
-pressure = 2.340607 # gas pressure in bar, corresponds to 66% of 3.5 atm
 λ0 = 800e-9 # central wavelength of the pump pulse
 τfwhm = 30e-15 # FWHM duration of the pump pulse
 energy = 0.5e-3 # energy in the pump pulse, 0.5mJ
-
+pressures=[]
+positions=[]
+for i in range(100):
+      pressures.append(3)
+      positions.append(i*flength/100)
+pressure_list=[positions,pressures]
+pressure=tuple(tuple(sub) for sub in pressure_list)
 # Assign arguments to Main namespace
 Main.radius = radius
 Main.flength = flength
