@@ -64,11 +64,11 @@ def t_to_f(t, Et):
     f = fftfreq(N, dt)
     f = fftshift(f) # shift zero-frequency component to center of spectrum
 
-    Ef_oneside = list(Ef[:N//2])
-    Ef_otherside=list(Ef[N//2:])
-    Ef_new=np.array(Ef_otherside+Ef_oneside)
+    #Ef_oneside = list(Ef[:N//2])
+    #Ef_otherside=list(Ef[N//2:])
+    #Ef_new=np.array(Ef_otherside+Ef_oneside)
     #t_oneside = t[:N//2]
-    return f,Ef_new
+    return f,Ef
 
 def f_to_t(f, Ef):
     """
