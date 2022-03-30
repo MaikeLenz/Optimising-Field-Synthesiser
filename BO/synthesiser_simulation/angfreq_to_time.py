@@ -92,9 +92,9 @@ def f_to_t(f, Ef):
     Fs=2*max(f)
     t = np.arange(0, (N-1)/Fs, 1/Fs)
     """
-    df=(f[1]-f[0])
-    T=1/df
-    t=np.linspace(-T//2,T//2,len(Et))
+    df=np.abs(f[1]-f[0])#smallest frequency difference gives inverse of duration
+    T=1/df#overall duration
+    t=np.linspace(-T//2,T//2,len(Et))#construct time axis
     Et_oneside = list(Et[:N//2])
     Et_otherside=list(Et[N//2:])
     Et_new=np.array(Et_otherside+Et_oneside)
