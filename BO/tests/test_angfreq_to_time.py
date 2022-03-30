@@ -21,13 +21,16 @@ t,Et=f_to_t(om,E)
 plt.plot(t,Et)
 plt.show()
 """
-
+#test with gaussian
 def FWHM(X,Y,frac=2):
     d = Y - (max(Y) / frac) 
     indexes = np.where(d > 0)[0] 
     return abs(X[indexes[-1]] - X[indexes[0]])
-x=np.linspace(-50,50,10000)
-y=np.exp(-(x)**2/1)
+x=np.linspace(0,100,10000)
+y=np.exp(-(x-50)**2/1)
+#L=len(y)
+#x=np.append(x,np.zeros(L))
+#y=np.append(y,np.zeros(L))
 X,Y=f_to_t(x,y)
 Y=np.abs(Y)
 width1=FWHM(x,y)
@@ -40,6 +43,7 @@ plt.figure()
 plt.plot(X,Y)
 
 #test with sech**2 pulse
+x=np.linspace(0,100,10000)
 y=[]
 for i in x:
     y.append((1/cosh(i))**2)

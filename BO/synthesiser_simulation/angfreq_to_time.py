@@ -75,6 +75,8 @@ def f_to_t(f, Ef):
     Input of f and Ef
     Returns t, Et
     """
+    if any(i<0 for i in f) == False:
+        Ef=np.append(Ef, np.zeros(len(Ef)))
     Et = ifft(Ef)
     N = len(Ef) # Number of points
     #t = 1/f
@@ -91,6 +93,7 @@ def f_to_t(f, Ef):
     Fs=2*max(f)
     t = np.arange(0, (N-1)/Fs, 1/Fs)
     """
+
     df=np.abs(f[1]-f[0])#smallest frequency difference gives inverse of duration
     T=1/df#overall duration
     t=np.linspace(-T//2,T//2,len(Et))#construct time axis
