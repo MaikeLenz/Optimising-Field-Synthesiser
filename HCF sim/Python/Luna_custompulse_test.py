@@ -102,10 +102,10 @@ plt.ylabel("Electric Field")
 plt.show()
 
 # Save data
-header = ['Angular frequency (rad/s)', 'Electric Field (a.u.)']
-with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Test_Data.csv', 'w', encoding='UTF8', newline='') as f:
+header = ['Angular frequency (rad/s)', 'Real Electric Field (a.u.)', 'Imaginary Electric Field (a.u.)']
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Test_Data2.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     writer.writerow(header)
     for i in range(len(omega1)):
-        writer.writerow([omega1[i], Eomega1[i]])
+        writer.writerow([omega1[i], Eomega1[i].real, Eomega1[i].imag])
         
