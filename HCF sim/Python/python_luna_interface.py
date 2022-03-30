@@ -55,7 +55,10 @@ omega=Main.ω
 Iomega=Main.Iω
 Iomega=Iomega.reshape((-1,))[0:500]
 omega=omega[0:500]
-
+print(omega)
+for i in range(len(omega)):
+      if i>0:
+            print(omega[i]-omega[i-1])
 Et_allz=Main.Et #array of Et at all z 
 Et=Et_allz[:,-1] #last item in each element is pulse shape at the end
 Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
