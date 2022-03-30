@@ -77,6 +77,9 @@ def f_to_t(f, Ef):
     """
     if any(i<0 for i in f) == False:
         Ef=np.append(Ef, np.zeros(len(Ef)))
+    else:
+        neg_indices=np.where(f < 0)[0]
+        #need to put these values at the end of the Et array s.t. first half is positive and sceond is -ve frequencies
     Et = ifft(Ef)
     N = len(Ef) # Number of points
     #t = 1/f
