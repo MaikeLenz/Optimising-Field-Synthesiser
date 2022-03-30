@@ -36,7 +36,7 @@ filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\
 #filepath="C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\"
 
 # Read optimal params
-df_0 = pd.read_csv(filepath+"Ar9pressure_points__init_50_niter_1000.csv")
+df_0 = pd.read_csv(filepath+"Ar9pressure_points__init_50_niter_100.csv")
 
 energy=df_0.iloc[0][3]
 radius=df_0.iloc[0][5]
@@ -74,7 +74,7 @@ Main.energy = energy
 
 domega = 2*np.pi*0.44/FWHM
 c=299792458
-omega = np.linspace(2*np.pi*c/wavel - domega/2, 2*np.pi*c/wavel + domega/2, 1000)
+omega = np.linspace(2*np.pi*c/wavel - 5*domega/2, 2*np.pi*c/wavel + 5*domega/2, 1000)
 
 GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=grating_pair_displacement*1000)
 
@@ -148,7 +148,7 @@ Main.energy = energy
 print(pressure,energy,grating_pair_displacement)
 domega = 2*np.pi*0.44/FWHM
 c=299792458
-omega = np.linspace(2*np.pi*c/wavel - domega/2, 2*np.pi*c/wavel + domega/2, 1000)
+omega = np.linspace(2*np.pi*c/wavel - 5*domega/2, 2*np.pi*c/wavel + 5*domega/2, 1000)
 
 GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=0)
 
