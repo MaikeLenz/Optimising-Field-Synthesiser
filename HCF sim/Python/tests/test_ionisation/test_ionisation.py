@@ -27,7 +27,7 @@ Main.radius = radius
 Main.flength = flength
 Main.λ0 = wavel
 
-omega = np.linspace(2*np.pi*c/wavel - 4*domega/2, 2*np.pi*c/wavel + 4*domega/2, 100)
+omega = np.linspace(2*np.pi*c/wavel - 5*domega/2, 2*np.pi*c/wavel + 5*domega/2, 100)
 E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=domega, amp=1, CEP=0, GDD=0, TOD=0)
 Iω = np.abs(E)**2
 Main.ω = omega
