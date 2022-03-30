@@ -30,7 +30,7 @@ flength = 1.05 # HCF length
 Main.radius = radius
 Main.flength = flength
 c = 299792458 
-omega = np.linspace(2*np.pi*c/λ0s[0] - domegas[0]/2, 2*np.pi*c/λ0s[0] + domegas[0]/2, 100)
+omega = np.linspace(2*np.pi*c/λ0s[0] - 5*domegas[0]/2, 2*np.pi*c/λ0s[0] + 5*domegas[0]/2, 100)
 
 #####################################################################################################################
 # Argon 0.8bar power scan
@@ -57,7 +57,7 @@ for i in range(len(energies)):
     Iλ = Main.Iλ
 
     header = ['Wavelength, nm', 'Intensity']
-    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\gaussian_input_with_1.25_correction\\Ar_PowerScan_'+str(powers[i]), 'w', encoding='UTF8', newline='') as f:
+    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\gaussian_input_larger_omega_range\\Ar_PowerScan_'+str(powers[i]), 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         for j in range(len(λ)):
@@ -93,7 +93,7 @@ for i in range(len(energies)):
     Iλ = Main.Iλ
 
     header = ['Wavelength, nm', 'Intensity']
-    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\gaussian_input_with_1.25_correction\\Ne_PowerScan_'+str(powers[i]), 'w', encoding='UTF8', newline='') as f:
+    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\gaussian_input_larger_omega_range\\Ne_PowerScan_'+str(powers[i]), 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         for j in range(len(λ)):
@@ -129,7 +129,7 @@ for i in range(len(pressures)):
     Iλ = Main.Iλ
 
     header = ['Wavelength, nm', 'Intensity']
-    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\gaussian_input_with_1.25_correction\\Ar_PressureScan_'+str(pressures[i][1]), 'w', encoding='UTF8', newline='') as f:
+    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\gaussian_input_larger_omega_range\\Ar_PressureScan_'+str(pressures[i][1]), 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         for j in range(len(λ)):
@@ -166,7 +166,7 @@ for i in range(len(pressures)):
     Iλ = Main.Iλ
 
     header = ['Wavelength, nm', 'Intensity']
-    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\gaussian_input_with_1.25_correction\\Ne_PressureScan_'+str(pressures[i][1]), 'w', encoding='UTF8', newline='') as f:
+    with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\simulations\\data\\pressure_gradient\\gaussian_input_larger_omega_range\\Ne_PressureScan_'+str(pressures[i][1]), 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         for j in range(len(λ)):
