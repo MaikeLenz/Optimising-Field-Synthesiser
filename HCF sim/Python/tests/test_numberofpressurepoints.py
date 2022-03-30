@@ -26,7 +26,7 @@ gas = "Ne"
 energy = 0.5e-3 # energy in the pump pulse, 0.5mJ
 pressures=[]
 positions=[]
-for i in range(100):
+for i in range(1000):
       pressures.append(random.uniform(1.5, 3))
       positions.append(i*flength/100)
 pressure_list=[positions,pressures]
