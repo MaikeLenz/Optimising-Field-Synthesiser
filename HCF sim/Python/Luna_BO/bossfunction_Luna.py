@@ -116,7 +116,7 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, ImperialLab 
                 if ImperialLab == False:
                     #Custom data pulse is defined and passed to prop capillary
                     domega = 2*np.pi*0.44/τfwhm
-                    omega = np.linspace(2*np.pi*c/params_dict["λ0"] - domega/2, 2*np.pi*c/params_dict["λ0"] + domega/2, 100)
+                    omega = np.linspace(2*np.pi*c/params_dict["λ0"] - 5*domega/2, 2*np.pi*c/params_dict["λ0"] + 5*domega/2, 100)
 
                     GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=params_dict["grating_pair_displacement"]*1000)
 
@@ -257,7 +257,7 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, ImperialLab 
                     λ0 = Main.λ0
                     τfwhm = Main.τfwhm
                     domega = 2*np.pi*0.44/τfwhm
-                    omega = np.linspace(2*np.pi*c/λ0 - domega/2, 2*np.pi*c/λ0 + domega/2, 100)
+                    omega = np.linspace(2*np.pi*c/λ0 - 5*domega/2, 2*np.pi*c/λ0 + 5*domega/2, 100)
 
                     GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=grating_pair_displacement*1000)
 
