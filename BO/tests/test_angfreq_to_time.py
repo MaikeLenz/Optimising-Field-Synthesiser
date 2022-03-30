@@ -20,19 +20,19 @@ plt.plot(t,Et)
 plt.show()
 """
 
-x=np.linspace(0,100,10000)
-y=np.exp(-(x-50)**2/0.10)
+x=np.linspace(0,50,10000)
+y=np.exp(-(x-25)**2/0.10)
 width_1=rms_width(x,y)
 X,Y=f_to_t(x,y)
 Y=np.abs(Y)
 width_2=rms_width(X,Y)
-print(width_1,width_2,1/width_1, width_1/width_2)
+print(width_1,width_2,1/(np.sqrt(2)*width_1), width_1/width_2)
 x_,y_=t_to_f(X,Y)
 plt.plot(x,y)
+plt.plot(x_,np.abs(y_))
 plt.figure()
 plt.plot(X,Y)
-plt.figure()
-plt.plot(x_,y_)
+
 plt.show()
 
 
