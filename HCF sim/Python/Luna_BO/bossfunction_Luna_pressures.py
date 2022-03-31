@@ -87,15 +87,19 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
     params_dict['grating_pair_displacement'] = initial_values_HCF[7]
     #append each pressure point as an individual entry into the params_dict dictionary
     for i in range(len(pressure_points)):
-        params_dict['pressure%s'%i] = pressure_points[i]
+        if i==1:
+            params_dict['initial pressure'] = pressure_points[i]
+        else:
+            params_dict['pressure%s'%(i-1)] = pressure_points[i]
 
     #now filter out parameters we are varying
     for i in params:
         if i in params_dict:
             if i=="pressure":
                 #each pressure point needs to be its own parameter
-                for j in range(len(pressure_points)-1):
-                    args_BO["pressure%s"%j]=params_dict["pressure%s"%j]
+                for j in range(len(pressure_points)):
+                    if j != 0:
+                        args_BO["pressure%s"%(j-1)]=params_dict["pressure%s"%(j-1)]
             else:
                 #otherwise just add the parameter to be varied
                 args_BO[i] = params_dict[i]
@@ -109,9 +113,10 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         for i in range(len(params)):
             if params[i]=="pressure":
                 #each pressure point needs to be its own parameter
-                for j in range(len(pressure_points)-1):
-                    args_BO["pressure%s"%j]=args["pressure%s"%j]
-                    params_dict["pressure%s"%j]=args["pressure%s"%j]
+                for j in range(len(pressure_points)):
+                    if j!=0:
+                        args_BO["pressure%s"%(j-1)]=args["pressure%s"%(j-1)]
+                        params_dict["pressure%s"%(j-1)]=args["pressure%s"%(j-1)]
             else:
                 print(i)
                 args_BO[params[i]] = args[params[i]]
@@ -124,7 +129,7 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         #we need to recreate the tuple of tuples to pass to Luna (Z,P) as before
         for key, value in args_BO.items():
             if 'pressure' in key:
-                pressure_array=np.zeros((2,len(pressure_points)+1)) #start with array with correct dimensions
+                pressure_array=np.zeros((2,len(pressure_points))) #start with array with correct dimensions
                 pressure_array[0][0]=0
                 pressure_array[1][0]=0
         #now iterate through args_BO and update params in Luna
@@ -152,7 +157,10 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         Main.pressure = pressure_tuple
 
         # Check if the point to be probed is under the critical power condition to avoid unphysical outputs.
-        Main.avg_pressure=P_average(pressure_tuple[0],pressure_tuple[1])
+        print(pressure_tuple)
+        Pav=P_avg(pressure_tuple[0],pressure_tuple[1])
+        Main.avg_pressure=Pav
+        print(Pav)
         Main.eval('ω = PhysData.wlfreq(λ0)')
         Main.eval('_, n0, n2  = Tools.getN0n0n2(ω, gas; P=avg_pressure)')
         Main.eval('Pcrit = Tools.Pcr(ω, n0, n2)')
