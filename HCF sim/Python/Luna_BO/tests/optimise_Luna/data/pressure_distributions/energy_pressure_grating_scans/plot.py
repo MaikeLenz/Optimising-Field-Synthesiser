@@ -139,8 +139,9 @@ if gas=="Ne":
 elif gas=="Ar":
     Main.pressure = 0.66*1.5
 """
-Main.pressure=max(pressure[1])
-print(max(pressure[1]))
+#Main.pressure=max(pressure[1])
+#print(max(pressure[1]))
+Main.pressure=P_avg(pressure[0],pressure[1])
 Main.λ0 = wavel
 Main.τfwhm = FWHM
 Main.energy = energy
@@ -212,7 +213,8 @@ plt.figure()
 plt.plot(λ_opt,Iλ_opt,label="Optimised")
 #plt.plot(λ_opt2,Iλ_opt2,label="Constant Pressure")
 #plt.plot(λ_opt3,Iλ_opt3,label="SPM Prediction")
-plt.plot(λ_opt3,Iλ_opt3,label="Max Pressure Throughout")
+#plt.plot(λ_opt3,Iλ_opt3,label="Max Pressure Throughout")
+plt.plot(λ_opt3,Iλ_opt3,label="Average Pressure Throughout")
 
 plt.xlabel("Wavelength (m)")
 plt.ylabel("Spectral energy density (J/m)")
@@ -224,7 +226,8 @@ plt.figure()
 plt.plot(omega_opt,Iomega_opt,label="Optimised")
 #plt.plot(omega_opt2,Iomega_opt2,label="Constant Pressure")
 #plt.plot(omega_opt3,Iomega_opt3,label="SPM Prediction")
-plt.plot(omega_opt3,Iomega_opt3,label="Max Pressure Throughout")
+#plt.plot(omega_opt3,Iomega_opt3,label="Max Pressure Throughout")
+plt.plot(omega_opt3,Iomega_opt3,label="Average Pressure Throughout")
 
 plt.legend()
 plt.xlabel("Angular frequency,/s")
@@ -242,7 +245,9 @@ print("max pressure integral %s"%integral_max)
 plt.plot(t_opt,Et_opt,label="Optimised")
 #plt.plot(t_opt2,Et_opt2,label="Constant Pressure")
 #plt.plot(t_opt3,Et_opt3,label="SPM Prediction")
-plt.plot(t_opt3,Et_opt3,label="Max Pressure Throughout")
+#plt.plot(t_opt3,Et_opt3,label="Max Pressure Throughout")
+plt.plot(t_opt3,Et_opt3,label="Average Pressure Throughout")
+
 
 #plt.plot(t,Et0,label="z=0m")
 plt.xlabel("time,s")
@@ -254,7 +259,7 @@ plt.legend()
 
 plt.figure()
 z,Pz=P_distribution(pressure[0],pressure[1])
-Pm=np.ones(len(z))*max(pressure[1])
+Pm=np.ones(len(z))*P_avg(pressure[0],pressure[1])
 plt.scatter(pressure[0],pressure[1])
 plt.plot(z,Pz)
 plt.plot(z,Pm)
@@ -265,7 +270,9 @@ plt.ylabel("Pressure, bar")
 #plot Eomega
 plt.figure()
 plt.plot(omegaE_opt,Eomega_opt,label="Optimised")
-plt.plot(omegaE_opt3,Eomega_opt3,label="Max Pressure Throughout")
+#plt.plot(omegaE_opt3,Eomega_opt3,label="Max Pressure Throughout")
+plt.plot(omegaE_opt3,Eomega_opt3,label="Average Pressure Throughout")
+
 plt.xlabel("Angular Frequency, /s")
 plt.ylabel("Electric Field, a.u.")
 plt.legend()
