@@ -206,9 +206,9 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
         if 'energy' in i:
             #pbounds[i] = (0,1e-3)
             #pbounds[i] = (0.1e-3,2.0e-3)
-            #pbounds[i] = (0.8e-3, 1.5e-3) # Our system
+            pbounds[i] = (0.8e-3, 1.5e-3) # Our system
             #pbounds[i] = (0.05e-3,0.5e-3) # Heriot-Watt
-            pbounds[i] = (0.5e-3, 1e-3) # Heriot-Watt with bigger bounds
+            #pbounds[i] = (0.5e-3, 1e-3) # Heriot-Watt with bigger bounds
         elif 'τfwhm' in i:
             #pbounds[i] = (20e-15,50e-15)
             pbounds[i] = (4e-15, 30e-15)
@@ -218,8 +218,8 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
             #pbounds[i] = (0,3)
             #pbounds[i] = (1,15)
             #pbounds[i] = (1, 10)
-            #pbounds[i] = (1, 3.5) # Our system
-            pbounds[i] = (0.66*1, 0.66*8) # Heriot-Watt
+            pbounds[i] = (0.66*1, 0.66*3.5) # Our system
+            #pbounds[i] = (0.66*1, 0.66*8) # Heriot-Watt
         elif 'radius' in i:                
             #pbounds[i] = (125e-6,300e-6)
             pbounds[i] = (50e-6, 500e-6) # Our system + Heriot-Waat
@@ -228,8 +228,8 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
             #pbounds[i] = (0.1, 6) # Our system
             pbounds[i] = (0.1, 10) # Heriot-Watt
         elif 'grating_pair_displacement' in i:
-            #pbounds[i] = (-0.5e-3, 0.5e-3) # Our system
-            pbounds[i] = (-0.25e-3, 0.25e-3) # Heriot-Watt
+            pbounds[i] = (-0.5e-3, 0.5e-3) # Our system
+            #pbounds[i] = (-0.25e-3, 0.25e-3) # Heriot-Watt
     print(pbounds)
 
     optimizer = BayesianOptimization(
