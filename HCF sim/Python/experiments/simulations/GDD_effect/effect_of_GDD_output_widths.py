@@ -4,7 +4,11 @@ import numpy as np
 import pandas as pd
 import csv  
 import sys
-plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
+#plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
+plt.style.use('tableau-colorblind10')
+plt.rcParams['xtick.labelsize'] = 12
+plt.rcParams['ytick.labelsize'] = 12
+plt.rcParams['axes.labelsize'] = 16
 
 sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building datasets\\")
 #sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\")
@@ -37,7 +41,7 @@ n=5
 gdd_step=500e-30 #in fs^2
 gdd_mid=0
 #GDDs=[gdd_mid-4*gdd_step,gdd_mid-3*gdd_step,gdd_mid-2*gdd_step,gdd_mid-gdd_step,gdd_mid,gdd_mid+gdd_step,gdd_mid+2*gdd_step,gdd_mid+3*gdd_step,gdd_mid+4*gdd_step]
-GDDs=np.linspace(-2500e-30,2500e-30,100)
+GDDs=np.linspace(-1500e-30,1500e-30,100)
 
 
 # Define fixed params
@@ -45,10 +49,10 @@ c = 299792458
 wavel=800e-9
 energy=1.5e-3
 
-gas = "Ne"
+gas = "Ar"
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
-pressure = (0,3)
+pressure = (0,1)
 Main.pressure = pressure
 radius=175e-6
 Main.radius=radius
@@ -153,13 +157,15 @@ ax1.plot(GDDs*10**30,thresh_widths,label="Threshold Width")
 #ax1.plot(GDDs*10**30,superG_widths,label="Super Gaussian Width times %s"%(round(scaling_superG,2)))
 ax1.plot(GDDs*10**30,normint_widths,label="Normalised Integral")
 
-ax1.set_xlabel("GDD, fs$\mathrm{^2}$",fontsize=14)
-ax1.set_ylabel("Widths, s$\mathrm{^{-1}}$",fontsize=14)
+ax1.set_xlabel("GDD, fs$\mathrm{^2}$",fontsize=16)
+ax1.set_ylabel("Widths, s$\mathrm{^{-1}}$",fontsize=16)
 #ax2.set_ylabel("Theoretical GDD Broadening/ Threshold Width, s",fontsize=14)
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
 plt.legend(fontsize=16,loc="upper right")
 plt.title("Frequency Width Comparison Output Pulse", fontsize=20)
+plt.axvline(x=0,color="grey",dashes=[10,10])
+
 plt.show()
 """
 plt.plot(GDDs*10**30,rms_widths,label="RMS Width")
