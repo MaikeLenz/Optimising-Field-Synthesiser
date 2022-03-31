@@ -70,7 +70,7 @@ def P_avg(Z,P):
     P_integrated = integrate.simps(P_integrand, z)
     return P_integrated/norm_len
 
-
+"""
 def P_average_manual(Z, P):
     P_integrated = []
     for i in range(len(Z)-1):
@@ -80,6 +80,7 @@ def P_average_manual(Z, P):
         P_integrated.append((2/3)*((PL**2)**(3/2) - (P0**3))/((PL**2) - (P0**2)))
     P_av = np.sum(P_integrated)/(len(Z)-1)
     return P_av
+"""
 """
 def P_average_manual2(Z,P):
     P_integrated = []
