@@ -32,6 +32,13 @@ def max_peak_power(t,Et,λ,Iλ):
         I.append(np.abs(i)**2)
     return max(I)
 
+def max_peak_power_FT(om,Eom):
+    """
+    Fourier transforms Eomega to Et and maximised amplitude there
+    """
+    t,Et=f_to_t(om,Eom)
+    return max(np.abs(Et)**2)
+
 def peak_power_window(t,Et,λ,Iλ):
     """
     defined in the bossfunction

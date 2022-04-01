@@ -228,19 +228,24 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
 
         Main.eval('t, Et = Processing.getEt(duv)')
         Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
+        Main.eval("ω,Eω=Processing.getEω(duv")
         
         # Get values
         t = Main.t
         Et_allz = Main.Et # array of Et at all z 
         Et = Et_allz[:,-1] # last item in each element is pulse shape at the end
         Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
-
+        ω=Main.ω
+        Eω_allz=Main.Eω
+        Eω=Eω_allz[:,-1]
         λ = Main.λ
         Iλ = Main.Iλ
         Iλ=Iλ.reshape(len(Iλ),)
           
         if function==max_intens_integral:
             return function(λ, Iλ, wavel_bounds)*power_condition
+        elif function==max_peak_power_FT:
+            return function(ω,Eω)
         else:
             return function(t, Et, λ, Iλ)*power_condition #pass t and E to sub-target function
         
