@@ -26,7 +26,7 @@ params=["pressure"]
 
 #values:  radius, flength, gas, pressure, wavelength, energy, τfwhm, grating_pair_separation
 gas="Ar"
-pressure_init=(1,1,1,1,1,1,1,1,1)
+pressure_init=(0,1,1,1,1,1,1,1,1,1,1)
 radius_init=175e-6
 flength_init=1.05
 wavel=800e-9
@@ -36,15 +36,15 @@ grating_pair_displacement_init=0
 initial_values_HCF=[radius_init, flength_init, gas, pressure_init, wavel, energy_init, fwhm_init, grating_pair_displacement_init]
 inits=50
 iters=1000
-result,iterations=Luna_BO_press(params, initial_values_HCF, function=max_wavel_bandwidth, init_points=inits, n_iter=iters)
+result,iterations=Luna_BO_press(params, initial_values_HCF, function=max_freq_bandwidth, init_points=inits, n_iter=iters)
 
 #for i, res in enumerate(iterations):
 #    print("Iteration {}: \n\t{}".format(i, res))
 
 target = result['target']
 #energy = result['params']['energy']
-pressure = []
-for i in range(len(pressure_init)):
+pressure = [0]
+for i in range(len(pressure_init)-1):
     pressure.append(result['params']['pressure%s'%i])
 #grating_pair_displacement = result['params']['grating_pair_displacement']
 # Save the data

@@ -62,14 +62,15 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
     #P is a tuple with the corresponding pressures
 
     #we create this as a list of lists for convenience before converting to tuple of tuples
-    pressure_points=initial_values_HCF[3] #tuple containing initial pressure values at the points
-    pressure_list=[[0],[0]]#going to contain Z values and P values
-    for i in range(len(pressure_points)-1):
+    initial_pressure=initial_values_HCF[3][0]
+    pressure_points=initial_values_HCF[3][1:] #tuple containing initial pressure values at the points
+    pressure_list=[[0],[initial_pressure]]#going to contain Z values and P values
+    for i in range(len(pressure_points)):
         #iterate through and append the corresponding z and p value
         #z:
-        pressure_list[0].append((i+1)*initial_values_HCF[1]/(len(pressure_points)-1))
+        pressure_list[0].append((i+1)*initial_values_HCF[1]/(len(pressure_points)))
         #p:
-        pressure_list[1].append(initial_values_HCF[3][i+1])
+        pressure_list[1].append(initial_values_HCF[3][i])
     #create tuple of tuples
     pressure_tuple = tuple(tuple(sub) for sub in pressure_list)
     Main.pressure = pressure_tuple
@@ -86,11 +87,9 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
     params_dict['FWHM'] = initial_values_HCF[6]
     params_dict['grating_pair_displacement'] = initial_values_HCF[7]
     #append each pressure point as an individual entry into the params_dict dictionary
+    params_dict['initial pressure'] = initial_pressure
     for i in range(len(pressure_points)):
-        if i==1:
-            params_dict['initial pressure'] = pressure_points[i]
-        else:
-            params_dict['pressure%s'%(i-1)] = pressure_points[i]
+        params_dict['pressure%s'%(i-1)] = pressure_points[i]
 
     #now filter out parameters we are varying
     for i in params:
@@ -98,8 +97,7 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
             if i=="pressure":
                 #each pressure point needs to be its own parameter
                 for j in range(len(pressure_points)):
-                    if j != 0:
-                        args_BO["pressure%s"%(j-1)]=params_dict["pressure%s"%(j-1)]
+                    args_BO["pressure%s"%(j)]=params_dict["pressure%s"%(j)]
             else:
                 #otherwise just add the parameter to be varied
                 args_BO[i] = params_dict[i]
@@ -114,9 +112,8 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
             if params[i]=="pressure":
                 #each pressure point needs to be its own parameter
                 for j in range(len(pressure_points)):
-                    if j!=0:
-                        args_BO["pressure%s"%(j-1)]=args["pressure%s"%(j-1)]
-                        params_dict["pressure%s"%(j-1)]=args["pressure%s"%(j-1)]
+                    args_BO["pressure%s"%(j)]=args["pressure%s"%(j)]
+                    params_dict["pressure%s"%(j)]=args["pressure%s"%(j)]
             else:
                 print(i)
                 args_BO[params[i]] = args[params[i]]
@@ -129,9 +126,9 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         #we need to recreate the tuple of tuples to pass to Luna (Z,P) as before
         for key, value in args_BO.items():
             if 'pressure' in key:
-                pressure_array=np.zeros((2,len(pressure_points))) #start with array with correct dimensions
+                pressure_array=np.zeros((2,len(pressure_points)+1)) #start with array with correct dimensions
                 pressure_array[0][0]=0
-                pressure_array[1][0]=0
+                pressure_array[1][0]=params_dict['initial pressure']
         #now iterate through args_BO and update params in Luna
         for key, value in args_BO.items():
             if 'energy' in key:
@@ -146,10 +143,10 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
                 Main.τfwhm = value
             elif 'pressure' in key:
                 #append each pressure to the pressure_array before turning into a tuple
-                for i in range(len(pressure_points)-1):
+                for i in range(len(pressure_points)):
                     if str(i) in key:
                         #z:
-                        pressure_array[0][i+1]=(i+1)*params_dict['flength']/(len(pressure_points)-1)
+                        pressure_array[0][i+1]=(i+1)*params_dict['flength']/(len(pressure_points))
                         #p:
                         pressure_array[1][i+1]=value
         #turn 2d array into tuple and pass to Luna
