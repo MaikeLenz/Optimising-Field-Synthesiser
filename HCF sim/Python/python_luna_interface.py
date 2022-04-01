@@ -18,8 +18,8 @@ Main.using("Luna")
 # Arguments
 radius = 175e-6 # HCF core radius
 flength = 1.05 # HCF length
-gas = "Ne"
-pressure = (0,3) # gas pressure in bar, corresponds to 66% of 3.5 atm
+gas = "Ar"
+pressure = (0,1) # gas pressure in bar, corresponds to 66% of 3.5 atm
 λ0 = 800e-9 # central wavelength of the pump pulse
 τfwhm = 30e-15 # FWHM duration of the pump pulse
 energy = 1.2e-3 # energy in the pump pulse, 0.5mJ
@@ -101,7 +101,6 @@ plt.plot(λ,Iλ)
 plt.xlabel("Wavelength (m)")
 plt.ylabel("Spectral energy density (J/m)")
 
-plt.figure()
 
 fig,ax = plt.subplots()
 # make a plot
