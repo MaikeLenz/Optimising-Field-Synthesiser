@@ -228,7 +228,7 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
 
         Main.eval('t, Et = Processing.getEt(duv)')
         Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
-        Main.eval("ω,Eω=Processing.getEω(duv")
+        Main.eval("ω,Eω=Processing.getEω(duv)")
         
         # Get values
         t = Main.t
