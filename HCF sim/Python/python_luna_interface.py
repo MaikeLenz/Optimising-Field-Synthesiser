@@ -5,6 +5,8 @@ import numpy as np
 import csv
 import sys
 import cmath
+from scipy.signal import detrend
+
 sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 from rms_width import *
 
@@ -72,9 +74,10 @@ for i in Eω:
       E_exp.append(cmath.exp(i))
       phase.append(cmath.phase(i))
 phase=np.array(phase)
-E_exp=np.array(E_exp)
-phase_wrapped = np.angle(E_exp)
-phase2 = np.unwrap(phase_wrapped)
+#E_exp=np.array(E_exp)
+phase_wrapped = np.angle(Eω)
+import scipy
+phase2 = detrend(np.unwrap(phase_wrapped))
 
 #creating indicative bar to show rms width
 width=rms_width(omega,Iomega)
