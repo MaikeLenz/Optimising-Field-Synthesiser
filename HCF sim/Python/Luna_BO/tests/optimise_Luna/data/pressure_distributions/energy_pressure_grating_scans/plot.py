@@ -36,7 +36,7 @@ filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\
 #filepath="C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\"
 
 # Read optimal params
-df_0 = pd.read_csv(filepath+"Ar9pressure_points__init_50_niter_1000.csv")
+df_0 = pd.read_csv(filepath+"Ar11pressure_points__init_50_niter_1000.csv")
 
 energy=df_0.iloc[0][3]
 radius=df_0.iloc[0][5]
@@ -53,7 +53,7 @@ pressure_list=[[],[]]
 for i in range(len(pressures)):
         #iterate through and append the corresponding z and p value
         #z:
-        pressure_list[0].append(i*flength/(len(pressures)-1))
+        pressure_list[0].append((i)*flength/(len(pressures)-1))
         #p:
         pressure_list[1].append(float(pressures[i]))
 pressure=tuple(tuple(sub) for sub in pressure_list)
@@ -105,8 +105,8 @@ Iλ_opt = Main.Iλ
 Iλ_opt=Iλ_opt.reshape(len(Iλ_opt),)
 omega_opt=Main.ω
 Iomega_opt=Main.Iω
-Iomega_opt=Iomega_opt.reshape((-1,))[0:500]
-omega_opt=omega_opt[0:500]
+Iomega_opt=Iomega_opt.reshape((-1,))
+#omega_opt=omega_opt
 omegaE_opt=Main.ω1
 Eomega_opt=Main.Eω
 
@@ -179,8 +179,8 @@ Iλ_opt3 = Main.Iλ
 Iλ_opt3=Iλ_opt3.reshape(len(Iλ_opt3),)
 omega_opt3=Main.ω
 Iomega_opt3=Main.Iω
-Iomega_opt3=Iomega_opt3.reshape((-1,))[0:500]
-omega_opt3=omega_opt3[0:500]
+Iomega_opt3=Iomega_opt3.reshape((-1,))
+#omega_opt3=omega_opt3[0:500]
 omegaE_opt3=Main.ω1
 Eomega_opt3=Main.Eω
 Eomega_opt3=Eomega_opt3[:,-1]
