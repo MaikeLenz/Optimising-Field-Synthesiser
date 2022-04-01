@@ -1,6 +1,8 @@
 import sys
 import matplotlib.pyplot as plt
-plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
+#plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
+plt.style.use('tableau-colorblind10')
+
 import julia
 import numpy as np
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
@@ -168,9 +170,9 @@ fig=plt.figure()
 ax1 = fig.add_subplot(221)
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
-ax1.plot(energies_in*1000, transmission_actual,label="experiment",marker="+",ls="None")
-ax1.plot(energies_in*1000,transmission_sim,label="Luna, input energy times %s"%(round(scaling,2)),marker="+",ls="None")
-ax1.errorbar(energies_in*1000, transmission_actual, xerr = 0.1*energies_in*1000,yerr=0.2*transmission_actual, ls="None", color=plt.cm.Set2(0))
+ax1.plot(energies_in*1000, transmission_actual,label="Experiment",marker="o",ls="None")
+ax1.plot(energies_in*1000,transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="o",ls="None")
+ax1.errorbar(energies_in*1000, transmission_actual, xerr = 0.1*energies_in*1000,yerr=0.2*transmission_actual, ls="None")
 plt.legend(fontsize=14)
 ax1.set_xticks(list(energies_in*1000))
 plt.xticks(fontsize=14)
@@ -182,13 +184,13 @@ ax1.set_xlabel("Input Energy, mJ",fontsize=16)
 ax1.set_ylabel("Transmission",fontsize=16)
 
 ax2 = ax1.twiny()
-ax2.set_xlabel("Input Intensity (I0), $\mathrm{10^{13} W/cm^2}$",fontsize=16)
+ax2.set_xlabel("Input Intensity (I$\mathrm{_{0}}$), $\mathrm{10^{13} W/cm^2}$",fontsize=16)
 ax2.set_xlim(0.2,1.3)
 plt.xticks(fontsize=14)
 ax2.set_xticks(list(energies_in*1000))
 ax2.set_title("Argon Power Scan",fontsize=20)
 ax2.set_xticklabels(I0)
-
+#plt.grid()
 
 ################################################################################################
 #import data
@@ -308,9 +310,9 @@ I0=str(round(find_I0(intens1_1,wavel_nm*10**-9,delta_lambda*10**-9,energy_in,0.5
 ax1 = fig.add_subplot(223)
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
-ax1.plot(np.array(pressures), transmission_actual,label=r"experiment, I0="+I0+"e13W/$\mathrm{cm^2}$",marker="+",ls="None")
-ax1.plot(np.array(pressures),transmission_sim,label="Luna, input energy times %s"%(round(scaling,2)),marker="+",ls="None")
-ax1.errorbar(np.array(pressures), transmission_actual, xerr = 0.1*np.array(pressures),yerr=0.2*transmission_actual, ls="None", color=plt.cm.Set2(0))
+ax1.plot(np.array(pressures), transmission_actual,label=r"Experiment, I$\mathrm{_0}$="+I0+"e13W/$\mathrm{cm^2}$",marker="o",ls="None")
+ax1.plot(np.array(pressures),transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="o",ls="None")
+ax1.errorbar(np.array(pressures), transmission_actual, xerr = 0.1*np.array(pressures),yerr=0.2*transmission_actual, ls="None")
 ax1.set_xlim(0.1,1.5)
 ax1.set_ylim(0.,1.0)
 
@@ -321,7 +323,7 @@ ax1.set_xlabel("Pressure, Bar",fontsize=16)
 ax1.set_ylabel("Transmission",fontsize=16)
 ax1.set_title("Argon Pressure Scan",fontsize=20)
 plt.legend(fontsize=14)
-
+#plt.grid()
 
 ################################################################################################
 #import data
@@ -462,9 +464,9 @@ for i in range(len(energies_in)):
 ax1 = fig.add_subplot(222)
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
-ax1.plot(energies_in*1000, transmission_actual,label="experiment",marker="+",ls="None")
-ax1.plot(energies_in*1000,transmission_sim,label="Luna, input energy times %s"%(round(scaling,2)),marker="+",ls="None")
-ax1.errorbar(energies_in*1000, transmission_actual, xerr = 0.1*energies_in*1000,yerr=0.2*transmission_actual, ls="None", color=plt.cm.Set2(0))
+ax1.plot(energies_in*1000, transmission_actual,label="Experiment",marker="o",ls="None")
+ax1.plot(energies_in*1000,transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="o",ls="None")
+ax1.errorbar(energies_in*1000, transmission_actual, xerr = 0.1*energies_in*1000,yerr=0.2*transmission_actual, ls="None")
 
 ax1.set_xlim(0.2,1.3)
 ax1.set_ylim(0.,1.0)
@@ -476,13 +478,13 @@ ax1.set_xlabel("Input Energy, mJ",fontsize=16)
 ax1.set_ylabel("Transmission",fontsize=16)
 plt.legend(fontsize=14,loc="lower right")
 ax2 = ax1.twiny()
-ax2.set_xlabel("Input Intensity (I0), $\mathrm{10^{13}W/cm^2}$",fontsize=16)
+ax2.set_xlabel(r"Input Intensity (I$\mathrm{_{0}}$), $\mathrm{10^{13}W/cm^2}$",fontsize=16)
 ax2.set_xlim(0.2,1.3)
 ax2.set_xticks(list(energies_in*1000))
 plt.xticks(fontsize=14)
 ax2.set_xticklabels(I0)
 ax2.set_title("Neon Power Scan",fontsize=20)
-
+#plt.grid()
 
 
 ################################################################################################
@@ -619,15 +621,15 @@ plt.yticks(fontsize=14)
 ax1.set_xticks(list(pressures))
 plt.xticks(fontsize=14)
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
-ax1.plot(np.array(pressures), transmission_actual,label="experiment, I0="+I0+"e13$\mathrm{W/cm^2}$",marker="+",ls="None")
-ax1.plot(np.array(pressures),transmission_sim,label="Luna, input energy times %s"%(round(scaling,2)),marker="+",ls="None")
-ax1.errorbar(np.array(pressures), transmission_actual, xerr = 0.1*np.array(pressures),yerr=0.2*transmission_actual, ls="None", color=plt.cm.Set2(0))
+ax1.plot(np.array(pressures), transmission_actual,label=r"Experiment, I$\mathrm{_{0}}$="+I0+"e13$\mathrm{W/cm^2}$",marker="o",ls="None")
+ax1.plot(np.array(pressures),transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="o",ls="None")
+ax1.errorbar(np.array(pressures), transmission_actual, xerr = 0.1*np.array(pressures),yerr=0.2*transmission_actual, ls="None")
 ax1.set_xlim(0.9,3.7)
 ax1.set_ylim(0.,1.0)
 ax1.set_xlabel("Pressure, Bar",fontsize=16)
 ax1.set_ylabel("Transmission",fontsize=16)
 plt.legend(fontsize=14,loc="lower right")
-
+#plt.grid()
 
 plt.show()
 
