@@ -36,7 +36,7 @@ filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\
 #filepath="C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\"
 
 # Read optimal params
-df_0 = pd.read_csv(filepath+"Ar11pressure_points__init_50_niter_1000.csv")
+df_0 = pd.read_csv(filepath+"FTmaxpeakAr11pressure_points__init_50_niter_1000.csv")
 
 energy=df_0.iloc[0][3]
 radius=df_0.iloc[0][5]
@@ -142,6 +142,7 @@ elif gas=="Ar":
 #Main.pressure=max(pressure[1])
 #print(max(pressure[1]))
 Main.pressure=P_avg(pressure[0],pressure[1])
+#Main.pressure=(pressure[0],(0,1,1,1,1,1,1,1,1,1,1))
 Main.λ0 = wavel
 Main.τfwhm = FWHM
 Main.energy = energy
@@ -282,7 +283,7 @@ plt.legend()
 #plot fourier transformed output electric fields
 plt.figure()
 plt.plot(t_FT,E_FT,label="Optimised")
-plt.plot(t_FT3,E_FT3,label="Max Pressure Throughout")
+plt.plot(t_FT3,E_FT3,label="Average Pressure Throughout")
 plt.xlabel("Time, s")
 plt.ylabel("Electric Field, a.u.")
 plt.legend()
@@ -293,7 +294,7 @@ plt.legend()
 
 plt.figure()
 plt.plot(t_FT,IFT_t_opt,label="Optimised")
-plt.plot(t_FT3,IFT_t_opt3,label="Max Pressure Throughout")
+plt.plot(t_FT3,IFT_t_opt3,label="Average Pressure Throughout")
 plt.xlabel("Time, s")
 plt.ylabel("Intensity, a.u.")
 plt.legend()

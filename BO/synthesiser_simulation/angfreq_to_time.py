@@ -76,7 +76,7 @@ def f_to_t(f, Ef):
     Returns t, Et
     """
     if any(i<0 for i in f) == False:
-        Ef=np.append(Ef, np.zeros(len(Ef)))
+        Ef=np.append(Ef, Ef)
     else:
         neg_indices=np.where(f < 0)[0]
         pos_indices=np.where(f>=0)[0]
