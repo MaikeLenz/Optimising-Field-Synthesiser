@@ -35,21 +35,23 @@ def min_duration_FT(om,Eom):
     """
     Fourier transforms to time domain to minimise duration
     """
-    t,Et=f_to_t(om,Eom)
-    return -rms_width(t,Et)
+    t,Et=f_to_t(om/(2*np.pi),Eom)
+    It=np.abs(Et)**2
+    return -rms_width(t,It)
 
 def min_thresh_duration_FT(om,Eom):
     """
     Fourier transforms to time domain to minimise duration
     """
-    t,Et=f_to_t(om,Eom)
-    return -threshold(t,Et,t,Et)
+    t,Et=f_to_t(om/(2*np.pi),Eom)
+    It=np.abs(Et)**2
+    return -threshold(t,It,t,It)
 
 def max_peak_power_FT(om,Eom):
     """
     Fourier transforms Eomega to Et and maximised amplitude there
     """
-    t,Et=f_to_t(om,Eom)
+    t,Et=f_to_t(om/(2*np.pi),Eom)
     return max(np.abs(Et)**2)
 
 def peak_power_window(t,Et,λ,Iλ):
