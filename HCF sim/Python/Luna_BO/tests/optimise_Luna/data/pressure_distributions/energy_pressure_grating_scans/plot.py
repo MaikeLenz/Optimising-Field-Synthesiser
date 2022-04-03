@@ -36,7 +36,7 @@ filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\
 #filepath="C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\"
 
 # Read optimal params
-df_0 = pd.read_csv(filepath+"maxfreqbandwNe11pressure_points__init_50_niter_1000.csv")
+df_0 = pd.read_csv(filepath+"3.5mJNe11pressure_points__init_50_niter_100.csv")
 
 energy=df_0.iloc[0][3]
 radius=df_0.iloc[0][5]
@@ -121,9 +121,7 @@ for i in range(len(t_opt)):
 #Fourier transform output spectra
 t_FT,E_FT= f_to_t(omegaE_opt/(2*np.pi), Eomega_opt)
 #Fourier transformed intensity envelopes
-IFT_t_opt=[]
-for i in range(len(t_FT)):
-    IFT_t_opt.append(np.abs(E_FT[i])**2)
+IFT_t_opt=np.abs(E_FT)**2
 
 
 ##############################################################################################################################
@@ -187,17 +185,13 @@ Eomega_opt3=Main.Eω
 Eomega_opt3=Eomega_opt3[:,-1]
 
 
-I_t_opt3=[]
-for i in range(len(t_opt3)):
-    I_t_opt3.append(np.abs(Et_opt3[i])**2)
+I_t_opt3=np.abs(Et_opt3)**2
     
 
 t_FT3,E_FT3=f_to_t(omegaE_opt3/(2*np.pi), Eomega_opt3)
 
 
-IFT_t_opt3=[]
-for i in range(len(t_FT3)):
-    IFT_t_opt3.append(np.abs(E_FT3[i])**2)
+IFT_t_opt3=np.abs(E_FT3)**2
 
 print("Optimised")
 print("wavel width ",rms_width(λ_opt,Iλ_opt))
@@ -293,8 +287,8 @@ plt.legend()
 #plot intensity time envelope
 
 plt.figure()
-plt.plot(t_FT,IFT_t_opt,label="Optimised")
-plt.plot(t_FT3,IFT_t_opt3,label="Average Pressure Throughout")
+plt.plot(t_opt,I_t_opt,label="Optimised")
+plt.plot(t_opt3,I_t_opt3,label="Average Pressure Throughout")
 plt.xlabel("Time, s")
 plt.ylabel("Intensity, a.u.")
 plt.legend()
