@@ -36,7 +36,7 @@ filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\
 #filepath="C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\"
 
 # Read optimal params
-df_0 = pd.read_csv(filepath+"FTmaxpeakAr11pressure_points__init_50_niter_1000.csv")
+df_0 = pd.read_csv(filepath+"FTminthreshdurationAr11pressure_points__init_50_niter_1000.csv")
 
 energy=df_0.iloc[0][3]
 radius=df_0.iloc[0][5]
