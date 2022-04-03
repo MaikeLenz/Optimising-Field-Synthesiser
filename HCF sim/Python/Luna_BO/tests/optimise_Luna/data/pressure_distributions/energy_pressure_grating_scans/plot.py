@@ -36,7 +36,7 @@ filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\
 #filepath="C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\"
 
 # Read optimal params
-df_0 = pd.read_csv(filepath+"3.5mJNe11pressure_points__init_50_niter_100.csv")
+df_0 = pd.read_csv(filepath+"FTminthreshdurationNe11pressure_points__init_50_niter_100.csv")
 
 energy=df_0.iloc[0][3]
 radius=df_0.iloc[0][5]
@@ -131,12 +131,7 @@ Main.flength = flength
 
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
-"""
-if gas=="Ne":
-    Main.pressure = 0.66*3
-elif gas=="Ar":
-    Main.pressure = 0.66*1.5
-"""
+
 #Main.pressure=max(pressure[1])
 #print(max(pressure[1]))
 Main.pressure=P_avg(pressure[0],pressure[1])
