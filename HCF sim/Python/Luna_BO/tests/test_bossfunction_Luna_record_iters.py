@@ -27,10 +27,12 @@ from bossfunction_Luna_record_iters import *
 params=["energy", "pressure", "grating_pair_displacement"]
 
 #values:  radius, flength, gas, pressure, wavelength, energy, τfwhm, grating_pair_separation
-gas="Ne"
-initial_values_HCF=[175e-6, 1.05, gas, 3, 800e-9, 1e-3, 30e-15, 0]
+#gas="Ne"
+gas = "Ar"
+#initial_values_HCF=[175e-6, 1.05, gas, 3, 800e-9, 1e-3, 30e-15, 0]
+initial_values_HCF=[175e-6, 1.05, gas, 1, 800e-9, 1e-3, 30e-15, 0]
 
-result,iterations=Luna_BO_record_iters(params, initial_values_HCF, function=max_freq_bandwidth, ImperialLab=False, init_points=50, n_iter=1000, save_path='C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\gaussian_input\\', plotting=True)
+result,iterations=Luna_BO_record_iters(params, initial_values_HCF, function=max_freq_bandwidth, ImperialLab=True, init_points=50, n_iter=1000, save_path='C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\Ar_optimisation\\', plotting=True)
 
 """
 # Optimise wavelength bands
