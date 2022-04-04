@@ -297,6 +297,8 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         verbose=2, # verbose = 1 prints only when a maximum is observed, verbose = 0 is silent
         random_state=2,
         )
+    if params_dict["gas_str"]=="Ne":
+        optimizer.probe([10,10,10,10,10,10,10,10,10,10])
 
     optimizer.maximize(
         #maximises the target function output. In the case of the rms error functions, this is a minimisation because the errors are multiuplied by -1

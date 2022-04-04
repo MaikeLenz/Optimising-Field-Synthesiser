@@ -26,16 +26,16 @@ params=["pressure"]
 
 #values:  radius, flength, gas, pressure, wavelength, energy, τfwhm, grating_pair_separation
 gas="Ne"
-pressure_init=(0,9,9,9,9,9,9,9,9,9,9)
+pressure_init=(0,10,10,10,10,10,10,10,10,10,10)
 radius_init=175e-6
 flength_init=1.05
 wavel=800e-9
-energy_init=3.5e-3
+energy_init=2e-3
 fwhm_init=20e-15
 grating_pair_displacement_init=0
 initial_values_HCF=[radius_init, flength_init, gas, pressure_init, wavel, energy_init, fwhm_init, grating_pair_displacement_init]
 inits=50
-iters=1000
+iters=150
 result,iterations=Luna_BO_press(params, initial_values_HCF, function=max_wavel_bandwidth, init_points=inits, n_iter=iters)
 
 #for i, res in enumerate(iterations):

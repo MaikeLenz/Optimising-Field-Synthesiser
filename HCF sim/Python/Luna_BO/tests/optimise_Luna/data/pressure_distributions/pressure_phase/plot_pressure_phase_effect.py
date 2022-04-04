@@ -117,12 +117,12 @@ ax.set_ylabel("Intensity, a.u.",fontsize=14)
 ax2=ax.twinx()
 # make a plot with different y-axis using second axis object
 #ax2.plot(omegaE,phase2,color="g",label="Phase")
-ax2.plot(omegaE,phase,label="Phase - (0,P)")
-ax2.plot(omegaE2,phase2,label="Phase - (P,0)")
-ax2.plot(omegaE3,phase3,label="Phase - 2/3 P")
+ax2.plot(omegaE,phase,label="(0,P)")
+ax2.plot(omegaE2,phase2,label="(P,0)")
+ax2.plot(omegaE3,phase3,label="2/3 P")
 
 
 ax2.set_ylabel("Phase, rad.",fontsize=14)
-plt.legend()
+plt.legend(fontsize=14)
 
 plt.show()
