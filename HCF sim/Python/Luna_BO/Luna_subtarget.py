@@ -19,7 +19,7 @@ from scipy import integrate
 from julia import Main
 
 def max_wavel_bandwidth(t,Et,λ,Iλ):
-    return rms_width(λ,Iλ)
+    return 10**9*rms_width(λ,Iλ)
 
 def max_freq_bandwidth(t,Et,λ,Iλ):
     c = 299792458
@@ -31,6 +31,28 @@ def max_peak_power(t,Et,λ,Iλ):
     for i in Et:
         I.append(np.abs(i)**2)
     return max(I)
+def min_duration_FT(om,Eom):
+    """
+    Fourier transforms to time domain to minimise duration
+    """
+    t,Et=f_to_t(om/(2*np.pi),Eom)
+    It=np.abs(Et)**2
+    return -rms_width(t,It)
+
+def min_thresh_duration_FT(om,Eom):
+    """
+    Fourier transforms to time domain to minimise duration
+    """
+    t,Et=f_to_t(om/(2*np.pi),Eom)
+    It=np.abs(Et)**2
+    return -threshold(t,It,t,It)
+
+def max_peak_power_FT(om,Eom):
+    """
+    Fourier transforms Eomega to Et and maximised amplitude there
+    """
+    t,Et=f_to_t(om/(2*np.pi),Eom)
+    return max(np.abs(Et)**2)
 
 def peak_power_window(t,Et,λ,Iλ):
     """

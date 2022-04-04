@@ -76,7 +76,7 @@ def f_to_t(f, Ef):
     Returns t, Et
     """
     if any(i<0 for i in f) == False:
-        Ef=np.append(Ef, np.zeros(len(Ef)))
+        Ef=np.append(Ef, Ef)
     else:
         neg_indices=np.where(f < 0)[0]
         pos_indices=np.where(f>=0)[0]
@@ -110,7 +110,9 @@ def f_to_t(f, Ef):
     Et_otherside=list(Et[N//2:])
     Et_new=np.array(Et_otherside+Et_oneside)
     #t_oneside = t[:N//2]
-    return t,Et_new
+    #plt.plot(t,Et)
+    #plt.show()
+    return t,Et
 """
 t = np.linspace(0,1,100)
 freq = 2

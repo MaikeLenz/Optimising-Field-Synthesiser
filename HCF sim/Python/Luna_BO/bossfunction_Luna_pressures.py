@@ -228,21 +228,28 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
 
         Main.eval('t, Et = Processing.getEt(duv)')
         Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
+        Main.eval("ω,Eω=Processing.getEω(duv)")
         
         # Get values
         t = Main.t
         Et_allz = Main.Et # array of Et at all z 
         Et = Et_allz[:,-1] # last item in each element is pulse shape at the end
         Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
-
+        ω=Main.ω
+        Eω_allz=Main.Eω
+        Eω=Eω_allz[:,-1]
         λ = Main.λ
         Iλ = Main.Iλ
         Iλ=Iλ.reshape(len(Iλ),)
           
         if function==max_intens_integral:
             return function(λ, Iλ, wavel_bounds)*power_condition
+        elif function==max_peak_power_FT or function==min_duration_FT or function == min_thresh_duration_FT:
+            print(function(ω,Eω))
+            return function(ω,Eω)
         else:
-            return function(t, Et, λ, Iλ)*power_condition #pass t and E to sub-target function
+            print(function(t, Et, λ, Iλ))
+            return function(t, Et, λ, Iλ)#*power_condition #pass t and E to sub-target function
         
         
     # Make pbounds dictionary
@@ -251,7 +258,7 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
     for i in range(len(pressure_points)):
         if params_dict["gas_str"]=="Ne":
             #pbounds["pressure%s"%i]=(0.,3.0)
-            pbounds["pressure%s"%i]=(1.,10.0)
+            pbounds["pressure%s"%i]=(4.,6.0)
 
         elif params_dict["gas_str"]=="Ar":
             pbounds["pressure%s"%i]=(0.5,1.1)
@@ -288,8 +295,10 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         f=target_func,
         pbounds=pbounds,
         verbose=2, # verbose = 1 prints only when a maximum is observed, verbose = 0 is silent
-        random_state=1,
+        random_state=2,
         )
+    if params_dict["gas_str"]=="Ne":
+        optimizer.probe([6,6,6,6,6,6,6,6,6,6])
 
     optimizer.maximize(
         #maximises the target function output. In the case of the rms error functions, this is a minimisation because the errors are multiuplied by -1
