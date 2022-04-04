@@ -19,7 +19,7 @@ from scipy import integrate
 from julia import Main
 
 def max_wavel_bandwidth(t,Et,λ,Iλ):
-    return rms_width(λ,Iλ)
+    return 10**9*rms_width(λ,Iλ)
 
 def max_freq_bandwidth(t,Et,λ,Iλ):
     c = 299792458

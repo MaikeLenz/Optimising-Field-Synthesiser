@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import csv
 import pandas as pd
+from scipy.signal import detrend
 import sys
 sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 from rms_width import *

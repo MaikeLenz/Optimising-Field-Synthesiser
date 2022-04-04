@@ -245,9 +245,11 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         if function==max_intens_integral:
             return function(λ, Iλ, wavel_bounds)*power_condition
         elif function==max_peak_power_FT or function==min_duration_FT or function == min_thresh_duration_FT:
+            print(function(ω,Eω))
             return function(ω,Eω)
         else:
-            return function(t, Et, λ, Iλ)*power_condition #pass t and E to sub-target function
+            print(function(t, Et, λ, Iλ))
+            return function(t, Et, λ, Iλ)#*power_condition #pass t and E to sub-target function
         
         
     # Make pbounds dictionary
