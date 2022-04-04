@@ -188,7 +188,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         if function==max_intens_integral:
             return function(λ, Iλ, wavel_bounds)*power_condition
         else:
-            return function(t, Et, λ, Iλ)*power_condition #pass t and E to sub-target function
+            return function(t, Et, λ, Iλ)#*power_condition #pass t and E to sub-target function
         
         
     # Make pbounds dictionary
@@ -199,7 +199,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
             #pbounds[i] = (0,1e-3)
             #pbounds[i] = (0.1e-3,2.0e-3)
             #pbounds[i] = (0.1e-3, 1.5e-3)
-            pbounds[i] = (0.05e-3, 0.500e-3)
+            pbounds[i] = (0.8e-3, 1.1e-3)
 
         elif 'FWHM' in i:
             #pbounds[i] = (20e-15,50e-15)
@@ -231,7 +231,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         elif 'grating_pair_displacement' in i:
             #pbounds[i] = (-0.5e-3, 0.5e-3)
             #pbounds[i] = (-0.5e-3, 0.5e-3)
-            pbounds[i] = (-0.25e-3, 0.25e-3)
+            pbounds[i] = (-0.5e-3, 0.5e-3)
 
     print(pbounds)
 

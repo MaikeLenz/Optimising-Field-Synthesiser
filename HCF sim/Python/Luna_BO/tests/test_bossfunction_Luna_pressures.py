@@ -26,11 +26,11 @@ params=["pressure"]
 
 #values:  radius, flength, gas, pressure, wavelength, energy, τfwhm, grating_pair_separation
 gas="Ne"
-pressure_init=(0,10,10,10,10,10,10,10,10,10,10)
+pressure_init=(0,6,6,6,6,6,6,6,6,6,6)
 radius_init=175e-6
 flength_init=1.05
 wavel=800e-9
-energy_init=2e-3
+energy_init=1e-3
 fwhm_init=20e-15
 grating_pair_displacement_init=0
 initial_values_HCF=[radius_init, flength_init, gas, pressure_init, wavel, energy_init, fwhm_init, grating_pair_displacement_init]
