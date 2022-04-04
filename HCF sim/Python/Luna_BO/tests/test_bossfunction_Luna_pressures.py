@@ -34,8 +34,8 @@ energy_init=3.5e-3
 fwhm_init=20e-15
 grating_pair_displacement_init=0
 initial_values_HCF=[radius_init, flength_init, gas, pressure_init, wavel, energy_init, fwhm_init, grating_pair_displacement_init]
-inits=5
-iters=5
+inits=50
+iters=1000
 result,iterations=Luna_BO_press(params, initial_values_HCF, function=max_wavel_bandwidth, init_points=inits, n_iter=iters)
 
 #for i, res in enumerate(iterations):
