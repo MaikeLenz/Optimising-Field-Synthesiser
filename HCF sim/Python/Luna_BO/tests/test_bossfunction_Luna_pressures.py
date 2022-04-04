@@ -34,9 +34,9 @@ energy_init=3.5e-3
 fwhm_init=20e-15
 grating_pair_displacement_init=0
 initial_values_HCF=[radius_init, flength_init, gas, pressure_init, wavel, energy_init, fwhm_init, grating_pair_displacement_init]
-inits=50
-iters=100
-result,iterations=Luna_BO_press(params, initial_values_HCF, function=max_freq_bandwidth, init_points=inits, n_iter=iters)
+inits=5
+iters=5
+result,iterations=Luna_BO_press(params, initial_values_HCF, function=max_wavel_bandwidth, init_points=inits, n_iter=iters)
 
 #for i, res in enumerate(iterations):
 #    print("Iteration {}: \n\t{}".format(i, res))
@@ -50,7 +50,7 @@ for i in range(len(pressure_init)-1):
 # Save the data
 header = ['init_points', 'n_iter', 'peak power', 'energy, J', 'pressure, bar', 'radius, m', 'flength, m', 'FWHM, s', 'wavel, m', 'gas', 'grating_pair_displacement, m']
 #with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\peak_power_1200e-9wavelwindow_varyfwhm__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'a', encoding='UTF8', newline='') as f:
-with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\FTminthreshduration'+gas+str(len(pressure_init))+"pressure_points"+'__init_' + str(inits) + '_niter_' + str(iters) + '.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\3.5mJmaxbandw'+gas+str(len(pressure_init))+"pressure_points"+'__init_' + str(inits) + '_niter_' + str(iters) + '.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f) # peak_power_1000e-9wavelwindow__init_50_niter_100
     # write the header
     writer.writerow(header)

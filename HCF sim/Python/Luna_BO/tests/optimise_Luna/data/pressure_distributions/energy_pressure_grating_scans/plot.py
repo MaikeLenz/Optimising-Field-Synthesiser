@@ -36,7 +36,7 @@ filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\
 #filepath="C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\"
 
 # Read optimal params
-df_0 = pd.read_csv(filepath+"FTminthreshdurationNe11pressure_points__init_50_niter_100.csv")
+df_0 = pd.read_csv(filepath+"good data//maxfreqbandwNe11pressure_points__init_50_niter_1000.csv")
 
 energy=df_0.iloc[0][3]
 radius=df_0.iloc[0][5]
@@ -123,6 +123,69 @@ t_FT,E_FT= f_to_t(omegaE_opt/(2*np.pi), Eomega_opt)
 #Fourier transformed intensity envelopes
 IFT_t_opt=np.abs(E_FT)**2
 
+##############################################################################################################################
+# Assign arguments to Main namespace
+Main.radius = radius
+Main.flength = flength
+
+Main.gas_str = gas
+Main.eval("gas = Symbol(gas_str)")
+
+#Main.pressure=max(pressure[1])
+#print(max(pressure[1]))
+Main.pressure=P_avg(pressure[0],pressure[1][::-1])
+#Main.pressure=(pressure[0],(0,1,1,1,1,1,1,1,1,1,1))
+Main.λ0 = wavel
+Main.τfwhm = FWHM
+Main.energy = energy
+
+print(pressure,energy,grating_pair_displacement)
+domega = 2*np.pi*0.44/FWHM
+c=299792458
+omega = np.linspace(2*np.pi*c/wavel - 5*domega/2, 2*np.pi*c/wavel + 5*domega/2, 1000)
+
+GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=0)
+
+E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
+Iω = np.abs(E)**2
+
+
+Main.ω = omega
+Main.Iω = Iω  
+Main.phase = ϕω 
+# Pass data to Luna
+Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
+Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+Main.eval("ω, Iω = Processing.getIω(duv, :ω, flength)")
+Main.eval("ω1, Eω = Processing.getEω(duv)")
+Main.eval('t, Et = Processing.getEt(duv)')
+Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
+    
+# Get values
+t_opt2 = Main.t
+Et_allz_opt2 = Main.Et # array of Et at all z 
+Et_opt2 = Et_allz_opt2[:,-1] # last item in each element is pulse shape at the end
+Et02=Et_allz_opt2[:,0] #first item in each element is pulse shape at the start
+
+λ_opt2 = Main.λ
+Iλ_opt2 = Main.Iλ
+Iλ_opt2=Iλ_opt2.reshape(len(Iλ_opt2),)
+omega_opt2=Main.ω
+Iomega_opt2=Main.Iω
+Iomega_opt2=Iomega_opt2.reshape((-1,))
+#omega_opt2=omega_opt2[0:500]
+omegaE_opt2=Main.ω1
+Eomega_opt2=Main.Eω
+Eomega_opt2=Eomega_opt2[:,-1]
+
+
+I_t_opt2=np.abs(Et_opt2)**2
+    
+
+t_FT2,E_FT2=f_to_t(omegaE_opt2/(2*np.pi), Eomega_opt2)
+
+
+IFT_t_opt2=np.abs(E_FT2)**2
 
 ##############################################################################################################################
 # Assign arguments to Main namespace
@@ -201,7 +264,7 @@ plt.figure()
 #plt.plot(λ,Iλ,label="SPM Prediction")
 
 plt.plot(λ_opt,Iλ_opt,label="Optimised")
-#plt.plot(λ_opt2,Iλ_opt2,label="Constant Pressure")
+plt.plot(λ_opt2,Iλ_opt2,label="Reverse Pressure")
 #plt.plot(λ_opt3,Iλ_opt3,label="SPM Prediction")
 #plt.plot(λ_opt3,Iλ_opt3,label="Max Pressure Throughout")
 plt.plot(λ_opt3,Iλ_opt3,label="Average Pressure Throughout")
@@ -214,7 +277,7 @@ plt.figure()
 
 #plt.plot(width_plot,bar_height, label="rms width")
 plt.plot(omega_opt,Iomega_opt,label="Optimised")
-#plt.plot(omega_opt2,Iomega_opt2,label="Constant Pressure")
+plt.plot(omega_opt2,Iomega_opt2,label="Reverse Pressure")
 #plt.plot(omega_opt3,Iomega_opt3,label="SPM Prediction")
 #plt.plot(omega_opt3,Iomega_opt3,label="Max Pressure Throughout")
 plt.plot(omega_opt3,Iomega_opt3,label="Average Pressure Throughout")
@@ -233,7 +296,7 @@ integral_max=simps(np.abs(Et_opt3),t_opt3)
 print("optimised integral %s"%integral_opt)
 print("max pressure integral %s"%integral_max)
 plt.plot(t_opt,Et_opt,label="Optimised")
-#plt.plot(t_opt2,Et_opt2,label="Constant Pressure")
+plt.plot(t_opt2,Et_opt2,label="Reverse Pressure")
 #plt.plot(t_opt3,Et_opt3,label="SPM Prediction")
 #plt.plot(t_opt3,Et_opt3,label="Max Pressure Throughout")
 plt.plot(t_opt3,Et_opt3,label="Average Pressure Throughout")
@@ -260,7 +323,7 @@ plt.ylabel("Pressure, bar")
 #plot Eomega
 plt.figure()
 plt.plot(omegaE_opt,Eomega_opt,label="Optimised")
-#plt.plot(omegaE_opt3,Eomega_opt3,label="Max Pressure Throughout")
+plt.plot(omegaE_opt2,Eomega_opt2,label="Reverse Pressure")
 plt.plot(omegaE_opt3,Eomega_opt3,label="Average Pressure Throughout")
 
 plt.xlabel("Angular Frequency, /s")
@@ -272,6 +335,8 @@ plt.legend()
 #plot fourier transformed output electric fields
 plt.figure()
 plt.plot(t_FT,E_FT,label="Optimised")
+plt.plot(t_FT2,E_FT2,label="Reverse Pressure")
+
 plt.plot(t_FT3,E_FT3,label="Average Pressure Throughout")
 plt.xlabel("Time, s")
 plt.ylabel("Electric Field, a.u.")
@@ -283,6 +348,8 @@ plt.legend()
 
 plt.figure()
 plt.plot(t_opt,I_t_opt,label="Optimised")
+plt.plot(t_opt2,I_t_opt2,label="Reverse Pressure")
+
 plt.plot(t_opt3,I_t_opt3,label="Average Pressure Throughout")
 plt.xlabel("Time, s")
 plt.ylabel("Intensity, a.u.")

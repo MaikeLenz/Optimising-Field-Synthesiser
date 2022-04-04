@@ -293,7 +293,7 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         f=target_func,
         pbounds=pbounds,
         verbose=2, # verbose = 1 prints only when a maximum is observed, verbose = 0 is silent
-        random_state=1,
+        random_state=2,
         )
 
     optimizer.maximize(

@@ -24,7 +24,7 @@ def max_wavel_bandwidth(t,Et,λ,Iλ):
 def max_freq_bandwidth(t,Et,λ,Iλ):
     c = 299792458
     f = c/λ
-    return -rms_width(f,Iλ)
+    return rms_width(f,Iλ)
 
 def max_peak_power(t,Et,λ,Iλ):
     I=[]
