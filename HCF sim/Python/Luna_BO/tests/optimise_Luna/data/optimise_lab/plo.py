@@ -30,14 +30,14 @@ filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\
 # Read optimal params
 df_0 = pd.read_csv(filepath+"\\new_data\\Ar.csv")
 
-energy=df_0.iloc[0][3]
-pressure=df_0.iloc[0][4]
-radius=df_0.iloc[0][5]
-flength=df_0.iloc[0][6]
-FWHM=df_0.iloc[0][7]
-wavel=df_0.iloc[0][8]
+energy=float(df_0.iloc[0][3])
+pressure=float(df_0.iloc[0][4])
+radius=float(df_0.iloc[0][5])
+flength=float(df_0.iloc[0][6])
+FWHM=float(df_0.iloc[0][7])
+wavel=float(df_0.iloc[0][8])
 gas=df_0.iloc[0][9]
-grating_pair_displacement=df_0.iloc[0][10]
+grating_pair_displacement=float(df_0.iloc[0][10])
 
 #plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
 
