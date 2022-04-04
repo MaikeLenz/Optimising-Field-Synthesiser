@@ -193,9 +193,9 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
             Iλ=Iλ.reshape(len(Iλ),)
             print(Iλ.shape)    
             if function==max_intens_integral:
-                return function(λ, Iλ,wavel_bounds)*power_condition   
+                return function(λ, Iλ,wavel_bounds)#*power_condition   
             else:    
-                return function(t, Et, λ, Iλ)*power_condition #pass t and E to sub-target function`
+                return function(t, Et, λ, Iλ)#*power_condition #pass t and E to sub-target function`
         except:
             return 0
         
@@ -218,11 +218,12 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
             #pbounds[i] = (0,3)
             #pbounds[i] = (1,15)
             #pbounds[i] = (1, 10)
-            pbounds[i] = (0.66*1, 0.66*3.5) # Our system
+            #pbounds[i] = (1, 3.5) # Our system for Neon
+            pbounds[i] = (0.5, 1.5) # Our system for Argon
             #pbounds[i] = (0.66*1, 0.66*8) # Heriot-Watt
         elif 'radius' in i:                
             #pbounds[i] = (125e-6,300e-6)
-            pbounds[i] = (50e-6, 500e-6) # Our system + Heriot-Waat
+            pbounds[i] = (50e-6, 500e-6) # Our system + Heriot-Watt
         elif 'flength' in i:
             #pbounds[i] = (1,2)
             #pbounds[i] = (0.1, 6) # Our system
