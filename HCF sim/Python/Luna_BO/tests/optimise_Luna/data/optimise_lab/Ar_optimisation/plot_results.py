@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
-plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
+#plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
 plt.rcParams['xtick.labelsize'] = 12
 plt.rcParams['ytick.labelsize'] = 12
 plt.rcParams['axes.labelsize'] = 16
@@ -69,7 +69,7 @@ plt.show()
 """
 # Plot spectrum at each optimum
 filepath = 'C:\\Users\\iammo\\Documents\\'
-df_iter = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\good_data\\optimise_our_lab\\Optimal_Params_optimums.csv")
+df_iter = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\Ar_optimisation\\Optimal_Params_optimums.csv")
 energy = df_iter.iloc[:,2] # J
 pressure = df_iter.iloc[:,3] # bar
 grating_pos = df_iter.iloc[:,4]
@@ -218,10 +218,10 @@ plt.title('Optimum after Random Search')
 
 Main.ω = omega_list[::-1]
 Main.Iω = intens[::-1]
-grating_pair_displacement_in = grating_pos[1499]
-energy_in = energy[1499]
+grating_pair_displacement_in = grating_pos[999]
+energy_in = energy[999]
 Main.energy = energy_in
-pressure_in = pressure[1499]
+pressure_in = pressure[999]
 Main.pressure = pressure_in
 GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=grating_pair_displacement_in*1000)
 phase = []
@@ -240,7 +240,7 @@ Et = Et_allz[:,-1] # last item in each element is pulse shape at the end
 f = c/λ
 results.append(rms_width(f, Iλ))
 plt.figure(1)
-plt.plot(λ*(10**9),Iλ, label='Optimum after 1500 iterations')
+plt.plot(λ*(10**9),Iλ, label='Optimum after 1000 iterations')
 plt.figure(3)
 plt.plot(t,Et)
 plt.xlabel("Time (s)")
