@@ -85,8 +85,8 @@ Iλ_opt = Main.Iλ
 Iλ_opt=Iλ_opt.reshape(len(Iλ_opt),)
 omega_opt=Main.ω
 Iomega_opt=Main.Iω
-Iomega_opt=Iomega_opt.reshape((-1,))[0:500]
-omega_opt=omega_opt[0:500]
+Iomega_opt=Iomega_opt.reshape((-1,))
+omega_opt=omega_opt
 
 #######################################################################################################
 #now calculate spm prediction
@@ -145,8 +145,8 @@ Iλ2 = Main.Iλ
 t2 = Main.t
 omega2=Main.ω
 Iomega2=Main.Iω
-Iomega2=Iomega2.reshape((-1,))[0:500]
-omega2=omega2[0:500]
+Iomega2=Iomega2.reshape((-1,))
+omega2=omega2
 
 Et_allz2=Main.Et #array of Et at all z 
 Et2=Et_allz2[:,-1] #last item in each element is pulse shape at the end
