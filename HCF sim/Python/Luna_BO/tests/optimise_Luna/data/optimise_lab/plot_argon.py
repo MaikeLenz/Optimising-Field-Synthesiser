@@ -28,16 +28,16 @@ filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\
 #filepath="C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\"
 
 # Read optimal params
-df_0 = pd.read_csv(filepath+"\\vary_only_grating\\Ne_rms_optimise_lab__init_50_niter_150.csv")
+df_0 = pd.read_csv(filepath+"\\new_data\\Ar.csv")
 
-energy=df_0.iloc[0][3]
-pressure=df_0.iloc[0][4]
-radius=df_0.iloc[0][5]
-flength=df_0.iloc[0][6]
-FWHM=df_0.iloc[0][7]
-wavel=df_0.iloc[0][8]
+energy=float(df_0.iloc[0][3])
+pressure=float(df_0.iloc[0][4])
+radius=float(df_0.iloc[0][5])
+flength=float(df_0.iloc[0][6])
+FWHM=float(df_0.iloc[0][7])
+wavel=float(df_0.iloc[0][8])
 gas=df_0.iloc[0][9]
-grating_pair_displacement=df_0.iloc[0][10]
+grating_pair_displacement=float(df_0.iloc[0][10])
 
 #plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
 
@@ -56,7 +56,7 @@ Main.energy = energy
 print(pressure,energy,grating_pair_displacement)
 domega = 2*np.pi*0.44/FWHM
 c=299792458
-omega = np.linspace(2*np.pi*c/wavel - domega/2, 2*np.pi*c/wavel + domega/2, 1000)
+omega = np.linspace(2*np.pi*c/wavel -5* domega/2, 2*np.pi*c/wavel + 5*domega/2, 1000)
 
 GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=grating_pair_displacement*1000)
 
@@ -85,14 +85,14 @@ Iλ_opt = Main.Iλ
 Iλ_opt=Iλ_opt.reshape(len(Iλ_opt),)
 omega_opt=Main.ω
 Iomega_opt=Main.Iω
-Iomega_opt=Iomega_opt.reshape((-1,))[0:500]
-omega_opt=omega_opt[0:500]
+Iomega_opt=Iomega_opt.reshape((-1,))
+omega_opt=omega_opt
 
 #######################################################################################################
 #now calculate spm prediction
 
 Main.energy=1.1e-3
-Main.pressure=3.5*0.66
+Main.pressure=1*0.66
 """
 # Calculations
 # setting pressure to (0,pressure) means a gradient from zero up until given value
@@ -123,7 +123,7 @@ Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
 """
 #print(rms_width(λ,Iλ))
 domega = 2*np.pi*0.44/FWHM
-omega = np.linspace(2*np.pi*c/wavel - domega/2, 2*np.pi*c/wavel + domega/2, 1000)
+omega = np.linspace(2*np.pi*c/wavel - 5*domega/2, 2*np.pi*c/wavel + 5*domega/2, 1000)
 GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=0*1000)
 
 E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel, domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
@@ -145,8 +145,8 @@ Iλ2 = Main.Iλ
 t2 = Main.t
 omega2=Main.ω
 Iomega2=Main.Iω
-Iomega2=Iomega2.reshape((-1,))[0:500]
-omega2=omega2[0:500]
+Iomega2=Iomega2.reshape((-1,))
+omega2=omega2
 
 Et_allz2=Main.Et #array of Et at all z 
 Et2=Et_allz2[:,-1] #last item in each element is pulse shape at the end
@@ -181,3 +181,5 @@ plt.xlabel("time,s")
 plt.ylabel("Electric field, a.u.")
 plt.legend()
 plt.show()
+#{'target': 454.33147357060653, 'params': {'energy': 0.0010992847619322667, 'grating_pair_displacement': 3.937495614034377e-06, 'pressure': 0.6592512482937603}}
+#{'target': 454.33147357060653, 'params': {'energy': 0.0010992847619322667, 'grating_pair_displacement': 3.937495614034377e-06, 'pressure': 0.6592512482937603}}
