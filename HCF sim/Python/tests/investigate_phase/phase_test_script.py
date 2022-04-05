@@ -38,18 +38,32 @@ ax2.set_ylabel('Intensity')
 
 # Pass data to Luna
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
-Main.eval("ω, Eω = Processing.getEω(duv)")
+Main.eval("grid = Processing.makegrid(duv)")
+Main.eval("ω = grid.ω")
+Main.eval('Eω = duv["Eω"][:,end]')
 
-omega1=Main.ω
-Eomega1=Main.Eω
-Eomega1=Eomega1[:,-1]
-#phase1 = np.angle(Eomega1)
-#phase1 = np.unwrap(phase1)
-phase1 = detrend(np.unwrap(np.angle(Eomega1)))
+omega = Main.ω
+Eomega = Main.Eω
 
-ax1.plot(omega1[:600], phase1[:600], '--', label='Phase after')
-ax2.plot(omega1[:600], np.abs(Eomega1[:600])**2, label='Intensity after')
+domega = omega[2] - omega[1]
+tau = np.pi/domega
+phase_raw = np.angle(Eomega)
+phase = np.unwrap(phase_raw - omega*tau)
+phase -= phase[np.argmin(np.abs(omega - 2.4e-15))]
+
+ax1.plot(omega, phase, '--', label='Phase after')
+ax2.plot(omega, np.abs(Eomega)**2, label='Intensity after')
 ax1.legend(loc='upper left')
 ax2.legend(loc='upper right')
 plt.suptitle('Ne, 1.2mJ, 0.66*3bar')
+
+"""
+# Save data
+header = ['Angular frequency (rad/s)', 'Real Electric Field (a.u.)', 'Imaginary Electric Field (a.u.)']
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Test_Data_grid.csv', 'w', encoding='UTF8', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerow(header)
+    for i in range(len(omega)):
+        writer.writerow([omega[i], Eomega[i].real, Eomega[i].imag])
+"""
 plt.show()
