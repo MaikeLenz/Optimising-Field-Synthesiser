@@ -20,6 +20,7 @@ def superGauss(x, A, x0, sigma):
     """
     return A*np.exp(-2*((x-x0)/sigma)**4)
 
+
 def threshold(x,y):
     """
     Find points where signal reaches certain level above noise and find the distance between them
