@@ -11,7 +11,7 @@ julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bi
 from julia import Main
 Main.using('Luna')
 
-plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
+#plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
 plt.rcParams['xtick.labelsize'] = 12
 plt.rcParams['ytick.labelsize'] = 12
 plt.rcParams['axes.labelsize'] = 16
@@ -20,11 +20,13 @@ c = 3e8
 wavel0 = 800e-9
 fwhm = 30e-15
 domega = 2*np.pi*0.44/fwhm
-omega = np.linspace(2*np.pi*c/wavel0 - domega/2, 2*np.pi*c/wavel0 + domega/2, 100)
-GDD = 100e-30
-TOD = 1000e-45
+omega = np.linspace(2*np.pi*c/wavel0 - 5*domega/2, 2*np.pi*c/wavel0 + 5*domega/2, 100)
+GDD = 0
+#TOD = 0
+#GDD = 500e-30
+TOD = 10000e-45
 
-E, ϕω = E_field_freq(omega, GD=0.0, wavel=wavel0, domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
+E, ϕω = E_field_freq(omega, GD=0, wavel=wavel0, domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
 Iω = np.abs(E)**2
 
 Main.pressure = 3
@@ -46,12 +48,18 @@ Et_allz = Main.Et # array of Et at all z
 Et = Et_allz[:,-1] # last item in each element is pulse shape at the end
 Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
 
-f, axs = plt.subplots(1,2)
-axs[0].plot(omega, Iω)
-axs[0].set_xlabel('Angular frequency (/s)')
-axs[0].set_ylabel('Intensity (a.u.)')
+fig, [ax1,ax3] = plt.subplots(1,2)
+ax2 = ax1.twinx()
+ax1.set_xlabel('Angular Frequency (/s)')
+ax2.set_ylabel('Phase (rad)')
+ax1.set_ylabel('Intensity (a.u.)')
+ax3.set_xlabel('Time (fs)')
+ax3.set_ylabel('Electric Field (a.u.)')
 
-axs[1].plot(t*(10**15), Et0)
-axs[1].set_xlabel('Time (fs)')
-axs[1].set_ylabel('Electric field (a.u.)')
+ax1.plot(omega, Iω, label='Intensity', color='black')
+ax2.plot(omega, ϕω, '--', label='Phase', color='black')
+ax1.legend(loc='upper left', fontsize=16)
+ax2.legend(loc='upper right', fontsize=16)
+ax3.set_xlim(-150,150)
+ax3.plot(t*(10**15), Et0, color='black')
 plt.show()
