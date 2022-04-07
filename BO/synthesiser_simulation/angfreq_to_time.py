@@ -101,6 +101,14 @@ def f_to_t(f, Ef):
     t = np.arange(0, (N-1)/Fs, 1/Fs)
     """
 
+def f_to_t_irfft(f, Ef):
+    """
+    Input of f and Ef
+    Returns t, Et
+    """
+    Et = irfft(Ef)
+    N = len(Ef) # Number of points
+    #t = 1/f
     df=np.abs(f[1]-f[0])#smallest frequency difference gives inverse of duration
     T=1/df#overall duration
     print("T=",T)
@@ -109,9 +117,7 @@ def f_to_t(f, Ef):
     Et_oneside = list(Et[:N//2])
     Et_otherside=list(Et[N//2:])
     Et_new=np.array(Et_otherside+Et_oneside)
-    #t_oneside = t[:N//2]
-    #plt.plot(t,Et)
-    #plt.show()
+
     return t,Et
 """
 t = np.linspace(0,1,100)

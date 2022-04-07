@@ -22,7 +22,8 @@ def compressor_grating_values(angle_of_incidence_deg=30.8, grating_line_density_
     return GDD, TOD
 
 """
-GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=0.05)
+GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=3.937495614034377e-06*1000)
 print(GDD*(10**30))
 print(TOD*(10**45))
+
 """

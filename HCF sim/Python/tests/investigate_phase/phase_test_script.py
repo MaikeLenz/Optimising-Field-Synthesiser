@@ -4,9 +4,15 @@ import numpy as np
 import sys
 import csv
 from scipy.signal import detrend
+sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
+#sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
+from angfreq_to_time import *
 
-#julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
-julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
+
+#from BO.synthesiser_simulation.angfreq_to_time import f_to_t_irfft
+
+julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
+#julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
 from julia import Main
 Main.using("Luna")
 
@@ -50,7 +56,10 @@ tau = np.pi/domega
 phase_raw = np.angle(Eomega)
 phase = np.unwrap(phase_raw - omega*tau)
 phase -= phase[np.argmin(np.abs(omega - 2.4e-15))]
-
+phase=phase*(-1)
+omega=omega[210:340]
+phase=phase[210:340]
+Eomega=Eomega[210:340]
 ax1.plot(omega, phase, '--', label='Phase after')
 ax2.plot(omega, np.abs(Eomega)**2, label='Intensity after')
 ax1.legend(loc='upper left')
@@ -60,10 +69,14 @@ plt.suptitle('Ne, 1.2mJ, 0.66*3bar')
 """
 # Save data
 header = ['Angular frequency (rad/s)', 'Real Electric Field (a.u.)', 'Imaginary Electric Field (a.u.)']
-with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Test_Data_grid.csv', 'w', encoding='UTF8', newline='') as f:
+#with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Test_Data_grid.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Test_Data_grid_zoom.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     writer.writerow(header)
     for i in range(len(omega)):
         writer.writerow([omega[i], Eomega[i].real, Eomega[i].imag])
 """
+plt.show()
+t,Et=f_to_t_irfft(omega/(2*np.pi),Eomega)
+plt.plot(t,np.abs(Et)**2)
 plt.show()
