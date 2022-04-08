@@ -24,8 +24,8 @@ Main.using("Luna")
 # Arguments
 radius = 175e-6 # HCF core radius
 flength = 1.05 # HCF length
-gas = "Ar"
-pressure = (0,1) # gas pressure in bar, corresponds to 66% of 3.5 atm
+gas = "Ne"
+pressure = (0,3) # gas pressure in bar, corresponds to 66% of 3.5 atm
 λ0 = 800e-9 # central wavelength of the pump pulse
 τfwhm = 30e-15 # FWHM duration of the pump pulse
 energy = 1.2e-3 # energy in the pump pulse, 0.5mJ
@@ -69,7 +69,7 @@ t,Et=f_to_t_irfft(omega,Eomega)
 
 fig,ax = plt.subplots()
 # make a plot
-ax.plot(omega,np.abs(Eomega)**2, label="Intensity")
+ax.plot(omega[200:350],np.abs(Eomega[200:350])**2, label="Intensity")
 # set x-axis label
 ax.set_xlabel("Angular frequency,/s",fontsize=14)
 # set y-axis label
@@ -78,14 +78,13 @@ ax.set_ylabel("Intensity, a.u.",fontsize=14)
 ax2=ax.twinx()
 # make a plot with different y-axis using second axis object
 #ax2.plot(omegaE,phase2,color="g",label="Phase")
-ax2.plot(omega,phase,color="r",label="Phase")
+ax2.plot(omega[200:350],phase[200:350],color="r",label="Phase")
 
 ax2.set_ylabel("Phase, rad.",fontsize=14)
-plt.show()
 plt.legend()
 plt.figure()
-plt.plot(t,Et)
-plt.xlabel("time,s")
-plt.ylabel("Electric field, a.u.")
+plt.plot(t,np.abs(Et)**2)
+plt.xlabel("time,s",fontsize=14)
+plt.ylabel("Intensity, a.u.",fontsize=14)
 plt.legend()
 plt.show()
