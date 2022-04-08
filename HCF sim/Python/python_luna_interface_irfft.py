@@ -62,9 +62,17 @@ Eomega = Main.Eω
 
 phase=get_phase(omega,Eomega,λ0)
 
+# Save data
+header = ['Angular frequency (rad/s)', 'Real Electric Field (a.u.)', 'Imaginary Electric Field (a.u.)']
+#with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Test_Data_grid.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Test_Data_irfft.csv', 'w', encoding='UTF8', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerow(header)
+    for i in range(len(omega)):
+        writer.writerow([omega[i], Eomega[i].real, Eomega[i].imag])
 
 #Fourier Transform
-t,Et=f_to_t_irfft(omega,Eomega)
+t,Et=f_to_t_irfft(omega/(2*np.pi),Eomega)
 #plotting
 
 fig,ax = plt.subplots()
