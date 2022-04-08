@@ -81,6 +81,7 @@ ax2=ax.twinx()
 ax2.plot(omega,phase,color="r",label="Phase")
 
 ax2.set_ylabel("Phase, rad.",fontsize=14)
+plt.show()
 plt.legend()
 plt.figure()
 plt.plot(t,Et)

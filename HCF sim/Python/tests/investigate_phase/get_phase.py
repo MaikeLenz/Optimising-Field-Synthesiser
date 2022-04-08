@@ -11,7 +11,7 @@ def get_phase(omega,Eomega, lambda0):
     tau = np.pi/domega
     phase_raw = np.angle(Eomega)
     phase = np.unwrap(phase_raw - omega*tau)
-    phase -= phase[np.argmin(np.abs(omega - 2.4e-15))]
+    #phase -= phase[np.argmin(np.abs(omega - 2.4e-15))]
     phase=phase*(-1)
     phase -= phase[om0_idx]
     return phase
