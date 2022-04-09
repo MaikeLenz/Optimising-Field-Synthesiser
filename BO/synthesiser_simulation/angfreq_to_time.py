@@ -106,7 +106,7 @@ def f_to_t_irfft(f, Ef):
     Input of f and Ef
     Returns t, Et
     """
-    Et = irfft(Ef)
+    Et = np.fft.irfft(Ef)
     N = len(Ef) # Number of points
     #t = 1/f
     df=np.abs(f[1]-f[0])#smallest frequency difference gives inverse of duration
