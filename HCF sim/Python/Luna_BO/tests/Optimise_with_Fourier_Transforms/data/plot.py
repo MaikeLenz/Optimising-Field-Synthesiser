@@ -29,7 +29,7 @@ filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\
 #filepath="C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\Optimise_with_Fourier_Transforms\\data\\"
 
 # Read optimal params
-df_0 = pd.read_csv(filepath+"300nmHe__init_50_niter_50.csv")
+df_0 = pd.read_csv(filepath+"300nm_He__init_50_niter_250.csv")
 
 energy=float(df_0.iloc[0][3])
 pressure=float(df_0.iloc[0][4])
@@ -82,7 +82,7 @@ phase1=get_phase(omega1,Eomega1,wavel)
 
 #######################################################################################################################
 # Read optimal params
-df_0 = pd.read_csv(filepath+"300nm_envHe__init_50_niter_50.csv")
+df_0 = pd.read_csv(filepath+"300nm_envHe__init_50_niter_250.csv")
 
 energy=float(df_0.iloc[0][3])
 pressure=float(df_0.iloc[0][4])
@@ -173,7 +173,7 @@ df2 = dom2/(2*np.pi)
 t2 = np.fft.fftshift(np.fft.fftfreq(len(Et2), d=df2))
 
 popt,_=curve_fit(gauss_envelope,t2,np.abs(Et2)**2, p0=[max(np.abs(Et2)**2),2e-14,t2[np.argmax(np.abs(Et2)**2)]])
-#plt.plot(t2,np.abs(Et2)**2, label="Envelope")
-#plt.plot(t2,gauss_envelope(t2,*popt), label="Envelope")
+plt.plot(t2,np.abs(Et2)**2, label="Envelope")
+plt.plot(t2,gauss_envelope(t2,*popt), label="Envelope")
 plt.legend()
 plt.show()
