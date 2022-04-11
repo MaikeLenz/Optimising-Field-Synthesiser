@@ -34,26 +34,25 @@ def max_freq_bandwidth(t,Et,λ,Iλ):
     f = c/λ
     return rms_width(f,Iλ)
 
-def max_peak_power(t,Et,λ,Iλ):
-    I=[]
-    for i in Et:
-        I.append(np.abs(i)**2)
-    return max(I)
 def min_duration_FT(om,Eom):
     """
     Fourier transforms to time domain to minimise duration
     """
-    t,Et=f_to_t(om/(2*np.pi),Eom)
-    It=np.abs(Et)**2
-    return -rms_width(t,It)
+    Et = np.fft.ifft(Eom)
+    dom = om[2] - om[1]
+    df = dom/(2*np.pi)
+    t = np.fft.fftshift(np.fft.fftfreq(len(Et), d=df))
+    return -rms_width(t,np.abs(Et)**2)
 
 def min_thresh_duration_FT(om,Eom):
     """
     Fourier transforms to time domain to minimise duration
     """
-    t,Et=f_to_t(om/(2*np.pi),Eom)
-    It=np.abs(Et)**2
-    return -threshold(t,It,t,It)
+    Et = np.fft.ifft(Eom)
+    dom = om[2] - om[1]
+    df = dom/(2*np.pi)
+    t = np.fft.fftshift(np.fft.fftfreq(len(Et), d=df))
+    return -threshold(t,np.abs(Et)**2)
 
 def max_peak_power_FT(om,Eom):
     """
@@ -65,9 +64,9 @@ def max_peak_power_FT(om,Eom):
     t = np.fft.fftshift(np.fft.fftfreq(len(Et), d=df))
 
     popt,_=curve_fit(gauss_envelope,t,np.abs(Et)**2, p0=[max(np.abs(Et)**2),2e-14,t[np.argmax(np.abs(Et)**2)]])
-    plt.plot(t,np.abs(Et)**2)
-    plt.plot(t,gauss_envelope(t,*popt))
-    plt.show()
+    #plt.plot(t,np.abs(Et)**2)
+    #plt.plot(t,gauss_envelope(t,*popt))
+    #plt.show()
     return popt[0]
 
 def peak_power_window(t,Et,λ,Iλ):
@@ -75,16 +74,6 @@ def peak_power_window(t,Et,λ,Iλ):
     defined in the bossfunction
     """
     return True
-
-def min_duration(t,Et,λ,Iλ):
-    """
-    return the negative of the time rms width
-    """
-    I=[]
-    for i in Et:
-        I.append(np.abs(i)**2)
-    return -rms_width(t,I)
-
 
 def max_intens_integral(λ,Iλ,bounds):
     """
@@ -96,7 +85,7 @@ def max_intens_integral(λ,Iλ,bounds):
     Iλ_truncated=Iλ_truncated1[λ_truncated1< bounds[1]]
     return integrate.simps(Iλ_truncated,λ_truncated)
 
-def threshold(t,Et,x,y):
+def threshold(x,y,x2=None,y2=None):
     """
     Find points where signal reaches certain level above noise and find the distance between them
     """
@@ -132,8 +121,7 @@ def thresh_and_rms(t,Et,λ,Iλ):
 
 def max_peak_power_300nm(t,Et,λ,Iλ):
     # First smooth using super Gaussian filter
-    def superGauss(x,x0,sigma):
-        return np.exp(-((x-x0)/sigma)**4)
+    
     filter = superGauss(λ, 300e-9, 300e-9*0.1)
 
     Iλ_smooth = []
@@ -152,8 +140,7 @@ def max_peak_power_300nm(t,Et,λ,Iλ):
 
 def max_peak_power_1300nm(t,Et,λ,Iλ):
     # First smooth using super Gaussian filter
-    def superGauss(x,x0,sigma):
-        return np.exp(-((x-x0)/sigma)**4)
+    
     filter = superGauss(λ, 1300e-9, 1300e-9*0.2)
 
     Iλ_smooth = []
