@@ -115,12 +115,12 @@ def max_peak_power_300nm(om,Eom):
     c=299792458
     λ=(2*np.pi*c)/om
     filter = superGauss(λ, 300e-9, 300e-9*0.1)
-    plt.plot(λ,np.abs(Eom)**2)
+    #plt.plot(λ,np.abs(Eom)**2)
     Eom_smooth = []
     for i in range(len(Eom)):
         Eom_smooth.append(Eom[i]*filter[i])
-    plt.plot(λ, np.abs(Eom_smooth)**2)
-    plt.show()
+    #plt.plot(λ, np.abs(Eom_smooth)**2)
+    #plt.show()
     # Now Fourier transform
     """
     f = []
