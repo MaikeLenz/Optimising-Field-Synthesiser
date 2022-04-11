@@ -55,7 +55,7 @@ def min_thresh_duration_FT(om,Eom):
     It=np.abs(Et)**2
     return -threshold(t,It,t,It)
 
-def max_peak_power_FT(om,Eom, wavel):
+def max_peak_power_FT(om,Eom):
     """
     Fourier transforms Eomega to Et and maximised amplitude there
     """
