@@ -142,18 +142,18 @@ phase2=get_phase(omega2,Eomega2,wavel)
 
 fig, ax1 = plt.subplots()
 ax2 = ax1.twinx()
-ax1.set_xlabel('Angular Frequency')
-ax1.set_ylabel('Phase')
-ax2.set_ylabel('Intensity')
-i1=50
-i2=500
+ax1.set_xlabel('Angular Frequency', fontsize=14)
+ax1.set_ylabel('Phase', fontsize=14)
+ax2.set_ylabel('Intensity', fontsize=14)
+i1=150
+i2=400
 ax1.plot(omega1[i1:i2], phase1[i1:i2], '--', label='No envelope, Phase after')
-ax2.plot(omega1[i1:i2], np.abs(Eomega1[i1:i2])**2, label='No envelope, Intensity after')
+ax2.plot(omega1[i1:i2], np.abs(Eomega1[i1:i2])**2, label='No envelope')
 ax1.plot(omega2[i1:i2], phase2[i1:i2], '--', label='Envelope, Phase after')
-ax2.plot(omega2[i1:i2], np.abs(Eomega2[i1:i2])**2, label='Envelope, Intensity after')
+ax2.plot(omega2[i1:i2], np.abs(Eomega2[i1:i2])**2, label='Envelope')
 
-ax1.legend(loc='upper left')
-ax2.legend(loc='upper right')
+#ax1.legend(loc='upper left', fontsize=14)
+ax2.legend(loc='upper right', fontsize=14)
 
 #######################################################################################################
 plt.figure()
@@ -164,8 +164,8 @@ df1 = dom1/(2*np.pi)
 t1 = np.fft.fftshift(np.fft.fftfreq(len(Et1), d=df1))
 
 popt,_=curve_fit(gauss_envelope,t1,np.abs(Et1)**2, p0=[max(np.abs(Et1)**2),2e-14,t1[np.argmax(np.abs(Et1)**2)]])
-plt.plot(t1,np.abs(Et1)**2, label="No envelope")
-plt.plot(t1,gauss_envelope(t1,*popt), label="No envelope")
+plt.plot(t1,np.abs(Et1)**2, label="No envelope",c="tab:blue")
+#plt.plot(t1,gauss_envelope(t1,*popt), c="tab:blue")
 
 Et2 = np.fft.ifft(Eomega2)
 dom2 = omega2[2] - omega2[1]
@@ -173,7 +173,9 @@ df2 = dom2/(2*np.pi)
 t2 = np.fft.fftshift(np.fft.fftfreq(len(Et2), d=df2))
 
 popt,_=curve_fit(gauss_envelope,t2,np.abs(Et2)**2, p0=[max(np.abs(Et2)**2),2e-14,t2[np.argmax(np.abs(Et2)**2)]])
-plt.plot(t2,np.abs(Et2)**2, label="Envelope")
-plt.plot(t2,gauss_envelope(t2,*popt), label="Envelope")
-plt.legend()
+plt.plot(t2,np.abs(Et2)**2, label="Envelope",c="tab:orange")
+#plt.plot(t2,gauss_envelope(t2,*popt), c="tab:orange")
+plt.xlabel("time, s",fontsize=14)
+plt.ylabel("Intensity, a.u.", fontsize=14)
+plt.legend(fontsize=14)
 plt.show()

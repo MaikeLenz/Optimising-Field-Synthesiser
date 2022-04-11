@@ -187,7 +187,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         if function==max_intens_integral:
             return function(λ, Iλ, wavel_bounds)*power_condition
 
-        elif function ==max_peak_power_FT or function==max_peak_power_300nm or function==max_peak_power_300nm_envelope:
+        elif function ==max_peak_power_FT or function==max_peak_power_300nm or function==max_peak_power_300nm_envelope or function==max_peak_power_300nm_quadratic_phase:
             return function(omega, Eomega)
         else:
             return function(λ, Iλ)#*power_condition #pass t and E to sub-target function
