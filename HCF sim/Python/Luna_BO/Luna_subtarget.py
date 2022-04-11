@@ -118,7 +118,7 @@ def max_peak_power_300nm(om,Eom):
     plt.plot(om,np.abs(Eom)**2)
     Eom_smooth = []
     for i in range(len(Eom)):
-        Eom_smooth.append(np.abs(Eom[i])*filter[i])
+        Eom_smooth.append(Eom[i]*filter[i])
     plt.plot(om, np.abs(Eom_smooth)**2)
     plt.show()
     # Now Fourier transform
@@ -139,7 +139,7 @@ def max_peak_power_300nm_envelope(om,Eom):
     plt.plot(om,np.abs(Eom)**2)
     Eom_smooth = []
     for i in range(len(Eom)):
-        Eom_smooth.append(np.abs(Eom[i])*filter[i])
+        Eom_smooth.append(Eom[i]*filter[i])
     plt.plot(om, np.abs(Eom_smooth)**2)
     plt.show()
     # Now Fourier transform
