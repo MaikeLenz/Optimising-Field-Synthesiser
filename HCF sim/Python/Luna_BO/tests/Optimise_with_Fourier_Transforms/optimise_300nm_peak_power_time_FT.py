@@ -9,7 +9,7 @@ params=["energy", "pressure", "grating_pair_displacement", "radius", "flength"]
 #values:  radius, flength, gas, pressure, wavelength, energy, τfwhm, grating_pair_separation
 gas="He"
 # Define experimental params
-radius = 500e-6 # HCF core radius
+radius = 100e-6 # HCF core radius
 flength = 5 # HCF length
 wavel=800e-9
 duration=30e-15
