@@ -248,8 +248,8 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
             print(function(ω,Eω))
             return function(ω,Eω)
         else:
-            print(function(t, Et, λ, Iλ))
-            return function(t, Et, λ, Iλ)#*power_condition #pass t and E to sub-target function
+            print(function( λ, Iλ))
+            return function(λ, Iλ)#*power_condition #pass t and E to sub-target function
         
         
     # Make pbounds dictionary

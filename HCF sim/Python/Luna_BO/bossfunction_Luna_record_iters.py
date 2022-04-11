@@ -195,7 +195,7 @@ def Luna_BO_record_iters(params, initial_values_HCF, function, Gaussian = False,
             if function==max_intens_integral:
                 return function(λ, Iλ,wavel_bounds)#*power_condition   
             else:    
-                return function(t, Et, λ, Iλ)#*power_condition #pass t and E to sub-target function`
+                return function(λ, Iλ)#*power_condition #pass t and E to sub-target function`
         except:
             return 0
         

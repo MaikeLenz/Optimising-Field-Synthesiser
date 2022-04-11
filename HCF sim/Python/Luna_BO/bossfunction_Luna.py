@@ -166,8 +166,6 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, ImperialLab 
                 #default gaussian pulse passed to prop capillary
                 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
 
-
-            Main.eval('t, Et = Processing.getEt(duv)')
             Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
             if function == peak_power_window:
                 Main.wavel_bounds=wavel_bounds
@@ -176,15 +174,11 @@ def Luna_BO(params, initial_values_HCF, function, Gaussian = False, ImperialLab 
                 peak_power=Main.peak_power
                 return peak_power*power_condition
             # Get values
-            t = Main.t
-            Et_allz = Main.Et # array of Et at all z 
-            Et = Et_allz[:,-1] # last item in each element is pulse shape at the end
-            Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
-
+            
             λ = Main.λ
             Iλ = Main.Iλ    
                 
-            return function(t, Et, λ, Iλ)*power_condition #pass t and E to sub-target function
+            return function(λ, Iλ)*power_condition #pass t and E to sub-target function
         except:
             return 0
         
