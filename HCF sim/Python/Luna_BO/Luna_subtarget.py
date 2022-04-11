@@ -110,24 +110,29 @@ def norm_and_int(x, y):
         norm.append(i/maximum)
     return integrate.simps(norm, x)
 
-def max_peak_power_300nm(λ,Iλ):
+def max_peak_power_300nm(om,Eom):
     # First smooth using super Gaussian filter
-    
+    c=299792458
+    λ=(2*np.pi*c)/om
     filter = superGauss(λ, 300e-9, 300e-9*0.1)
 
     Iλ_smooth = []
-    for i in range(len(Iλ)):
-        Iλ_smooth.append(Iλ[i]*filter[i])
+    for i in range(len(Eom)):
+        Iλ_smooth.append(np.abs(Eom[i])**2*filter[i])
 
     # Now Fourier transform
-    c = 299792458
+    """
     f = []
     for i in range(len(λ)):
         f.append(c/λ[i])
     t_filtered, I_filtered = f_to_t(f[::-1], Iλ_smooth[::-1])
-    
+    """
+    Et = np.fft.ifft(Eom)
+    #dom = om[2] - om[1]
+    #df = dom/(2*np.pi)
+    #t = np.fft.fftshift(np.fft.fftfreq(len(Et), d=df))
     # Now find peak power in time-domain
-    return max(I_filtered)
+    return max(np.abs(Et)**2)
 
 def max_peak_power_1300nm(λ,Iλ):
     # First smooth using super Gaussian filter
