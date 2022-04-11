@@ -9,6 +9,14 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\')
 from angfreq_to_time import *
 
+sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\tests\\investigate_phase\\")
+from get_phase import *
+
+sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\Optimise_with_Fourier_Transforms\\")
+from envelopes import *
+
+from scipy.optimize import curve_fit
+
 import numpy as np 
 #from scipy.integrate import simps
 from scipy import integrate
@@ -47,12 +55,17 @@ def min_thresh_duration_FT(om,Eom):
     It=np.abs(Et)**2
     return -threshold(t,It,t,It)
 
-def max_peak_power_FT(om,Eom):
+def max_peak_power_FT(om,Eom, wavel):
     """
     Fourier transforms Eomega to Et and maximised amplitude there
     """
-    t,Et=f_to_t(om/(2*np.pi),Eom)
-    return max(np.abs(Et)**2)
+    Et = np.fft.ifft(Eom)
+    dom = om[2] - om[1]
+    df = dom/(2*np.pi)
+    t = np.fft.fftshift(np.fft.fftfreq(len(Et), d=df))
+
+    popt,_=curve_fit(gauss_envelope,t,np.abs(Et)**2, p0=[max(np.abs(Et)**2),2e-14,t[np.argmax(np.abs(Et)**2)]])
+    return popt[0]
 
 def peak_power_window(t,Et,λ,Iλ):
     """

@@ -59,7 +59,7 @@ Eomega = Main.Eω
 phase=get_phase(omega,Eomega,wavel)
 
 i1=210
-i2=240
+i2=340
 ax1.plot(omega[i1:i2], phase[i1:i2], '--', label='Phase after')
 ax2.plot(omega[i1:i2], np.abs(Eomega[i1:i2])**2, label='Intensity after')
 ax1.legend(loc='upper left')

@@ -165,6 +165,9 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
 
         Main.eval('t, Et = Processing.getEt(duv)')
         Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
+        Main.eval("grid = Processing.makegrid(duv)")
+        Main.eval("ω = grid.ω")
+        Main.eval('Eω = duv["Eω"][:,end]')
         """
         if function == peak_power_window:
             print("Evaluating peak power in wavelength bounds")
@@ -184,9 +187,13 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         λ = Main.λ
         Iλ = Main.Iλ
         Iλ=Iλ.reshape(len(Iλ),)
-        print(Iλ.shape)    
+
+        omega = Main.ω
+        Eomega = Main.Eω  
         if function==max_intens_integral:
             return function(λ, Iλ, wavel_bounds)*power_condition
+        elif function ==max_peak_power_FT:
+            return function(omega, Eomega, params_dict['λ0'])
         else:
             return function(t, Et, λ, Iλ)#*power_condition #pass t and E to sub-target function
         
