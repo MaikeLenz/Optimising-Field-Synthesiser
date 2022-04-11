@@ -10,10 +10,16 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 from angfreq_to_time import *
 
 sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\tests\\investigate_phase\\")
+#sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\tests\\investigate_phase\\')
 from get_phase import *
 
 sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\Optimise_with_Fourier_Transforms\\")
+#sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\Optimise_with_Fourier_Transforms\\')
 from envelopes import *
+
+#sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\")
+sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\")
+from ErrorCorrectionFunction_integrate import *
 
 from scipy.optimize import curve_fit
 
@@ -175,3 +181,41 @@ def max_peak_power_1300nm(λ,Iλ):
     
     # Now find peak power in time-domain
     return max(I_filtered)
+
+def max_peak_power_300nm_quadratic_phase(om, Eom):
+    # First get phase of pulse in freq domain
+    om0 = moment(om,np.abs(Eom)**2,1)/moment(om,np.abs(Eom)**2,0) # Determine central frequency
+    c = 299792458
+    lambda0 = (2*np.pi*c)/om0
+    phase = get_phase(om, Eom, lambda0)
+
+    # Slice phase to only select part within pulse
+    thresh = 0.1
+    rows = np.where(np.abs(Eom)**2 > max(np.abs(Eom)**2)*thresh)[0]
+    min_index = rows[0]
+    max_index = rows[-1]
+    phase_slice = phase[min_index-25:max_index+25]
+    om_slice = om[min_index-25:max_index+25]
+
+    # Fit a quadratic to the phase and determine the rms error
+    def quad(x, a, b, c):
+        return a*(x**2) + b*x + c
+    quad_popt, _ = curve_fit(quad, om_slice, phase_slice, p0=[1,1,0])
+    rms_phase_err = errorCorrection_int(om_slice, phase_slice, quad(om_slice, *quad_popt)) # Note: this value is negative
+
+    # Smooth using super Gaussian filter
+    c=299792458
+    λ=(2*np.pi*c)/om
+    filter = superGauss(λ, 300e-9, 300e-9*0.1)
+    Eom_smooth = []
+    for i in range(len(Eom)):
+        Eom_smooth.append(Eom[i]*filter[i])
+    
+    # Now Fourier transform
+    Et = np.fft.ifft(Eom_smooth)
+    dom = om[2] - om[1]
+    df = dom/(2*np.pi)
+    t = np.fft.fftshift(np.fft.fftfreq(len(Et), d=df))
+    popt,_ = curve_fit(gauss_envelope,t,np.abs(Et)**2, p0=[max(np.abs(Et)**2),2e-14,t[np.argmax(np.abs(Et)**2)]])
+
+    return popt[0] + rms_phase_err
