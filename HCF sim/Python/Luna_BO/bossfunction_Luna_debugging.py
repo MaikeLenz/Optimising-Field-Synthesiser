@@ -162,8 +162,6 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
             #default gaussian pulse passed to prop capillary
             Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
 
-
-        Main.eval('t, Et = Processing.getEt(duv)')
         Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
         Main.eval("grid = Processing.makegrid(duv)")
         Main.eval("ω = grid.ω")
@@ -179,11 +177,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
             return peak_power*power_condition
         """
         # Get values
-        t = Main.t
-        Et_allz = Main.Et # array of Et at all z 
-        Et = Et_allz[:,-1] # last item in each element is pulse shape at the end
-        Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
-
+        
         λ = Main.λ
         Iλ = Main.Iλ
         Iλ=Iλ.reshape(len(Iλ),)
@@ -195,7 +189,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         elif function ==max_peak_power_FT:
             return function(omega, Eomega)
         else:
-            return function(t, Et, λ, Iλ)#*power_condition #pass t and E to sub-target function
+            return function(λ, Iλ)#*power_condition #pass t and E to sub-target function
         
         
     # Make pbounds dictionary

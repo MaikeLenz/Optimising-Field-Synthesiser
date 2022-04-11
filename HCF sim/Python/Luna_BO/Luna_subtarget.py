@@ -26,10 +26,10 @@ from scipy import integrate
 
 from julia import Main
 
-def max_wavel_bandwidth(t,Et,λ,Iλ):
+def max_wavel_bandwidth(λ,Iλ):
     return 10**9*rms_width(λ,Iλ)
 
-def max_freq_bandwidth(t,Et,λ,Iλ):
+def max_freq_bandwidth(λ,Iλ):
     c = 299792458
     f = c/λ
     return rms_width(f,Iλ)
@@ -69,7 +69,7 @@ def max_peak_power_FT(om,Eom):
     #plt.show()
     return popt[0]
 
-def peak_power_window(t,Et,λ,Iλ):
+def peak_power_window(λ,Iλ):
     """
     defined in the bossfunction
     """
@@ -100,7 +100,7 @@ def threshold(x,y,x2=None,y2=None):
         max_index = rows[-1]
     return x[max_index]-x[min_index]
 
-def norm_and_int(t,Et,x, y):
+def norm_and_int(x, y):
     """
     Normalises the pulse so that the maximum is 1, and then integrates
     """
@@ -110,16 +110,7 @@ def norm_and_int(t,Et,x, y):
         norm.append(i/maximum)
     return integrate.simps(norm, x)
 
-def combo(t,Et,λ,Iλ):
-    return -min_duration(t,Et,λ,Iλ)+max_freq_bandwidth(t,Et,λ,Iλ)+max_peak_power(t,Et,λ,Iλ)+max_wavel_bandwidth(t,Et,λ,Iλ)+threshold(t,Et,λ,Iλ)
-
-def combo2(t,Et,λ,Iλ):
-    return max_freq_bandwidth(t,Et,λ,Iλ)+max_wavel_bandwidth(t,Et,λ,Iλ)+threshold(t,Et,λ,Iλ)
-
-def thresh_and_rms(t,Et,λ,Iλ):
-    return max_wavel_bandwidth(t,Et,λ,Iλ)+threshold(t,Et,λ,Iλ)
-
-def max_peak_power_300nm(t,Et,λ,Iλ):
+def max_peak_power_300nm(λ,Iλ):
     # First smooth using super Gaussian filter
     
     filter = superGauss(λ, 300e-9, 300e-9*0.1)
@@ -138,7 +129,7 @@ def max_peak_power_300nm(t,Et,λ,Iλ):
     # Now find peak power in time-domain
     return max(I_filtered)
 
-def max_peak_power_1300nm(t,Et,λ,Iλ):
+def max_peak_power_1300nm(λ,Iλ):
     # First smooth using super Gaussian filter
     
     filter = superGauss(λ, 1300e-9, 1300e-9*0.2)
