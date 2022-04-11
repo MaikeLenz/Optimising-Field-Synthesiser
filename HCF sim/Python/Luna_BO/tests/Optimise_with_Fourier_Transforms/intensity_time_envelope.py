@@ -82,7 +82,7 @@ dom = omega[2] - omega[1]
 df = dom/(2*np.pi)
 t = np.fft.fftshift(np.fft.fftfreq(len(Et), d=df))
 
-popt,_=curve_fit(gauss_envelope,t,Et, p0=[1e12,10e-15,0])
+popt,_=curve_fit(gauss_envelope,t,Et, p0=[4e10,2e-14,0])
 plt.plot(t,np.abs(Et)**2)
 plt.plot(t,gauss_envelope(t,*popt))
 plt.show()
