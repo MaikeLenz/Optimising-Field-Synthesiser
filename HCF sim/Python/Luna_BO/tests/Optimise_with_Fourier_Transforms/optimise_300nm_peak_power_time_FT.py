@@ -19,8 +19,8 @@ grating_init=0
 initial_values_HCF=[radius, flength, gas,pressure_init, wavel, energy_init,duration, grating_init]
 
 
-inits=50
-iters=150
+inits=5
+iters=5
 result,iterations=Luna_BO_debug(params, initial_values_HCF, function=max_peak_power_300nm_envelope, init_points=inits, n_iter=iters)
 target = result['target']
 grating=result["params"]["grating_pair_displacement"]
