@@ -10,17 +10,17 @@ params=["energy", "pressure", "grating_pair_displacement", "radius", "flength"]
 gas="He"
 # Define experimental params
 radius = 100e-6 # HCF core radius
-flength = 5 # HCF length
+flength = 3 # HCF length
 wavel=800e-9
 duration=30e-15
-energy_init=1.1e-3
+energy_init=0.75e-3
 pressure_init=0.66*3
 grating_init=0
 initial_values_HCF=[radius, flength, gas,pressure_init, wavel, energy_init,duration, grating_init]
 
 
-inits=5
-iters=5
+inits=50
+iters=250
 result,iterations=Luna_BO_debug(params, initial_values_HCF, function=max_peak_power_300nm_envelope, init_points=inits, n_iter=iters)
 target = result['target']
 grating=result["params"]["grating_pair_displacement"]
