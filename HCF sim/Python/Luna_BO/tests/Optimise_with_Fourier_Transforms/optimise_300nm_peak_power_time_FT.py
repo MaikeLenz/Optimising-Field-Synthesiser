@@ -4,13 +4,13 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\')
 from bossfunction_Luna_debugging import *
 
-params=["energy", "pressure", "grating_pair_displacement"]
+params=["energy", "pressure", "grating_pair_displacement", "radius", "flength"]
 
 #values:  radius, flength, gas, pressure, wavelength, energy, τfwhm, grating_pair_separation
-gas="Ne"
+gas="He"
 # Define experimental params
-radius = 175e-6 # HCF core radius
-flength = 1.05 # HCF length
+radius = 500e-6 # HCF core radius
+flength = 5 # HCF length
 wavel=800e-9
 duration=30e-15
 energy_init=1.1e-3
@@ -26,6 +26,8 @@ target = result['target']
 grating=result["params"]["grating_pair_displacement"]
 pressure=result["params"]["pressure"]
 energy=result["params"]["energy"]
+radius=result["params"]["radius"]
+flength=result["params"]["flength"]
 
 header = ['init_points', 'n_iter', 'peak power', 'energy, J', 'pressure, bar', 'radius, m', 'flength, m', 'FWHM, s', 'wavel, m', 'gas', 'grating_pair_displacement, m']
 #with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\peak_power_1200e-9wavelwindow_varyfwhm__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'a', encoding='UTF8', newline='') as f:
