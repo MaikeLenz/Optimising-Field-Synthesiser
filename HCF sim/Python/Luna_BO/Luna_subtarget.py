@@ -115,11 +115,11 @@ def max_peak_power_300nm(om,Eom):
     c=299792458
     λ=(2*np.pi*c)/om
     filter = superGauss(λ, 300e-9, 300e-9*0.1)
-
+    plt.plot(om,np.abs(Eom)**2)
     Eom_smooth = []
     for i in range(len(Eom)):
-        Eom_smooth.append(np.abs(Eom[i])**2*filter[i])
-    plt.plot(om, Eom_smooth)
+        Eom_smooth.append(np.abs(Eom[i])*filter[i])
+    plt.plot(om, np.abs(Eom_smooth)**2)
     plt.show()
     # Now Fourier transform
     """
@@ -136,11 +136,11 @@ def max_peak_power_300nm_envelope(om,Eom):
     c=299792458
     λ=(2*np.pi*c)/om
     filter = superGauss(λ, 300e-9, 300e-9*0.1)
-
+    plt.plot(om,np.abs(Eom)**2)
     Eom_smooth = []
     for i in range(len(Eom)):
-        Eom_smooth.append(np.abs(Eom[i])**2*filter[i])
-    plt.plot(om, Eom_smooth)
+        Eom_smooth.append(np.abs(Eom[i])*filter[i])
+    plt.plot(om, np.abs(Eom_smooth)**2)
     plt.show()
     # Now Fourier transform
     """
