@@ -29,7 +29,7 @@ filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\
 #filepath="C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\Optimise_with_Fourier_Transforms\\data\\"
 
 # Read optimal params
-df_0 = pd.read_csv(filepath+"300nm_He__init_250_niter_50.csv")
+df_0 = pd.read_csv(filepath+"300nm_He__init_50_niter_250.csv")
 
 energy=float(df_0.iloc[0][3])
 pressure=float(df_0.iloc[0][4])
