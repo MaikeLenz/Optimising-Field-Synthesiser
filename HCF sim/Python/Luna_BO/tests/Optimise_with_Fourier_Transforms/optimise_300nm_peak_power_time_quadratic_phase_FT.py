@@ -31,7 +31,7 @@ flength=result["params"]["flength"]
 
 header = ['init_points', 'n_iter', 'peak power', 'energy, J', 'pressure, bar', 'radius, m', 'flength, m', 'FWHM, s', 'wavel, m', 'gas', 'grating_pair_displacement, m']
 #with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\peak_power_1200e-9wavelwindow_varyfwhm__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'a', encoding='UTF8', newline='') as f:
-with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\Optimise_with_Fourier_Transforms\\data\\300nm_env_10^7quadraticphase'+gas+'__init_' + str(inits) + '_niter_' + str(iters) + '.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\Optimise_with_Fourier_Transforms\\data\\300nm_env_100quadraticphase'+gas+'__init_' + str(inits) + '_niter_' + str(iters) + '.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f) # peak_power_1000e-9wavelwindow__init_50_niter_100
     # write the header
     writer.writerow(header)

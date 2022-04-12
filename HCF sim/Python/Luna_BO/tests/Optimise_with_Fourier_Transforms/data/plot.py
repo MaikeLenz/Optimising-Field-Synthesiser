@@ -136,7 +136,7 @@ phase2=get_phase(omega2,Eomega2,wavel)
 
 #######################################################################################################################
 # Read optimal params
-df_0 = pd.read_csv(filepath+"300nm_env_quadraticphaseHe__init_50_niter_250.csv")
+df_0 = pd.read_csv(filepath+"300nm_env_100quadraticphaseHe__init_50_niter_250.csv")
 
 energy=float(df_0.iloc[0][3])
 pressure=float(df_0.iloc[0][4])
@@ -197,8 +197,8 @@ ax2 = ax1.twinx()
 ax1.set_xlabel('Angular Frequency', fontsize=14)
 ax1.set_ylabel('Phase', fontsize=14)
 ax2.set_ylabel('Intensity', fontsize=14)
-i1=150
-i2=400
+i1=0
+i2=4000
 ax1.plot(omega1[i1:i2], phase1[i1:i2], '--', label='No envelope, Phase after')
 ax2.plot(omega1[i1:i2], np.abs(Eomega1[i1:i2])**2, label='No envelope')
 #ax1.plot(omega2[i1:i2], phase2[i1:i2], '--', label='Envelope, Phase after')
