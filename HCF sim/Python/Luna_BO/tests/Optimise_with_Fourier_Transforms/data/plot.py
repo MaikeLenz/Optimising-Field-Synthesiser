@@ -136,7 +136,7 @@ phase2=get_phase(omega2,Eomega2,wavel)
 
 #######################################################################################################################
 # Read optimal params
-df_0 = pd.read_csv(filepath+"300nm_env_100quadraticphaseHe__init_50_niter_250.csv")
+df_0 = pd.read_csv(filepath+"300nm_env_50quadraticphaseHe__init_50_niter_250.csv")
 
 energy=float(df_0.iloc[0][3])
 pressure=float(df_0.iloc[0][4])
