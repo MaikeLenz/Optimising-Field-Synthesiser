@@ -201,8 +201,8 @@ i1=150
 i2=400
 ax1.plot(omega1[i1:i2], phase1[i1:i2], '--', label='No envelope, Phase after')
 ax2.plot(omega1[i1:i2], np.abs(Eomega1[i1:i2])**2, label='No envelope')
-ax1.plot(omega2[i1:i2], phase2[i1:i2], '--', label='Envelope, Phase after')
-ax2.plot(omega2[i1:i2], np.abs(Eomega2[i1:i2])**2, label='Envelope')
+#ax1.plot(omega2[i1:i2], phase2[i1:i2], '--', label='Envelope, Phase after')
+#ax2.plot(omega2[i1:i2], np.abs(Eomega2[i1:i2])**2, label='Envelope')
 ax1.plot(omega3[i1:i2], phase3[i1:i2], '--', label='Envelope, Phase after',c="tab:green")
 ax2.plot(omega3[i1:i2], np.abs(Eomega3[i1:i2])**2, label='Quadratic Phase', c="tab:green")
 
@@ -227,7 +227,7 @@ df2 = dom2/(2*np.pi)
 t2 = np.fft.fftshift(np.fft.fftfreq(len(Et2), d=df2))
 
 popt,_=curve_fit(gauss_envelope,t2,np.abs(Et2)**2, p0=[max(np.abs(Et2)**2),2e-14,t2[np.argmax(np.abs(Et2)**2)]])
-plt.plot(t2,np.abs(Et2)**2, label="Envelope",c="tab:orange")
+#plt.plot(t2,np.abs(Et2)**2, label="Envelope",c="tab:orange")
 #plt.plot(t2,gauss_envelope(t2,*popt), c="tab:orange")
 
 Et3 = np.fft.ifft(Eomega3)

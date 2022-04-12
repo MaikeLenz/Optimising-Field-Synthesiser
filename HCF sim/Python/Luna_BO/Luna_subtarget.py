@@ -218,4 +218,4 @@ def max_peak_power_300nm_quadratic_phase(om, Eom):
     t = np.fft.fftshift(np.fft.fftfreq(len(Et), d=df))
     popt,_ = curve_fit(gauss_envelope,t,np.abs(Et)**2, p0=[max(np.abs(Et)**2),2e-14,t[np.argmax(np.abs(Et)**2)]])
 
-    return popt[0] + rms_phase_err
+    return popt[0] + 10**7*rms_phase_err
