@@ -140,6 +140,7 @@ phase2=get_phase(omega2,Eomega2,wavel)
 
 #######################################################################################################################
 # Read optimal params
+"""
 df_0 = pd.read_csv(filepath+"300nm_env_2quadraticphaseHe__init_50_niter_250.csv")
 
 energy=float(df_0.iloc[0][3])
@@ -194,7 +195,7 @@ Iλ3=Main.Iλ
 phase3=get_phase(omega3,Eomega3,wavel)
 
 
-
+"""
 ######################################################################################
 #plot
 
@@ -209,17 +210,15 @@ ax1.plot(omega1[i1:i2], phase1[i1:i2], '--', label='No envelope, Phase after')
 ax2.plot(omega1[i1:i2], np.abs(Eomega1[i1:i2])**2, label='No envelope')
 ax1.plot(omega2[i1:i2], phase2[i1:i2], '--', label='Envelope, Phase after')
 ax2.plot(omega2[i1:i2], np.abs(Eomega2[i1:i2])**2, label='Envelope')
-ax1.plot(omega3[i1:i2], phase3[i1:i2], '--', label='Envelope, Phase after',c="tab:green")
-ax2.plot(omega3[i1:i2], np.abs(Eomega3[i1:i2])**2, label='Quadratic Phase', c="tab:green")
+#ax1.plot(omega3[i1:i2], phase3[i1:i2], '--', label='Envelope, Phase after',c="tab:green")
+#ax2.plot(omega3[i1:i2], np.abs(Eomega3[i1:i2])**2, label='Quadratic Phase', c="tab:green")
 
 #ax1.legend(loc='upper left', fontsize=14)
 ax2.legend(loc='upper right', fontsize=14)
 ###################################################################################################################
 fig, ax1 = plt.subplots()
-ax2 = ax1.twinx()
 ax1.set_xlabel('Wavelength', fontsize=14)
-ax1.set_ylabel('Phase', fontsize=14)
-ax2.set_ylabel('Intensity', fontsize=14)
+ax1.set_ylabel('Intensity', fontsize=14)
 i1=0
 i2=100000
 """
@@ -232,14 +231,14 @@ ax2.plot(2*np.pi*c/omega3[i1:i2], np.abs(Eomega3[i1:i2])**2, label='Quadratic Ph
 """
 
 #ax1.plot(λ1[i1:i2], phase1[::-1][i1:i2], '--', label='No envelope, Phase after')
-ax2.plot(λ1[i1:i2], Iλ1, label='No envelope')
+ax1.plot(λ1[i1:i2], Iλ1, label='No envelope')
 #ax1.plot(λ2[i1:i2], phase2[::-1][i1:i2], '--', label='Envelope, Phase after')
-ax2.plot(λ2[i1:i2], Iλ2, label='Envelope')
+ax1.plot(λ2[i1:i2], Iλ2, label='Envelope')
 #ax1.plot(λ3[i1:i2], phase3[::-1][i1:i2], '--', label='Envelope, Phase after',c="tab:green")
-ax2.plot(λ3[i1:i2], Iλ3, label='Quadratic Phase', c="tab:green")
+#ax1.plot(λ3[i1:i2], Iλ3, label='Quadratic Phase', c="tab:green")
 
 #ax1.legend(loc='upper left', fontsize=14)
-ax2.legend(loc='upper right', fontsize=14)
+ax1.legend(loc='upper right', fontsize=14)
 #######################################################################################################
 plt.figure()
 
@@ -261,6 +260,7 @@ popt,_=curve_fit(gauss_envelope,t2,np.abs(Et2)**2, p0=[max(np.abs(Et2)**2),2e-14
 plt.plot(t2,np.abs(Et2)**2, label="Envelope",c="tab:orange")
 #plt.plot(t2,gauss_envelope(t2,*popt), c="tab:orange")
 
+"""
 Et3 = np.fft.ifft(Eomega3)
 dom3 = omega3[2] - omega3[1]
 df3 = dom3/(2*np.pi)
@@ -269,7 +269,7 @@ t3 = np.fft.fftshift(np.fft.fftfreq(len(Et3), d=df3))
 popt,_=curve_fit(gauss_envelope,t3,np.abs(Et3)**2, p0=[max(np.abs(Et3)**2),2e-14,t3[np.argmax(np.abs(Et3)**2)]])
 plt.plot(t3,np.abs(Et3)**2, label="Quadratic phase",c="tab:green")
 #plt.plot(t1,gauss_envelope(t1,*popt), c="tab:blue")
-
+"""
 plt.xlabel("time, s",fontsize=14)
 plt.ylabel("Intensity, a.u.", fontsize=14)
 plt.legend(fontsize=14)
