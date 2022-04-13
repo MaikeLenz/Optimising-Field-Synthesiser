@@ -11,16 +11,16 @@ julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\
 from julia import Main
 Main.using("Luna")
 
-radius = 125e-6
+radius = 175e-6
 flength = 1
 gas = "Ne"
-P=3.5
+P=5
 pressure1 = (0,P)
 pressure2=(P,0)
 pressure3=(2/3)*P
 λ0 = 800e-9
 τfwhm = 30e-15
-energy = 2e-3
+energy = 2.5e-3
 
 # Assign arguments to Main namespace
 Main.radius = radius
