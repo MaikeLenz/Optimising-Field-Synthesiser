@@ -18,7 +18,7 @@ z = -20.0 * np.exp(-0.2 * np.sqrt(0.5 * (x**2 + y**2)))-np.exp(0.5 * (np.cos(2 *
 z = z[:-1, :-1]
 z_min, z_max = -np.abs(z).max(), np.abs(z).max()
 
-c = axs[0,0].pcolormesh(x, y, z, vmin=z_min, vmax=z_max)
+c = axs[0,0].pcolormesh(x, y, z, vmin=0, vmax=z_max)
 axs[0,0].set_title('Ackley', size=24)
 axs[0,0].axis([x.min(), x.max(), y.min(), y.max()])
 fig.colorbar(c, ax=axs[0,0])
@@ -30,11 +30,11 @@ def Booth(x, y):
     """
     return  - (x+2*y-7)**2 - (2*x+y-5)**2
 y, x = np.meshgrid(np.linspace(-10, 10, 200), np.linspace(-10, 10, 200))
-z = - (x+2*y-7)**2 - (2*x+y-5)**2
+z = (x+2*y-7)**2 + (2*x+y-5)**2
 z = z[:-1, :-1]
 z_min, z_max = -np.abs(z).max(), np.abs(z).max()
 
-c = axs[0,1].pcolormesh(x, y, z, vmin=z_min, vmax=0)
+c = axs[0,1].pcolormesh(x, y, z, vmin=0, vmax=z_max)
 axs[0,1].set_title('Booth', size=24)
 axs[0,1].axis([x.min(), x.max(), y.min(), y.max()])
 fig.colorbar(c, ax=axs[0,1])
@@ -46,11 +46,11 @@ def Matyas(x, y):
     """
     return  - (0.26*(x**2+y**2)-0.48*x*y)
 y, x = np.meshgrid(np.linspace(-10, 10, 200), np.linspace(-10, 10, 200))
-z = - (0.26*(x**2+y**2)-0.48*x*y)
+z = (0.26*(x**2+y**2)-0.48*x*y)
 z = z[:-1, :-1]
 z_min, z_max = -np.abs(z).max(), np.abs(z).max()
 
-c = axs[1,0].pcolormesh(x, y, z, vmin=z_min, vmax=0)
+c = axs[1,0].pcolormesh(x, y, z, vmin=0, vmax=z_max)
 axs[1,0].set_title('Matyas', size=24)
 axs[1,0].axis([x.min(), x.max(), y.min(), y.max()])
 fig.colorbar(c, ax=axs[1,0])
@@ -61,11 +61,11 @@ def Sphere(x, y):
     """
     return -(x**2+y**2)
 y, x = np.meshgrid(np.linspace(-5, 5, 200), np.linspace(-5, 5, 200))
-z = -(x**2+y**2)
+z = (x**2+y**2)
 z = z[:-1, :-1]
 z_min, z_max = -np.abs(z).max(), np.abs(z).max()
 
-c = axs[1,1].pcolormesh(x, y, z, vmin=z_min, vmax=0)
+c = axs[1,1].pcolormesh(x, y, z, vmin=0, vmax=z_max)
 axs[1,1].set_title('Sphere', size=24)
 axs[1,1].axis([x.min(), x.max(), y.min(), y.max()])
 fig.colorbar(c, ax=axs[1,1])
