@@ -71,13 +71,15 @@ Main.phase = ϕω
 # Pass data to Luna
 Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
 Main.eval("grid = Processing.makegrid(duv)")
 Main.eval("ω = grid.ω")
 Main.eval('Eω = duv["Eω"][:,end]')
 
 omega1 = Main.ω
 Eomega1 = Main.Eω
-
+λ1=Main.λ
+Iλ1=Main.Iλ
 phase1=get_phase(omega1,Eomega1,wavel)
 
 #######################################################################################################################
@@ -124,19 +126,21 @@ Main.phase = ϕω
 # Pass data to Luna
 Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
 Main.eval("grid = Processing.makegrid(duv)")
 Main.eval("ω = grid.ω")
 Main.eval('Eω = duv["Eω"][:,end]')
 
 omega2 = Main.ω
 Eomega2 = Main.Eω
-
+λ2=Main.λ
+Iλ2=Main.Iλ
 phase2=get_phase(omega2,Eomega2,wavel)
 
 
 #######################################################################################################################
 # Read optimal params
-df_0 = pd.read_csv(filepath+"300nm_env_50quadraticphaseHe__init_50_niter_250.csv")
+df_0 = pd.read_csv(filepath+"300nm_env_2quadraticphaseHe__init_50_niter_250.csv")
 
 energy=float(df_0.iloc[0][3])
 pressure=float(df_0.iloc[0][4])
@@ -178,13 +182,15 @@ Main.phase = ϕω
 # Pass data to Luna
 Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
 Main.eval("grid = Processing.makegrid(duv)")
 Main.eval("ω = grid.ω")
 Main.eval('Eω = duv["Eω"][:,end]')
 
 omega3 = Main.ω
 Eomega3 = Main.Eω
-
+λ3=Main.λ
+Iλ3=Main.Iλ
 phase3=get_phase(omega3,Eomega3,wavel)
 
 
@@ -214,14 +220,23 @@ ax2 = ax1.twinx()
 ax1.set_xlabel('Wavelength', fontsize=14)
 ax1.set_ylabel('Phase', fontsize=14)
 ax2.set_ylabel('Intensity', fontsize=14)
-i1=150
-i2=1000
+i1=0
+i2=100000
+"""
 ax1.plot(2*np.pi*c/omega1[i1:i2], phase1[i1:i2], '--', label='No envelope, Phase after')
 ax2.plot(2*np.pi*c/omega1[i1:i2], np.abs(Eomega1[i1:i2])**2, label='No envelope')
 ax1.plot(2*np.pi*c/omega2[i1:i2], phase2[i1:i2], '--', label='Envelope, Phase after')
 ax2.plot(2*np.pi*c/omega2[i1:i2], np.abs(Eomega2[i1:i2])**2, label='Envelope')
 ax1.plot(2*np.pi*c/omega3[i1:i2], phase3[i1:i2], '--', label='Envelope, Phase after',c="tab:green")
 ax2.plot(2*np.pi*c/omega3[i1:i2], np.abs(Eomega3[i1:i2])**2, label='Quadratic Phase', c="tab:green")
+"""
+
+#ax1.plot(λ1[i1:i2], phase1[::-1][i1:i2], '--', label='No envelope, Phase after')
+ax2.plot(λ1[i1:i2], Iλ1, label='No envelope')
+#ax1.plot(λ2[i1:i2], phase2[::-1][i1:i2], '--', label='Envelope, Phase after')
+ax2.plot(λ2[i1:i2], Iλ2, label='Envelope')
+#ax1.plot(λ3[i1:i2], phase3[::-1][i1:i2], '--', label='Envelope, Phase after',c="tab:green")
+ax2.plot(λ3[i1:i2], Iλ3, label='Quadratic Phase', c="tab:green")
 
 #ax1.legend(loc='upper left', fontsize=14)
 ax2.legend(loc='upper right', fontsize=14)
