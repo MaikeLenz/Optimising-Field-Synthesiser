@@ -22,9 +22,9 @@ fwhm = 30e-15
 domega = 2*np.pi*0.44/fwhm
 omega = np.linspace(2*np.pi*c/wavel0 - 5*domega/2, 2*np.pi*c/wavel0 + 5*domega/2, 100)
 GDD = 0
-#TOD = 0
+TOD = 0
 #GDD = 500e-30
-TOD = 10000e-45
+#TOD = 10000e-45
 
 E, ϕω = E_field_freq(omega, GD=0, wavel=wavel0, domega=domega, amp=1, CEP=0, GDD=GDD, TOD=TOD)
 Iω = np.abs(E)**2
