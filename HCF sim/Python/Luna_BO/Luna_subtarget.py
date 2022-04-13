@@ -17,8 +17,8 @@ sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\Optimise_with_Fourier_Transforms\\')
 from envelopes import *
 
-#sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\")
-sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\")
+sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\")
+#sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\")
 from ErrorCorrectionFunction_integrate import *
 
 from scipy.optimize import curve_fit
@@ -218,4 +218,4 @@ def max_peak_power_300nm_quadratic_phase(om, Eom):
     t = np.fft.fftshift(np.fft.fftfreq(len(Et), d=df))
     popt,_ = curve_fit(gauss_envelope,t,np.abs(Et)**2, p0=[max(np.abs(Et)**2),2e-14,t[np.argmax(np.abs(Et)**2)]])
 
-    return popt[0] + rms_phase_err
+    return popt[0] + 2*rms_phase_err

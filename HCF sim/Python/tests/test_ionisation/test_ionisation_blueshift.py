@@ -7,9 +7,6 @@ import csv
 sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\chirp\\')
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\chirp\\')
 from pulse_with_GDD import *
-sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
-#sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
-from rms_width import *
 
 julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
 #julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
@@ -37,13 +34,15 @@ Main.ω = omega
 Main.Iω = Iω  
 Main.phase = ϕω
 
-wavel_array = 2*np.pi*c/omega
-initial_width = rms_width(wavel_array, Iω)
-print(initial_width*(10**9))
+lam = 2*np.pi*c/omega
+plt.plot(lam*(10**9), Iω)
+plt.title('Input Pulse', size=24)
+plt.xlabel("Wavelength (nm)")
+plt.ylabel("Intensity (a.u.)")
+plt.show()
 
 # Neon test
 gas = "Ne"
-#energy = 3e-3
 energy = 1.5e-3
 pressure = (0, 3.5)
 Main.energy = energy
@@ -58,11 +57,10 @@ Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
 Iλ = Main.Iλ
 
 plt.figure()
-plt.plot(λ*(10**9), Iλ, label='With all')
+plt.plot(λ*(10**9), Iλ, label='With ionisation')
 plt.xlabel("Wavelength (nm)")
 plt.ylabel("Spectral energy density (J/m)")
-plt.title('Neon, 3mJ, (0,3.5)bar', size=24)
-print('Neon width with all = {}'.format(rms_width(λ*(10**9), Iλ)))
+plt.title('Neon, 1.5mJ, (0,3.5)bar', size=24)
 
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6), plasma=false)')
 Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
@@ -70,27 +68,8 @@ Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
 Iλ = Main.Iλ
 
 plt.plot(λ*(10**9), Iλ, label='Without ionisation')
-print('Neon width without ionisation = {}'.format(rms_width(λ*(10**9), Iλ)))
-
-Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6), kerr=false)')
-Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
-λ = Main.λ
-Iλ = Main.Iλ
-
-plt.plot(λ*(10**9), Iλ, label='Without Kerr effect')
-#plt.legend(fontsize=16)
-print('Neon width without Kerr = {}'.format(rms_width(λ*(10**9), Iλ)))
-
-Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6), kerr=false, plasma=false)')
-Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
-λ = Main.λ
-Iλ = Main.Iλ
-
-plt.plot(λ*(10**9), Iλ, label='Without both')
 plt.legend(fontsize=16)
-#print('Neon width without Kerr = {}'.format(rms_width(λ*(10**9), Iλ)))
 
-"""
 # Argon test
 gas = "Ar"
 energy = 1.5e-3
@@ -101,33 +80,22 @@ Main.eval("gas = Symbol(gas_str)")
 Main.pressure = pressure
 Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
 
-Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
+Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6), kerr=False)')
 Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
 λ = Main.λ
 Iλ = Main.Iλ
 
 plt.figure()
-plt.plot(λ*(10**9), Iλ, label='With all')
+plt.plot(λ*(10**9), Iλ, label='With ionisation')
 plt.xlabel("Wavelength (nm)")
 plt.ylabel("Spectral energy density (J/m)")
 plt.title('Argon, 1.5mJ, (0,1.5)bar', size=24)
-print('Argon width with all = {}'.format(rms_width(λ*(10**9), Iλ)))
 
-Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6), plasma=false)')
+Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6), plasma=false, kerr=false)')
 Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
 λ = Main.λ
 Iλ = Main.Iλ
 
 plt.plot(λ*(10**9), Iλ, label='Without ionisation')
-print('Argon width without ionisation = {}'.format(rms_width(λ*(10**9), Iλ)))
-
-Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6), kerr=false)')
-Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
-λ = Main.λ
-Iλ = Main.Iλ
-
-plt.plot(λ*(10**9), Iλ, label='Without Kerr effect')
 plt.legend(fontsize=16)
-print('Argon width without Kerr = {}'.format(rms_width(λ*(10**9), Iλ)))
-"""
 plt.show()
