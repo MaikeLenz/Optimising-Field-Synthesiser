@@ -78,9 +78,19 @@ Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
 Iλ = Main.Iλ
 
 plt.plot(λ*(10**9), Iλ, label='Without Kerr effect')
-plt.legend(fontsize=16)
+#plt.legend(fontsize=16)
 print('Neon width without Kerr = {}'.format(rms_width(λ*(10**9), Iλ)))
 
+Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6), kerr=false, plasma=false)')
+Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
+λ = Main.λ
+Iλ = Main.Iλ
+
+plt.plot(λ*(10**9), Iλ, label='Without both')
+plt.legend(fontsize=16)
+#print('Neon width without Kerr = {}'.format(rms_width(λ*(10**9), Iλ)))
+
+"""
 # Argon test
 gas = "Ar"
 energy = 1.5e-3
@@ -119,4 +129,5 @@ Iλ = Main.Iλ
 plt.plot(λ*(10**9), Iλ, label='Without Kerr effect')
 plt.legend(fontsize=16)
 print('Argon width without Kerr = {}'.format(rms_width(λ*(10**9), Iλ)))
+"""
 plt.show()
