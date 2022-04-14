@@ -1,6 +1,6 @@
 import pandas as pd
 from matplotlib import pyplot as plt
-plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
+#plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
 
 df_duration = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\gaussian_input\\angfreq_bandwidth\\data\\duration_vs_rms_width.csv")
 df_energy = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\gaussian_input\\angfreq_bandwidth\\data\\energy_vs_rms_width.csv")
@@ -46,28 +46,28 @@ f_ax6.xaxis.set_tick_params(labelsize=12)
 f_ax6.yaxis.set_tick_params(labelsize=12)
 
 
-f_ax1.plot(df_duration.iloc[:,0][8:], df_duration.iloc[:,1][8:], '+', label='Luna')
-f_ax1.plot(df_duration.iloc[:,0][8:], df_duration.iloc[:,2][8:], '+', label='Theoretical')
+f_ax1.plot(df_duration.iloc[:,0][8:], df_duration.iloc[:,1][8:], color='black', label='Luna')
+f_ax1.plot(df_duration.iloc[:,0][8:], df_duration.iloc[:,2][8:], '--', color='tab:red', label='Theoretical')
 f_ax1.set_xlabel('Pulse Duration (fs)', fontsize=16)
 
-f_ax2.plot(df_energy.iloc[:,0], df_energy.iloc[:,1], '+', label='Luna')
-f_ax2.plot(df_energy.iloc[:,0], df_energy.iloc[:,2], '+', label='Theoretical')
+f_ax2.plot(df_energy.iloc[:,0], df_energy.iloc[:,1], color='black', label='Luna')
+f_ax2.plot(df_energy.iloc[:,0], df_energy.iloc[:,2], '--', color='tab:red', label='Theoretical')
 f_ax2.set_xlabel('Pulse Energy (mJ)', fontsize=16)
 
-f_ax3.plot(df_flength.iloc[:,0][:50], df_flength.iloc[:,1][:50], '+', label='Luna')
-f_ax3.plot(df_flength.iloc[:,0][:50], df_flength.iloc[:,2][:50], '+', label='Theoretical')
+f_ax3.plot(df_flength.iloc[:,0][:50], df_flength.iloc[:,1][:50], color='black', label='Luna')
+f_ax3.plot(df_flength.iloc[:,0][:50], df_flength.iloc[:,2][:50], '--', color='tab:red', label='Theoretical')
 f_ax3.set_xlabel('Fibre Length (m)', fontsize=16)
 
-f_ax4.plot(df_pressure.iloc[:,0], df_pressure.iloc[:,1], '+', label='Luna')
-f_ax4.plot(df_pressure.iloc[:,0], df_pressure.iloc[:,2], '+', label='Theoretical')
+f_ax4.plot(df_pressure.iloc[:,0], df_pressure.iloc[:,1], color='black', label='Luna')
+f_ax4.plot(df_pressure.iloc[:,0], df_pressure.iloc[:,2], '--', color='tab:red', label='Theoretical')
 f_ax4.set_xlabel('Pressure (bar)', fontsize=16)
 
-f_ax5.plot(df_radius.iloc[:,0], df_radius.iloc[:,1], '+', label='Luna')
-f_ax5.plot(df_radius.iloc[:,0], df_radius.iloc[:,2], '+', label='Theoretical')
+f_ax5.plot(df_radius.iloc[:,0], df_radius.iloc[:,1], color='black', label='Luna')
+f_ax5.plot(df_radius.iloc[:,0], df_radius.iloc[:,2], '--', color='tab:red', label='Theoretical')
 f_ax5.set_xlabel('Fibre Radius (μm)', fontsize=16)
 
-f_ax6.plot(df_wavelength.iloc[:,0], df_wavelength.iloc[:,1], '+', label='Luna Simulation')
-f_ax6.plot(df_wavelength.iloc[:,0], df_wavelength.iloc[:,2], '+', label='Theoretical')
+f_ax6.plot(df_wavelength.iloc[:,0], df_wavelength.iloc[:,1], color='black', label='Luna Simulation')
+f_ax6.plot(df_wavelength.iloc[:,0], df_wavelength.iloc[:,2], '--', color='tab:red', label='Theoretical')
 f_ax6.set_xlabel('Central Wavelength (nm)', fontsize=16)
 f_ax1.legend(fontsize=16)
 
