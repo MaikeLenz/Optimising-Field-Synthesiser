@@ -44,7 +44,7 @@ plt.show()
 # Neon test
 gas = "Ne"
 energy = 1.5e-3
-pressure = (0, 3.5)
+pressure = (0, 5)
 Main.energy = energy
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
@@ -60,7 +60,7 @@ plt.figure()
 plt.plot(λ*(10**9), Iλ, label='With ionisation')
 plt.xlabel("Wavelength (nm)")
 plt.ylabel("Spectral energy density (J/m)")
-plt.title('Neon, 1.5mJ, (0,3.5)bar', size=24)
+#plt.title('Neon, 1.5mJ, (0,3.5)bar', size=24)
 
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6), plasma=false)')
 Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
@@ -73,14 +73,14 @@ plt.legend(fontsize=16)
 # Argon test
 gas = "Ar"
 energy = 1.5e-3
-pressure = (0, 1.5)
+pressure = (0, 5)
 Main.energy = energy
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
 Main.pressure = pressure
 Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
 
-Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6), kerr=False)')
+Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
 Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
 λ = Main.λ
 Iλ = Main.Iλ
@@ -89,9 +89,9 @@ plt.figure()
 plt.plot(λ*(10**9), Iλ, label='With ionisation')
 plt.xlabel("Wavelength (nm)")
 plt.ylabel("Spectral energy density (J/m)")
-plt.title('Argon, 1.5mJ, (0,1.5)bar', size=24)
+#plt.title('Argon, 1.5mJ, (0,1.5)bar', size=24)
 
-Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6), plasma=false, kerr=false)')
+Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6), plasma=false)')
 Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
 λ = Main.λ
 Iλ = Main.Iλ
