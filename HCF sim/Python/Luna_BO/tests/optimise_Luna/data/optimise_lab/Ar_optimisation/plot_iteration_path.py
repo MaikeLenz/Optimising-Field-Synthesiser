@@ -22,14 +22,14 @@ pressure = df_iter.iloc[:,3] # bar
 grating_pos = df_iter.iloc[:,4] # m
 
 ax4.set_ylim(0, 5.5e14)
-ax4.plot(iteration, target_width_iter, 'x', label='Points Probed')
+ax4.plot(iteration, target_width_iter, 'x', label='Points Probed', color='tab:blue')
 ax4.set_xlabel('Number of Iterations')
 ax4.set_ylabel('RMS Width, \s')
-ax1.plot(iteration, energy*(10**3), 'x')
+ax1.plot(iteration, energy*(10**3), 'x', color='tab:blue')
 ax1.set_ylabel('Energy (mJ)')
-ax2.plot(iteration, pressure, 'x')
+ax2.plot(iteration, pressure, 'x', color='tab:blue')
 ax2.set_ylabel('Pressure (bar)')
-ax3.plot(iteration, grating_pos*(10**3), 'x')
+ax3.plot(iteration, grating_pos*(10**3), 'x', color='tab:blue')
 ax3.set_ylabel('Grating Position (mm)')
 ax3.set_xlabel('Number of Iterations')
 
@@ -40,10 +40,10 @@ energy = df_optimum.iloc[:,2] # J
 pressure = df_optimum.iloc[:,3] # bar
 grating_pos = df_optimum.iloc[:,4] # m
 
-ax4.plot(iteration[50:], target_width_opt, linewidth=4, label='Optimum')
-ax1.plot(iteration[50:], energy*(10**3), linewidth=4)
-ax2.plot(iteration[50:], pressure, linewidth=4)
-ax3.plot(iteration[50:], grating_pos*(10**3), linewidth=4)
+ax4.plot(iteration[50:], target_width_opt, linewidth=4, label='Optimum', color='tab:red')
+ax1.plot(iteration[50:], energy*(10**3), linewidth=4, color='tab:red')
+ax2.plot(iteration[50:], pressure, linewidth=4, color='tab:red')
+ax3.plot(iteration[50:], grating_pos*(10**3), linewidth=4, color='tab:red')
 ax4.legend(fontsize=16)
 
 plt.show()

@@ -184,7 +184,7 @@ omega_list=2*np.pi*c/(wavel_nm*10**-9)
 Main.ω = omega_list[::-1]
 Main.Iω = intens[::-1]
 
-
+"""
 grating_pair_displacement_in = grating_pos[0]
 energy_in = energy[0]
 Main.energy = energy_in
@@ -215,7 +215,7 @@ plt.plot(t,Et)
 plt.xlabel("Time (s)")
 plt.ylabel("Electric Field (a.u.)")
 plt.title('Optimum after Random Search')
-
+"""
 Main.ω = omega_list[::-1]
 Main.Iω = intens[::-1]
 grating_pair_displacement_in = grating_pos[999]
@@ -239,8 +239,12 @@ Et_allz = Main.Et # array of Et at all z
 Et = Et_allz[:,-1] # last item in each element is pulse shape at the end
 f = c/λ
 results.append(rms_width(f, Iλ))
+print('RMS width of optimum = {}'.format(rms_width(f, Iλ)))
 plt.figure(1)
-plt.plot(λ*(10**9),Iλ, label='Optimum after 1000 iterations')
+#plt.plot(λ*(10**9),Iλ, label='Optimum after 1000 iterations')
+plt.plot(f,Iλ, label='Optimum after 1000 iterations', color='black')
+plt.xlabel('Angular Frequency (/s)')
+plt.ylabel('Intensity (a.u.)')
 plt.figure(3)
 plt.plot(t,Et)
 plt.xlabel("Time (s)")
@@ -248,8 +252,8 @@ plt.ylabel("Electric Field (a.u.)")
 plt.title('Optimum after Iterations')
 
 
-print(results)
-print('Optimum is {} times larger than no iterations'.format(results[1]/results[0]))
+#print(results)
+#print('Optimum is {} times larger than no iterations'.format(results[1]/results[0]))
 
 # Calculate SPM Optimum
 wavel_nm = np.array(columns[0])
@@ -279,9 +283,10 @@ Et_allz = Main.Et # array of Et at all z
 Et = Et_allz[:,-1] # last item in each element is pulse shape at the end
 f = c/λ
 plt.figure(1)
-plt.plot(λ*(10**9),Iλ, label='SPM Optimum')
+#plt.plot(λ*(10**9),Iλ, label='SPM Optimum')
+plt.plot(f,Iλ, '--', color='tab:red', label='SPM prediction')
 plt.legend(fontsize=16)
 
-print('Theoretical SPM Width = {}'.format(theoretical_width(Main.radius, Main.flength, pressure_in, Main.λ0, Main.τfwhm, energy_in, Main.gas_str)))
-print('RMS Width = {}'.format(rms_width(f, Iλ)))
+#print('Theoretical SPM Width = {}'.format(theoretical_width(Main.radius, Main.flength, pressure_in, Main.λ0, Main.τfwhm, energy_in, Main.gas_str)))
+print('RMS Width of SPM prediction = {}'.format(rms_width(f, Iλ)))
 plt.show()
