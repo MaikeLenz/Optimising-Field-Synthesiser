@@ -19,7 +19,7 @@ plt.rcParams['axes.labelsize'] = 16
 
 #pressures_Ar = np.linspace(0.1,5,5)
 pressures_Ar=np.array([0.01,1,2,3,4,5])
-pressures_Ne = np.linspace(2.5,10,5)
+pressures_Ne = np.array([0.1,2,4,6,8,10])
 c = 299792458 # m/s
 radius = 175e-6 # HCF core radius
 flength = 1.05 # HCF length
@@ -46,8 +46,8 @@ lam = 2*np.pi*c/omega
 #plt.show()
 
 # Neon test
-gas = "Ar"
-energy = 1.5e-3
+gas = "Ne"
+energy = 3e-3
 Main.energy = energy
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
@@ -55,8 +55,8 @@ lam_io=[]
 I_lam_io=[]
 lam=[]
 I_lam=[]
-for i in range(len(pressures_Ar)):
-    Main.pressure = pressures_Ar[i]
+for i in range(len(pressures_Ne)):
+    Main.pressure = pressures_Ne[i]
     Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
 
     Main.duv = Main.eval('duv1 = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
@@ -73,11 +73,10 @@ for i in range(len(pressures_Ar)):
     lam.append(λ)
     I_lam.append(Iλ)
 
-fig, axs = plt.subplot_mosaic([['a)']],constrained_layout=True)
-ax1=axs["a)"]
-#ax2=axs["b)"]
+fig, ax1 = plt.subplots(1,1)
+#ax1=axs[0,0]
 i1=0
-i2=10000
+i2=len(lam[0]/3)
 for i in range(len(lam)):
     if i==0:
         ax1.plot(lam_io[i][i1:i2]*(10**9), I_lam_io[i][i1:i2]/max(I_lam_io[i])+i, c="black", label="With Ionisation")
@@ -85,9 +84,11 @@ for i in range(len(lam)):
     else:
         ax1.plot(lam_io[i][i1:i2]*(10**9), I_lam_io[i][i1:i2]/max(I_lam_io[i])+i, c="black")
         ax1.plot(lam[i][i1:i2]*10**9, I_lam[i][i1:i2]/max(I_lam[i]) +i,c="tab:red",linestyle="--")
+    ax1.annotate("%s Bar"%(pressures_Ne[i]), (lam[i][i2-50]*10**9,i+0.1), fontsize=14)
 ax1.set_xlabel("Wavelength (nm)")
-ax1.set_ylabel("Spectral energy density (J/m)")
-ax1.legend(fontsize=14)
+ax1.set_ylabel("Normalised Spectral energy density")
+ax1.legend(fontsize=14, loc=(1.04,0))
+ax1.set_yticks([])
 #ax1.set_title('With Ionisation, Neon, 1.5mJ', size=24)
 
 #ax2.set_xlabel("Wavelength (nm)")
