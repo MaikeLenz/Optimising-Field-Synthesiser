@@ -17,8 +17,9 @@ plt.rcParams['xtick.labelsize'] = 12
 plt.rcParams['ytick.labelsize'] = 12
 plt.rcParams['axes.labelsize'] = 16
 
-pressures_Ar = np.linspace(0.5,1.5,2)
-pressures_Ne = np.linspace(2.5,10,10)
+#pressures_Ar = np.linspace(0.1,5,5)
+pressures_Ar=np.array([0.01,1,2,3,4,5])
+pressures_Ne = np.linspace(2.5,10,5)
 c = 299792458 # m/s
 radius = 175e-6 # HCF core radius
 flength = 1.05 # HCF length
@@ -45,7 +46,7 @@ lam = 2*np.pi*c/omega
 #plt.show()
 
 # Neon test
-gas = "Ne"
+gas = "Ar"
 energy = 1.5e-3
 Main.energy = energy
 Main.gas_str = gas
@@ -54,8 +55,8 @@ lam_io=[]
 I_lam_io=[]
 lam=[]
 I_lam=[]
-for i in range(len(pressures_Ne)):
-    Main.pressure = pressures_Ne[i]
+for i in range(len(pressures_Ar)):
+    Main.pressure = pressures_Ar[i]
     Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
 
     Main.duv = Main.eval('duv1 = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
