@@ -14,13 +14,13 @@ Main.using("Luna")
 radius = 175e-6
 flength = 1
 gas = "Ne"
-P=5
+P=3
 pressure1 = (0,P)
 pressure2=(P,0)
 pressure3=(2/3)*P
 λ0 = 800e-9
 τfwhm = 30e-15
-energy = 2.5e-3
+energy = 1.2e-3
 
 # Assign arguments to Main namespace
 Main.radius = radius
@@ -45,7 +45,7 @@ Iλ = Main.Iλ
 #Et=Et_allz[:,-1] #last item in each element is pulse shape at the end
 #Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
 
-plt.plot(10**9*λ, Iλ, linewidth=2.0, label="0 to %s bar"%P)
+plt.plot(10**9*λ, Iλ, linewidth=2.0, label="0 to %s bar"%P,color="black")
 
 #########################################################################################################################################
 # Assign arguments to Main namespace
@@ -71,7 +71,7 @@ Iλ = Main.Iλ
 #Et=Et_allz[:,-1] #last item in each element is pulse shape at the end
 #Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
 
-plt.plot(10**9*λ, Iλ,label="%s to 0 bar"%P)
+plt.plot(10**9*λ, Iλ,label="%s to 0 bar"%P, linestyle="--", color="tab:red")
 
 ########################################################################################################
 # Assign arguments to Main namespace
@@ -97,7 +97,7 @@ Iλ = Main.Iλ
 #Et=Et_allz[:,-1] #last item in each element is pulse shape at the end
 #Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
 
-plt.plot(10**9*λ, Iλ, '--', label="%s bar"%(round((2/3)*P,2)))
+plt.plot(10**9*λ, Iλ,linestyle= 'dashdot', label="%s bar"%(round((2/3)*P,2)), color="orange")
 
 plt.xlabel("Wavelength, nm")
 plt.ylabel("Intensity, a.u.")
