@@ -17,6 +17,8 @@ plt.rcParams['xtick.labelsize'] = 12
 plt.rcParams['ytick.labelsize'] = 12
 plt.rcParams['axes.labelsize'] = 16
 
+pressures_Ar = np.linspace(0.5,1.5,5)
+pressures_Ne = np.linspace(2.5,3.5,5)
 c = 299792458 # m/s
 radius = 175e-6 # HCF core radius
 flength = 1.05 # HCF length
@@ -44,28 +46,45 @@ plt.show()
 # Neon test
 gas = "Ne"
 energy = 1.5e-3
-pressure = (0, 3.5)
 Main.energy = energy
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
-Main.pressure = pressure
-Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
+lam_io=np.array([])
+I_lam_io=np.array([])
+lam=np.array([])
+I_lam=np.array([])
+for i in range(len(pressures_Ne)):
+    Main.pressure = pressures_Ne[i]
+    Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
 
-Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6),kerr=false)')
-Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
-λ = Main.λ
-Iλ = Main.Iλ
+    Main.duv = Main.eval('duv1 = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6),kerr=false)')
+    Main.eval("λ1, Iλ1 = Processing.getIω(duv1, :λ, flength)")
+    λ = Main.λ1
+    Iλ = Main.Iλ1
+    lam_io=np.append(lam_io,λ)
+    I_lam_io=np.append(I_lam_io,Iλ)
 
-plt.figure()
-plt.plot(λ*(10**9), Iλ, label='With ionisation')
-plt.xlabel("Wavelength (nm)")
-plt.ylabel("Spectral energy density (J/m)")
-plt.title('Neon, 1.5mJ, (0,3.5)bar', size=24)
+    Main.duv = Main.eval('duv2 = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6), plasma=false, kerr=false)')
+    Main.eval("λ2, Iλ2 = Processing.getIω(duv2, :λ, flength)")
+    λ = Main.λ2
+    Iλ = Main.Iλ2
+    lam=np.append(lam,λ)
+    I_lam=np.append(I_lam,Iλ)
 
-Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6), plasma=false, kerr=false)')
-Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
-λ = Main.λ
-Iλ = Main.Iλ
+fig, axs = plt.subplot_mosaic([['a)', 'b)']],constrained_layout=True)
+ax1=axs["a)"]
+ax2=axs["b)"]
+for i in range(len(lam)):
+    ax1.plot(lam_io[i]*(10**9), I_lam_io[i]/max(I_lam_io[i])+i, c="black")
+    ax2.plot(lam[i]*10**9, I_lam[i]/max(I_lam[i]) +i,c="black")
+ax1.set_xlabel("Wavelength (nm)")
+ax1.set_ylabel("Spectral energy density (J/m)")
+ax1.set_title('With Ionisation, Neon, 1.5mJ', size=24)
+
+ax2.set_xlabel("Wavelength (nm)")
+ax2.set_ylabel("Spectral energy density (J/m)")
+ax2.set_title('Without Ionisation, Neon, 1.5mJ', size=24)
+"""
 
 plt.plot(λ*(10**9), Iλ, label='Without ionisation')
 plt.legend(fontsize=16)
@@ -98,4 +117,5 @@ Iλ = Main.Iλ
 
 plt.plot(λ*(10**9), Iλ, label='Without ionisation')
 plt.legend(fontsize=16)
+"""
 plt.show()
