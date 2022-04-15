@@ -120,9 +120,9 @@ for i in range(len(t_opt)):
 
 
 #Fourier transform output spectra
-t_FT,E_FT= f_to_t(omegaE_opt/(2*np.pi), Eomega_opt)
+#t_FT,E_FT= f_to_t(omegaE_opt/(2*np.pi), Eomega_opt)
 #Fourier transformed intensity envelopes
-IFT_t_opt=np.abs(E_FT)**2
+#IFT_t_opt=np.abs(E_FT)**2
 
 ##############################################################################################################################
 # Assign arguments to Main namespace
@@ -183,10 +183,10 @@ Eomega_opt2=Eomega_opt2[:,-1]
 I_t_opt2=np.abs(Et_opt2)**2
     
 
-t_FT2,E_FT2=f_to_t(omegaE_opt2/(2*np.pi), Eomega_opt2)
+#t_FT2,E_FT2=f_to_t(omegaE_opt2/(2*np.pi), Eomega_opt2)
 
 
-IFT_t_opt2=np.abs(E_FT2)**2
+#IFT_t_opt2=np.abs(E_FT2)**2
 
 ##############################################################################################################################
 # Assign arguments to Main namespace
@@ -247,10 +247,10 @@ Eomega_opt3=Eomega_opt3[:,-1]
 I_t_opt3=np.abs(Et_opt3)**2
     
 
-t_FT3,E_FT3=f_to_t(omegaE_opt3/(2*np.pi), Eomega_opt3)
+#t_FT3,E_FT3=f_to_t(omegaE_opt3/(2*np.pi), Eomega_opt3)
 
 
-IFT_t_opt3=np.abs(E_FT3)**2
+#IFT_t_opt3=np.abs(E_FT3)**2
 
 print("Optimised")
 print("wavel width ",rms_width(λ_opt,Iλ_opt))
@@ -290,7 +290,7 @@ plt.ylabel("Intensity, a.u.")
 plt.figure()
 #plt.plot(t,Et,label="SPM Prediction")
 
-
+"""
 from scipy.integrate import simps
 integral_opt=simps(np.abs(Et_opt),t_opt)
 integral_max=simps(np.abs(Et_opt3),t_opt3)
@@ -307,7 +307,7 @@ plt.plot(t_opt3,Et_opt3,label="Average Pressure Throughout")
 plt.xlabel("time,s")
 plt.ylabel("Electric field, a.u.")
 plt.legend()
-
+"""
 ##########################################################################################
 #plot pressure distribution
 
@@ -334,6 +334,7 @@ plt.legend()
 
 ########################################################################################
 #plot fourier transformed output electric fields
+"""
 plt.figure()
 plt.plot(t_FT,E_FT,label="Optimised")
 plt.plot(t_FT2,E_FT2,label="Reverse Pressure")
@@ -355,4 +356,5 @@ plt.plot(t_opt3,I_t_opt3,label="Average Pressure Throughout")
 plt.xlabel("Time, s")
 plt.ylabel("Intensity, a.u.")
 plt.legend()
+"""
 plt.show()
