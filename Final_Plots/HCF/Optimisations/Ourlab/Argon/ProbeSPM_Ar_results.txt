@@ -1,0 +1,9 @@
+Results from ourlab Argon optimisation:
+Probed SPM optimum
+Pbounds: energy (1,1.1)mJ, pressure (0.396,0.66)bar, grating (-0.05,0.05)mm
+
+Results: energy 1.10mJ, pressure 0.66bar, grating 3.94e-3mm
+RMS ang. freq. width = 1993560004224991.2
+
+RMS ang. freq. width of SPM optimum = 1945517722811820.0
+Percentage achieved of the SPM width = 102.47%
