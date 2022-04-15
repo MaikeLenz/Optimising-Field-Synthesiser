@@ -1,0 +1,10 @@
+Results from ourlab Argon optimisation:
+Used measured experimental pulse input.
+Time taken to run = 8 hours, 1000 iterations
+Pbounds: energy (0.8,1.5)mJ, pressure (0.5,1.5)bar, grating (-0.5,0.5)mm
+
+Results: energy 1.09mJ, pressure 0.50bar, grating -6.02e-3mm
+RMS ang. freq. width = 1838584966967059.8
+
+RMS ang. freq. width of SPM optimum = 2337300649021166.0
+Percentage achieved of the SPM width = 78.66%
