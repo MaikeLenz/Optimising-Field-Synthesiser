@@ -21,7 +21,7 @@ initial_values_HCF=[radius, flength, gas,pressure_init, wavel, energy_init,durat
 
 inits=50
 iters=0
-result,iterations=Luna_BO_debug(params, initial_values_HCF, function=max_peak_power_300nm, init_points=inits, n_iter=iters)
+result,iterations=Luna_BO_debug(params, initial_values_HCF, function=max_peak_power_1300nm_quadratic_phase, init_points=inits, n_iter=iters)
 target = result['target']
 grating=result["params"]["grating_pair_displacement"]
 pressure=result["params"]["pressure"]
@@ -32,7 +32,7 @@ flength=result["params"]["flength"]
 
 header = ['init_points', 'n_iter', 'peak power', 'energy, J', 'pressure, bar', 'radius, m', 'flength, m', 'FWHM, s', 'wavel, m', 'gas', 'grating_pair_displacement, m']
 #with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\peak_power_1200e-9wavelwindow_varyfwhm__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'a', encoding='UTF8', newline='') as f:
-with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_with_FT_and_phase\\data\\300nm_He__init_50_niter_0.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_with_FT_and_phase\\data\\1300nm_phasecondition\\1300nm_He__init_50_niter_0.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f) # peak_power_1000e-9wavelwindow__init_50_niter_100
     # write the header
     writer.writerow(header)
