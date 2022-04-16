@@ -14,8 +14,12 @@ sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF 
 from get_phase import *
 
 #sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\")
-sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\")
-from ErrorCorrectionFunction_integrate import *
+#sys.path.append("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\")
+#from ErrorCorrectionFunction_integrate import *
+
+#sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\Optimise_with_Fourier_Transforms\\")
+sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\Optimise_with_Fourier_Transforms\\')
+from envelopes import *
 
 #julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
 julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
@@ -66,24 +70,58 @@ c=299792458
 lambda0 = (2*np.pi*c)/om0
 phase = get_phase(om, Eom, lambda0)
 
+# Smooth electric field using super Gaussian filter
+λ=(2*np.pi*c)/om
+filter = superGauss(λ, 300e-9, 300e-9*0.1)
+Eom_smooth = []
+for i in range(len(Eom)):
+    Eom_smooth.append(Eom[i]*filter[i])
+
 # Slice phase to only select part within pulse
-thresh=0.1
-rows = np.where(np.abs(Eom)**2 > max(np.abs(Eom)**2)*thresh)[0]
+thresh = 0.1
+rows = np.where(np.abs(Eom_smooth)**2 > max(np.abs(Eom_smooth)**2)*thresh)[0]
 min_index = rows[0]
 max_index = rows[-1]
 phase_slice = phase[min_index-25:max_index+25]
 om_slice = om[min_index-25:max_index+25]
 
-# Fit a quadratic to the phase and determine the rms error
+# Fit a quadratic to the phase and remove this
 def quad(x, a, b, c):
     return a*(x**2) + b*x + c
 quad_popt, _ = curve_fit(quad, om_slice, phase_slice, p0=[1,1,0])
-rms_phase_err = errorCorrection_int(om_slice, phase_slice, quad(om_slice, *quad_popt))
+phase_to_remove = quad(om_slice, *quad_popt)
+new_phase = np.zeros(len(om))
+for i in range(len(phase_to_remove)):
+    new_phase[i+min_index-25] += phase_slice[i] - phase_to_remove[i]
+
+# Add the phase back to the intensity profile
+Eom_complex = []
+for i in range(len(om)):
+    Eom_complex.append(np.abs(Eom_smooth[i])*np.exp(1j*new_phase[i]))
+
+# Now Fourier transform
+Et = np.fft.ifft(Eom_complex)
+dom = om[2] - om[1]
+df = dom/(2*np.pi)
+t = np.fft.fftshift(np.fft.fftfreq(len(Et), d=df))
+popt,_ = curve_fit(gauss_envelope,t,np.abs(Et)**2, p0=[max(np.abs(Et)**2),2e-14,t[np.argmax(np.abs(Et)**2)]])
+print(popt[0])
+
+f, ax = plt.subplots()
+ax.plot(om, phase, '--', label='Phase Output from Luna')
+ax.plot(om, new_phase, '--', label='Phase After')
+ax.plot(om_slice, phase_to_remove, '--', label='Phase Fit')
+ax.set_xlabel('Omega')
+ax.set_ylabel('Phase')
+ax.legend()
+
+ax2 = plt.twinx(ax)
+ax2.plot(om, np.abs(Eom_smooth)**2)
+ax2.set_ylabel('Intensity')
 
 plt.figure()
-plt.plot(om_slice, phase_slice, label='Phase')
-plt.plot(om_slice, quad(om_slice, *quad_popt), label='Fit')
-plt.legend()
+plt.plot(t, Et)
+plt.xlabel('Time')
+plt.ylabel('Electric Field')
 
-print(rms_phase_err)
 plt.show()
