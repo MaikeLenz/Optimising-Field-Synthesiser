@@ -223,36 +223,40 @@ def max_peak_power_300nm_quadratic_phase(om, Eom):
 def max_peak_power_300nm_quadratic_phase(om, Eom):
     # First get phase of pulse in freq domain
     om0 = moment(om,np.abs(Eom)**2,1)/moment(om,np.abs(Eom)**2,0) # Determine central frequency
-    c = 299792458
+    c=299792458
     lambda0 = (2*np.pi*c)/om0
     phase = get_phase(om, Eom, lambda0)
 
-    # Filter phase to only select part within pulse
+    # Smooth electric field using super Gaussian filter
     λ=(2*np.pi*c)/om
-    index1 = np.where(om == 300e-9 - 300e-9*0.1)
-    index2 = np.where(om == 300e-9 + 300e-9*0.1)
-    phase_slice = phase[index1:index2]
-    om_slice = om[index1:index2]
+    filter = superGauss(λ, 300e-9, 300e-9*0.1)
+    Eom_smooth = []
+    for i in range(len(Eom)):
+        Eom_smooth.append(Eom[i]*filter[i])
 
-    # Fit a quadratic to the phase and take this away from the overall phase
+    # Slice phase to only select part within pulse
+    thresh = 0.1
+    rows = np.where(np.abs(Eom_smooth)**2 > max(np.abs(Eom_smooth)**2)*thresh)[0]
+    min_index = rows[0]
+    max_index = rows[-1]
+    phase_slice = phase[min_index-25:max_index+25]
+    om_slice = om[min_index-25:max_index+25]
+
+    # Fit a quadratic to the phase and remove this
     def quad(x, a, b, c):
         return a*(x**2) + b*x + c
     quad_popt, _ = curve_fit(quad, om_slice, phase_slice, p0=[1,1,0])
     phase_to_remove = quad(om_slice, *quad_popt)
+    new_phase = np.zeros(len(om))
     for i in range(len(phase_to_remove)):
-        phase[i+index1] -= phase_to_remove[i]
+        new_phase[i+min_index-25] += phase_slice[i] - phase_to_remove[i]
 
-    # Smooth using super Gaussian filter
-    filter = superGauss(λ, 300e-9, 300e-9*0.1)
-    Eom_abs_smooth = []
-    for i in range(len(Eom)):
-        Eom_abs_smooth.append(np.abs(Eom[i])*filter[i])
-    
+    # Add the phase back to the intensity profile
+    Eom_complex = []
+    for i in range(len(om)):
+        Eom_complex.append(np.abs(Eom_smooth[i])*np.exp(-1j*new_phase[i]))
+
     # Now Fourier transform
-    Et = np.fft.ifft(Eom_smooth)
-    dom = om[2] - om[1]
-    df = dom/(2*np.pi)
-    t = np.fft.fftshift(np.fft.fftfreq(len(Et), d=df))
-    popt,_ = curve_fit(gauss_envelope,t,np.abs(Et)**2, p0=[max(np.abs(Et)**2),2e-14,t[np.argmax(np.abs(Et)**2)]])
+    Et = np.fft.ifft(Eom_complex)
 
-    return popt[0] + 2*rms_phase_err
+    return max(np.abs(Et)**2)

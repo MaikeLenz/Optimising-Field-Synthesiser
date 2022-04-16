@@ -100,24 +100,20 @@ for i in range(len(om)):
     Eom_complex.append(np.abs(Eom_smooth[i])*np.exp(-1j*new_phase[i]))
 
 # Now Fourier transform
+"""
 def f_to_t_irfft(f, Ef):
-    """
-    Input of f and Ef
-    Returns t, Et
-    """
     Et = np.fft.irfft(Ef)
     N = len(Ef) # Number of points
     df=np.abs(f[1]-f[0])#smallest frequency difference gives inverse of duration
     T=1/df#overall duration
     t=np.linspace(-T/2,T/2,len(Et))#construct time axis
     return t,Et
-"""    
+"""
 Et = np.fft.ifft(Eom_complex)
 dom = om[2] - om[1]
 df = dom/(2*np.pi)
 t = np.fft.fftshift(np.fft.fftfreq(len(Et), d=df))
-"""
-t, Et = f_to_t_irfft(om/(2*np.pi), Eom_complex)
+#t, Et = f_to_t_irfft(om/(2*np.pi), Eom_complex)
 popt,_ = curve_fit(gauss_envelope,t,np.abs(Et)**2, p0=[max(np.abs(Et)**2),2e-14,t[np.argmax(np.abs(Et)**2)]])
 print(popt[0])
 
