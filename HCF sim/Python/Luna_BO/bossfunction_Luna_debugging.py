@@ -200,8 +200,8 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         if 'energy' in i:
             #pbounds[i] = (0,1e-3)
             #pbounds[i] = (0.1e-3,2.0e-3)
-            #pbounds[i] = (0.1e-3, 1.5e-3)
-            pbounds[i] = (0.5e-3, 0.8e-3)
+            pbounds[i] = (0.5e-3, 1.2e-3)
+            #pbounds[i] = (0.5e-3, 0.8e-3)
 
         elif 'FWHM' in i:
             #pbounds[i] = (20e-15,50e-15)
@@ -218,7 +218,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
                 pbounds[i]=(0.66*1.0,8.0*0.66)
 
             if params_dict['gas_str']=="Ar":
-                pbounds[i] = (0.66*0.6, 0.66*1.0)
+                pbounds[i] = (0.66*0.6, 0.66*1.5)
     
             elif params_dict['gas_str']=="Ne":
                 pbounds[i] = (0.66*3.0, 0.66*3.5)
