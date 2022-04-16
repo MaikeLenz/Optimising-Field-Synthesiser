@@ -65,15 +65,15 @@ def max_peak_power_FT(om,Eom):
     Fourier transforms Eomega to Et and maximised amplitude there
     """
     Et = np.fft.ifft(Eom)
-    dom = om[2] - om[1]
-    df = dom/(2*np.pi)
-    t = np.fft.fftshift(np.fft.fftfreq(len(Et), d=df))
+    #dom = om[2] - om[1]
+    #df = dom/(2*np.pi)
+    #t = np.fft.fftshift(np.fft.fftfreq(len(Et), d=df))
 
-    popt,_=curve_fit(gauss_envelope,t,np.abs(Et)**2, p0=[max(np.abs(Et)**2),2e-14,t[np.argmax(np.abs(Et)**2)]])
+    #popt,_=curve_fit(gauss_envelope,t,np.abs(Et)**2, p0=[max(np.abs(Et)**2),2e-14,t[np.argmax(np.abs(Et)**2)]])
     #plt.plot(t,np.abs(Et)**2)
     #plt.plot(t,gauss_envelope(t,*popt))
     #plt.show()
-    return popt[0]
+    return max(np.abs(Et)**2)
 
 def peak_power_window(λ,Iλ):
     """

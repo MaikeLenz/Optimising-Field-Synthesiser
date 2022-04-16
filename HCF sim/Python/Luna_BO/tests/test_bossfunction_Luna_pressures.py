@@ -25,8 +25,8 @@ from bossfunction_Luna_pressures import *
 params=["pressure"]
 
 #values:  radius, flength, gas, pressure, wavelength, energy, τfwhm, grating_pair_separation
-gas="Ne"
-pressure_init=(0,5,5,5)
+gas="Ar"
+pressure_init=(0,1,1)
 radius_init=175e-6
 flength_init=1.05
 wavel=800e-9
