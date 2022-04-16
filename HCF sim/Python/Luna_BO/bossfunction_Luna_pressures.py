@@ -155,6 +155,9 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
 
         # Check if the point to be probed is under the critical power condition to avoid unphysical outputs.
         print(pressure_tuple)
+        τfwhm = Main.τfwhm
+
+        """
         Pav=P_avg(pressure_tuple[0],pressure_tuple[1])
         Main.avg_pressure=Pav
         print(Pav)
@@ -168,7 +171,7 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         P = Main.energy/(np.sqrt(np.pi)*tau)
         #power condition is 1 if we are in range and 0 if we are out of the physical range
         power_condition = int(Pmin <= P <= Pcrit)
-
+        """
     
         if Gaussian == False:
             if ImperialLab == False:
@@ -241,7 +244,7 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
         if function==max_intens_integral:
             return function(λ, Iλ, wavel_bounds)*power_condition
 
-        elif function ==max_peak_power_FT or function==max_peak_power_300nm or function==max_peak_power_300nm_envelope or function==max_peak_power_300nm_quadratic_phase:
+        elif function ==max_peak_power_FT or function==max_freq_bandwidth or function==max_peak_power_300nm_envelope or function==max_peak_power_300nm_quadratic_phase:
             return function(omega, Eomega)
         else:
             return function(λ, Iλ)#*power_condition #pass t and E to sub-target function
@@ -253,7 +256,7 @@ def Luna_BO_press(params, initial_values_HCF, function, Gaussian = False, Imperi
     for i in range(len(pressure_points)):
         if params_dict["gas_str"]=="Ne":
             #pbounds["pressure%s"%i]=(0.,3.0)
-            pbounds["pressure%s"%i]=(3.,5.)
+            pbounds["pressure%s"%i]=(2.,3.)
 
         elif params_dict["gas_str"]=="Ar":
             pbounds["pressure%s"%i]=(0.5,1.1)
