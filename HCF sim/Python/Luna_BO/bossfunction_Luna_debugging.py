@@ -251,9 +251,9 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
     #    #optimizer.probe(params={"grating_pair_displacement":0.0},lazy=True,)
 
 
-    elif params_dict['gas_str']=="Ne":
-        optimizer.probe(params={"energy": 1.1e-3, "pressure": 0.66*3.5, "grating_pair_displacement":0.0},lazy=True,)
-        #optimizer.probe(params={"grating_pair_displacement":0.0},lazy=True,)
+    #elif params_dict['gas_str']=="Ne":
+    #    optimizer.probe(params={"energy": 1.1e-3, "pressure": 0.66*3.5, "grating_pair_displacement":0.0},lazy=True,)
+    #    #optimizer.probe(params={"grating_pair_displacement":0.0},lazy=True,)
 
 
     optimizer.maximize(
