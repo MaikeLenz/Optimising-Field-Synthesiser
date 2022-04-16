@@ -20,7 +20,7 @@ sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\
 sys.path.append('C:\\Users\\iammo\\Documents\\\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\')
 sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 from pulse_with_GDD import *
-from Luna_subtarget import *
+from Luna_subtarget_Mollypaths import *
 from compressor_grating_to_values import *
 
 #filepath = 'C:\\Users\\iammo\\Documents\\'
@@ -200,7 +200,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         if 'energy' in i:
             #pbounds[i] = (0,1e-3)
             #pbounds[i] = (0.1e-3,2.0e-3)
-            pbounds[i] = (0.5e-3, 1.2e-3)
+            pbounds[i] = (0.5e-3, 1.5e-3)
             #pbounds[i] = (0.5e-3, 0.8e-3)
 
         elif 'FWHM' in i:

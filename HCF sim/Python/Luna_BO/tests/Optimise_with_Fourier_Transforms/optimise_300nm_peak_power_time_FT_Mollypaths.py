@@ -2,7 +2,7 @@ import sys
 import csv
 #sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\')
 sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\')
-from bossfunction_Luna_debugging import *
+from bossfunction_Luna_debugging_Mollypaths import *
 
 params=["energy", "pressure", "grating_pair_displacement", "radius", "flength"]
 
@@ -19,8 +19,8 @@ grating_init=0
 initial_values_HCF=[radius, flength, gas,pressure_init, wavel, energy_init,duration, grating_init]
 
 
-inits=10
-iters=10
+inits=50
+iters=1000
 result,iterations=Luna_BO_debug(params, initial_values_HCF, function=max_peak_power_300nm, init_points=inits, n_iter=iters)
 target = result['target']
 grating=result["params"]["grating_pair_displacement"]
@@ -29,14 +29,14 @@ energy=result["params"]["energy"]
 radius=result["params"]["radius"]
 flength=result["params"]["flength"]
 
-"""
+
 header = ['init_points', 'n_iter', 'peak power', 'energy, J', 'pressure, bar', 'radius, m', 'flength, m', 'FWHM, s', 'wavel, m', 'gas', 'grating_pair_displacement, m']
 #with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\peak_power_1200e-9wavelwindow_varyfwhm__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'a', encoding='UTF8', newline='') as f:
-with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\Optimise_with_Fourier_Transforms\\data\\300nm_'+gas+'__init_' + str(inits) + '_niter_' + str(iters) + '.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_with_FT_and_phase\\data\\300nm_He__init_50_niter_1000.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f) # peak_power_1000e-9wavelwindow__init_50_niter_100
     # write the header
     writer.writerow(header)
 
     # write the data
     writer.writerow([inits, iters, target, energy_init, pressure, radius, flength, duration, wavel, gas, grating])
-"""
+
