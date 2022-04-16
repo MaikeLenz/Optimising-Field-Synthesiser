@@ -278,24 +278,27 @@ def max_peak_power_1300nm_quadratic_phase(om, Eom):
     # Slice phase to only select part within pulse
     thresh = 0.1
     rows = np.where(np.abs(Eom_smooth)**2 > max(np.abs(Eom_smooth)**2)*thresh)[0]
-    min_index = rows[0]
-    max_index = rows[-1]
-    phase_slice = phase[min_index-25:max_index+25]
-    om_slice = om[min_index-25:max_index+25]
+    if len(rows) <= 1:
+        return 0
+    else:
+        min_index = rows[0]
+        max_index = rows[-1]
+        phase_slice = phase[min_index-25:max_index+25]
+        om_slice = om[min_index-25:max_index+25]
 
-    # Fit a quadratic to the phase and remove this
-    def quad(x, a, b, c):
-        return a*(x**2) + b*x + c
-    quad_popt, _ = curve_fit(quad, om_slice, phase_slice, p0=[1,1,0])
-    phase_to_remove = quad(om_slice, *quad_popt)
-    new_phase = np.zeros(len(om))
-    for i in range(len(phase_to_remove)):
-        new_phase[i+min_index-25] += phase_slice[i] - phase_to_remove[i]
+        # Fit a quadratic to the phase and remove this
+        def quad(x, a, b, c):
+            return a*(x**2) + b*x + c
+        quad_popt, _ = curve_fit(quad, om_slice, phase_slice, p0=[1,1,0])
+        phase_to_remove = quad(om_slice, *quad_popt)
+        new_phase = np.zeros(len(om))
+        for i in range(len(phase_to_remove)):
+            new_phase[i+min_index-25] += phase_slice[i] - phase_to_remove[i]
 
-    # Add the phase back to the intensity profile
-    Eom_complex = []
-    for i in range(len(om)):
-        Eom_complex.append(np.abs(Eom_smooth[i])*np.exp(-1j*new_phase[i]))
+        # Add the phase back to the intensity profile
+        Eom_complex = []
+        for i in range(len(om)):
+            Eom_complex.append(np.abs(Eom_smooth[i])*np.exp(-1j*new_phase[i]))
 
     # Now Fourier transform
     Et = np.fft.ifft(Eom_complex)
