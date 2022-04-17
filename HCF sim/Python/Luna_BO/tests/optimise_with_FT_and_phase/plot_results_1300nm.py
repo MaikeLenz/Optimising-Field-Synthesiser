@@ -35,10 +35,10 @@ Main.λ0 = λ0
 
 # Define optimum
 grating_pair_displacement_in = 0
-energy_in = 0
-pressure_in = 0
-radius_in = 0
-flength_in = 0
+energy_in = 1.5e-3
+pressure_in = 5
+radius_in = 150e-6
+flength_in = 8
 Main.energy = energy_in
 Main.pressure = pressure_in
 Main.radius = radius_in
