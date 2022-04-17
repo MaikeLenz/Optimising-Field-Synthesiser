@@ -82,7 +82,7 @@ Main.eval('Eω = duv["Eω"][:,end]')
 omega=Main.ω
 Eomega=Main.Eω
 
-phase=get_phase(omega,Eomega)
+phase=get_phase(omega,Eomega, wavel)
 #omega=omega[210:340]
 #phase=phase[210:340]
 #Eomega=Eomega[210:340]
@@ -128,7 +128,7 @@ Main.eval('Eω = duv["Eω"][:,end]')
 omega2=Main.ω
 Eomega2=Main.Eω
 
-phase2=get_phase(omega2,Eomega2)
+phase2=get_phase(omega2,Eomega2, wavel)
 #omega2=omega2[210:340]
 #phase2=phase2[210:340]
 #Eomega2=Eomega2[210:340]

@@ -1,6 +1,6 @@
 import numpy as np
 
-def theoretical_aplha(lam,gas, a):
+def theoretical_alpha(lam,gas, a):
     """
     returns the theoretical decay coefficient from grazing incidence losses
     formula from https://aip.scitation.org/doi/pdf/10.1063/1.116609
