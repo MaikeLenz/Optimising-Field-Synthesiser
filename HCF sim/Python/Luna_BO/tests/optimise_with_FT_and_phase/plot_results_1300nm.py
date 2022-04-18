@@ -34,11 +34,11 @@ Main.λ0 = λ0
 τfwhm = 30e-15
 
 # Define optimum
-grating_pair_displacement_in = 0
-energy_in = 0
-pressure_in = 0
-radius_in = 0
-flength_in = 0
+grating_pair_displacement_in = 2.804851414292173e-06
+energy_in = 0.001302412924828062
+pressure_in = 4.826106823831891
+radius_in = 0.0001869238808711249
+flength_in = 5.255003046515194
 Main.energy = energy_in
 Main.pressure = pressure_in
 Main.radius = radius_in
@@ -84,11 +84,11 @@ axs2.plot(λ2*(10**9), phase, '--', color='black')
 axs2.set_ylabel('Phase')
 
 # Plot the optimum after the random search
-grating_pair_displacement_in = -0.0004998856251826551
-energy_in = 0.000917022004702574
-pressure_in = 2.0567764855590998
-radius_in = 0.00011604015086770088
-flength_in = 7.231212485077365
+grating_pair_displacement_in = 5.8689828445751676e-05
+energy_in = 0.0011704675101784023
+pressure_in = 1.30858765630998
+radius_in = 0.00013914567008819546
+flength_in = 4.231317543434557
 Main.energy = energy_in
 Main.pressure = pressure_in
 Main.radius = radius_in
