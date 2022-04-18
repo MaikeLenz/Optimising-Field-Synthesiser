@@ -43,10 +43,11 @@ energy_init = 1.1e-3
 #pressure_init = randint(1, 10)
 #energy_init= randint(1, 10)*(10**-4)
 
-#values: radius,flength,gas_str,pressure,λ0,energy,FWHM,grating_pair_displacement
+#values: radius,flength,gas_str,pressure,λ0,energy,FWHM,grating_pair_displacemen
+
 initial_values_HCF=[radius_init, flength_init, gas, pressure_init, wavel, energy_init,FWHM,0]
 
-opt_dict, res = Luna_BO_debug(params, initial_values_HCF, function=max_peak_power_quadratic_phase, init_points=init_points, n_iter=n_iter)
+opt_dict, res = Luna_BO_debug(params, initial_values_HCF, function=max_peak_power_FT, init_points=init_points, n_iter=n_iter)
 width = opt_dict['target']
 energy = opt_dict['params']['energy']
 pressure = opt_dict['params']['pressure']
