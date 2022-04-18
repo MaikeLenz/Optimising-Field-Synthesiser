@@ -1,0 +1,11 @@
+Results from 1300nm +/- 20% He optimisation:
+Used measured Gaussian pulse input.
+Time taken to run = 2.5 hours, 1000 iterations
+Pbounds: (0.5,1.5)mJ, pressure (0.66,8*0.66)bar, grating (-0.5,0.5)mm, radius (50,500)um, flength (0.1,10)m
+
+Results: energy 0.001302412924828062mJ, pressure 4.826106823831891bar, grating 2.804851414292173e-06e-2mm, radius 0.0001869238808711249um, flength 5.255003046515194m
+Peak power = 20192112473.585747
+
+Results after random search: energy 0.0011704675101784023mJ, pressure 1.30858765630998bar, grating 5.8689828445751676e-05mm, radius 0.00013914567008819546um, flength 4.231317543434557m
+Peak power = 3236991549.775689
+Increase by 6.24 times.

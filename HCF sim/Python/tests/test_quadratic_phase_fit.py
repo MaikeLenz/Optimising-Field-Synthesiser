@@ -72,10 +72,13 @@ phase = get_phase(om, Eom, lambda0)
 
 # Smooth electric field using super Gaussian filter
 λ=(2*np.pi*c)/om
-filter = superGauss(λ, 300e-9, 300e-9*0.1)
+filter = superGauss(λ, 1300e-9, 1300e-9*0.1)
 Eom_smooth = []
 for i in range(len(Eom)):
     Eom_smooth.append(Eom[i]*filter[i])
+
+plt.figure()
+plt.plot(λ*(10**9), np.abs(Eom_smooth)**2)
 
 # Slice phase to only select part within pulse
 thresh = 0.1
