@@ -43,11 +43,11 @@ Main.λ0 = λ0
 τfwhm = 30e-15
 ##################################################################################
 # Plot the optimum found
-grating_pair_displacement_in = 2.804851414292173e-06
-energy_in = 0.001302412924828062
-pressure_in = 4.826106823831891
-radius_in = 0.0001869238808711249
-flength_in = 5.255003046515194
+grating_pair_displacement_in = 5.332105846540716e-05
+energy_in = 0.001230333949166748
+pressure_in = 3.9785416645362317
+radius_in = 0.00015130627656604896
+flength_in = 7.930822176101953
 Main.energy = energy_in
 Main.pressure = pressure_in
 Main.radius = radius_in
@@ -87,7 +87,7 @@ axs[0].set_ylabel('Intensity (a.u.)')
 
 filter = []
 for i in range(len(λ2)):
-    filter.append(np.exp(-((λ2[i]-1300e-9)/(1300e-9*0.2))**4))
+    filter.append(np.exp(-((λ2[i]-300e-9)/(300e-9*0.1))**4))
 #filter = superGauss(λ22, 1300e-9, 1300e-9*0.2)
 Eom_smooth = []
 for i in range(len(Eω2)):
@@ -137,11 +137,11 @@ axst.set_ylabel('Intensity (a.u.)')
 
 ##################################################################################
 # Plot the optimum after the random search
-grating_pair_displacement_in = 5.8689828445751676e-05
-energy_in = 0.0011704675101784023
-pressure_in = 1.30858765630998
-radius_in = 0.00013914567008819546
-flength_in = 4.231317543434557
+grating_pair_displacement_in = -0.00021955600793559482
+energy_in = 0.0014888610889064948
+pressure_in = 4.3064704974458765
+radius_in = 9.64517029599389e-05
+flength_in = 7.50683997836041
 Main.energy = energy_in
 Main.pressure = pressure_in
 Main.radius = radius_in
@@ -179,7 +179,7 @@ axs[0].legend(fontsize=16)
 
 filter = []
 for i in range(len(λ2)):
-    filter.append(np.exp(-((λ2[i]-1300e-9)/(1300e-9*0.2))**4))
+    filter.append(np.exp(-((λ2[i]-300e-9)/(300e-9*0.1))**4))
 #filter = superGauss(λ22, 1300e-9, 1300e-9*0.2)
 Eom_smooth = []
 for i in range(len(Eω2)):
