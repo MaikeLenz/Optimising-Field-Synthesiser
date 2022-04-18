@@ -221,7 +221,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
                 pbounds[i] = (0.66*0.6, 0.66*1.5)
     
             elif params_dict['gas_str']=="Ne":
-                pbounds[i] = (0.66*3.0, 0.66*3.5)
+                pbounds[i] = (0.66*2.0, 0.66*3.5)
 
 
         elif 'radius' in i:                
@@ -246,13 +246,13 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         )
 
     #probe spm optimum
-    #if params_dict['gas_str']=="Ar":
-    #    #optimizer.probe(params={"energy": 1.1e-3, "pressure": 0.66*1.0, "grating_pair_displacement":0.0},lazy=True,)
-    #    #optimizer.probe(params={"grating_pair_displacement":0.0},lazy=True,)
+    if params_dict['gas_str']=="Ar":
+        optimizer.probe(params={"energy": 1.2e-3, "pressure": 0.66*1.5, "grating_pair_displacement":0.0},lazy=True,)
+        #optimizer.probe(params={"grating_pair_displacement":0.0},lazy=True,)
 
 
-    #elif params_dict['gas_str']=="Ne":
-    #    optimizer.probe(params={"energy": 1.1e-3, "pressure": 0.66*3.5, "grating_pair_displacement":0.0},lazy=True,)
+    elif params_dict['gas_str']=="Ne":
+        optimizer.probe(params={"energy": 1.2e-3, "pressure": 0.66*3.5, "grating_pair_displacement":0.0},lazy=True,)
     #    #optimizer.probe(params={"grating_pair_displacement":0.0},lazy=True,)
 
 
