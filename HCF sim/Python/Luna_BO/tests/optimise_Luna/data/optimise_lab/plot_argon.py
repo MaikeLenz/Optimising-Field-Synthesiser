@@ -71,18 +71,10 @@ Main.phase = ϕω
 Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
 Main.eval("ω, Iω = Processing.getIω(duv, :ω, flength)")
-Main.eval('t, Et = Processing.getEt(duv)')
-Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
-    
+ 
 # Get values
-t_opt = Main.t
-Et_allz_opt = Main.Et # array of Et at all z 
-Et_opt = Et_allz_opt[:,-1] # last item in each element is pulse shape at the end
-Et0=Et_allz_opt[:,0] #first item in each element is pulse shape at the start
 
-λ_opt = Main.λ
-Iλ_opt = Main.Iλ
-Iλ_opt=Iλ_opt.reshape(len(Iλ_opt),)
+
 omega_opt=Main.ω
 Iomega_opt=Main.Iω
 Iomega_opt=Iomega_opt.reshape((-1,))
@@ -137,31 +129,16 @@ Main.phase = ϕω
 Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
 Main.eval("ω, Iω = Processing.getIω(duv, :ω, flength)")
-Main.eval('t, Et = Processing.getEt(duv)')
-Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
 
 
-λ2 = Main.λ
-Iλ2 = Main.Iλ
-t2 = Main.t
 omega2=Main.ω
 Iomega2=Main.Iω
 Iomega2=Iomega2.reshape((-1,))
 omega2=omega2
 
-Et_allz2=Main.Et #array of Et at all z 
-Et2=Et_allz2[:,-1] #last item in each element is pulse shape at the end
-Et02=Et_allz2[:,0]
 
 #plotting
-plt.figure()
-#plt.plot(λ,Iλ,label="SPM Prediction")
-plt.plot(λ2,Iλ2,label="SPM Prediction, width %s"%(rms_width(λ2,Iλ2)))
 
-plt.plot(λ_opt,Iλ_opt,label="Optimised, width %s"%(rms_width(λ_opt,Iλ_opt)))
-plt.xlabel("Wavelength (m)")
-plt.ylabel("Spectral energy density (J/m)")
-plt.legend()
 plt.figure()
 #plt.plot(omega,Iomega,label="SPM Prediction")
 plt.plot(omega2,Iomega2,label="SPM Prediction, width %s"%(rms_width(omega2,Iomega2)))
@@ -172,15 +149,6 @@ plt.legend()
 plt.xlabel("Angular frequency,/s")
 plt.ylabel("Intensity, a.u.")
 
-plt.figure()
-#plt.plot(t,Et,label="SPM Prediction")
-plt.plot(t2,Et2,label="SPM Prediction, width %s"%(rms_width(t2,Et2)))
-
-plt.plot(t_opt,Et_opt,label="Optimised, width %s"%(rms_width(t_opt,Et_opt)))
-#plt.plot(t,Et0,label="z=0m")
-plt.xlabel("time,s")
-plt.ylabel("Electric field, a.u.")
-plt.legend()
 plt.show()
 #{'target': 454.33147357060653, 'params': {'energy': 0.0010992847619322667, 'grating_pair_displacement': 3.937495614034377e-06, 'pressure': 0.6592512482937603}}
 #{'target': 454.33147357060653, 'params': {'energy': 0.0010992847619322667, 'grating_pair_displacement': 3.937495614034377e-06, 'pressure': 0.6592512482937603}}

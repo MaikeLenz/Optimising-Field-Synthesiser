@@ -24,7 +24,7 @@ from Luna_subtarget import *
 from compressor_grating_to_values import *
 
 #filepath = 'C:\\Users\\iammo\\Documents\\'
-
+filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\"
 #this function carries out BO for hollow core fibre
 #params to be varied: 
     # Pulse: input energy, τfwhm, central wavelength
@@ -200,7 +200,7 @@ def Luna_BO_debug(params, initial_values_HCF, function, Gaussian = False, Imperi
         if 'energy' in i:
             #pbounds[i] = (0,1e-3)
             #pbounds[i] = (0.1e-3,2.0e-3)
-            pbounds[i] = (0.5e-3, 1.2e-3)
+            pbounds[i] = (0.8e-3, 1.2e-3)
             #pbounds[i] = (0.5e-3, 0.8e-3)
 
         elif 'FWHM' in i:
