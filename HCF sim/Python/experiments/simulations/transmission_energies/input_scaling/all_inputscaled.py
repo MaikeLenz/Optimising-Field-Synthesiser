@@ -1,7 +1,7 @@
 import sys
 import matplotlib.pyplot as plt
 #plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
-plt.style.use('tableau-colorblind10')
+plt.style.use('classic')
 
 import julia
 import numpy as np
@@ -171,8 +171,8 @@ ax1 = fig.add_subplot(221)
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
 ax1.plot(energies_in*1000, transmission_actual,label="Experiment",marker="o",ls="None")
-ax1.plot(energies_in*1000,transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="o",ls="None")
-ax1.errorbar(energies_in*1000, transmission_actual, xerr = 0.1*energies_in*1000,yerr=0.2*transmission_actual, ls="None")
+ax1.plot(energies_in*1000,transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="^",ls="None")
+ax1.errorbar(energies_in*1000, transmission_actual, xerr = 0.1*energies_in*1000,yerr=0.2*transmission_actual, ls="None",c="grey")
 plt.legend(fontsize=14)
 ax1.set_xticks(list(energies_in*1000))
 plt.xticks(fontsize=14)
@@ -308,11 +308,12 @@ I0=str(round(find_I0(intens1_1,wavel_nm*10**-9,delta_lambda*10**-9,energy_in,0.5
 
 
 ax1 = fig.add_subplot(223)
+fig.patch.set_facecolor('white')
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
 ax1.plot(np.array(pressures), transmission_actual,label=r"Experiment, I$\mathrm{_0}$="+I0+"e13W/$\mathrm{cm^2}$",marker="o",ls="None")
-ax1.plot(np.array(pressures),transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="o",ls="None")
-ax1.errorbar(np.array(pressures), transmission_actual, xerr = 0.1*np.array(pressures),yerr=0.2*transmission_actual, ls="None")
+ax1.plot(np.array(pressures),transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="^",ls="None")
+ax1.errorbar(np.array(pressures), transmission_actual, xerr = 0.1*np.array(pressures),yerr=0.2*transmission_actual, ls="None",c="grey")
 ax1.set_xlim(0.1,1.5)
 ax1.set_ylim(0.,1.0)
 
@@ -465,8 +466,8 @@ ax1 = fig.add_subplot(222)
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
 ax1.plot(energies_in*1000, transmission_actual,label="Experiment",marker="o",ls="None")
-ax1.plot(energies_in*1000,transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="o",ls="None")
-ax1.errorbar(energies_in*1000, transmission_actual, xerr = 0.1*energies_in*1000,yerr=0.2*transmission_actual, ls="None")
+ax1.plot(energies_in*1000,transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="^",ls="None")
+ax1.errorbar(energies_in*1000, transmission_actual, xerr = 0.1*energies_in*1000,yerr=0.2*transmission_actual, ls="None",c="grey")
 
 ax1.set_xlim(0.2,1.3)
 ax1.set_ylim(0.,1.0)
@@ -622,8 +623,8 @@ ax1.set_xticks(list(pressures))
 plt.xticks(fontsize=14)
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
 ax1.plot(np.array(pressures), transmission_actual,label=r"Experiment, I$\mathrm{_{0}}$="+I0+"e13$\mathrm{W/cm^2}$",marker="o",ls="None")
-ax1.plot(np.array(pressures),transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="o",ls="None")
-ax1.errorbar(np.array(pressures), transmission_actual, xerr = 0.1*np.array(pressures),yerr=0.2*transmission_actual, ls="None")
+ax1.plot(np.array(pressures),transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="^",ls="None")
+ax1.errorbar(np.array(pressures), transmission_actual, xerr = 0.1*np.array(pressures),yerr=0.2*transmission_actual, ls="None",c="grey")
 ax1.set_xlim(0.9,3.7)
 ax1.set_ylim(0.,1.0)
 ax1.set_xlabel("Pressure, Bar",fontsize=16)
