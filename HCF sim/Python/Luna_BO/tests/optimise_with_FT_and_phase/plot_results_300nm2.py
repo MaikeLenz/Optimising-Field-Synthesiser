@@ -2,6 +2,7 @@ import numpy as np
 import sys
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
+import csv
 plt.rcParams['xtick.labelsize'] = 12
 plt.rcParams['ytick.labelsize'] = 12
 plt.rcParams['axes.labelsize'] = 16
@@ -75,7 +76,31 @@ Iλ1 = Main.Iλ
 ω2 = Main.ω
 Eω2 = Main.Eω
 λ2 = 2*np.pi*c/ω2
+Iω2 = np.abs(Eω2)**2
 
+plt.figure()
+plt.plot(λ1*(10**9), Iλ1/max(Iλ1), color='black', label='Wavelength output')
+plt.plot(λ2*(10**9), Iω2/max(Iω2), color='tab:red', label='Angular freq output')
+plt.xlabel('Wavelength (nm)')
+plt.ylabel('Intensity')
+plt.legend(fontsize=16)
+plt.show()
+"""
+header=[ "Angular Frequency","Real Electric Field", "Imaginary Electric Field"]
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_with_FT_and_phase\\300nm_optimum_data.csv', 'w', encoding='UTF8', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerow(header)
+    for i in range(len(ω2)):
+        writer.writerow([ω2[i], Eω2[i].real, Eω2[i].imag])
+
+header=[ "Wavelength","Intensity"]
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_with_FT_and_phase\\300nm_optimum_data_wavel.csv', 'w', encoding='UTF8', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerow(header)
+    for i in range(len(ω2)):
+        writer.writerow([λ1[i], Iλ1[i][0]])
+"""
+"""
 om0 = moment(ω2,np.abs(Eω2)**2,1)/moment(ω2,np.abs(Eω2)**2,0) # Determine central frequency
 lambda0 = (2*np.pi*c)/om0
 phase = get_phase(ω2, Eω2, lambda0)
@@ -223,3 +248,4 @@ axst.legend(fontsize=16)
 ##################################################################################
 
 plt.show()
+"""

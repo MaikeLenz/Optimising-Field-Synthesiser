@@ -14,14 +14,14 @@ ax3 = plt.subplot(3,2,6)
 ax4 = plt.subplot(1,2,1)
 axes = [ax1, ax2, ax3, ax4]
 
-df_iter = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\Ar_optimisation\\Optimal_Params_points_probed.csv")
+df_iter = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\good_data\\optimise_our_lab\\Optimal_Params_points_probed.csv")
 iteration = df_iter.iloc[:,0]
 target_width_iter = df_iter.iloc[:,1] # \m
 energy = df_iter.iloc[:,2] # J
 pressure = df_iter.iloc[:,3] # bar
 grating_pos = df_iter.iloc[:,4] # m
 
-ax4.set_ylim(0, 5.5e14)
+ax4.set_ylim(0, 7e14)
 ax4.plot(iteration, target_width_iter, 'x', color='tab:blue', label='Points Probed')
 ax4.set_xlabel('Number of Iterations')
 ax4.set_ylabel('RMS Width, \s')
@@ -33,7 +33,7 @@ ax3.plot(iteration, grating_pos*(10**3), 'x', color='tab:blue')
 ax3.set_ylabel('Grating Position (mm)')
 ax3.set_xlabel('Number of Iterations')
 
-df_optimum = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\Ar_optimisation\\Optimal_Params_optimums.csv")
+df_optimum = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\good_data\\optimise_our_lab\\Optimal_Params_optimums.csv")
 optimum = df_optimum.iloc[:,0]
 target_width_opt = df_optimum.iloc[:,1] # \m
 energy = df_optimum.iloc[:,2] # J
