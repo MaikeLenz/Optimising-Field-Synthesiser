@@ -13,4 +13,5 @@ def find_I0(I,wavels,delta_lambda,energy, a):
     Assume transform limited at fibre start
     rms width in wavelength is delta_lambda
     """
-    return (energy*29979.2458*delta_lambda)/((np.pi**(3/2))*(0.64*a)**2*np.sqrt(2)*0.44*(moment(wavels,I,1)/moment(wavels,I,0))**2)
+    #return (energy*29979.2458*delta_lambda)/((np.pi**(3/2))*(0.64*a)**2*np.sqrt(2)*0.44*(moment(wavels,I,1)/moment(wavels,I,0))**2)
+    return (energy*29979.2458*delta_lambda)/((np.pi**(3/2))*(0.64*a)**2*np.sqrt(2)*0.44*(790e-9)**2)

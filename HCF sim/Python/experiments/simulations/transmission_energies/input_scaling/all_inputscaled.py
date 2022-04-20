@@ -188,7 +188,11 @@ ax2.set_xlabel("Input Intensity (I$\mathrm{_{0}}$), $\mathrm{10^{13} W/cm^2}$",f
 ax2.set_xlim(0.2,1.3)
 plt.xticks(fontsize=14)
 ax2.set_xticks(list(energies_in*1000))
-ax2.set_title("Argon Power Scan",fontsize=20)
+#ax2.set_title("Argon Power Scan",fontsize=20)
+plt.text(0.5, 1.25, "Argon Power Scan",
+         horizontalalignment='center',
+         fontsize=20,
+         transform = ax2.transAxes)
 ax2.set_xticklabels(I0)
 #plt.grid()
 
@@ -484,7 +488,11 @@ ax2.set_xlim(0.2,1.3)
 ax2.set_xticks(list(energies_in*1000))
 plt.xticks(fontsize=14)
 ax2.set_xticklabels(I0)
-ax2.set_title("Neon Power Scan",fontsize=20)
+#ax2.set_title("Neon Power Scan",fontsize=20)
+plt.text(0.5, 1.25, "Neon Power Scan",
+         horizontalalignment='center',
+         fontsize=20,
+         transform = ax2.transAxes)
 #plt.grid()
 
 
