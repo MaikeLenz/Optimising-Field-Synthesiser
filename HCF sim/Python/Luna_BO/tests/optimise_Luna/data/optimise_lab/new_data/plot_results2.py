@@ -57,9 +57,6 @@ Main.ω = omega_list[::-1]
 Main.Iω = intens[::-1]
 
 # Plot the optimum found
-grating_pair_displacement_in = 1.3687440750850062e-05
-energy_in = 0.0011730020668117554
-pressure_in = 0.9896159222064448
 
 Main.energy = energy_in
 Main.pressure = pressure_in
