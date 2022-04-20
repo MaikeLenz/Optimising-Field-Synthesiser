@@ -31,12 +31,12 @@ init_points = 50
 n_iter = 1000
 FWHM = (22e-15)*1.25
 wavel = 790e-9
-gas = 'Ne'
+gas = 'Ar'
 
 
 radius_init = 175e-6
 flength_init = 1.05
-pressure_init = 0.66*3.5
+pressure_init = 0.66
 energy_init = 1.1e-3
 #radius_init = randint(50, 500)*(10**-6)
 #flength_init = randint(1, 30)*0.1
@@ -56,10 +56,12 @@ grating = opt_dict['params']['grating_pair_displacement']
 # Save the data
 header = ['init_points', 'n_iter', 'width, nm', 'energy, J', 'pressure, bar', 'radius, m', 'flength, m', 'FWHM, s', 'wavel, m', 'gas', 'grating pair displacement, m']
 #with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna_data\\optimise_lab__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'w', encoding='UTF8', newline='') as f:
-with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\exp_input_Ne_freq_bandwidth_optimise_lab__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\optimise_lab\\exp_input_Ar_freq_bandwidth_optimise_lab__init_' + str(init_points) + '_niter_' + str(n_iter) + '.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     # write the header
     writer.writerow(header)
 
     # write the dataS
     writer.writerow([init_points, n_iter, width, energy, pressure, radius_init, flength_init, FWHM, wavel, gas,grating])
+
+#{'target': 2223933819847598.2, 'params': {'energy': 0.0011730020668117554, 'grating_pair_displacement': 1.3687440750850062e-05, 'pressure': 0.9896159222064448}}
