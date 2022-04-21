@@ -12,9 +12,9 @@ plt.style.use('classic')
 
 #plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.tableau-colorblind10.colors)
 #plt.style.use('tableau-colorblind10')
-plt.rcParams['xtick.labelsize'] = 12
-plt.rcParams['ytick.labelsize'] = 12
-plt.rcParams['axes.labelsize'] = 16
+plt.rcParams['xtick.labelsize'] = 16
+plt.rcParams['ytick.labelsize'] = 16
+plt.rcParams['axes.labelsize'] = 20
 
 #filepath = "C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\"
 filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\"
@@ -429,7 +429,9 @@ radius = 175e-6 # HCF core radius
 flength = 1.05 # HCF length
 
 # Read input data
-df = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\HCF_scans\\power in\\extracted_params.csv")
+#df = pd.read_csv("C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\HCF_scans\\power in\\extracted_params.csv")
+df = pd.read_csv("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\HCF_scans\\power in\\extracted_params.csv")
+
 powers = df.iloc[:,0]
 energies = powers/1000
 λ0s = df.iloc[:,1]
@@ -572,13 +574,13 @@ hspace = 0.3  # the amount of height reserved for white space between subplots
 plt.subplots_adjust(left, bottom, right, top, wspace, hspace)
 
 axs[0,0].plot(powers, Ar_power_theor_widths, label='Theoretical SPM Width')
-axs[0,0].fill_between(powers, Ar_power_theor_widths - Ar_pow_errs, Ar_power_theor_widths + Ar_pow_errs, alpha=0.2)
+axs[0,0].fill_between(powers, Ar_power_theor_widths - Ar_pow_errs, Ar_power_theor_widths + Ar_pow_errs,    alpha=0.075)
 axs[1,0].plot(Ar_pressures, Ar_pressure_theor_widths)
-axs[1,0].fill_between(Ar_pressures, Ar_pressure_theor_widths - Ar_press_errs, Ar_pressure_theor_widths + Ar_press_errs, alpha=0.2)
+axs[1,0].fill_between(Ar_pressures, Ar_pressure_theor_widths - Ar_press_errs, Ar_pressure_theor_widths + Ar_press_errs,    alpha=0.075)
 axs[0,1].plot(powers, Ne_power_theor_widths)
-axs[0,1].fill_between(powers, Ne_power_theor_widths - Ne_pow_errs, Ne_power_theor_widths + Ne_pow_errs, alpha=0.2)
+axs[0,1].fill_between(powers, Ne_power_theor_widths - Ne_pow_errs, Ne_power_theor_widths + Ne_pow_errs,    alpha=0.075)
 axs[1,1].plot(Ne_pressures, Ne_pressure_theor_widths)
-axs[1,1].fill_between(Ne_pressures, Ne_pressure_theor_widths - Ne_press_errs, Ne_pressure_theor_widths + Ne_press_errs, alpha=0.2)
+axs[1,1].fill_between(Ne_pressures, Ne_pressure_theor_widths - Ne_press_errs, Ne_pressure_theor_widths + Ne_press_errs,    alpha=0.075)
 
 axs[0,0].plot(Ar_sim_powers, Ar_sim_gauss_PowerScan_widths,'^', label='Luna with Gaussian Input')
 axs[1,0].plot(Ar_sim_pressures, Ar_sim_gauss_PressureScan_widths,'^')
@@ -603,13 +605,18 @@ axs[1,1].plot(Ne_pressures, Ne_PressureScan_widths,'s')
 axs[1,1].set_xlabel('Pressure, bar')
 axs[1,1].set_ylabel('RMS Width, nm')
 
-axs[0,0].set_title('Argon Power Scan', fontsize=18)
-axs[1,0].set_title('Argon Pressure Scan', fontsize=18)
-axs[0,1].set_title('Neon Power Scan', fontsize=18)
-axs[1,1].set_title('Neon Pressure Scan', fontsize=18)
+axs[0,0].set_title('Argon Power Scan', fontsize=22)
+axs[1,0].set_title('Argon Pressure Scan', fontsize=22)
+axs[0,1].set_title('Neon Power Scan', fontsize=22)
+axs[1,1].set_title('Neon Pressure Scan', fontsize=22)
 
-axs[0,0].legend(loc='upper left', fontsize=14)
-plt.suptitle('Comparing Experimental, Simulated and Theoretical RMS Width', fontsize=24)
+axs[0,0].set_xlim(0.25,1.25)
+axs[1,0].set_xlim(0.15,1.45)
+axs[0,1].set_xlim(0.25,1.25)
+axs[1,1].set_xlim(0.9,3.7)
+
+axs[0,0].legend(loc='upper left', fontsize=16)
+#plt.suptitle('Comparing Experimental, Simulated and Theoretical RMS Width', fontsize=24)
 
 plt.figure()
 plt.plot(Ne_GDDs, Ne_GDDScan_widths, '+', color='tab:blue', label='Rough scan')
