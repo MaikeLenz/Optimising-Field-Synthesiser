@@ -76,31 +76,7 @@ Iλ1 = Main.Iλ
 ω2 = Main.ω
 Eω2 = Main.Eω
 λ2 = 2*np.pi*c/ω2
-Iω2 = np.abs(Eω2)**2
 
-plt.figure()
-plt.plot(λ1*(10**9), Iλ1/max(Iλ1), color='black', label='Wavelength output')
-plt.plot(λ2*(10**9), Iω2/max(Iω2), color='tab:red', label='Angular freq output')
-plt.xlabel('Wavelength (nm)')
-plt.ylabel('Intensity')
-plt.legend(fontsize=16)
-plt.show()
-"""
-header=[ "Angular Frequency","Real Electric Field", "Imaginary Electric Field"]
-with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_with_FT_and_phase\\300nm_optimum_data.csv', 'w', encoding='UTF8', newline='') as f:
-    writer = csv.writer(f)
-    writer.writerow(header)
-    for i in range(len(ω2)):
-        writer.writerow([ω2[i], Eω2[i].real, Eω2[i].imag])
-
-header=[ "Wavelength","Intensity"]
-with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_with_FT_and_phase\\300nm_optimum_data_wavel.csv', 'w', encoding='UTF8', newline='') as f:
-    writer = csv.writer(f)
-    writer.writerow(header)
-    for i in range(len(ω2)):
-        writer.writerow([λ1[i], Iλ1[i][0]])
-"""
-"""
 om0 = moment(ω2,np.abs(Eω2)**2,1)/moment(ω2,np.abs(Eω2)**2,0) # Determine central frequency
 lambda0 = (2*np.pi*c)/om0
 phase = get_phase(ω2, Eω2, lambda0)
@@ -112,7 +88,7 @@ axs[0].set_ylabel('Intensity (a.u.)')
 
 filter = []
 for i in range(len(λ2)):
-    filter.append(np.exp(-((λ2[i]-300e-9)/(300e-9*0.1))**4))
+    filter.append(np.exp(-((λ2[i]-1300e-9)/(1300e-9*0.2))**4))
 #filter = superGauss(λ22, 1300e-9, 1300e-9*0.2)
 Eom_smooth = []
 for i in range(len(Eω2)):
@@ -204,7 +180,7 @@ axs[0].legend(fontsize=16)
 
 filter = []
 for i in range(len(λ2)):
-    filter.append(np.exp(-((λ2[i]-300e-9)/(300e-9*0.1))**4))
+    filter.append(np.exp(-((λ2[i]-1300e-9)/(1300e-9*0.2))**4))
 #filter = superGauss(λ22, 1300e-9, 1300e-9*0.2)
 Eom_smooth = []
 for i in range(len(Eω2)):
@@ -248,4 +224,3 @@ axst.legend(fontsize=16)
 ##################################################################################
 
 plt.show()
-"""
