@@ -170,9 +170,9 @@ fig=plt.figure()
 ax1 = fig.add_subplot(221)
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
-ax1.plot(energies_in*1000, transmission_actual,label="Experiment",marker="o",c="white",ls="None")
-ax1.plot(energies_in*1000,transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="^",ls="None",   c="m")
-ax1.errorbar(energies_in*1000, transmission_actual, xerr = 0.1*energies_in*1000,yerr=0.2*transmission_actual, ls="None",c="grey")
+ax1.plot(energies_in*1000, transmission_actual,label="Experiment",marker="o",c="cyan",ls="None" ,markersize=15)
+ax1.plot(energies_in*1000,transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="^",ls="None" ,markersize=15,   c="m")
+ax1.errorbar(energies_in*1000, transmission_actual, xerr = 0.1*energies_in*1000,yerr=0.2*transmission_actual, ls="None" ,markersize=15,c="grey")
 plt.legend(fontsize=16)
 ax1.set_xticks(list(energies_in*1000))
 plt.xticks(fontsize=16)
@@ -192,7 +192,8 @@ ax2.set_xticks(list(energies_in*1000))
 plt.text(0.5, 1.25, "Argon Power Scan",
          horizontalalignment='center',
          fontsize=22,
-         transform = ax2.transAxes)
+         transform = ax2.transAxes,
+         fontweight="bold")
 ax2.set_xticklabels(I0)
 #plt.grid()
 
@@ -315,9 +316,9 @@ ax1 = fig.add_subplot(223)
 fig.patch.set_facecolor('white')
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
-ax1.plot(np.array(pressures), transmission_actual,label=r"Experiment, I$\mathrm{_0}$="+I0+"e13W/$\mathrm{cm^2}$",marker="o",c="white",ls="None" )
-ax1.plot(np.array(pressures),transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="^",ls="None",   c="m")
-ax1.errorbar(np.array(pressures), transmission_actual, xerr = 0.1*np.array(pressures),yerr=0.2*transmission_actual, ls="None",c="grey")
+ax1.plot(np.array(pressures), transmission_actual,label=r"Experiment, I$\mathrm{_0}$="+I0+"e13W/$\mathrm{cm^2}$",marker="o",c="cyan",ls="None" ,markersize=15 )
+ax1.plot(np.array(pressures),transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="^",ls="None" ,markersize=15,   c="m")
+ax1.errorbar(np.array(pressures), transmission_actual, xerr = 0.1*np.array(pressures),yerr=0.2*transmission_actual, ls="None" ,markersize=15,c="grey")
 ax1.set_xlim(0.1,1.5)
 ax1.set_ylim(0.,1.0)
 
@@ -326,7 +327,7 @@ plt.xticks(fontsize=16)
 plt.yticks(fontsize=16)
 ax1.set_xlabel("Pressure, Bar",fontsize=20)
 ax1.set_ylabel("Transmission",fontsize=20)
-ax1.set_title("Argon Pressure Scan",fontsize=22)
+ax1.set_title("Argon Pressure Scan",fontsize=22,fontweight="bold")
 plt.legend(fontsize=16)
 #plt.grid()
 
@@ -469,9 +470,9 @@ for i in range(len(energies_in)):
 ax1 = fig.add_subplot(222)
 
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
-ax1.plot(energies_in*1000, transmission_actual,label="Experiment",marker="o",c="white",ls="None" )
-ax1.plot(energies_in*1000,transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="^",ls="None",   c="m")
-ax1.errorbar(energies_in*1000, transmission_actual, xerr = 0.1*energies_in*1000,yerr=0.2*transmission_actual, ls="None",c="grey")
+ax1.plot(energies_in*1000, transmission_actual,label="Experiment",marker="o",c="cyan",ls="None" ,markersize=15 )
+ax1.plot(energies_in*1000,transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="^",ls="None" ,markersize=15,   c="m")
+ax1.errorbar(energies_in*1000, transmission_actual, xerr = 0.1*energies_in*1000,yerr=0.2*transmission_actual, ls="None" ,markersize=15,c="grey")
 
 ax1.set_xlim(0.2,1.3)
 ax1.set_ylim(0.,1.0)
@@ -492,7 +493,8 @@ ax2.set_xticklabels(I0)
 plt.text(0.5, 1.25, "Neon Power Scan",
          horizontalalignment='center',
          fontsize=22,
-         transform = ax2.transAxes)
+         transform = ax2.transAxes,
+         fontweight="bold")
 #plt.grid()
 
 
@@ -625,14 +627,14 @@ delta_lambda=rms_width(wavel_nm,intens1_1)
 I0=str(round(find_I0(intens1_1,wavel_nm*10**-9,delta_lambda*10**-9,energy_in,0.5*175e-6)*10**-13,1))
 
 ax1 = fig.add_subplot(224)
-ax1.set_title("Neon Pressure Scan",fontsize=22)
+ax1.set_title("Neon Pressure Scan",fontsize=22,fontweight="bold")
 plt.yticks(fontsize=16)
 ax1.set_xticks(list(pressures))
 plt.xticks(fontsize=16)
 #a = np.cos(2*np.pi*np.linspace(0, 1, 60.))
-ax1.plot(np.array(pressures), transmission_actual,label=r"Experiment, I$\mathrm{_{0}}$="+I0+"e13$\mathrm{W/cm^2}$",marker="o",c="white",ls="None" )
-ax1.plot(np.array(pressures),transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="^",ls="None",   c="m")
-ax1.errorbar(np.array(pressures), transmission_actual, xerr = 0.1*np.array(pressures),yerr=0.2*transmission_actual, ls="None",c="grey")
+ax1.plot(np.array(pressures), transmission_actual,label=r"Experiment, I$\mathrm{_{0}}$="+I0+"e13$\mathrm{W/cm^2}$",marker="o",c="cyan",ls="None" ,markersize=15 )
+ax1.plot(np.array(pressures),transmission_sim,label="Luna, Input Energy times %s"%(round(scaling,2)),marker="^",ls="None" ,markersize=15,   c="m")
+ax1.errorbar(np.array(pressures), transmission_actual, xerr = 0.1*np.array(pressures),yerr=0.2*transmission_actual, ls="None" ,markersize=15,c="grey")
 ax1.set_xlim(0.9,3.7)
 ax1.set_ylim(0.,1.0)
 ax1.set_xlabel("Pressure, Bar",fontsize=20)

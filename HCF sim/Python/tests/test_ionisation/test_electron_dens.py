@@ -1,4 +1,5 @@
 
+from xml.dom.expatbuilder import ExpatBuilderNS
 import julia
 import matplotlib.pyplot as plt
 import numpy as np
@@ -19,11 +20,11 @@ plt.rcParams['axes.labelsize'] = 16
 
 Main.λ0=790e-9
 gas = "Ne"
-energy = 4e-3
+energy = 1.2e-3
 Main.energy = energy
 Main.gas_str = gas
 Main.eval("gas = Symbol(gas_str)")
-pressure_Ar=2
+pressure_Ar=4
 c = 299792458 # m/s
 radius = 175e-6 # HCF core radius
 flength = 1.05 # HCF length
@@ -50,36 +51,11 @@ Main.energy = energy
 Main.pressure = pressure_Ar
 Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
-
-Main.eval('t, Et = Processing.getEt(duv, flength)')
-t=Main.t
-Et=Main.Et
-Et=Et.reshape((-1,))
-
-print(Et.shape)
-dt=t[2]-t[1]
-Main.dt=dt
-Main.E=Et
-#Main.Emax=max(Et)
+Main.eval("grid = Processing.makegrid(duv)")
+Main.eval("ω = grid.ω")
+Main.eval('Eω = duv["Eω"][:,end]')
 Main.eval('ionrate=Ionisation.ionrate_fun!_ADK(gas)')
-Main.eval('frac=Ionisation.ionfrac(ionrate, E, dt)')
-Main.eval("ionpot=PhysData.ionisation_potential(gas)")
-ionpot=Main.ionpot
-print("ionpot=",ionpot)
-Main.eval("thresh=Ionisation.ADK_threshold(ionpot)")
-thresh=Main.thresh
-print("thresh=",thresh)
-#Main.eval('phi=Ionisation.φ(ionrate)')
-#Main.eval('keldysh=Ionisation.keldysh(gas,E)')
-#phi=Main.phi
-#keldysh=Main.keldysh
-#print(phi,keldysh)
-#print(keldysh)
-ionfrac=Main.frac
-plt.plot(t,np.abs(ionfrac))
-plt.plot(t,ionfrac.imag)
-plt.plot(t,ionfrac.real)
+Main.eval('edens=Stats.electrondensity(grid,ionrate)')
 
-plt.figure()
-plt.plot(t,Et)
-plt.show()
+edens=Main.edens
+print(edens)
