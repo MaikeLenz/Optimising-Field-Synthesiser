@@ -15,7 +15,7 @@ sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF 
 from pulse_with_GDD import *
 from compressor_grating_to_values import *
 from rms_width import *
-from theoretical_width import *
+#from theoretical_width import *
 
 #sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\tests\\investigate_phase\\")
 sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\tests\\investigate_phase\\')
@@ -118,23 +118,53 @@ def quad(x, a, b, c):
 quad_popt, _ = curve_fit(quad, om_slice, phase_slice, p0=[1,1,0])
 phase_to_remove = quad(om_slice, *quad_popt)
 new_phase = np.zeros(len(ω2))
+old_phase = np.zeros(len(ω2))
 for i in range(len(phase_to_remove)):
     new_phase[i+min_index-25] += phase_slice[i] - phase_to_remove[i]
+    old_phase += phase_slice[i]
 
 # Add the phase back to the intensity profile
 Eom_complex = []
 for i in range(len(ω2)):
     Eom_complex.append(np.abs(Eom_smooth[i])*np.exp(-1j*new_phase[i]))
+Eom_Lunaphase = []
+for i in range(len(ω2)):
+    Eom_Lunaphase.append(np.abs(Eom_smooth[i])*np.exp(-1j*old_phase[i]))
 
 # Now Fourier transform
-Et = np.fft.ifft(Eom_smooth)
-dom = ω2[2] - ω2[1]
-df = dom/(2*np.pi)
-t = np.fft.fftshift(np.fft.fftfreq(len(Et), d=df))
+Et = np.fft.fftshift(np.fft.ifft(Eom_complex))
+f_step = (omega[1]-omega[0])/(2*np.pi)
+t = np.fft.fftshift(np.fft.fftfreq(len(Eom_complex), d=f_step))
+
+Et_zerophase = np.fft.fftshift(np.fft.ifft(Eom_smooth))
+f_step = (omega[1]-omega[0])/(2*np.pi)
+t_zerophase = np.fft.fftshift(np.fft.fftfreq(len(Eom_smooth), d=f_step))
+
+Et_Lunaphase = np.fft.fftshift(np.fft.ifft(Eom_Lunaphase))
+f_step = (omega[1]-omega[0])/(2*np.pi)
+t_Lunaphase = np.fft.fftshift(np.fft.fftfreq(len(Eom_Lunaphase), d=f_step))
+
 f2, axst = plt.subplots()
 axst.plot(t, np.abs(Et)**2, color='black', label='Optimum after 1000 iterations')
 axst.set_xlabel('Time (s)')
 axst.set_ylabel('Intensity (a.u.)')
+axst.set_title('Pulse in Time-Domain with Quadratic Phase Subtracted')
+
+f22, axst2 = plt.subplots()
+axst2.plot(t_zerophase, np.abs(Et_zerophase)**2, color='black', label='Optimum after 1000 iterations')
+axst2.set_xlabel('Time (s)')
+axst2.set_ylabel('Intensity (a.u.)')
+axst2.set_title('Transform Limited Pulse in Time-Domain')
+
+f23, axst3 = plt.subplots()
+axst3.plot(t_Lunaphase, np.abs(Et_Lunaphase)**2, color='black', label='Optimum after 1000 iterations')
+axst3.set_xlabel('Time (s)')
+axst3.set_ylabel('Intensity (a.u.)')
+axst3.set_title('Pulse in Time-Domain before Chirped Mirrors')
+
+duration_opt_phasesubtracted = rms_width(t, np.abs(Et)**2)
+duration_opt_zerophase = rms_width(t_zerophase, np.abs(Et_zerophase)**2)
+duration_opt_Lunaphase = rms_width(t_Lunaphase, np.abs(Et_Lunaphase)**2)
 
 ##################################################################################
 # Plot the optimum after the random search
@@ -198,7 +228,8 @@ max_index = rows[-1]
 phase_slice = phase[min_index-25:max_index+25]
 om_slice = ω2[min_index-25:max_index+25]
 lambda_slice = 2*np.pi*c/om_slice
-axs2.plot(lambda_slice*(10**9), phase_slice, '--', color='tab:red')
+axs2.plot(lambda_slice*(10**9), phase_slice, '--', color='black')
+axs2.set_ylabel('Phase')
 
 # Fit a quadratic to the phase and remove this
 def quad(x, a, b, c):
@@ -206,21 +237,50 @@ def quad(x, a, b, c):
 quad_popt, _ = curve_fit(quad, om_slice, phase_slice, p0=[1,1,0])
 phase_to_remove = quad(om_slice, *quad_popt)
 new_phase = np.zeros(len(ω2))
+old_phase = np.zeros(len(ω2))
 for i in range(len(phase_to_remove)):
     new_phase[i+min_index-25] += phase_slice[i] - phase_to_remove[i]
+    old_phase += phase_slice[i]
 
 # Add the phase back to the intensity profile
 Eom_complex = []
 for i in range(len(ω2)):
     Eom_complex.append(np.abs(Eom_smooth[i])*np.exp(-1j*new_phase[i]))
+Eom_Lunaphase = []
+for i in range(len(ω2)):
+    Eom_Lunaphase.append(np.abs(Eom_smooth[i])*np.exp(-1j*old_phase[i]))
 
 # Now Fourier transform
-Et = np.fft.ifft(Eom_smooth)
-dom = ω2[2] - ω2[1]
-df = dom/(2*np.pi)
-t = np.fft.fftshift(np.fft.fftfreq(len(Et), d=df))
+Et = np.fft.fftshift(np.fft.ifft(Eom_complex))
+f_step = (omega[1]-omega[0])/(2*np.pi)
+t = np.fft.fftshift(np.fft.fftfreq(len(Eom_complex), d=f_step))
+
+Et_zerophase = np.fft.fftshift(np.fft.ifft(Eom_smooth))
+f_step = (omega[1]-omega[0])/(2*np.pi)
+t_zerophase = np.fft.fftshift(np.fft.fftfreq(len(Eom_smooth), d=f_step))
+
+Et_Lunaphase = np.fft.fftshift(np.fft.ifft(Eom_Lunaphase))
+f_step = (omega[1]-omega[0])/(2*np.pi)
+t_Lunaphase = np.fft.fftshift(np.fft.fftfreq(len(Eom_Lunaphase), d=f_step))
+
 axst.plot(t, np.abs(Et)**2, color='tab:red', label='Optimum after random search')
 axst.legend(fontsize=16)
+
+axst2.plot(t_zerophase, np.abs(Et_zerophase)**2, color='tab:red', label='Optimum after random search')
+axst2.legend(fontsize=16)
+
+axst3.plot(t_Lunaphase, np.abs(Et_Lunaphase)**2, color='tab:red', label='Optimum after random search')
+axst3.legend(fontsize=16)
+
+duration_init_phasesubtracted = rms_width(t, np.abs(Et)**2)
+duration_init_zerophase = rms_width(t_zerophase, np.abs(Et_zerophase)**2)
+duration_init_Lunaphase = rms_width(t_Lunaphase, np.abs(Et_Lunaphase)**2)
 ##################################################################################
+print('Optimised duration with phase subtracted = {}'.format(duration_opt_phasesubtracted*(10**15)))
+print('Optimised duration with zero phase = {}'.format(duration_opt_zerophase*(10**15)))
+print('Optimised duration with Luna phase = {}'.format(duration_opt_Lunaphase*(10**15)))
+print('Random search duration with phase subtracted = {}'.format(duration_init_phasesubtracted*(10**15)))
+print('Random search duration with zero phase = {}'.format(duration_init_zerophase*(10**15)))
+print('Random search duration with Luna phase = {}'.format(duration_init_Lunaphase*(10**15)))
 
 plt.show()
