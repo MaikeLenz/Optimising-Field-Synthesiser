@@ -18,7 +18,7 @@ plt.rcParams['ytick.labelsize'] = 12
 plt.rcParams['axes.labelsize'] = 16
 
 Main.λ0=790e-9
-gas = "Ne"
+gas = "Ar"
 energy = 1.2e-3
 Main.energy = energy
 Main.gas_str = gas
@@ -75,7 +75,7 @@ print("thresh=",thresh)
 
 def I_W_cm2(energy,duration,fibre_radius):
     w=0.64*fibre_radius*10**2 #in cm
-    return energy/(duration*np.pi*w**2)
+    return 2*energy/(duration*np.pi*w**2)
 
 def max_E_V_m(I_W_cm2):
     return 2740*np.sqrt(I_W_cm2)
@@ -99,10 +99,11 @@ ionfrac=Main.frac
 plt.plot(t*10**15,np.abs(ionfrac))
 #plt.plot(t,ionfrac.imag)
 #plt.plot(t,ionfrac.real)
-plt.ylabel("Ionisation fraction",fontsize=14)
-plt.xlabel("Time, fs",fontsize=14)
-plt.xticks(fontsize=14)
-plt.yticks(fontsize=14)
+plt.ylabel("Ionisation fraction",fontsize=20)
+plt.xlabel("Time, fs",fontsize=20)
+plt.xticks(fontsize=20)
+plt.xlim(-21,21)
+plt.yticks(fontsize=20)
 plt.figure()
 plt.plot(t,Et)
 plt.show()
