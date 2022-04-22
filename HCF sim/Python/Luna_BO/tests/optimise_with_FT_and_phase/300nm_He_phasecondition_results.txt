@@ -9,3 +9,10 @@ Peak power = 18617636996.94597
 Results after random search: energy 14.89mJ, pressure 4.31bar, grating -0.22mm, radius 96.45um, flength 7.51m
 Peak power = 1412915669.9186566
 Increase by 13.18 times.
+
+Optimised duration with phase subtracted = 709.812640845436 fs
+Optimised duration with zero phase = 4091.3230514923666 fs
+Optimised duration with Luna phase = 576.9965915846511 fs
+Random search duration with phase subtracted = 1604.3276146356156 fs
+Random search duration with zero phase = 2022.3791289267638 fs
+Random search duration with Luna phase = 1246.8533248124727 fs

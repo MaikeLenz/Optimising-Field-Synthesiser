@@ -1,0 +1,18 @@
+Results from 300nm +/- 10% He optimisation:
+Used measured Gaussian pulse input.
+Time taken to run = 2.5 hours, 1000 iterations
+Pbounds: (0.5,1.5)mJ, pressure (0.66,8*0.66)bar, grating (-0.5,0.5)mm, radius (50,500)um, flength (0.1,10)m
+
+Results: energy 1.13mJ, pressure 0.96bar, grating 2.75e-2mm, radius 189um, flength 9.57m
+Peak power = 12844446602.59017
+
+Results after random search: energy 1.17mJ, pressure 1.31bar, grating 0.05.87mm, radius 139um, flength 4.23m
+Peak power = 4467248294.324138
+Increase by 2.88 times.
+
+Optimised duration with phase subtracted = 216.06811838129494 fs
+Optimised duration with zero phase = 1473.6065521020746 fs
+Optimised duration with Luna phase = 198.94366658266017 fs
+Random search duration with phase subtracted = 171.96402334031256 fs
+Random search duration with zero phase = 1929.7268225993314 fs
+Random search duration with Luna phase = 147.1818225292738 fs

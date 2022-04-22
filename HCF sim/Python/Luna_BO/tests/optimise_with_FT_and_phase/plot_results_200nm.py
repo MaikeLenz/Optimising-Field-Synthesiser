@@ -44,11 +44,11 @@ Main.λ0 = λ0
 τfwhm = 30e-15
 ##################################################################################
 # Plot the optimum found
-grating_pair_displacement_in = 5.332105846540716e-05
-energy_in = 0.001230333949166748
-pressure_in = 3.9785416645362317
-radius_in = 0.00015130627656604896
-flength_in = 7.930822176101953
+grating_pair_displacement_in = 2.7475258465099912e-05
+energy_in = 0.001128850611941045
+pressure_in = 0.9609419065919138
+radius_in = 0.00018876384400028765
+flength_in = 9.571518109020678
 Main.energy = energy_in
 Main.pressure = pressure_in
 Main.radius = radius_in
@@ -168,11 +168,11 @@ duration_opt_Lunaphase = rms_width(t_Lunaphase, np.abs(Et_Lunaphase)**2)
 
 ##################################################################################
 # Plot the optimum after the random search
-grating_pair_displacement_in = -0.00021955600793559482
-energy_in = 0.0014888610889064948
-pressure_in = 4.3064704974458765
-radius_in = 9.64517029599389e-05
-flength_in = 7.50683997836041
+grating_pair_displacement_in = 5.8689828445751676e-05
+energy_in = 0.0011704675101784023
+pressure_in = 1.30858765630998
+radius_in = 0.00013914567008819546
+flength_in = 4.231317543434557
 Main.energy = energy_in
 Main.pressure = pressure_in
 Main.radius = radius_in
