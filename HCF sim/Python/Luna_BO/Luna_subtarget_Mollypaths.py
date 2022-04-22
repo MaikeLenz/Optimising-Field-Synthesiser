@@ -373,3 +373,47 @@ def max_peak_power_1200nm_quadratic_phase(om, Eom):
         return max(np.abs(Et)**2)
     except:
         return 0
+
+def max_peak_power_200nm_quadratic_phase(om, Eom):
+    # First get phase of pulse in freq domain
+    om0 = moment(om,np.abs(Eom)**2,1)/moment(om,np.abs(Eom)**2,0) # Determine central frequency
+    c=299792458
+    lambda0 = (2*np.pi*c)/om0
+    phase = get_phase(om, Eom, lambda0)
+
+    # Smooth electric field using super Gaussian filter
+    λ=(2*np.pi*c)/om
+    filter = superGauss(λ, 200e-9, 200e-9*0.1)
+    Eom_smooth = []
+    for i in range(len(Eom)):
+        Eom_smooth.append(Eom[i]*filter[i])
+    
+    try:
+        # Slice phase to only select part within pulse
+        thresh = 0.1
+        rows = np.where(np.abs(Eom_smooth)**2 > max(np.abs(Eom_smooth)**2)*thresh)[0]
+        min_index = rows[0]
+        max_index = rows[-1]
+        phase_slice = phase[min_index-25:max_index+25]
+        om_slice = om[min_index-25:max_index+25]
+
+        # Fit a quadratic to the phase and remove this
+        def quad(x, a, b, c):
+            return a*(x**2) + b*x + c
+        quad_popt, _ = curve_fit(quad, om_slice, phase_slice, p0=[1,1,0])
+        phase_to_remove = quad(om_slice, *quad_popt)
+        new_phase = np.zeros(len(om))
+        for i in range(len(phase_to_remove)):
+            new_phase[i+min_index-25] += phase_slice[i] - phase_to_remove[i]
+
+        # Add the phase back to the intensity profile
+        Eom_complex = []
+        for i in range(len(om)):
+            Eom_complex.append(np.abs(Eom_smooth[i])*np.exp(-1j*new_phase[i]))
+
+        # Now Fourier transform
+        Et = np.fft.ifft(Eom_complex)
+
+        return max(np.abs(Et)**2)
+    except:
+        return 0
