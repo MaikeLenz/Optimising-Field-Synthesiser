@@ -11,10 +11,10 @@ import matplotlib.transforms as mtransforms
 
 
 #plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
-plt.style.use('tableau-colorblind10')
-plt.rcParams['xtick.labelsize'] = 12
-plt.rcParams['ytick.labelsize'] = 12
-plt.rcParams['axes.labelsize'] = 16
+plt.style.use('classic')
+plt.rcParams['xtick.labelsize'] = 14
+plt.rcParams['ytick.labelsize'] = 14
+plt.rcParams['axes.labelsize'] = 20
 
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 #sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\")
@@ -29,8 +29,8 @@ plt.rcParams['axes.labelsize'] = 16
 gas="Ar"
 header = ['radius', 'Fibre Length', 'Transmission']
 lines=[]
-#filepath='C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\plots\\transmission\\grazing_reflection\\low_energy_transmission_' + gas+ '_mediumradii.csv'
-filepath = 'C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\plots\\transmission\\grazing_reflection\\low_energy_transmission_' + gas+ '_mediumradii.csv'
+filepath='C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\plots\\transmission\\grazing_reflection\\logscale_low_energy_transmission_' + gas+ '_mediumradii.csv'
+#filepath = 'C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\plots\\transmission\\grazing_reflection\\low_energy_transmission_' + gas+ '_mediumradii.csv'
 
 file=open(filepath)
 csvreader = csv.reader(file)
@@ -73,12 +73,12 @@ fig, axs = plt.subplot_mosaic([['a)', 'b)']],constrained_layout=True)
 
 fig = plt.figure()
 
-plt.suptitle("Argon Low Energy Transmission",fontsize=20)
+#plt.suptitle("Argon Low Energy Transmission",fontsize=20)
 
 fig = plt.figure()
 #plt.suptitle("Argon Low Energy Transmission",fontsize=20)
 
-plt.suptitle("Argon Low Energy Transmission",fontsize=20)
+#plt.suptitle("Argon Low Energy Transmission",fontsize=20)
 
 #plt.suptitle("Argon Low Energy Transmission",fontsize=20)
 
@@ -88,12 +88,12 @@ ax2=axs["b)"]
 for i in range(len(sims)):
     popt,_=curve_fit(func,L,sims[i])
     fit_params.append(popt)
-    ax1.plot(L, sims[i],label="%s$\mathrm{\mu}$m"%int(radii[i]*10**6))
-    ax1.plot(L, sims[i],label="radius=%s$\mathrm{\mu}$m"%int(radii[i]*10**6))
+    #ax1.plot(L, sims[i],label="%s$\mathrm{\mu}$m"%int(radii[i]*10**6))
+    #ax1.plot(L, sims[i],label="radius=%s$\mathrm{\mu}$m"%int(radii[i]*10**6))
     ax1.plot(L, sims[i],label="%s$\mathrm{\mu}$m radius"%int(radii[i]*10**6))
  
-    ax1.plot(L, sims[i],label="radius=%s$\mathrm{\mu}$m"%int(radii[i]*10**6))
-    ax1.plot(L, sims[i],label="%s$\mathrm{\mu}$m radius"%int(radii[i]*10**6))
+    #ax1.plot(L, sims[i],label="radius=%s$\mathrm{\mu}$m"%int(radii[i]*10**6))
+    #ax1.plot(L, sims[i],label="%s$\mathrm{\mu}$m radius"%int(radii[i]*10**6))
 plt.legend(fontsize=14,loc="lower right")
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
@@ -121,7 +121,7 @@ def line(x,a):
 
 popt,_=curve_fit(line,r_3,decay_coeff)
 
-ax2.plot(r_3, decay_coeff,ls="None",marker="+", markersize=10)
+ax2.plot(r_3, decay_coeff,ls="None",marker="o", markersize=15)
 ax2.plot(r_3,line(r_3,*popt),label=r"$\mathrm{\alpha}$=%s$\mathrm{\pm}$23$\mathrm{\mu m^{-3}}$"%(int(popt[0])))
 
 ax2.set_ylabel("Decay Coefficient, $\mathrm{m^{-1}}$",fontsize=16)
@@ -145,7 +145,7 @@ ax2.legend(fontsize=14,loc="lower right")
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
 
-"""
+
 for label, ax in axs.items():
     # label physical distance in and down:
     trans = mtransforms.ScaledTranslation(10/72, -5/72, fig.dpi_scale_trans)
@@ -153,5 +153,4 @@ for label, ax in axs.items():
             fontsize='large', verticalalignment='top', fontfamily='serif',
             bbox=dict(facecolor='0.7', edgecolor='none', pad=3.0))
 
-"""
 plt.show()
