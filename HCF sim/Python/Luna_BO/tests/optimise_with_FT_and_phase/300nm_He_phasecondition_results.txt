@@ -11,11 +11,11 @@ Peak power = 1412915669.9186566
 Increase by 13.18 times.
 
 Optimised durations (fs):
-Duration with quadratic phase subtracted = 23.381244880386696
-Duration with zero phase = 16.404997051617137
-Duration with of raw data = 38.97717907968457
+Optimised Duration with quadratic phase subtracted = 23.381244880386696
+Optimised Duration with zero phase = 16.404997051617137
+Optimised Duration with of raw data = 38.97717907968457
 
 Initial random search durations (fs):
-Duration with quadratic phase subtracted = 33.86561738845246
-Duration with zero phase = 18.049745635362278
-Duration with of raw data = 43.37033125064961
+Init Duration with quadratic phase subtracted = 33.86561738845246
+Init Duration with zero phase = 18.049745635362278
+Init Duration with of raw data = 43.37033125064961
