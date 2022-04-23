@@ -10,9 +10,12 @@ Results after random search: energy 14.89mJ, pressure 4.31bar, grating -0.22mm, 
 Peak power = 1412915669.9186566
 Increase by 13.18 times.
 
-Optimised duration with phase subtracted = 709.812640845436 fs
-Optimised duration with zero phase = 4091.3230514923666 fs
-Optimised duration with Luna phase = 576.9965915846511 fs
-Random search duration with phase subtracted = 1604.3276146356156 fs
-Random search duration with zero phase = 2022.3791289267638 fs
-Random search duration with Luna phase = 1246.8533248124727 fs
+Optimised durations (fs):
+Duration with quadratic phase subtracted = 23.381244880386696
+Duration with zero phase = 16.404997051617137
+Duration with of raw data = 38.97717907968457
+
+Initial random search durations (fs):
+Duration with quadratic phase subtracted = 33.86561738845246
+Duration with zero phase = 18.049745635362278
+Duration with of raw data = 43.37033125064961

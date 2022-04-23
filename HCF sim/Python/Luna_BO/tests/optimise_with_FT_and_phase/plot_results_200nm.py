@@ -98,6 +98,15 @@ axs2 = plt.twinx(axs[1])
 axs[1].plot(λ2*(10**9), np.abs(Eom_smooth)**2, color='black')
 axs[1].set_xlabel('Wavelength (nm)')
 axs[1].set_ylabel('Intensity (a.u.)')
+
+"""
+header = ['Angular Frequency', 'Real Electric Field', 'Imaginary Electric Field']
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_with_FT_and_phase\\spectrum_data\\200nm_optimum.csv', 'w', encoding='UTF8', newline='') as f:
+    writer = csv.writer(f) # peak_power_1000e-9wavelwindow__init_50_niter_100
+    writer.writerow(header)
+    for i in range(len(ω2)):
+        writer.writerow([ω2[i], Eω2[i].real, Eω2[i].imag])
+"""
 ##################################################################################
 # Get pulse in time-domain
 # Slice phase to only select part within pulse
@@ -217,6 +226,15 @@ for i in range(len(Eω2)):
     Eom_smooth.append(Eω2[i]*filter[i])
 
 axs[1].plot(λ2*(10**9), np.abs(Eom_smooth)**2, color='tab:red')
+
+"""
+header = ['Angular Frequency', 'Real Electric Field', 'Imaginary Electric Field']
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_with_FT_and_phase\\spectrum_data\\200nm_init.csv', 'w', encoding='UTF8', newline='') as f:
+    writer = csv.writer(f) # peak_power_1000e-9wavelwindow__init_50_niter_100
+    writer.writerow(header)
+    for i in range(len(ω2)):
+        writer.writerow([ω2[i], Eω2[i].real, Eω2[i].imag])
+"""
 ##################################################################################
 # Get pulse in time-domain
 # Slice phase to only select part within pulse
