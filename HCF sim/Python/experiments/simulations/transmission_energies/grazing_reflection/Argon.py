@@ -24,7 +24,11 @@ Main.using("Luna")
 #simulate output spectra
 
 #radii=np.array([30e-6,50e-6,70e-6,90e-6,110e-6,130e-6])#
-radii=np.logspace(30e-6,150e-6,num=6, base=2.71828)
+lower_bound=1/(150e-6)**3
+upper_bound=1/(50e-6)**3
+print(lower_bound,upper_bound)
+x=np.linspace(lower_bound,upper_bound,5)
+radii=1/x**(1/3)
 print(radii)
 L=np.linspace(0.1,3,30)
 
@@ -36,10 +40,10 @@ for i in range(len(radii)):
         flength = L[j] # HCF length
         print(radius,flength)
         gas = "Ar"
-        pressure = 0.1 # gas pressure in bar
+        pressure = 0.2 # gas pressure in bar
         λ0 = 800e-9 # central wavelength of the pump pulse
         τfwhm = 30e-15 # FWHM duration of the pump pulse
-        energy = 1e-5 # energy in the pump pulse
+        energy = 0.1e-3 # energy in the pump pulse
 
         # Assign arguments to Main namespace
         Main.radius = radius
@@ -54,7 +58,7 @@ for i in range(len(radii)):
         Main.energy = energy
 
         #Pass data to Luna
-        Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6),kerr=False)')
+        Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6),kerr=false)')
 
         #########################################################################################
         #find simulated output 

@@ -12,8 +12,8 @@ import matplotlib.transforms as mtransforms
 
 #plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.Set2.colors)
 plt.style.use('classic')
-plt.rcParams['xtick.labelsize'] = 14
-plt.rcParams['ytick.labelsize'] = 14
+plt.rcParams['xtick.labelsize'] = 16
+plt.rcParams['ytick.labelsize'] = 16
 plt.rcParams['axes.labelsize'] = 20
 
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
@@ -69,13 +69,14 @@ fit_params=[]
 #fig = plt.figure()
 #plt.suptitle("Argon Low Energy Transmission",fontsize=20)
 fig, axs = plt.subplot_mosaic([['a)', 'b)']],constrained_layout=True)
+fig.set_facecolor("white")
 #ax1 = fig.add_subplot(121)
 
-fig = plt.figure()
+#fig = plt.figure()
 
 #plt.suptitle("Argon Low Energy Transmission",fontsize=20)
 
-fig = plt.figure()
+#fig = plt.figure()
 #plt.suptitle("Argon Low Energy Transmission",fontsize=20)
 
 #plt.suptitle("Argon Low Energy Transmission",fontsize=20)
@@ -85,22 +86,22 @@ fig = plt.figure()
 
 ax1=axs["a)"]
 ax2=axs["b)"]
+linewidths=[1,2.5,2.5,2.5,2.5]
+linestyles=["solid", "dotted", "dashed", "dashdot","solid"]
 for i in range(len(sims)):
     popt,_=curve_fit(func,L,sims[i])
     fit_params.append(popt)
     #ax1.plot(L, sims[i],label="%s$\mathrm{\mu}$m"%int(radii[i]*10**6))
     #ax1.plot(L, sims[i],label="radius=%s$\mathrm{\mu}$m"%int(radii[i]*10**6))
-    ax1.plot(L, sims[i],label="%s$\mathrm{\mu}$m radius"%int(radii[i]*10**6))
+    ax1.plot(L, sims[i],label="%s$\mathrm{\mu}$m radius"%int(radii[i]*10**6),linewidth=linewidths[i],linestyle=linestyles[i])
  
     #ax1.plot(L, sims[i],label="radius=%s$\mathrm{\mu}$m"%int(radii[i]*10**6))
     #ax1.plot(L, sims[i],label="%s$\mathrm{\mu}$m radius"%int(radii[i]*10**6))
-plt.legend(fontsize=14,loc="lower right")
-plt.xticks(fontsize=14)
-plt.yticks(fontsize=14)
+#plt.legend(fontsize=14,loc="lower right")
 ax1.set_xlim(0,3)
 #ax1.set_title("Argon Low Energy Transmission",fontsize=20)
-ax1.set_xlabel("Fibre Length (m)",fontsize=16)
-ax1.set_ylabel("Transmission Fraction",fontsize=16)
+ax1.set_xlabel("Fibre Length (m)",fontsize=20)
+ax1.set_ylabel("Transmission Fraction",fontsize=20)
 print(fit_params)
 ####################################################################################
 
@@ -121,36 +122,26 @@ def line(x,a):
 
 popt,_=curve_fit(line,r_3,decay_coeff)
 
-ax2.plot(r_3, decay_coeff,ls="None",marker="o", markersize=15)
-ax2.plot(r_3,line(r_3,*popt),label=r"$\mathrm{\alpha}$=%s$\mathrm{\pm}$23$\mathrm{\mu m^{-3}}$"%(int(popt[0])))
+ax2.plot(r_3*10**6, decay_coeff,ls="None",marker="^", markersize=15,markerfacecolor="m")
+ax2.plot(r_3*10**6,line(r_3,*popt),label=r"$\mathrm{\alpha}$=%s$\mathrm{\pm}$23$\mathrm{\mu m^{-3}}$"%(int(popt[0])),color="black")
+ax2.set_xlim(0,9)
+ax2.set_ylabel("Decay Coefficient, $\mathrm{m^{-1}}$",fontsize=20)
+ax2.set_xlabel("Inverse of Core Radius Cubed, $\mathrm{\mu m^{-3}}$",fontsize=20)
 
-ax2.set_ylabel("Decay Coefficient, $\mathrm{m^{-1}}$",fontsize=16)
-ax2.set_xlabel("Inverse of Core Radius Cubed, $\mathrm{\mu m^{-3}}$",fontsize=16)
-plt.ylabel("Decay Coefficient, $\mathrm{m^{-1}}$",fontsize=16)
-plt.xlabel("Inverse of Fibre Radius Cubed, $\mathrm{\mu m^{-3}}$",fontsize=16)
-plt.ylabel("Decay Coefficient ($\mathrm{m^{-1}}$)",fontsize=16)
-plt.xlabel("Inverse of Fibre Radius Cubed ($\mathrm{\mu m^{-3}}$)",fontsize=16)
-
-plt.ylabel("Decay Coefficient, $\mathrm{m^{-1}}$",fontsize=16)
-plt.xlabel("Inverse of Fibre Radius Cubed, $\mathrm{\mu m^{-3}}$",fontsize=16)
-
-plt.ylabel("Decay Coefficient ($\mathrm{m^{-1}}$)",fontsize=16)
-plt.xlabel("Inverse of Fibre Radius Cubed ($\mathrm{\mu m^{-3}}$)",fontsize=16)
+plt.ylabel("Decay Coefficient ($\mathrm{m^{-1}}$)",fontsize=20)
+plt.xlabel("Inverse of Core Radius Cubed ($\mathrm{10^{6} \mu m^{-3}}$)",fontsize=20)
 
 #plt.title("Argon Low Energy Transmission Decay Coefficient",fontsize=20)
 print(np.sqrt(_[0][0]))
-ax1.legend(fontsize=14,loc="lower right")
-ax2.legend(fontsize=14,loc="lower right")
-
-plt.xticks(fontsize=14)
-plt.yticks(fontsize=14)
+ax1.legend(fontsize=18,loc="upper right")
+ax2.legend(fontsize=18,loc="lower right")
 
 
 for label, ax in axs.items():
     # label physical distance in and down:
     trans = mtransforms.ScaledTranslation(10/72, -5/72, fig.dpi_scale_trans)
     ax.text(0.0, 1.0, label, transform=ax.transAxes + trans,
-            fontsize='large', verticalalignment='top', fontfamily='serif',
-            bbox=dict(facecolor='0.7', edgecolor='none', pad=3.0))
+            fontsize=22, verticalalignment='top', fontfamily='serif',
+            bbox=dict(facecolor='white', edgecolor='none', pad=3.0))
 
 plt.show()
