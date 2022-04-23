@@ -8,3 +8,13 @@ RMS ang. freq. width = 2060878237094417.2
 
 RMS ang. freq. width of SPM optimum = 2480719484787375.0
 Percentage achieved of the SPM width = 83.08%
+
+Duration of optimum (fs):
+Optimised Duration with quadratic phase subtracted = 6.8882122029042945
+Optimised Duration with zero phase = 3.1852139087350566
+Optimised Duration with of raw data = 116.60914968273457
+
+Duration of SPM optimum (fs):
+Duration with quadratic phase subtracted = 6.8882122029042945
+Duration with zero phase = 3.1852139087350566
+Duration with of raw data = 116.60914968273457
