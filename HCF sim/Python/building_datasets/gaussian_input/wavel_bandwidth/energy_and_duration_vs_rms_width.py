@@ -9,7 +9,7 @@ Main.using("Luna")
 
 from rms_width import *
 # Arguments
-radius = 125e-6 # HCF core radius
+radius = 175e-6 # HCF core radius
 flength = 1 # HCF length
 gas = "Ne"
 pressure = 2.340607 # gas pressure in bar, corresponds to 66% of 3.5 atm

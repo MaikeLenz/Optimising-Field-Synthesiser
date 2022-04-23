@@ -1,3 +1,4 @@
+from math import e
 import sys
 from matplotlib.cbook import ls_mapper
 import matplotlib.pyplot as plt
@@ -22,7 +23,9 @@ Main.using("Luna")
 ##################################################################################
 #simulate output spectra
 
-radii=np.array([30e-6,50e-6,70e-6,90e-6,110e-6,130e-6])
+#radii=np.array([30e-6,50e-6,70e-6,90e-6,110e-6,130e-6])#
+radii=np.logspace(30e-6,150e-6,num=6, base=2.71828)
+print(radii)
 L=np.linspace(0.1,3,30)
 
 sim_transmission=np.ones((len(radii),len(L)))
@@ -51,7 +54,7 @@ for i in range(len(radii)):
         Main.energy = energy
 
         #Pass data to Luna
-        Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
+        Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6),kerr=False)')
 
         #########################################################################################
         #find simulated output 
@@ -70,6 +73,7 @@ for i in range(len(radii)):
         #energy_i=Main.energy
         #energy_i=energies_in[i]*Main.transm
         sim_transmission[i][j]=integrate.simps(Iλ[:,0],λ)/integrate.simps(Iλ2[:,0],λ2)
+        print(sim_transmission[i][j])
 
 
 fig = plt.figure()
@@ -87,7 +91,7 @@ ax1.set_ylabel("Transmission",fontsize=16)
 
 # Save the data
 header = ['radius', 'Fibre Length', 'Transmission']
-with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\plots\\transmission\\grazing_reflection\\low_energy_transmission_' + gas+ '_mediumradii.csv', 'w', encoding='UTF8', newline='') as f:
+with open('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\plots\\transmission\\grazing_reflection\\logscale_low_energy_transmission_' + gas+ '_mediumradii.csv', 'w', encoding='UTF8', newline='') as f:
     writer = csv.writer(f)
     # write the header
     writer.writerow(header)
