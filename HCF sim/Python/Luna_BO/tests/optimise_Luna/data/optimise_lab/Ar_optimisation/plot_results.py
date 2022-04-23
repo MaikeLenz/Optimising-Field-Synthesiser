@@ -15,7 +15,7 @@ sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF 
 from pulse_with_GDD import *
 from compressor_grating_to_values import *
 from rms_width import *
-from theoretical_width import *
+#from theoretical_width import *
 
 import julia
 #julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")

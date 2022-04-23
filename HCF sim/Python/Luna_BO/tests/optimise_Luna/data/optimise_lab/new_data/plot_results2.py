@@ -5,27 +5,28 @@ plt.rcParams['xtick.labelsize'] = 12
 plt.rcParams['ytick.labelsize'] = 12
 plt.rcParams['axes.labelsize'] = 16
 
-sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\')
-sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\chirp\\')
-sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
-#sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\chirp\\')
-#sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
+#sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\')
+#sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\chirp\\')
+#sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
+sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\BO\\synthesiser_simulation\\chirp\\')
+sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
+sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\')
 from pulse_with_GDD import *
 from compressor_grating_to_values import *
 from rms_width import *
-from theoretical_width import *
+#from theoretical_width import *
 
-sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\tests\\investigate_phase\\")
-#sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\tests\\investigate_phase\\')
+#sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\tests\\investigate_phase\\")
+sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\tests\\investigate_phase\\')
 from get_phase import *
 
 import julia
-julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
-#julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
+#julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
+julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
 from julia import Main
 Main.using("Luna")
-#filepath = 'C:\\Users\\iammo\\Documents\\'
-filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\"
+filepath = 'C:\\Users\\iammo\\Documents\\'
+#filepath="C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\"
 # Define fixed params
 Main.radius = 175e-6
 Main.flength = 1.05
@@ -57,6 +58,9 @@ Main.ω = omega_list[::-1]
 Main.Iω = intens[::-1]
 
 # Plot the optimum found
+energy_in = 0.0011730020668117554
+pressure_in = 0.9896159222064448
+grating_pair_displacement_in = 1.3687440750850062e-05
 
 Main.energy = energy_in
 Main.pressure = pressure_in
@@ -79,7 +83,7 @@ Eω2 = Main.ω2
 
 om0 = moment(ω2,np.abs(Eω2)**2,1)/moment(ω2,np.abs(Eω2)**2,0) # Determine central frequency
 lambda0 = (2*np.pi*c)/om0
-phase = get_phase(ω2, ω2, lambda0)
+phase = get_phase(ω2, Eω2, lambda0)
 thresh = 0.1
 rows = np.where(np.abs(Eω2)**2 > max(np.abs(Eω2)**2)*thresh)[0]
 min_index = rows[0]
@@ -96,6 +100,14 @@ print('(2) RMS width of optimum = {}'.format(rms_width(ω1, Iω1)))
 plt.figure(1)
 plt.plot(ω1, Iω1, label='Optimum after 1000 iterations', color='black')
 plt.xlabel('Angular Frequency (/s)')
+plt.ylabel('Intensity (a.u.)')
+
+Et = np.fft.fftshift(np.fft.ifft(Eω2))
+f_step = (ω2[1]-ω2[0])/(2*np.pi)
+t = np.fft.fftshift(np.fft.fftfreq(len(Eω2), d=f_step))
+plt.figure(3)
+plt.plot(t, np.abs(Et)**2, label='Optimum after 1000 iterations', color='black')
+plt.xlabel('Time (s)')
 plt.ylabel('Intensity (a.u.)')
 
 # Plot the SPM optimum
@@ -124,7 +136,7 @@ Eω2 = Main.ω2
 
 om0 = moment(ω2,np.abs(Eω2)**2,1)/moment(ω2,np.abs(Eω2)**2,0) # Determine central frequency
 lambda0 = (2*np.pi*c)/om0
-phase = get_phase(ω2, ω2, lambda0)
+phase = get_phase(ω2, Eω2, lambda0)
 thresh = 0.1
 rows = np.where(np.abs(Eω2)**2 > max(np.abs(Eω2)**2)*thresh)[0]
 min_index = rows[0]
@@ -138,6 +150,13 @@ plt.legend(fontsize=16)
 print('RMS width of SPM optimum = {}'.format(rms_width(ω1, Iω1)))
 plt.figure(1)
 plt.plot(ω1,Iω1, '--', label='SPM prediction', color='tab:red')
+plt.legend(fontsize=16)
+
+Et = np.fft.fftshift(np.fft.ifft(Eω2))
+f_step = (ω2[1]-ω2[0])/(2*np.pi)
+t = np.fft.fftshift(np.fft.fftfreq(len(Eω2), d=f_step))
+plt.figure(3)
+plt.plot(t, np.abs(Et)**2, '--', label='SPM prediction', color='tab:red')
 plt.legend(fontsize=16)
 
 plt.show()
