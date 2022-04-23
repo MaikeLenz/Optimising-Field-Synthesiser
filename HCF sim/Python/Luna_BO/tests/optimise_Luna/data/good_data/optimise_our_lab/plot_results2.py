@@ -1,6 +1,7 @@
 import numpy as np
 import sys
 import matplotlib.pyplot as plt
+import csv
 plt.rcParams['xtick.labelsize'] = 12
 plt.rcParams['ytick.labelsize'] = 12
 plt.rcParams['axes.labelsize'] = 16
@@ -13,7 +14,7 @@ sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF 
 from pulse_with_GDD import *
 from compressor_grating_to_values import *
 from rms_width import *
-from theoretical_width import *
+#from theoretical_width import *
 
 #sys.path.append("C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\tests\\investigate_phase\\")
 sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\tests\\investigate_phase\\')
@@ -80,6 +81,13 @@ Main.eval('Eω2 = duv["Eω"][:,end]')
 ω2 = Main.ω2
 Eω2 = Main.ω2
 
+header = ['Angular Frequency', 'Real Electric Field', 'Imaginary Electric Field']
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\good_data\\optimise_our_lab\\spectrum_data\\optimum.csv', 'w', encoding='UTF8', newline='') as f:
+    writer = csv.writer(f) # peak_power_1000e-9wavelwindow__init_50_niter_100
+    writer.writerow(header)
+    for i in range(len(ω2)):
+        writer.writerow([ω2[i], Eω2[i].real, Eω2[i].imag])
+
 om0 = moment(ω2,np.abs(Eω2)**2,1)/moment(ω2,np.abs(Eω2)**2,0) # Determine central frequency
 lambda0 = (2*np.pi*c)/om0
 phase = get_phase(ω2, ω2, lambda0)
@@ -124,6 +132,13 @@ Main.eval("ω2 = grid.ω")
 Main.eval('Eω2 = duv["Eω"][:,end]')
 ω2 = Main.ω2
 Eω2 = Main.ω2
+
+header = ['Angular Frequency', 'Real Electric Field', 'Imaginary Electric Field']
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\good_data\\optimise_our_lab\\spectrum_data\\SPM.csv', 'w', encoding='UTF8', newline='') as f:
+    writer = csv.writer(f) # peak_power_1000e-9wavelwindow__init_50_niter_100
+    writer.writerow(header)
+    for i in range(len(ω2)):
+        writer.writerow([ω2[i], Eω2[i].real, Eω2[i].imag])
 
 om0 = moment(ω2,np.abs(Eω2)**2,1)/moment(ω2,np.abs(Eω2)**2,0) # Determine central frequency
 lambda0 = (2*np.pi*c)/om0
