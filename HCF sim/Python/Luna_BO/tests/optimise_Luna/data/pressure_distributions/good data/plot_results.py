@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 from scipy.integrate import simps
+import csv
 #sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 from rms_width import *
@@ -54,7 +55,6 @@ plt.plot(z+8*flength/10, P89, color='black')
 plt.plot(z+9*flength/10, P910, color='black')
 plt.plot(pressure[0], pressure[1], '+', color='tab:red')
 
-"""
 # Find outcomes
 # Assign arguments to Main namespace
 Main.radius = radius
@@ -68,10 +68,23 @@ Main.energy = energy
 
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
 #Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
-Main.eval("ω, Iω = Processing.getIω(duv, :ω, flength)")
+#Main.eval("ω, Iω = Processing.getIω(duv, :ω, flength)")
+#ω = Main.ω
+#Iω = Main.Iω
+Main.eval("grid = Processing.makegrid(duv)")
+Main.eval("ω = grid.ω")
+Main.eval('Eω = duv["Eω"][:,end]')
 ω = Main.ω
-Iω = Main.Iω
-
+Eω = Main.Eω
+Iω = np.abs(Eω)**2
+"""
+header = ['Angular Frequency', 'Real Electric Field', 'Imaginary Electric Field']
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\pressure_distributions\\good data\\spectrum_data\\pressure_dist.csv', 'w', encoding='UTF8', newline='') as f:
+    writer = csv.writer(f) 
+    writer.writerow(header)
+    for i in range(len(ω)):
+        writer.writerow([ω[i], Eω[i].real, Eω[i].imag])
+"""
 def P_gradient(z, P0, PL, L):
     return np.sqrt((P0**2) + (z/L)*((PL**2) - (P0**2)))
 def P_average(Z, P):
@@ -95,15 +108,28 @@ Main.pressure = average_pressure
 
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, τfwhm, energy, trange=400e-15, λlims=(150e-9, 4e-6))')
 #Main.eval("λ, Iλ = Processing.getIω(duv, :λ, flength)")
-Main.eval("ω2, Iω2 = Processing.getIω(duv, :ω, flength)")
-ω2 = Main.ω2
-Iω2 = Main.Iω2
-
+#Main.eval("ω2, Iω2 = Processing.getIω(duv, :ω, flength)")
+#ω2 = Main.ω2
+#Iω2 = Main.Iω2
+Main.eval("grid = Processing.makegrid(duv)")
+Main.eval("ω = grid.ω")
+Main.eval('Eω = duv["Eω"][:,end]')
+ω2 = Main.ω
+Eω2 = Main.Eω
+Iω2 = np.abs(Eω2)**2
+"""
+header = ['Angular Frequency', 'Real Electric Field', 'Imaginary Electric Field']
+with open('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_Luna\\data\\pressure_distributions\\good data\\spectrum_data\\pressure_average.csv', 'w', encoding='UTF8', newline='') as f:
+    writer = csv.writer(f) 
+    writer.writerow(header)
+    for i in range(len(ω)):
+        writer.writerow([ω[i], Eω[i].real, Eω[i].imag])
+"""
 print('Width with many points = {}'.format(rms_width(ω, Iω)))
 print('Width with average P = {}'.format(rms_width(ω2, Iω2)))
 
 plt.figure()
 plt.plot(ω, Iω, color='black', label='Many pressure points')
 plt.plot(ω2, Iω2, color='tab:red', label='Constant average pressure')
-"""
+
 plt.show()

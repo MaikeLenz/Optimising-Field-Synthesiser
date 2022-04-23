@@ -1,0 +1,13 @@
+Width with many points = 3214423809296946.5
+Width with average P = 3168074012206340.5
+Increase = 1.014630275969571 times
+
+Average pressure durations (fs):
+Duration with quadratic phase subtracted = 13.009097557175187
+Duration with zero phase = 9.18586757973204
+Duration with of raw data = 33.071132250779705
+
+Pressure distribution durations (fs):
+Optimised Duration with quadratic phase subtracted = 13.009097557175187
+Optimised Duration with zero phase = 9.18586757973204
+Optimised Duration with of raw data = 33.071132250779705
