@@ -57,7 +57,6 @@ for i in data:
 wavel_nm=np.array(columns[0])
 intens1_2=np.array(columns[1])
 
-
 # Assign arguments to Main namespace
 Main.radius = radius
 Main.flength = flength
@@ -96,26 +95,17 @@ om=Main.ω
 
 #now get SPM optimum
 # Assign arguments to Main namespace
-Main.radius = radius
-Main.flength = flength
+Main.pressure = 0.66*1.5
+Main.energy = 1.2e-3
 
-Main.gas_str = gas
-Main.eval("gas = Symbol(gas_str)")
-
-Main.pressure = pressure
-Main.λ0 = wavel
-Main.τfwhm = FWHM
-Main.energy = energy
-
-print(pressure,energy,grating_pair_displacement)
-c = 299792458 # m/s
 omega_list=2*np.pi*c/(wavel_nm*10**-9)
 Main.ω = omega_list[::-1]
 Main.Iω = intens1_2[::-1]
 
 # Plot the optimum found
 
-GDD, TOD = compressor_grating_values(grating_pair_displacement_mm=(grating_pair_displacement)*1000)
+GDD=0
+TOD=0
 phase = []
 for j in range(len(omega_list)):
     phase.append(get_phi(omega=omega_list[j], omega0=2*np.pi*c/Main.λ0, CEP=0, GD=0, GDD=GDD, TOD=TOD, FoOD=0, FiOD=0))
@@ -125,10 +115,10 @@ Main.phase = phase
 Main.eval('pulse = Pulses.DataPulse(ω, Iω, phase; energy, λ0=NaN, mode=:lowest, polarisation=:linear, propagator=nothing)')
 Main.duv = Main.eval('duv = prop_capillary(radius, flength, gas, pressure; λ0, pulses=pulse, trange=400e-15, λlims=(150e-9, 4e-6))')
 Main.eval("grid = Processing.makegrid(duv)")
-Main.eval("ω = grid.ω")
-Main.eval('Eω = duv["Eω"][:,end]')
-Eom_spm=Main.Eω
-om_spm=Main.ω
+Main.eval("ω2 = grid.ω")
+Main.eval('Eω2 = duv["Eω"][:,end]')
+Eom_spm=Main.Eω2
+om_spm=Main.ω2
 
 
 #plt bot on frequency axis
