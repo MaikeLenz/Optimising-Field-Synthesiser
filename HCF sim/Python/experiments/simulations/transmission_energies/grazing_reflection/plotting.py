@@ -123,12 +123,12 @@ def line(x,a):
 popt,_=curve_fit(line,r_3,decay_coeff)
 
 ax2.plot(r_3*10**6, decay_coeff,ls="None",marker="^", markersize=15,markerfacecolor="m")
-ax2.plot(r_3*10**6,line(r_3,*popt),label=r"$\mathrm{\alpha}$=%s$\mathrm{\pm}$23$\mathrm{\mu m^{-3}}$"%(int(popt[0])),color="black")
+ax2.plot(r_3*10**6,line(r_3,*popt),label=r"$\mathrm{\alpha}$=%s$\mathrm{\pm}$23$\mathrm{\mu m^{3}m^{-1}}$"%(int(popt[0])),color="black")
 ax2.set_xlim(0,9)
-ax2.set_ylabel("Decay Coefficient, $\mathrm{m^{-1}}$",fontsize=20)
+ax2.set_ylabel("Decay Coefficient, $\mathrm{ m^{-1}}$",fontsize=20)
 ax2.set_xlabel("Inverse of Core Radius Cubed, $\mathrm{\mu m^{-3}}$",fontsize=20)
 
-plt.ylabel("Decay Coefficient ($\mathrm{m^{-1}}$)",fontsize=20)
+plt.ylabel("Decay Coefficient ( $\mathrm{m^{-1}}$)",fontsize=20)
 plt.xlabel("Inverse of Core Radius Cubed ($\mathrm{10^{6} \mu m^{-3}}$)",fontsize=20)
 
 #plt.title("Argon Low Energy Transmission Decay Coefficient",fontsize=20)
