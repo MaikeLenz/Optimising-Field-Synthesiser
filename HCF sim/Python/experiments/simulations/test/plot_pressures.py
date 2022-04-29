@@ -28,7 +28,7 @@ energy = 0.002
 # Plot pressure distribution
 plt.figure()
 plt.xlabel('Distance along the Fibre (m)')
-plt.ylabel('Pressure (bar)')
+plt.ylabel('Pressure (Bar)')
 def P_gradient(z, P0, PL, L):
     return np.sqrt((P0**2) + (z/L)*((PL**2) - (P0**2)))
 z = np.linspace(0, flength/10, 100)
@@ -53,7 +53,7 @@ plt.plot(z+6*flength/10, P67, color='black')
 plt.plot(z+7*flength/10, P78, color='black')
 plt.plot(z+8*flength/10, P89, color='black')
 plt.plot(z+9*flength/10, P910, color='black')
-plt.plot(pressure[0], pressure[1], '+', color='tab:red')
+plt.plot(pressure[0], pressure[1], 'o', color='m')
 
 # Find outcomes
 # Assign arguments to Main namespace
@@ -129,7 +129,9 @@ print('Width with many points = {}'.format(rms_width(ω, Iω)))
 print('Width with average P = {}'.format(rms_width(ω2, Iω2)))
 
 plt.figure()
-plt.plot(ω, Iω, color='black', label='Many pressure points')
-plt.plot(ω2, Iω2, color='tab:red', label='Constant average pressure')
-
+plt.plot(ω, Iω, label='Optimised Pressure Distribution, width %s rad/s'%(round(rms_width(ω, Iω)*10**(-13),1)),c="black")
+plt.plot(ω2, Iω2, "--", label='Constant Average Pressure, width %s rad/s'%(round(rms_width(ω2, Iω2)*10**(-13),1)),c="m")
+plt.xlabel("Angular Frequency (rad/s)",fontsize=20)
+plt.ylabel("Intensity (a.u.)",fontsize=20)
+plt.legend(fontsize=20)
 plt.show()

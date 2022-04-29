@@ -2,9 +2,9 @@ import julia
 import matplotlib.pyplot as plt
 import numpy as np
 plt.style.use('tableau-colorblind10')
-plt.rcParams['xtick.labelsize'] = 12
-plt.rcParams['ytick.labelsize'] = 12
-plt.rcParams['axes.labelsize'] = 14
+plt.rcParams['xtick.labelsize'] = 16
+plt.rcParams['ytick.labelsize'] = 16
+plt.rcParams['axes.labelsize'] = 20
 
 julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
 #julia.Julia(runtime="C:\\Users\\iammo\\AppData\\Local\\Programs\\Julia-1.7.1\\bin\\julia.exe")
@@ -71,7 +71,7 @@ Iλ = Main.Iλ
 #Et=Et_allz[:,-1] #last item in each element is pulse shape at the end
 #Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
 
-plt.plot(10**9*λ, Iλ,label="%s to 0 bar"%P, linestyle="--", color="tab:red")
+plt.plot(10**9*λ, Iλ,label="%s to 0 bar"%P, linestyle="--", color="m")
 
 ########################################################################################################
 # Assign arguments to Main namespace
@@ -97,9 +97,9 @@ Iλ = Main.Iλ
 #Et=Et_allz[:,-1] #last item in each element is pulse shape at the end
 #Et0=Et_allz[:,0] #first item in each element is pulse shape at the start
 
-plt.plot(10**9*λ, Iλ,linestyle= 'dashdot', label="%s bar"%(round((2/3)*P,2)), color="orange")
+plt.plot(10**9*λ, Iλ,linestyle= 'dashdot', label="%s bar"%(round((2/3)*P,2)), color="blue")
 
-plt.xlabel("Wavelength, nm")
-plt.ylabel("Intensity, a.u.")
-plt.legend(fontsize=14)
+plt.xlabel("Wavelength (nm)")
+plt.ylabel("Intensity (a.u.)")
+plt.legend(fontsize=20)
 plt.show()

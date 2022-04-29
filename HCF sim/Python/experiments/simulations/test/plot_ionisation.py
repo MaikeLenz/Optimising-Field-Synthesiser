@@ -15,7 +15,7 @@ Main.using("Luna")
 
 plt.rcParams['xtick.labelsize'] = 18
 plt.rcParams['ytick.labelsize'] = 18
-plt.rcParams['axes.labelsize'] = 22
+plt.rcParams['axes.labelsize'] = 20
 
 #pressures_Ar = np.linspace(0.1,5,5)
 pressures_Ar=np.array([0.01,1,2,3,4,5])
@@ -84,7 +84,7 @@ for i in range(len(lam)):
     else:
         ax1.plot(lam_io[i][i1:i2]*(10**9), I_lam_io[i][i1:i2]/max(I_lam_io[i])+i, c="black")
         ax1.plot(lam[i][i1:i2]*10**9, I_lam[i][i1:i2]/max(I_lam[i]) +i,c="m",linestyle="--")
-    ax1.annotate("%s Bar"%(pressures_Ne[i]), (lam[i][i2-100]*10**9,i+0.6), fontsize=18)
+    ax1.annotate("%s bar"%(pressures_Ne[i]), (lam[i][i2-100]*10**9,i+0.6), fontsize=18)
 ax1.set_xlabel("Wavelength (nm)")
 ax1.set_ylabel("Normalised Spectral energy density")
 ax1.legend(fontsize=18, loc=(0,1.05))
