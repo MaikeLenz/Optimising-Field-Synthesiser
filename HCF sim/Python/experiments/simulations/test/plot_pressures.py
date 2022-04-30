@@ -8,8 +8,8 @@ sys.path.append('C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project
 #sys.path.append('C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\building_datasets\\')
 from rms_width import *
 
-plt.rcParams['xtick.labelsize'] = 16
-plt.rcParams['ytick.labelsize'] = 16
+plt.rcParams['xtick.labelsize'] = 18
+plt.rcParams['ytick.labelsize'] = 18
 plt.rcParams['axes.labelsize'] = 20
 
 julia.Julia(runtime="C:\\Users\\ML\\AppData\\Local\\Programs\\Julia-1.7.0\\bin\\julia.exe")
@@ -28,7 +28,7 @@ energy = 0.002
 # Plot pressure distribution
 plt.figure()
 plt.xlabel('Distance along the Fibre (m)')
-plt.ylabel('Pressure (Bar)')
+plt.ylabel('Pressure (bar)')
 def P_gradient(z, P0, PL, L):
     return np.sqrt((P0**2) + (z/L)*((PL**2) - (P0**2)))
 z = np.linspace(0, flength/10, 100)
@@ -53,7 +53,7 @@ plt.plot(z+6*flength/10, P67, color='black')
 plt.plot(z+7*flength/10, P78, color='black')
 plt.plot(z+8*flength/10, P89, color='black')
 plt.plot(z+9*flength/10, P910, color='black')
-plt.plot(pressure[0], pressure[1], 'o', color='m')
+plt.plot(pressure[0], pressure[1], 'o', color='m',markersize=15)
 
 # Find outcomes
 # Assign arguments to Main namespace
@@ -132,6 +132,6 @@ plt.figure()
 plt.plot(ω, Iω, label='Optimised Pressure Distribution, width %s rad/s'%(round(rms_width(ω, Iω)*10**(-13),1)),c="black")
 plt.plot(ω2, Iω2, "--", label='Constant Average Pressure, width %s rad/s'%(round(rms_width(ω2, Iω2)*10**(-13),1)),c="m")
 plt.xlabel("Angular Frequency (rad/s)",fontsize=20)
-plt.ylabel("Intensity (a.u.)",fontsize=20)
+plt.ylabel("Intensity (a. u.)",fontsize=20)
 plt.legend(fontsize=20)
 plt.show()

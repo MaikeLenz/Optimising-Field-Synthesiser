@@ -128,10 +128,10 @@ plt.figure()
 plt.plot(om,np.abs(Eom)**2,label="Optimised",color="black")
 plt.plot(om_spm,np.abs(Eom_spm)**2,label="SPM Prediction",linestyle="--",color="tab:red")
 plt.xlabel("Angular frequency (rad/s)",fontsize=20)
-plt.ylabel("Intensity (arb. units)",fontsize=20)
-plt.legend(fontsize=18)
-plt.xticks(fontsize=16)
-plt.yticks(fontsize=16)
+plt.ylabel("Intensity (a. u.)",fontsize=20)
+plt.legend(fontsize=20)
+plt.xticks(fontsize=18)
+plt.yticks(fontsize=18)
 
 
 

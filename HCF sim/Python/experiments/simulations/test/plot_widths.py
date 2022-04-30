@@ -12,8 +12,8 @@ plt.style.use('classic')
 
 #plt.rcParams['axes.prop_cycle'] = plt.cycler(color=plt.cm.tableau-colorblind10.colors)
 #plt.style.use('tableau-colorblind10')
-plt.rcParams['xtick.labelsize'] = 16
-plt.rcParams['ytick.labelsize'] = 16
+plt.rcParams['xtick.labelsize'] = 18
+plt.rcParams['ytick.labelsize'] = 18
 plt.rcParams['axes.labelsize'] = 20
 
 #filepath = "C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\experiments\\"
@@ -595,15 +595,21 @@ axs[1,1].plot(Ne_sim_pressures, Ne_sim_pulse_PressureScan_widths,'o',markersize=
 axs[0,0].plot(Ar_powers, Ar_PowerScan_widths,'s', label='Experimental Data',markersize=12,c="deepskyblue")
 axs[0,0].set_xlabel('Power (W)')
 axs[0,0].set_ylabel('RMS Width (nm)')
+axs[0,0].set_yticks([0,200,400,600,800,1000])
 axs[1,0].plot(Ar_pressures, Ar_PressureScan_widths,'s',markersize=12,c="deepskyblue")
-axs[1,0].set_xlabel('Pressure (Bar)')
+axs[1,0].set_xlabel('Pressure (bar)')
 axs[1,0].set_ylabel('RMS Width (nm)')
+axs[1,0].set_yticks([0,500,1000,1500])
+
 axs[0,1].plot(Ne_powers, Ne_PowerScan_widths,'s',markersize=12,c="deepskyblue")
 axs[0,1].set_xlabel('Power (W)')
 axs[0,1].set_ylabel('RMS Width (nm)')
+axs[0,1].set_yticks([0,100,200,300,400])
+
 axs[1,1].plot(Ne_pressures, Ne_PressureScan_widths,'s',markersize=12,c="deepskyblue")
-axs[1,1].set_xlabel('Pressure (Bar)')
+axs[1,1].set_xlabel('Pressure (bar)')
 axs[1,1].set_ylabel('RMS Width (nm)')
+axs[1,1].set_yticks([0,100,200,300,400])
 
 axs[0,0].set_title('Argon Power Scan', fontsize=22,fontweight="bold")
 axs[1,0].set_title('Argon Pressure Scan', fontsize=22,fontweight="bold")
@@ -615,7 +621,7 @@ axs[1,0].set_xlim(0.15,1.45)
 axs[0,1].set_xlim(0.25,1.25)
 axs[1,1].set_xlim(0.9,3.7)
 
-axs[0,0].legend(loc='upper left', fontsize=16)
+axs[0,0].legend(loc='upper left', fontsize=18)
 #plt.suptitle('Comparing Experimental, Simulated and Theoretical RMS Width', fontsize=24)
 
 plt.figure()

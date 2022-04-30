@@ -100,15 +100,15 @@ bar_height=np.array([height,height])
 
 plt.figure(2)
 plt.plot(om_slice, phase_slice, label="Optimised", color='black')
-plt.xlabel('Angular Frequency (/s)')
+plt.xlabel('Angular Frequency (rad/s)')
 plt.ylabel('Phase')
 
 print('(2) RMS width of optimum = {}'.format(rms_width(ω1, Iω1)))
 plt.figure(1)
 #plt.plot(width_plot,bar_height,color="black",lw=2.5)
 plt.plot(ω1, Iω1, label='Optimum, width %s $\mathrm{x} 10^{13} \mathrm{rad/s}$'%(round(width*10**(-13),1)), color='black')
-plt.xlabel('Angular Frequency (/s)')
-plt.ylabel('Intensity (a.u.)')
+plt.xlabel('Angular Frequency (rad/s)')
+plt.ylabel('Intensity (a. u.)')
 ##########################################################################################################################
 # Plot the SPM optimum
 grating_pair_displacement_in = 0

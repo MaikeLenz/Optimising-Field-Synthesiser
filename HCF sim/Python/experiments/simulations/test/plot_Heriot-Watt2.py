@@ -12,8 +12,8 @@ from rms_width import *
 
 path = "C:\\Users\\ML\\OneDrive - Imperial College London\\MSci_Project\\code\\Synth\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_with_FT_and_phase\\spectrum_data\\"
 #path = "C:\\Users\\iammo\\Documents\\Optimising-Field-Synthesiser\\HCF sim\\Python\\Luna_BO\\tests\\optimise_with_FT_and_phase\\spectrum_data\\"
-file = "300nm_optimum.csv"
-lam_goal=300e-9
+file = "1300nm_optimum.csv"
+lam_goal=1300e-9
 filepath = path + file
 
 c=299792458
@@ -68,7 +68,7 @@ phase = get_phase(om, Eom, lambda0)
 
 filter = []
 for i in range(len(λ)):
-    filter.append(np.exp(-((λ[i]-lam_goal)/(lam_goal*0.1))**4))
+    filter.append(np.exp(-((λ[i]-lam_goal)/(lam_goal*0.2))**4))
 
 Eom_smooth = []
 for i in range(len(Eom)):
@@ -162,7 +162,7 @@ t2 = np.fft.fftshift(np.fft.fftfreq(len(Eom_complex2), d=f_step))
 plt.figure()
 plt.plot(t0*1e15, np.abs(Et0)**2)
 """
-k0, k1 = get_index(t0, 0e-15), get_index(t0, 200e-15)
+k0, k1 = get_index(t0, -100e-15), get_index(t0, 200e-15)
 print(k0, k1)
 """
 plt.figure()
@@ -172,7 +172,7 @@ plt.xlabel("time (fs)")
 plt.ylabel("Intensity (arb.units)")
 plt.legend()
 """
-j0, j1 = get_index(t0, -60e-15), get_index(t0, 60e-15)
+j0, j1 = get_index(t0, -100e-15), get_index(t0, 100e-15)
 print(j0, j1)
 """
 plt.figure()
@@ -187,9 +187,9 @@ print('Duration with quadratic phase subtracted = {}'.format(rms_width(t1[j0:j1]
 print('Duration with zero phase = {}'.format(rms_width(t2[j0:j1]*1e15, np.abs(Et2[j0:j1])**2)))
 print('Duration with of raw data = {}'.format(rms_width(t0[k0:k1]*1e15, np.abs(Et0[k0:k1])**2)))
 
-plt.rcParams['xtick.labelsize'] = 16
-plt.rcParams['ytick.labelsize'] = 16
-plt.rcParams['axes.labelsize'] = 22
+plt.rcParams['xtick.labelsize'] = 18
+plt.rcParams['ytick.labelsize'] = 18
+plt.rcParams['axes.labelsize'] = 20
 
 #plt.figure(1)
 #plt.plot(t1[j0:j1]*1e15, np.abs(Et1[j0:j1])**2, label="Optimum after \n1000 iterations", color='black')
@@ -198,7 +198,7 @@ plt.rcParams['axes.labelsize'] = 22
 plt.figure()
 plt.plot(t0[k0:k1]*1e15-t0[np.argmax(np.abs(Et0)**2)]*1e15, np.abs(Et0[k0:k1])**2, label="Raw Data",c="m",linestyle="--")
 plt.plot(t1[j0:j1]*1e15, np.abs(Et1[j0:j1])**2,label="Quadratic Phase Subtracted",c="black")
-plt.plot(t2[j0:j1]*1e15, np.abs(Et2[j0:j1])**2, "-.",label="Zeroed Phase",c="blue")
+plt.plot(t2[j0:j1]*1e15, np.abs(Et2[j0:j1])**2, "-.",label="Zeroed Phase",c="deepskyblue")
 #plt.title(filepath)
 plt.xlabel("Time (fs)")
 plt.ylabel("Intensity (a. u.)")
